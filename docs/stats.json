@@ -1,9 +1,5 @@
 {
- "updated": "2026-10-28T21:41+00:00",
- "site": {
-  "title": "Winter SMP – Statistiken",
-  "intro": "Wird täglich aktualisiert."
- },
+ "updated": "2026-10-28T22:07+00:00",
  "players": [
   {
    "uuid": "cape_progression_cache",
@@ -12,10 +8,13 @@
    "deaths": 0,
    "mob_kills": 0,
    "blocks_mined": 0,
-   "km_walked": 0.0,
+   "diamonds": 0,
+   "km_travelled": 0,
    "jumps": 0,
-   "display_name": "cape_pro",
-   "title": ""
+   "travel": {},
+   "top_mobs": [],
+   "top_blocks": [],
+   "week_hours": 0.0
   },
   {
    "uuid": "diamond_mining_tracker",
@@ -24,10 +23,13 @@
    "deaths": 0,
    "mob_kills": 0,
    "blocks_mined": 0,
-   "km_walked": 0.0,
+   "diamonds": 0,
+   "km_travelled": 0,
    "jumps": 0,
-   "display_name": "diamond_",
-   "title": ""
+   "travel": {},
+   "top_mobs": [],
+   "top_blocks": [],
+   "week_hours": 0.0
   },
   {
    "uuid": "player_skin_cache",
@@ -36,10 +38,13 @@
    "deaths": 0,
    "mob_kills": 0,
    "blocks_mined": 0,
-   "km_walked": 0.0,
+   "diamonds": 0,
+   "km_travelled": 0,
    "jumps": 0,
-   "display_name": "player_s",
-   "title": ""
+   "travel": {},
+   "top_mobs": [],
+   "top_blocks": [],
+   "week_hours": 0.0
   }
  ]
 }
