@@ -1,49 +1,556 @@
 {
- "updated": "2026-10-28T22:07+00:00",
+ "updated": "2026-10-28T22:11+00:00",
  "players": [
   {
-   "uuid": "cape_progression_cache",
-   "name": "cape_pro",
-   "hours": 0.0,
-   "deaths": 0,
-   "mob_kills": 0,
-   "blocks_mined": 0,
-   "diamonds": 0,
-   "km_travelled": 0,
-   "jumps": 0,
-   "travel": {},
-   "top_mobs": [],
-   "top_blocks": [],
+   "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
+   "name": "letsplayfabi",
+   "hours": 67.7,
+   "deaths": 14,
+   "mob_kills": 1641,
+   "blocks_mined": 30708,
+   "diamonds": 97,
+   "km_travelled": 614.3,
+   "jumps": 53946,
+   "travel": {
+    "boat": 28.3,
+    "crouch": 5.3,
+    "climb": 0.1,
+    "minecart": 0.8,
+    "walk": 44.6,
+    "walk_under_water": 18.1,
+    "horse": 109.8,
+    "sprint": 71.6,
+    "fly": 316.7,
+    "walk_on_water": 4.5,
+    "swim": 13.4,
+    "nautilus": 1.1
+   },
+   "top_mobs": [
+    [
+     "zombie",
+     249
+    ],
+    [
+     "husk",
+     183
+    ],
+    [
+     "silverfish",
+     182
+    ],
+    [
+     "bogged",
+     153
+    ],
+    [
+     "cow",
+     145
+    ],
+    [
+     "skeleton",
+     141
+    ],
+    [
+     "wither_skeleton",
+     87
+    ],
+    [
+     "sheep",
+     62
+    ]
+   ],
+   "top_blocks": [
+    [
+     "wheat",
+     5836
+    ],
+    [
+     "stone",
+     2426
+    ],
+    [
+     "snow",
+     2226
+    ],
+    [
+     "sand",
+     2185
+    ],
+    [
+     "iron_ore",
+     2060
+    ],
+    [
+     "gray_concrete",
+     2036
+    ],
+    [
+     "gravel",
+     1994
+    ],
+    [
+     "short_grass",
+     1702
+    ]
+   ],
    "week_hours": 0.0
   },
   {
-   "uuid": "diamond_mining_tracker",
-   "name": "diamond_",
-   "hours": 0.0,
-   "deaths": 0,
-   "mob_kills": 0,
-   "blocks_mined": 0,
+   "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
+   "name": "Trosser",
+   "hours": 57.7,
+   "deaths": 31,
+   "mob_kills": 484,
+   "blocks_mined": 15437,
    "diamonds": 0,
-   "km_travelled": 0,
-   "jumps": 0,
-   "travel": {},
-   "top_mobs": [],
-   "top_blocks": [],
+   "km_travelled": 753.2,
+   "jumps": 126308,
+   "travel": {
+    "boat": 32.2,
+    "swim": 4.1,
+    "crouch": 4.1,
+    "climb": 0.9,
+    "minecart": 255.5,
+    "walk": 41.8,
+    "walk_under_water": 1.0,
+    "horse": 12.1,
+    "sprint": 121.6,
+    "fly": 277.5,
+    "walk_on_water": 2.4
+   },
+   "top_mobs": [
+    [
+     "zombie",
+     263
+    ],
+    [
+     "skeleton",
+     76
+    ],
+    [
+     "spider",
+     29
+    ],
+    [
+     "creeper",
+     16
+    ],
+    [
+     "cow",
+     16
+    ],
+    [
+     "sheep",
+     13
+    ],
+    [
+     "pillager",
+     11
+    ],
+    [
+     "stray",
+     6
+    ]
+   ],
+   "top_blocks": [
+    [
+     "wheat",
+     6864
+    ],
+    [
+     "stone",
+     2005
+    ],
+    [
+     "packed_ice",
+     667
+    ],
+    [
+     "short_grass",
+     570
+    ],
+    [
+     "iron_ore",
+     433
+    ],
+    [
+     "cobblestone",
+     432
+    ],
+    [
+     "dirt",
+     374
+    ],
+    [
+     "grass_block",
+     312
+    ]
+   ],
    "week_hours": 0.0
   },
   {
-   "uuid": "player_skin_cache",
-   "name": "player_s",
-   "hours": 0.0,
-   "deaths": 0,
-   "mob_kills": 0,
-   "blocks_mined": 0,
+   "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
+   "name": "CapyDreamXD",
+   "hours": 37.1,
+   "deaths": 22,
+   "mob_kills": 387,
+   "blocks_mined": 20522,
+   "diamonds": 79,
+   "km_travelled": 430.9,
+   "jumps": 63201,
+   "travel": {
+    "boat": 33.6,
+    "crouch": 4.6,
+    "climb": 0.1,
+    "minecart": 1.4,
+    "walk": 32.2,
+    "walk_under_water": 2.0,
+    "horse": 150.6,
+    "sprint": 57.1,
+    "fly": 143.8,
+    "walk_on_water": 1.3,
+    "swim": 3.2,
+    "nautilus": 1.0
+   },
+   "top_mobs": [
+    [
+     "zombie",
+     98
+    ],
+    [
+     "cow",
+     82
+    ],
+    [
+     "skeleton",
+     53
+    ],
+    [
+     "spider",
+     32
+    ],
+    [
+     "creeper",
+     25
+    ],
+    [
+     "sheep",
+     16
+    ],
+    [
+     "pillager",
+     11
+    ],
+    [
+     "husk",
+     8
+    ]
+   ],
+   "top_blocks": [
+    [
+     "grass_block",
+     4194
+    ],
+    [
+     "stone",
+     3513
+    ],
+    [
+     "cobblestone",
+     2235
+    ],
+    [
+     "coal_ore",
+     1799
+    ],
+    [
+     "dirt",
+     1577
+    ],
+    [
+     "sculk",
+     1458
+    ],
+    [
+     "spruce_log",
+     873
+    ],
+    [
+     "sand",
+     632
+    ]
+   ],
+   "week_hours": 0.0
+  },
+  {
+   "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
+   "name": "SirMemo",
+   "hours": 5.7,
+   "deaths": 15,
+   "mob_kills": 178,
+   "blocks_mined": 1371,
    "diamonds": 0,
-   "km_travelled": 0,
-   "jumps": 0,
-   "travel": {},
-   "top_mobs": [],
-   "top_blocks": [],
+   "km_travelled": 57.6,
+   "jumps": 11677,
+   "travel": {
+    "boat": 10.6,
+    "swim": 0.5,
+    "crouch": 0.4,
+    "walk": 4.8,
+    "walk_under_water": 0.0,
+    "sprint": 12.2,
+    "fly": 28.9,
+    "walk_on_water": 0.2
+   },
+   "top_mobs": [
+    [
+     "cow",
+     46
+    ],
+    [
+     "zombie",
+     41
+    ],
+    [
+     "pig",
+     29
+    ],
+    [
+     "sheep",
+     24
+    ],
+    [
+     "spider",
+     10
+    ],
+    [
+     "skeleton",
+     9
+    ],
+    [
+     "chicken",
+     9
+    ],
+    [
+     "llama",
+     3
+    ]
+   ],
+   "top_blocks": [
+    [
+     "stone",
+     259
+    ],
+    [
+     "short_grass",
+     227
+    ],
+    [
+     "oak_leaves",
+     178
+    ],
+    [
+     "oak_log",
+     113
+    ],
+    [
+     "dirt",
+     76
+    ],
+    [
+     "poplar_log",
+     59
+    ],
+    [
+     "shelf_mushroom",
+     48
+    ],
+    [
+     "potatoes",
+     44
+    ]
+   ],
+   "week_hours": 0.0
+  },
+  {
+   "uuid": "61a0350a-3e08-4c83-9d5a-559dd7ec3f00",
+   "name": "EliasD00",
+   "hours": 3.2,
+   "deaths": 13,
+   "mob_kills": 65,
+   "blocks_mined": 1450,
+   "diamonds": 0,
+   "km_travelled": 21.8,
+   "jumps": 4937,
+   "travel": {
+    "boat": 1.3,
+    "swim": 0.3,
+    "crouch": 0.2,
+    "climb": 0.0,
+    "walk": 4.2,
+    "walk_under_water": 0.0,
+    "sprint": 5.5,
+    "fly": 10.1,
+    "walk_on_water": 0.2
+   },
+   "top_mobs": [
+    [
+     "zombie",
+     20
+    ],
+    [
+     "sheep",
+     14
+    ],
+    [
+     "cow",
+     9
+    ],
+    [
+     "skeleton",
+     5
+    ],
+    [
+     "pig",
+     5
+    ],
+    [
+     "spider",
+     4
+    ],
+    [
+     "chicken",
+     3
+    ],
+    [
+     "player",
+     2
+    ]
+   ],
+   "top_blocks": [
+    [
+     "stone",
+     458
+    ],
+    [
+     "wheat",
+     85
+    ],
+    [
+     "copper_ore",
+     83
+    ],
+    [
+     "short_grass",
+     82
+    ],
+    [
+     "dirt",
+     78
+    ],
+    [
+     "spruce_log",
+     64
+    ],
+    [
+     "snow_block",
+     61
+    ],
+    [
+     "coal_ore",
+     46
+    ]
+   ],
+   "week_hours": 0.0
+  },
+  {
+   "uuid": "ec853876-a510-49e7-a792-f08fa3e3b89d",
+   "name": "ShowerHeadGD",
+   "hours": 2.5,
+   "deaths": 0,
+   "mob_kills": 52,
+   "blocks_mined": 637,
+   "diamonds": 0,
+   "km_travelled": 20.3,
+   "jumps": 3981,
+   "travel": {
+    "boat": 3.6,
+    "swim": 0.2,
+    "crouch": 0.2,
+    "walk": 2.9,
+    "walk_under_water": 0.1,
+    "sprint": 3.9,
+    "fly": 9.2,
+    "walk_on_water": 0.2
+   },
+   "top_mobs": [
+    [
+     "cow",
+     18
+    ],
+    [
+     "pig",
+     10
+    ],
+    [
+     "sheep",
+     8
+    ],
+    [
+     "zombie",
+     4
+    ],
+    [
+     "horse",
+     3
+    ],
+    [
+     "spider",
+     3
+    ],
+    [
+     "skeleton",
+     2
+    ],
+    [
+     "stray",
+     1
+    ]
+   ],
+   "top_blocks": [
+    [
+     "stone",
+     297
+    ],
+    [
+     "wheat",
+     71
+    ],
+    [
+     "sand",
+     31
+    ],
+    [
+     "powder_snow",
+     30
+    ],
+    [
+     "coal_ore",
+     23
+    ],
+    [
+     "oak_leaves",
+     21
+    ],
+    [
+     "potatoes",
+     20
+    ],
+    [
+     "sugar_cane",
+     19
+    ]
+   ],
    "week_hours": 0.0
   }
  ]
