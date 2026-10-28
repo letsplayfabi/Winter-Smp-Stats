@@ -1,7 +1,0 @@
-   {
-     "site": { "title": "Winter SMP – Statistiken", "intro": "Wird täglich aktualisiert." },
-     "players": {
-       "Spielername": { "display_name": "Anzeigename", "title": "Baumeister" },
-       "AndererName": { "hidden": true }
-     }
-   }
