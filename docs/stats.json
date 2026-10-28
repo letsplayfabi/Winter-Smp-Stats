@@ -1,11 +1,11 @@
 {
- "updated": "2026-10-28T22:35+00:00",
+ "updated": "2026-10-28T22:49+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 4087,
-   "hours": 68.1,
+   "minutes": 4102,
+   "hours": 68.4,
    "deaths": 14,
    "mob_kills": 1641,
    "player_kills": 8,
@@ -15,7 +15,7 @@
    "blocks_mined": 30708,
    "diamonds": 97,
    "km_travelled": 614.5,
-   "jumps": 53966,
+   "jumps": 53980,
    "travel": {
     "boat": 28.3,
     "crouch": 5.3,
@@ -152,8 +152,8 @@
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
    "name": "Trosser",
-   "minutes": 3490,
-   "hours": 58.2,
+   "minutes": 3505,
+   "hours": 58.4,
    "deaths": 31,
    "mob_kills": 484,
    "player_kills": 6,
@@ -162,14 +162,14 @@
    "damage": 8007,
    "blocks_mined": 15437,
    "diamonds": 0,
-   "km_travelled": 768.4,
+   "km_travelled": 777.4,
    "jumps": 126308,
    "travel": {
     "boat": 32.2,
     "swim": 4.1,
     "crouch": 4.1,
     "climb": 0.9,
-    "minecart": 270.7,
+    "minecart": 279.7,
     "walk": 41.8,
     "walk_under_water": 1.0,
     "horse": 12.1,
