@@ -3,28 +3,37 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Server-Leaderboard</title>
 <style>
-:root{--bg:#0a111f;--pn:#131b2b;--fg:#fff;--mu:#8fa0b8;--ln:#26324a}
+:root{--ac:#52e585;--bg:#0a111f;--pn:#131b2b;--fg:#fff;--mu:#8fa0b8;--ln:#26324a}
 body{margin:0;font:15px system-ui,sans-serif;background:var(--bg);color:var(--fg);padding:24px 16px}
 main{max-width:1100px;margin:0 auto}
 header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 h1{margin:0;font-size:clamp(26px,5vw,44px);text-transform:uppercase}
-.sub{color:var(--mu);text-transform:uppercase;margin:4px 0 0}.bd{color:#52e585;font-weight:700;text-transform:uppercase}
+.sub{color:var(--mu);text-transform:uppercase;margin:4px 0 0}.bd{color:var(--ac);font-weight:700;text-transform:uppercase}
 h2{font-size:17px;text-transform:uppercase;margin:0}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:28px 32px;margin-top:28px}
 @media(max-width:760px){.grid{grid-template-columns:1fr}}
 .big{grid-column:1/-1}.hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;gap:8px}
 .hd small,.ex{color:var(--mu);font-size:12px}.hd small{text-transform:uppercase}
 .box{background:var(--pn);padding:10px 12px;border-radius:4px}
-.row{display:grid;grid-template-columns:110px 1fr;align-items:center;gap:10px;margin:6px 0}
-.nm{text-align:right;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row{display:grid;grid-template-columns:140px 1fr;align-items:center;gap:10px;margin:6px 0}
+.nm{display:flex;justify-content:flex-end;align-items:center;gap:6px;cursor:pointer;white-space:nowrap;overflow:hidden}.nm img{border-radius:3px;image-rendering:pixelated}
 .tr{display:flex;align-items:center;gap:8px}.bar{height:22px;border-radius:2px;min-width:2px}.val{font-size:13px;white-space:nowrap}
-.ex{margin-top:6px}footer{margin-top:32px}footer b{color:#52e585;text-transform:uppercase;font-size:13px}
-dialog{background:var(--pn);color:var(--fg);border:1px solid var(--ln);border-radius:10px;max-width:520px;width:90%}
-dialog h3{margin:12px 0 4px}dialog ul{margin:0;padding-left:18px}
+.ex{margin-top:6px}footer{margin-top:32px}footer b{color:var(--ac);text-transform:uppercase;font-size:13px}
+dialog{background:var(--pn);color:var(--fg);border:1px solid var(--ln);border-radius:16px;max-width:560px;width:92%;padding:0;overflow:hidden;animation:pop .2s ease}
+dialog::backdrop{background:rgba(0,0,0,.65);backdrop-filter:blur(4px)}@keyframes pop{from{transform:scale(.94);opacity:0}}
+.ph{display:flex;gap:18px;align-items:flex-end;padding:22px 22px 8px}.ph img{filter:drop-shadow(0 6px 8px rgba(0,0,0,.5));image-rendering:pixelated}
+.pt h2{font-size:28px;margin:0 0 6px;text-transform:none}.pt p{margin:6px 0 0;color:var(--mu)}
+.chip{display:inline-block;color:#000;font-weight:700;font-size:12px;padding:2px 10px;border-radius:99px}
+.pb{padding:12px 22px 22px}.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+.tile{background:var(--bg);border-radius:10px;padding:10px}.tile small{display:block;color:var(--mu);font-size:11px;text-transform:uppercase}.tile b{font-size:18px}
+.death{margin:12px 0;padding:10px 12px;border-radius:10px;background:var(--bg);border-left:4px solid var(--ac)}
+.pb h3{margin:14px 0 6px;font-size:13px;text-transform:uppercase;color:var(--mu)}.pb button{margin-top:16px;padding:8px 18px;border:0;border-radius:8px;background:var(--ac);color:#000;font-weight:700;cursor:pointer}
+.mr{display:grid;grid-template-columns:120px 1fr 60px;align-items:center;gap:8px;font-size:13px;margin:3px 0}.mr em{font-style:normal;text-align:right;color:var(--mu)}
+.mt{background:var(--bg);border-radius:4px;height:8px}.mt div{height:8px;border-radius:4px}
 </style></head><body><main>
 <header><div><h1 id="t">Server Leaderboard</h1><p class="sub" id="s"></p></div><div class="bd" id="bd"></div></header>
 <p class="ex" id="i"></p><div class="grid" id="g"></div><footer id="f"></footer>
-<dialog id="d"><div id="dc"></div><p><button onclick="d.close()">Schließen</button></p></dialog>
+<dialog id="d"><div id="dc"></div></dialog>
 </main>
 <script>
 const CATS=[
@@ -50,24 +59,38 @@ function rank(c,players){
 function chart(parent,title,note,sorted,get,fmt,color,extra,big){
   const card=el("section","",parent,big?"big":""),hd=el("div","",card,"hd");el("h2",title,hd);el("small",note,hd);
   const box=el("div","",card,"box"),max=Math.max(...sorted.map(get),1);
-  sorted.forEach(p=>{const r=el("div","",box,"row");el("span",p.display_name,r,"nm").onclick=()=>profile(p);
+  sorted.forEach(p=>{const r=el("div","",box,"row");const nm=el("span","",r,"nm");nm.append(head(p,20),document.createTextNode(p.display_name));nm.onclick=()=>profile(p);
     const t=el("div","",r,"tr"),b=el("div","",t,"bar");b.style.cssText=`width:${get(p)/max*80}%;background:${color(p)}`;el("span",fmt(get(p)),t,"val")});
   if(extra)el("div",extra,card,"ex");
 }
-function list(box,title,items,m){if(!items.length)return;el("h3",title,box);const u=el("ul","",box);items.forEach(([k,v])=>el("li",pretty(k,m)+": "+n(v),u))}
+let CTX={};
+const head=(p,z)=>{const i=document.createElement("img");i.src=`https://mc-heads.net/avatar/${p.uuid}/${z*2}`;i.width=i.height=z;i.alt="";i.onerror=()=>{i.onerror=()=>i.remove();i.src=`https://crafatar.com/avatars/${p.uuid}?size=${z*2}&overlay`};return i};
+function mini(b,title,items,m,c){if(!items.length)return;el("h3",title,b);const mx=items[0][1]||1;
+  items.slice(0,5).forEach(([k,v])=>{const r=el("div","",b,"mr");el("span",pretty(k,m),r);const t=el("div","",r,"mt"),x=el("div","",t);x.style.cssText=`width:${v/mx*100}%;background:${c}`;el("em",n(v),r)})}
 function profile(p){
-  const b=$("dc");b.replaceChildren();el("h2",p.display_name,b);if(p.title)el("p",p.title,b);
-  const c=[...p.death_causes.map(([k,v])=>[pretty(k,MOB),v])];if(p.death_other>0)c.push(["Umwelt/Sonstiges (z. B. Sturz, Lava, Ertrinken)",p.death_other]);
-  c.sort((a,z)=>z[1]-a[1]);
-  const u=el("ul","",b);[["Spielzeit",Math.floor(p.minutes/60)+" h "+p.minutes%60+" min"],["Letzte 7 Tage",p.week_hours+" h"],["Tode",n(p.deaths)],
-   ["Häufigste Todesursache",p.deaths?(c[0]?c[0][0]+" ("+c[0][1]+"×)":"unbekannt"):"noch nie gestorben"],["Schaden ausgeteilt",n(p.damage)+" HP"],
-   ["Spieler-Kills",n(p.player_kills)],["Entities getötet",n(p.entities_killed)],["Blöcke abgebaut",n(p.blocks_mined)],["Diamanten",n(p.diamonds)],["Gereist",p.km_travelled+" km"],["Sprünge",n(p.jumps)]].forEach(([a,v])=>el("li",a+": "+v,u));
-  list(b,"Todesursachen",c);list(b,"Meistgetötete Mobs",p.top_mobs,MOB);list(b,"Meistabgebaute Blöcke",p.top_blocks);
-  list(b,"Gereist nach Art (km)",Object.entries(p.travel).sort((a,z)=>z[1]-a[1]));$("d").showModal();
+  const b=$("dc"),c=CTX.col(p);b.replaceChildren();
+  const ph=el("div","",b,"ph");ph.style.background=`linear-gradient(135deg,${c}55,transparent 70%)`;
+  const bi=document.createElement("img");bi.src=`https://mc-heads.net/body/${p.uuid}/140`;bi.height=140;bi.alt="";
+  bi.onerror=()=>{bi.onerror=()=>bi.remove();bi.src=`https://crafatar.com/renders/body/${p.uuid}?scale=4&overlay`};ph.append(bi);
+  const ti=el("div","",ph,"pt");el("h2",p.display_name,ti);if(p.title)el("span",p.title,ti,"chip").style.background=c;
+  el("p","Platz "+(CTX.order.indexOf(p)+1)+" · "+n(CTX.tot.get(p.uuid))+" Punkte",ti);
+  const pb=el("div","",b,"pb"),tl=el("div","",pb,"tiles");
+  [["Spielzeit",Math.floor(p.minutes/60)+" h "+p.minutes%60+" min"],["7 Tage",p.week_hours+" h"],["Tode",n(p.deaths)],["Schaden",n(p.damage)+" HP"],["Spieler-Kills",n(p.player_kills)],
+   ["Entities getötet",n(p.entities_killed)],["Blöcke",n(p.blocks_mined)],["💎 Diamanten",n(p.diamonds)],["Gereist",p.km_travelled+" km"],["Sprünge",n(p.jumps)]]
+   .forEach(([l,v])=>{const t=el("div","",tl,"tile");el("small",l,t);el("b",v,t)});
+  const cs=p.death_causes.map(([k,v])=>[pretty(k,MOB),v]);if(p.death_other>0)cs.push(["Umwelt/Sonstiges (Sturz, Lava, Ertrinken …)",p.death_other]);
+  cs.sort((a,z)=>z[1]-a[1]);
+  const dd=el("div",p.deaths?"💀 Häufigste Todesursache: "+(cs[0]?cs[0][0]+" ("+cs[0][1]+"×)":"unbekannt"):"🎉 Noch nie gestorben",pb,"death");
+  mini(pb,"Todesursachen",cs,null,c);mini(pb,"Meistgetötete Mobs",p.top_mobs,MOB,c);mini(pb,"Meistabgebaute Blöcke",p.top_blocks,null,c);
+  mini(pb,"Gereist nach Art (km)",Object.entries(p.travel).sort((a,z)=>z[1]-a[1]),null,c);
+  el("button","Schließen",pb).onclick=()=>$("d").close();$("d").showModal();
 }
+$("d").onclick=e=>{if(e.target===$("d"))$("d").close()};
 Promise.all([fetch("stats.json",{cache:"no-cache"}).then(r=>r.json()),
   fetch("overrides.json",{cache:"no-cache"}).then(r=>r.ok?r.json():{}).catch(()=>({}))]).then(([d,ov])=>{
-  const o=ov.players||{},s=ov.site||{},lab=ov.categories||{};
+  const o=ov.players||{},s=ov.site||{},lab=ov.categories||{},th=ov.theme||{},rs=document.documentElement.style;
+  [["bg","--bg"],["panel","--pn"],["text","--fg"],["muted","--mu"],["accent","--ac"]].forEach(([k,v])=>th[k]&&rs.setProperty(v,th[k]));
+  const COLS=th.players&&th.players.length?th.players:COL;
   const data=d.players.map(p=>{const x=o[p.uuid]||o[p.name]||{};return{...p,display_name:x.display_name||p.name,title:x.title||"",hidden:!!x.hidden}}).filter(p=>!p.hidden);
   $("t").textContent=s.title||"Server Leaderboard";$("bd").textContent=s.badge??"Season Stats";
   $("s").textContent=`Minecraft • ${data.length} Spieler • ${CATS.length} Kategorien`;
@@ -75,7 +98,7 @@ Promise.all([fetch("stats.json",{cache:"no-cache"}).then(r=>r.json()),
   if(!data.length){$("g").textContent="Noch keine Statistiken gefunden.";return}
   const R=CATS.map(c=>rank(c,data)),tot=new Map(data.map(p=>[p.uuid,0]));
   R.forEach(r=>r.pts.forEach((v,k)=>tot.set(k,tot.get(k)+v)));
-  const order=[...data].sort((a,b)=>tot.get(b.uuid)-tot.get(a.uuid)),cm=new Map(order.map((p,i)=>[p.uuid,COL[i%COL.length]])),col=p=>cm.get(p.uuid),N=data.length;
+  const order=[...data].sort((a,b)=>tot.get(b.uuid)-tot.get(a.uuid)),cm=new Map(order.map((p,i)=>[p.uuid,COLS[i%COLS.length]])),col=p=>cm.get(p.uuid),N=data.length;CTX={col,tot,order};
   chart($("g"),`Gesamtwertung · ${N} Punkte für Platz 1 bis 1 Punkt für Platz ${N}`,"Bei Gleichstand: Punkte der belegten Plätze gemittelt",order,p=>tot.get(p.uuid),v=>n(v)+" P",col,"",1);
   CATS.forEach((c,i)=>{const r=R[i],ex=c[5]?"Beispiele ("+r.s[0].display_name+"): "+c[5](r.s[0]).slice(0,3).map(([k,v])=>pretty(k)+" "+n(v)).join(" · "):"";
     chart($("g"),lab[c[0]]||c[1],c[2]?"Mehr ist besser":"Weniger ist besser",r.s,c[3],c[4]||n,col,ex)});
