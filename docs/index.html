@@ -1,48 +1,84 @@
 <!doctype html>
 <html lang="de"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Server-Statistiken</title>
+<title>Server-Leaderboard</title>
 <style>
-:root{--bg:#fff;--fg:#1c1c1c;--mu:#6b6b6b;--ln:#e2e2e2;--ac:#2f7d32}
-@media(prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--mu:#9a9a9a;--ln:#333;--ac:#6fcf73}}
-body{font:16px system-ui,sans-serif;background:var(--bg);color:var(--fg);max-width:1000px;margin:0 auto;padding:24px 16px}
-h1{margin:0 0 4px}p{color:var(--mu);margin:0 0 20px}.w{overflow-x:auto}table{border-collapse:collapse;width:100%}
-th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--ln);white-space:nowrap}
-th:first-child,td:first-child{text-align:left}td:first-child{cursor:pointer;color:var(--ac)}
-th{cursor:pointer;color:var(--mu);font-weight:600;user-select:none}th.on{color:var(--ac)}
-small{color:var(--mu);display:block}
-dialog{background:var(--bg);color:var(--fg);border:1px solid var(--ln);border-radius:10px;max-width:520px;width:90%}
+:root{--bg:#0a111f;--pn:#131b2b;--fg:#fff;--mu:#8fa0b8;--ln:#26324a}
+body{margin:0;font:15px system-ui,sans-serif;background:var(--bg);color:var(--fg);padding:24px 16px}
+main{max-width:1100px;margin:0 auto}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+h1{margin:0;font-size:clamp(26px,5vw,44px);text-transform:uppercase}
+.sub{color:var(--mu);text-transform:uppercase;margin:4px 0 0}.bd{color:#52e585;font-weight:700;text-transform:uppercase}
+h2{font-size:17px;text-transform:uppercase;margin:0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:28px 32px;margin-top:28px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}}
+.big{grid-column:1/-1}.hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;gap:8px}
+.hd small,.ex{color:var(--mu);font-size:12px}.hd small{text-transform:uppercase}
+.box{background:var(--pn);padding:10px 12px;border-radius:4px}
+.row{display:grid;grid-template-columns:110px 1fr;align-items:center;gap:10px;margin:6px 0}
+.nm{text-align:right;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tr{display:flex;align-items:center;gap:8px}.bar{height:22px;border-radius:2px;min-width:2px}.val{font-size:13px;white-space:nowrap}
+.ex{margin-top:6px}footer{margin-top:32px}footer b{color:#52e585;text-transform:uppercase;font-size:13px}
+dialog{background:var(--pn);color:var(--fg);border:1px solid var(--ln);border-radius:10px;max-width:520px;width:90%}
 dialog h3{margin:12px 0 4px}dialog ul{margin:0;padding-left:18px}
-</style></head><body>
-<h1 id="t">Statistiken</h1><p id="i"></p>
-<div class="w"><table><thead><tr id="h"></tr></thead><tbody id="b"></tbody></table></div>
+</style></head><body><main>
+<header><div><h1 id="t">Server Leaderboard</h1><p class="sub" id="s"></p></div><div class="bd" id="bd"></div></header>
+<p class="ex" id="i"></p><div class="grid" id="g"></div><footer id="f"></footer>
 <dialog id="d"><div id="dc"></div><p><button onclick="d.close()">Schließen</button></p></dialog>
+</main>
 <script>
-const COLS=[["display_name","Spieler"],["hours","Spielzeit (h)"],["week_hours","7 Tage (h)"],["deaths","Tode"],["mob_kills","Mob-Kills"],["blocks_mined","Blöcke"],["diamonds","💎 Diamanten"],["km_travelled","Gereist (km)"],["jumps","Sprünge"]];
-const MOB={zombie:"Zombie",skeleton:"Skelett",creeper:"Creeper",spider:"Spinne",enderman:"Enderman",cow:"Kuh",pig:"Schwein",sheep:"Schaf",chicken:"Huhn",witch:"Hexe",slime:"Schleim",drowned:"Ertrunkener"};
-const pretty=(id,m)=>(m&&m[id])||id.replace(/_/g," ").replace(/\b\w/g,c=>c.toUpperCase());
-const $=id=>document.getElementById(id),n=v=>Number(v).toLocaleString("de-AT");
-let data=[],key="hours",asc=false;
-function el(tag,text,parent){const e=document.createElement(tag);e.textContent=text;parent&&parent.append(e);return e}
-function render(){
-  const rows=[...data].sort((a,b)=>(typeof a[key]==="string"?a[key].localeCompare(b[key]):a[key]-b[key])*(asc?1:-1));
-  $("h").replaceChildren(...COLS.map(([k,l])=>{const th=el("th",l);if(k===key)th.className="on";th.onclick=()=>{asc=k===key?!asc:k==="display_name";key=k;render()};return th}));
-  $("b").replaceChildren(...rows.map(p=>{const tr=document.createElement("tr");
-    COLS.forEach(([k],i)=>{const td=el("td",i?n(p[k]):p[k]);if(!i){td.onclick=()=>profile(p);if(p.title)el("small",p.title,td)}tr.append(td)});return tr}));
-  if(!rows.length)$("i").textContent="Noch keine Statistiken gefunden.";
+const CATS=[
+["playtime","Spielzeit",1,p=>p.minutes,v=>Math.floor(v/60)+" h "+String(v%60).padStart(2,"0")+" min"],
+["player_kills","Spieler-Kills",1,p=>p.player_kills],
+["deaths","Tode",0,p=>p.deaths],
+["travel","Gereist (km)",1,p=>p.km_travelled],
+["mined","Blöcke abgebaut",1,p=>p.blocks_mined,0,p=>p.top_blocks],
+["used","Items verwendet",1,p=>p.items_used,0,p=>p.top_used],
+["killed","Entities getötet",1,p=>p.entities_killed],
+["damage","Schaden ausgeteilt (HP)",1,p=>p.damage],
+["diamonds","💎 Diamanten",1,p=>p.diamonds]];
+const MOB={zombie:"Zombie",skeleton:"Skelett",creeper:"Creeper",spider:"Spinne",enderman:"Enderman",cow:"Kuh",pig:"Schwein",sheep:"Schaf",chicken:"Huhn",witch:"Hexe",slime:"Schleim",drowned:"Ertrunkener",player:"Spieler"};
+const COL=["#52e585","#45b0f5","#e9bc57","#bb92f2","#f39a68","#f2677a"];
+const $=id=>document.getElementById(id),n=v=>Number(v).toLocaleString("de-AT",{maximumFractionDigits:1});
+const pretty=(id,m)=>(m&&m[id])||(/\s/.test(id)?id:id.replace(/_/g," ").replace(/\b\w/g,c=>c.toUpperCase()));
+function el(tag,text,parent,cls){const e=document.createElement(tag);e.textContent=text;if(cls)e.className=cls;parent&&parent.append(e);return e}
+function rank(c,players){
+  const hi=c[2],get=c[3],s=[...players].sort((a,b)=>hi?get(b)-get(a):get(a)-get(b)),N=s.length,pts=new Map();
+  for(let i=0,j;i<N;i=j){j=i;while(j<N&&get(s[j])===get(s[i]))j++;let sum=0;for(let x=i;x<j;x++)sum+=N-x;for(let x=i;x<j;x++)pts.set(s[x].uuid,sum/(j-i))}
+  return{s,pts};
+}
+function chart(parent,title,note,sorted,get,fmt,color,extra,big){
+  const card=el("section","",parent,big?"big":""),hd=el("div","",card,"hd");el("h2",title,hd);el("small",note,hd);
+  const box=el("div","",card,"box"),max=Math.max(...sorted.map(get),1);
+  sorted.forEach(p=>{const r=el("div","",box,"row");el("span",p.display_name,r,"nm").onclick=()=>profile(p);
+    const t=el("div","",r,"tr"),b=el("div","",t,"bar");b.style.cssText=`width:${get(p)/max*80}%;background:${color(p)}`;el("span",fmt(get(p)),t,"val")});
+  if(extra)el("div",extra,card,"ex");
 }
 function list(box,title,items,m){if(!items.length)return;el("h3",title,box);const u=el("ul","",box);items.forEach(([k,v])=>el("li",pretty(k,m)+": "+n(v),u))}
 function profile(p){
   const b=$("dc");b.replaceChildren();el("h2",p.display_name,b);if(p.title)el("p",p.title,b);
-  const u=el("ul","",b);[["Spielzeit",p.hours+" h"],["Letzte 7 Tage",p.week_hours+" h"],["Tode",n(p.deaths)],["Mob-Kills",n(p.mob_kills)],["Blöcke abgebaut",n(p.blocks_mined)],["Diamanten",n(p.diamonds)],["Gereist",p.km_travelled+" km"]].forEach(([a,v])=>el("li",a+": "+v,u));
-  list(b,"Meistgetötete Mobs",p.top_mobs,MOB);list(b,"Meistabgebaute Blöcke",p.top_blocks);
-  list(b,"Gereist nach Art (km)",Object.entries(p.travel).sort((a,c)=>c[1]-a[1]));$("d").showModal();
+  const c=[...p.death_causes.map(([k,v])=>[pretty(k,MOB),v])];if(p.death_other>0)c.push(["Umwelt/Sonstiges (z. B. Sturz, Lava, Ertrinken)",p.death_other]);
+  c.sort((a,z)=>z[1]-a[1]);
+  const u=el("ul","",b);[["Spielzeit",Math.floor(p.minutes/60)+" h "+p.minutes%60+" min"],["Letzte 7 Tage",p.week_hours+" h"],["Tode",n(p.deaths)],
+   ["Häufigste Todesursache",p.deaths?(c[0]?c[0][0]+" ("+c[0][1]+"×)":"unbekannt"):"noch nie gestorben"],["Schaden ausgeteilt",n(p.damage)+" HP"],
+   ["Spieler-Kills",n(p.player_kills)],["Entities getötet",n(p.entities_killed)],["Blöcke abgebaut",n(p.blocks_mined)],["Diamanten",n(p.diamonds)],["Gereist",p.km_travelled+" km"],["Sprünge",n(p.jumps)]].forEach(([a,v])=>el("li",a+": "+v,u));
+  list(b,"Todesursachen",c);list(b,"Meistgetötete Mobs",p.top_mobs,MOB);list(b,"Meistabgebaute Blöcke",p.top_blocks);
+  list(b,"Gereist nach Art (km)",Object.entries(p.travel).sort((a,z)=>z[1]-a[1]));$("d").showModal();
 }
 Promise.all([fetch("stats.json",{cache:"no-cache"}).then(r=>r.json()),
   fetch("overrides.json",{cache:"no-cache"}).then(r=>r.ok?r.json():{}).catch(()=>({}))]).then(([d,ov])=>{
-  const o=ov.players||{},s=ov.site||{};
-  data=d.players.map(p=>{const x=o[p.uuid]||o[p.name]||{};return{...p,display_name:x.display_name||p.name,title:x.title||"",hidden:!!x.hidden}}).filter(p=>!p.hidden);
-  $("t").textContent=s.title||"Statistiken";
-  $("i").textContent=[s.intro,"Stand: "+new Date(d.updated).toLocaleString("de-AT")].filter(Boolean).join(" · ");render();
+  const o=ov.players||{},s=ov.site||{},lab=ov.categories||{};
+  const data=d.players.map(p=>{const x=o[p.uuid]||o[p.name]||{};return{...p,display_name:x.display_name||p.name,title:x.title||"",hidden:!!x.hidden}}).filter(p=>!p.hidden);
+  $("t").textContent=s.title||"Server Leaderboard";$("bd").textContent=s.badge??"Season Stats";
+  $("s").textContent=`Minecraft • ${data.length} Spieler • ${CATS.length} Kategorien`;
+  $("i").textContent=[s.intro,"Stand: "+new Date(d.updated).toLocaleString("de-AT")].filter(Boolean).join(" · ");
+  if(!data.length){$("g").textContent="Noch keine Statistiken gefunden.";return}
+  const R=CATS.map(c=>rank(c,data)),tot=new Map(data.map(p=>[p.uuid,0]));
+  R.forEach(r=>r.pts.forEach((v,k)=>tot.set(k,tot.get(k)+v)));
+  const order=[...data].sort((a,b)=>tot.get(b.uuid)-tot.get(a.uuid)),cm=new Map(order.map((p,i)=>[p.uuid,COL[i%COL.length]])),col=p=>cm.get(p.uuid),N=data.length;
+  chart($("g"),`Gesamtwertung · ${N} Punkte für Platz 1 bis 1 Punkt für Platz ${N}`,"Bei Gleichstand: Punkte der belegten Plätze gemittelt",order,p=>tot.get(p.uuid),v=>n(v)+" P",col,"",1);
+  CATS.forEach((c,i)=>{const r=R[i],ex=c[5]?"Beispiele ("+r.s[0].display_name+"): "+c[5](r.s[0]).slice(0,3).map(([k,v])=>pretty(k)+" "+n(v)).join(" · "):"";
+    chart($("g"),lab[c[0]]||c[1],c[2]?"Mehr ist besser":"Weniger ist besser",r.s,c[3],c[4]||n,col,ex)});
+  $("f").replaceChildren();el("b","MVP der Statistiken",$("f"));el("div",order[0].display_name+" führt die Gesamtwertung an.",$("f"));
 }).catch(()=>{$("i").textContent="stats.json konnte nicht geladen werden."});
 </script></body></html>
