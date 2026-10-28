@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin</title>
+<style>
+:root{--bg:#fff;--fg:#1c1c1c;--mu:#6b6b6b}
+@media(prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--mu:#9a9a9a}}
+body{font:16px system-ui,sans-serif;background:var(--bg);color:var(--fg);max-width:800px;margin:0 auto;padding:24px 16px}
+input{padding:6px;margin:2px;max-width:100%}small,p{color:var(--mu)}td{padding:4px}
+</style></head><body>
+<h1>Admin</h1>
+<p>GitHub-Token (fine-grained, nur dieses Repo: Contents „Read and write“, für „Neu berechnen“ zusätzlich Actions „Read and write“). Der Token wird nicht gespeichert.</p>
+<input id="tk" type="password" placeholder="github_pat_..."> <button id="ld">Laden</button>
+<div id="ed" hidden>
+  <p>Titel: <input id="st"> Einleitung: <input id="si" size="40"></p>
+  <table><thead><tr><th>Spieler</th><th>Anzeigename</th><th>Titel</th><th>Ausblenden</th></tr></thead><tbody id="rows"></tbody></table>
+  <p><button id="sv">Speichern</button> <button id="rc">Neu berechnen</button></p>
+</div>
+<p id="msg"></p>
+<script>
+const own=location.hostname.split(".")[0],repo=location.pathname.split("/")[1],api=`https://api.github.com/repos/${own}/${repo}`;
+const H=()=>({Authorization:"Bearer "+tk.value.trim(),Accept:"application/vnd.github+json"});
+const say=t=>msg.textContent=t;let sha=null,players=[],rowEls=[];
+const b64=s=>btoa(String.fromCharCode(...new TextEncoder().encode(s)));
+const unb64=s=>new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\n/g,"")),c=>c.charCodeAt(0)));
+ld.onclick=async()=>{
+  try{
+    players=(await (await fetch("stats.json",{cache:"no-cache"})).json()).players;
+    const r=await fetch(api+"/contents/docs/overrides.json",{headers:H()});
+    let ov={site:{},players:{}};
+    if(r.ok){const j=await r.json();sha=j.sha;ov=JSON.parse(unb64(j.content))}else if(r.status!==404)throw new Error("GitHub antwortet "+r.status+" – Token/Rechte prüfen");
+    st.value=(ov.site||{}).title||"";si.value=(ov.site||{}).intro||"";rowEls=[];rows.replaceChildren();
+    players.forEach(p=>{const o=(ov.players||{})[p.uuid]||{},tr=document.createElement("tr"),mk=(v)=>{const i=document.createElement("input");i.value=v||"";return i},
+      a=mk(o.display_name),t=mk(o.title),h=document.createElement("input");h.type="checkbox";h.checked=!!o.hidden;
+      const n=document.createElement("td");n.textContent=p.name;tr.append(n);[a,t,h].forEach(x=>{const td=document.createElement("td");td.append(x);tr.append(td)});
+      rows.append(tr);rowEls.push([p.uuid,a,t,h])});
+    ed.hidden=false;say("Geladen.");
+  }catch(e){say("Fehler: "+e.message)}
+};
+sv.onclick=async()=>{
+  const ov={site:{title:st.value,intro:si.value},players:{}};
+  rowEls.forEach(([u,a,t,h])=>{if(a.value||t.value||h.checked)ov.players[u]={display_name:a.value,title:t.value,hidden:h.checked}});
+  const r=await fetch(api+"/contents/docs/overrides.json",{method:"PUT",headers:H(),body:JSON.stringify({message:"Overrides aktualisiert",content:b64(JSON.stringify(ov,null,2)),sha:sha||undefined})});
+  if(r.ok){sha=(await r.json()).content.sha;say("Gespeichert. Die Seite aktualisiert sich in ca. 1 Minute.")}else say("Fehler beim Speichern: "+r.status);
+};
+rc.onclick=async()=>{
+  const r=await fetch(api+"/actions/workflows/update-stats.yml/dispatches",{method:"POST",headers:H(),body:JSON.stringify({ref:"main"})});
+  say(r.status===204?"Neuberechnung gestartet (dauert ca. 1 Minute).":"Fehler: "+r.status+" – Token braucht Actions-Recht");
+};
+</script></body></html>
