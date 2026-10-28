@@ -62,20 +62,27 @@ def mojang(uuid):
 
 def summarize(uuid, raw, name):
     s = raw.get("stats", {})
-    c, m, k = (s.get(x, {}) for x in ("minecraft:custom", "minecraft:mined", "minecraft:killed"))
+    c, m, k, u, kb = (s.get(x, {}) for x in ("minecraft:custom", "minecraft:mined", "minecraft:killed", "minecraft:used", "minecraft:killed_by"))
+    ticks = c.get("minecraft:play_time", c.get("minecraft:play_one_minute", 0))
     travel = {x[10:-7]: round(v / 100000, 1) for x, v in c.items()
               if x.endswith("_one_cm") and x != "minecraft:fall_one_cm" and v}
     top = lambda d, n=8: [[a[10:], b] for a, b in sorted(d.items(), key=lambda t: -t[1])[:n]]
+    deaths = c.get("minecraft:deaths", 0)
     return {
         "uuid": uuid, "name": name,
-        "hours": round(c.get("minecraft:play_time", c.get("minecraft:play_one_minute", 0)) / 72000, 1),
-        "deaths": c.get("minecraft:deaths", 0),
+        "minutes": round(ticks / 1200), "hours": round(ticks / 72000, 1),
+        "deaths": deaths,
         "mob_kills": c.get("minecraft:mob_kills", 0),
+        "player_kills": c.get("minecraft:player_kills", 0),
+        "entities_killed": sum(k.values()),
+        "items_used": sum(u.values()),
+        "damage": round(c.get("minecraft:damage_dealt", 0) / 10),
         "blocks_mined": sum(m.values()),
         "diamonds": m.get("minecraft:diamond_ore", 0) + m.get("minecraft:deepslate_diamond_ore", 0),
         "km_travelled": round(sum(travel.values()), 1),
         "jumps": c.get("minecraft:jump", 0),
-        "travel": travel, "top_mobs": top(k), "top_blocks": top(m),
+        "travel": travel, "top_mobs": top(k), "top_blocks": top(m), "top_used": top(u),
+        "death_causes": top(kb, 5), "death_other": max(deaths - sum(kb.values()), 0),
     }
 
 
