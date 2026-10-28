@@ -1,0 +1,6 @@
+{
+  "site": { "title": "Unser Server – Statistiken", "intro": "Wird täglich aktualisiert." },
+  "players": {
+    "SpielerName-oder-UUID": { "display_name": "Anzeigename", "title": "Baumeister", "hidden": false }
+  }
+}
