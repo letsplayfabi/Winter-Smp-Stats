@@ -5,5 +5,11 @@
     "badge": "Season Stats"
   },
   "categories": {},
-  "players": {}
+  "players": {
+    "0c95a02f-d9c7-4467-a71c-310e2b070c08": {
+      "display_name": "X_RAYER",
+      "title": "",
+      "hidden": false
+    }
+  }
 }
