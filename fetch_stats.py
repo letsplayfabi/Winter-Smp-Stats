@@ -4,7 +4,7 @@
 Umgebungsvariablen: EXAROTON_TOKEN, EXAROTON_SERVER_ID, optional WORLD_DIR (Standard: world)
 Testen ohne API: python fetch_stats.py --local ./testdaten
 """
-import json, os, sys, urllib.parse, urllib.request
+import json, os, sys, urllib.error, urllib.parse, urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
