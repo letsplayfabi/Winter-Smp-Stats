@@ -1,4 +1,11 @@
 {
-  "site": { "title": "Winter SMP – Statistiken", "intro": "Wird täglich aktualisiert." },
+  "site": {
+    "title": "Winter SMP – Statistiken",
+    "intro": "Wird täglich aktualisiert.",
+    "badge": "Season Stats"
+  },
+  "categories": {
+    "playtime": "Playtime"
+  },
   "players": {}
 }
