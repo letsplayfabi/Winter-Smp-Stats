@@ -26,15 +26,24 @@ def remote(path):
 
 
 def load(local):
+    dirs = [f"{WORLD}/players/stats", f"{WORLD}/stats"]  # ab 26.1 / davor
     if local:
         b = Path(local)
-        files = {p.stem: json.loads(p.read_text()) for p in (b / WORLD / "stats").glob("*.json")}
+        d = next((b / x for x in dirs if (b / x).is_dir() and any((b / x).glob("*.json"))), b / dirs[0])
+        files = {p.stem: json.loads(p.read_text()) for p in d.glob("*.json")}
         c = b / "usercache.json"
         users = json.loads(c.read_text()) if c.exists() else []
     else:
-        children = json.loads(remote(f"info/{WORLD}/stats"))["data"].get("children") or []
-        print(f"{len(children)} Einträge in {WORLD}/stats")
-        files = {c["name"][:-5]: json.loads(remote(f"data/{WORLD}/stats/{c['name']}"))
+        x, children = dirs[0], []
+        for x in dirs:
+            try:
+                children = json.loads(remote(f"info/{x}"))["data"].get("children") or []
+            except urllib.error.HTTPError:
+                continue
+            print(f"{len(children)} Einträge in {x}")
+            if any(c["name"].endswith(".json") for c in children):
+                break
+        files = {c["name"][:-5]: json.loads(remote(f"data/{x}/{c['name']}"))
                  for c in children if c["name"].endswith(".json")}
         try:
             users = json.loads(remote("data/usercache.json"))
