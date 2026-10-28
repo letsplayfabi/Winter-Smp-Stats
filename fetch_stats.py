@@ -1,90 +1,98 @@
 #!/usr/bin/env python3
-"""Holt Spielerstatistiken vom exaroton-Server und schreibt docs/stats.json.
-
-Umgebungsvariablen: EXAROTON_TOKEN, EXAROTON_SERVER_ID, optional WORLD_DIR (Standard: world)
-Testen ohne API: python fetch_stats.py --local ./testdaten
-"""
+"""Holt Spielerstatistiken von exaroton und schreibt docs/stats.json + docs/history.json.
+Test ohne API: python fetch_stats.py --local ./testdaten"""
 import json, os, sys, urllib.error, urllib.parse, urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 API = "https://api.exaroton.com/v1"
 WORLD = os.environ.get("WORLD_DIR", "world")
-OUT = Path("docs/stats.json")
+D = Path("docs")
+
+
+def get(url, headers=None):
+    with urllib.request.urlopen(urllib.request.Request(url, headers=headers or {}), timeout=30) as r:
+        return r.read()
 
 
 def remote(path):
     url = f"{API}/servers/{os.environ['EXAROTON_SERVER_ID']}/files/{urllib.parse.quote(path)}"
-    req = urllib.request.Request(url, headers={
-        "Authorization": f"Bearer {os.environ['EXAROTON_TOKEN'].strip()}",
-        "User-Agent": "mc-stats-site/1.0",
-    })
+    h = {"Authorization": f"Bearer {os.environ['EXAROTON_TOKEN'].strip()}", "User-Agent": "mc-stats-site/1.0"}
     try:
-        with urllib.request.urlopen(req, timeout=30) as r:
-            return r.read()
+        return get(url, h)
     except urllib.error.HTTPError as e:
         print(f"HTTP {e.code} bei {path}: {e.read().decode(errors='replace')[:300]}")
         raise
 
+
 def load(local):
-    """Gibt ({uuid: stats_dict}, {uuid: name}) zurück."""
     if local:
-        base = Path(local)
-        files = {p.stem: json.loads(p.read_text()) for p in (base / WORLD / "stats").glob("*.json")}
-        cache = base / "usercache.json"
-        users = json.loads(cache.read_text()) if cache.exists() else []
+        b = Path(local)
+        files = {p.stem: json.loads(p.read_text()) for p in (b / WORLD / "stats").glob("*.json")}
+        c = b / "usercache.json"
+        users = json.loads(c.read_text()) if c.exists() else []
     else:
-        listing = json.loads(remote(f"info/{WORLD}/stats"))["data"].get("children") or []
-        files = {}
-        for c in listing:
-            if c["name"].endswith(".json"):
-                files[c["name"][:-5]] = json.loads(remote(f"data/{WORLD}/stats/{c['name']}"))
+        children = json.loads(remote(f"info/{WORLD}/stats"))["data"].get("children") or []
+        print(f"{len(children)} Einträge in {WORLD}/stats")
+        files = {c["name"][:-5]: json.loads(remote(f"data/{WORLD}/stats/{c['name']}"))
+                 for c in children if c["name"].endswith(".json")}
         try:
             users = json.loads(remote("data/usercache.json"))
-        except Exception:
+        except Exception as e:
+            print("usercache.json nicht lesbar:", e)
             users = []
-    return files, {u["uuid"]: u["name"] for u in users}
+    return files, {u["uuid"].lower(): u["name"] for u in users}
 
 
-def summarize(uuid, raw, names):
+def mojang(uuid):
+    try:
+        return json.loads(get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.replace("-", "")))["name"]
+    except Exception:
+        return None
+
+
+def summarize(uuid, raw, name):
     s = raw.get("stats", {})
-    c = s.get("minecraft:custom", {})
-    ticks = c.get("minecraft:play_time", c.get("minecraft:play_one_minute", 0))
-    walked = c.get("minecraft:walk_one_cm", 0) + c.get("minecraft:sprint_one_cm", 0)
+    c, m, k = (s.get(x, {}) for x in ("minecraft:custom", "minecraft:mined", "minecraft:killed"))
+    travel = {x[10:-7]: round(v / 100000, 1) for x, v in c.items()
+              if x.endswith("_one_cm") and x != "minecraft:fall_one_cm" and v}
+    top = lambda d, n=8: [[a[10:], b] for a, b in sorted(d.items(), key=lambda t: -t[1])[:n]]
     return {
-        "uuid": uuid,
-        "name": names.get(uuid, uuid[:8]),
-        "hours": round(ticks / 20 / 3600, 1),
+        "uuid": uuid, "name": name,
+        "hours": round(c.get("minecraft:play_time", c.get("minecraft:play_one_minute", 0)) / 72000, 1),
         "deaths": c.get("minecraft:deaths", 0),
         "mob_kills": c.get("minecraft:mob_kills", 0),
-        "blocks_mined": sum(s.get("minecraft:mined", {}).values()),
-        "km_walked": round(walked / 100000, 1),
+        "blocks_mined": sum(m.values()),
+        "diamonds": m.get("minecraft:diamond_ore", 0) + m.get("minecraft:deepslate_diamond_ore", 0),
+        "km_travelled": round(sum(travel.values()), 1),
         "jumps": c.get("minecraft:jump", 0),
+        "travel": travel, "top_mobs": top(k), "top_blocks": top(m),
     }
 
 
 def main():
     local = sys.argv[sys.argv.index("--local") + 1] if "--local" in sys.argv else None
     files, names = load(local)
-    ov = json.loads(Path("overrides.json").read_text()) if Path("overrides.json").exists() else {}
-    po = ov.get("players", {})
-    players = []
-    for uuid, raw in files.items():
-        p = summarize(uuid, raw, names)
-        o = po.get(uuid) or po.get(p["name"]) or {}
-        if o.get("hidden"):
-            continue
-        p["display_name"] = o.get("display_name", p["name"])
-        p["title"] = o.get("title", "")
-        players.append(p)
+    players = [summarize(u, raw, names.get(u.lower()) or mojang(u) or u[:8]) for u, raw in files.items()]
+    print(f"{len(players)} Spieler, Namen: {[p['name'] for p in players]}")
+
+    D.mkdir(exist_ok=True)
+    hp = D / "history.json"
+    hist = json.loads(hp.read_text()) if hp.exists() else {}
+    today = datetime.now(timezone.utc).date()
+    hist[today.isoformat()] = {p["uuid"]: p["hours"] for p in players}
+    for d in sorted(hist)[:-60]:
+        del hist[d]
+    old = [d for d in sorted(hist) if d <= (today - timedelta(days=7)).isoformat()]
+    base = hist[old[-1] if old else sorted(hist)[0]]
+    for p in players:
+        p["week_hours"] = round(max(p["hours"] - base.get(p["uuid"], 0), 0), 1)
+    hp.write_text(json.dumps(hist))
+
     players.sort(key=lambda p: p["hours"], reverse=True)
-    OUT.parent.mkdir(exist_ok=True)
-    OUT.write_text(json.dumps({
-        "updated": datetime.now(timezone.utc).isoformat(timespec="minutes"),
-        "site": ov.get("site", {}),
-        "players": players,
-    }, ensure_ascii=False, indent=1))
-    print(f"{len(players)} Spieler geschrieben")
+    (D / "stats.json").write_text(json.dumps(
+        {"updated": datetime.now(timezone.utc).isoformat(timespec="minutes"), "players": players},
+        ensure_ascii=False, indent=1))
 
 
 if __name__ == "__main__":
