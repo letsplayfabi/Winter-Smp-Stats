@@ -15,10 +15,16 @@ OUT = Path("docs/stats.json")
 
 def remote(path):
     url = f"{API}/servers/{os.environ['EXAROTON_SERVER_ID']}/files/{urllib.parse.quote(path)}"
-    req = urllib.request.Request(url, headers={"Authorization": f"Bearer {os.environ['EXAROTON_TOKEN']}"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return r.read()
-
+    req = urllib.request.Request(url, headers={
+        "Authorization": f"Bearer {os.environ['EXAROTON_TOKEN'].strip()}",
+        "User-Agent": "mc-stats-site/1.0",
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            return r.read()
+    except urllib.error.HTTPError as e:
+        print(f"HTTP {e.code} bei {path}: {e.read().decode(errors='replace')[:300]}")
+        raise
 
 def load(local):
     """Gibt ({uuid: stats_dict}, {uuid: name}) zurück."""
