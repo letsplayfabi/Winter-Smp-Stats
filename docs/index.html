@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Server-Statistiken</title>
+<style>
+:root{--bg:#fff;--fg:#1c1c1c;--mu:#6b6b6b;--ln:#e2e2e2;--ac:#2f7d32}
+@media(prefers-color-scheme:dark){:root{--bg:#161616;--fg:#eee;--mu:#9a9a9a;--ln:#333;--ac:#6fcf73}}
+body{font:16px system-ui,sans-serif;background:var(--bg);color:var(--fg);max-width:900px;margin:0 auto;padding:24px 16px}
+h1{margin:0 0 4px}p{color:var(--mu);margin:0 0 20px}
+.w{overflow-x:auto}table{border-collapse:collapse;width:100%}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--ln);white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{cursor:pointer;color:var(--mu);font-weight:600;user-select:none}th.on{color:var(--ac)}
+small{color:var(--mu);display:block}
+</style></head><body>
+<h1 id="t">Statistiken</h1><p id="i"></p>
+<div class="w"><table><thead><tr id="h"></tr></thead><tbody id="b"></tbody></table></div>
+<script>
+const COLS=[["display_name","Spieler"],["hours","Spielzeit (h)"],["deaths","Tode"],["mob_kills","Mob-Kills"],["blocks_mined","Blöcke abgebaut"],["km_walked","Gelaufen (km)"],["jumps","Sprünge"]];
+let data=[],key="hours",asc=false;
+const $=id=>document.getElementById(id);
+function render(){
+  const rows=[...data].sort((a,b)=>(typeof a[key]==="string"?a[key].localeCompare(b[key]):a[key]-b[key])*(asc?1:-1));
+  $("h").replaceChildren(...COLS.map(([k,l])=>{const th=document.createElement("th");th.textContent=l;if(k===key)th.className="on";th.onclick=()=>{asc=k===key?!asc:k==="display_name";key=k;render()};return th}));
+  $("b").replaceChildren(...rows.map(p=>{const tr=document.createElement("tr");
+    COLS.forEach(([k],n)=>{const td=document.createElement("td");td.textContent=n?Number(p[k]).toLocaleString("de-AT"):p[k];
+      if(!n&&p.title){const s=document.createElement("small");s.textContent=p.title;td.append(s)}tr.append(td)});return tr}));
+}
+fetch("stats.json",{cache:"no-cache"}).then(r=>r.json()).then(d=>{
+  data=d.players;$("t").textContent=d.site.title||"Statistiken";
+  $("i").textContent=[d.site.intro,"Stand: "+new Date(d.updated).toLocaleString("de-AT")].filter(Boolean).join(" · ");render()
+}).catch(()=>{$("i").textContent="stats.json konnte nicht geladen werden."});
+</script></body></html>
