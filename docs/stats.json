@@ -1,16 +1,21 @@
 {
- "updated": "2026-10-28T22:11+00:00",
+ "updated": "2026-10-28T22:35+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "hours": 67.7,
+   "minutes": 4087,
+   "hours": 68.1,
    "deaths": 14,
    "mob_kills": 1641,
+   "player_kills": 8,
+   "entities_killed": 1625,
+   "items_used": 54293,
+   "damage": 25846,
    "blocks_mined": 30708,
    "diamonds": 97,
-   "km_travelled": 614.3,
-   "jumps": 53946,
+   "km_travelled": 614.5,
+   "jumps": 53966,
    "travel": {
     "boat": 28.3,
     "crouch": 5.3,
@@ -19,8 +24,8 @@
     "walk": 44.6,
     "walk_under_water": 18.1,
     "horse": 109.8,
-    "sprint": 71.6,
-    "fly": 316.7,
+    "sprint": 71.7,
+    "fly": 316.8,
     "walk_on_water": 4.5,
     "swim": 13.4,
     "nautilus": 1.1
@@ -93,24 +98,78 @@
      1702
     ]
    ],
+   "top_used": [
+    [
+     "wheat_seeds",
+     7863
+    ],
+    [
+     "diamond_shovel",
+     5886
+    ],
+    [
+     "diamond_pickaxe",
+     4900
+    ],
+    [
+     "iron_pickaxe",
+     3465
+    ],
+    [
+     "iron_shovel",
+     2223
+    ],
+    [
+     "iron_hoe",
+     2155
+    ],
+    [
+     "gray_concrete_powder",
+     2011
+    ],
+    [
+     "gray_concrete",
+     1993
+    ]
+   ],
+   "death_causes": [
+    [
+     "player",
+     3
+    ],
+    [
+     "creeper",
+     3
+    ],
+    [
+     "zombie",
+     2
+    ]
+   ],
+   "death_other": 6,
    "week_hours": 0.0
   },
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
    "name": "Trosser",
-   "hours": 57.7,
+   "minutes": 3490,
+   "hours": 58.2,
    "deaths": 31,
    "mob_kills": 484,
+   "player_kills": 6,
+   "entities_killed": 470,
+   "items_used": 34568,
+   "damage": 8007,
    "blocks_mined": 15437,
    "diamonds": 0,
-   "km_travelled": 753.2,
+   "km_travelled": 768.4,
    "jumps": 126308,
    "travel": {
     "boat": 32.2,
     "swim": 4.1,
     "crouch": 4.1,
     "climb": 0.9,
-    "minecart": 255.5,
+    "minecart": 270.7,
     "walk": 41.8,
     "walk_under_water": 1.0,
     "horse": 12.1,
@@ -186,14 +245,76 @@
      312
     ]
    ],
+   "top_used": [
+    [
+     "wheat_seeds",
+     7974
+    ],
+    [
+     "red_wool",
+     7354
+    ],
+    [
+     "iron_pickaxe",
+     3829
+    ],
+    [
+     "cobblestone",
+     1927
+    ],
+    [
+     "yellow_wool",
+     1385
+    ],
+    [
+     "blue_wool",
+     1084
+    ],
+    [
+     "bread",
+     1042
+    ],
+    [
+     "iron_sword",
+     802
+    ]
+   ],
+   "death_causes": [
+    [
+     "creeper",
+     8
+    ],
+    [
+     "skeleton",
+     4
+    ],
+    [
+     "player",
+     4
+    ],
+    [
+     "phantom",
+     1
+    ],
+    [
+     "spider",
+     1
+    ]
+   ],
+   "death_other": 12,
    "week_hours": 0.0
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
    "name": "CapyDreamXD",
+   "minutes": 2229,
    "hours": 37.1,
    "deaths": 22,
    "mob_kills": 387,
+   "player_kills": 0,
+   "entities_killed": 379,
+   "items_used": 35029,
+   "damage": 6701,
    "blocks_mined": 20522,
    "diamonds": 79,
    "km_travelled": 430.9,
@@ -280,14 +401,76 @@
      632
     ]
    ],
+   "top_used": [
+    [
+     "iron_pickaxe",
+     7201
+    ],
+    [
+     "iron_shovel",
+     6477
+    ],
+    [
+     "smooth_stone",
+     4559
+    ],
+    [
+     "diamond_hoe",
+     1561
+    ],
+    [
+     "iron_axe",
+     1393
+    ],
+    [
+     "diamond_pickaxe",
+     1378
+    ],
+    [
+     "dirt",
+     1347
+    ],
+    [
+     "lime_wool",
+     1033
+    ]
+   ],
+   "death_causes": [
+    [
+     "bogged",
+     3
+    ],
+    [
+     "skeleton",
+     3
+    ],
+    [
+     "creeper",
+     3
+    ],
+    [
+     "drowned",
+     2
+    ],
+    [
+     "zombie",
+     2
+    ]
+   ],
+   "death_other": 7,
    "week_hours": 0.0
   },
   {
    "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
    "name": "SirMemo",
+   "minutes": 341,
    "hours": 5.7,
    "deaths": 15,
    "mob_kills": 178,
+   "player_kills": 0,
+   "entities_killed": 174,
+   "items_used": 2563,
+   "damage": 2357,
    "blocks_mined": 1371,
    "diamonds": 0,
    "km_travelled": 57.6,
@@ -370,14 +553,76 @@
      44
     ]
    ],
+   "top_used": [
+    [
+     "stone_pickaxe",
+     308
+    ],
+    [
+     "stone_sword",
+     280
+    ],
+    [
+     "stone_axe",
+     226
+    ],
+    [
+     "oak_planks",
+     205
+    ],
+    [
+     "wooden_sword",
+     146
+    ],
+    [
+     "oak_stairs",
+     137
+    ],
+    [
+     "wooden_axe",
+     131
+    ],
+    [
+     "potato",
+     114
+    ]
+   ],
+   "death_causes": [
+    [
+     "zombie",
+     5
+    ],
+    [
+     "enderman",
+     4
+    ],
+    [
+     "player",
+     2
+    ],
+    [
+     "creeper",
+     2
+    ],
+    [
+     "skeleton",
+     1
+    ]
+   ],
+   "death_other": 0,
    "week_hours": 0.0
   },
   {
    "uuid": "61a0350a-3e08-4c83-9d5a-559dd7ec3f00",
    "name": "EliasD00",
+   "minutes": 194,
    "hours": 3.2,
    "deaths": 13,
    "mob_kills": 65,
+   "player_kills": 2,
+   "entities_killed": 66,
+   "items_used": 2801,
+   "damage": 1161,
    "blocks_mined": 1450,
    "diamonds": 0,
    "km_travelled": 21.8,
@@ -461,14 +706,76 @@
      46
     ]
    ],
+   "top_used": [
+    [
+     "stone_pickaxe",
+     414
+    ],
+    [
+     "cobblestone",
+     359
+    ],
+    [
+     "copper_pickaxe",
+     190
+    ],
+    [
+     "snowball",
+     148
+    ],
+    [
+     "snow_block",
+     148
+    ],
+    [
+     "stone_shovel",
+     126
+    ],
+    [
+     "wooden_sword",
+     124
+    ],
+    [
+     "wooden_axe",
+     118
+    ]
+   ],
+   "death_causes": [
+    [
+     "player",
+     7
+    ],
+    [
+     "skeleton",
+     1
+    ],
+    [
+     "enderman",
+     1
+    ],
+    [
+     "spider",
+     1
+    ],
+    [
+     "zombie",
+     1
+    ]
+   ],
+   "death_other": 2,
    "week_hours": 0.0
   },
   {
    "uuid": "ec853876-a510-49e7-a792-f08fa3e3b89d",
    "name": "ShowerHeadGD",
+   "minutes": 150,
    "hours": 2.5,
    "deaths": 0,
    "mob_kills": 52,
+   "player_kills": 0,
+   "entities_killed": 51,
+   "items_used": 1087,
+   "damage": 590,
    "blocks_mined": 637,
    "diamonds": 0,
    "km_travelled": 20.3,
@@ -551,6 +858,42 @@
      19
     ]
    ],
+   "top_used": [
+    [
+     "stone_pickaxe",
+     247
+    ],
+    [
+     "wooden_pickaxe",
+     117
+    ],
+    [
+     "wheat_seeds",
+     85
+    ],
+    [
+     "stone_sword",
+     65
+    ],
+    [
+     "wooden_sword",
+     61
+    ],
+    [
+     "stone_bricks",
+     59
+    ],
+    [
+     "wooden_axe",
+     53
+    ],
+    [
+     "fishing_rod",
+     49
+    ]
+   ],
+   "death_causes": [],
+   "death_other": 0,
    "week_hours": 0.0
   }
  ]
