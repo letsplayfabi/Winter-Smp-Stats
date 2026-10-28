@@ -4,6 +4,21 @@
     "intro": "Wird täglich aktualisiert.",
     "badge": "Season Stats"
   },
+  "theme": {
+    "players": [
+      "#52e585",
+      "#45b0f5",
+      "#e9bc57",
+      "#bb92f2",
+      "#f39a68",
+      "#f2677a"
+    ],
+    "bg": "#0a111f",
+    "panel": "#131b2b",
+    "text": "#ffffff",
+    "muted": "#8fa0b8",
+    "accent": "#52e585"
+  },
   "categories": {},
   "players": {}
 }
