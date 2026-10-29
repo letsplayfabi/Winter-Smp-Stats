@@ -17,6 +17,15 @@
       "time": "11:04",
       "image": "events/e1793267948627.jpg",
       "server": "winter"
+    },
+    {
+      "id": "e1793296516857",
+      "name": "Gerichtstermin",
+      "desc": "Wir müssen den bösen X-Rayer finden.",
+      "date": "2026-10-29",
+      "time": "19:30",
+      "image": "events/e1793296516857.jpg",
+      "server": "winter"
     }
   ]
 }
