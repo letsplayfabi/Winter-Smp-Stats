@@ -98,6 +98,9 @@ def summarize(uuid, raw, name):
         "jumps": c.get("minecraft:jump", 0),
         "travel": travel, "top_mobs": top(k), "top_blocks": top(m), "top_used": top(u),
         "death_causes": top(kb, 5), "death_other": max(deaths - sum(kb.values()), 0),
+        "x": {"debris": m.get("minecraft:ancient_debris", 0), "creepers": k.get("minecraft:creeper", 0),
+              "netherrack": m.get("minecraft:netherrack", 0), "deepslate": m.get("minecraft:deepslate", 0),
+              "aviate_km": round(c.get("minecraft:aviate_one_cm", 0) / 100000, 1)},
     }
 
 
@@ -146,7 +149,7 @@ def main():
         except Exception as e:
             print(f"FEHLER bei {sv['name']}: {e}")
             failed.append(sv["name"])
-    ok = [{"key": s["key"], "name": s["name"]} for s in servers if (D / "data" / s["key"] / "stats.json").exists()]
+    ok = [{"key": s["key"], "name": s["name"], "extra": s.get("extra", [])} for s in servers if (D / "data" / s["key"] / "stats.json").exists()]
     (D / "servers.json").write_text(json.dumps(ok, ensure_ascii=False))
     if failed:
         sys.exit(1)
