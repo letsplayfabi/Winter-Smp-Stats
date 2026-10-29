@@ -20,7 +20,8 @@ def remote(sid, path):
     try:
         return get(url, h)
     except urllib.error.HTTPError as e:
-        print(f"HTTP {e.code} bei {path}: {e.read().decode(errors='replace')[:300]}")
+        if e.code != 404:
+            print(f"HTTP {e.code} bei {path}: {e.read().decode(errors='replace')[:300]}")
         raise
 
 
