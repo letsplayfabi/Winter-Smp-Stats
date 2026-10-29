@@ -1,1 +1,1 @@
-[{"key": "winter", "name": "Winter SMP"}, {"key": "chill", "name": "Chill SMP"}]
+[{"key": "winter", "name": "Winter SMP", "extra": []}, {"key": "chill", "name": "Chill SMP", "extra": ["netherite", "creepers", "netherrack", "deepslate", "aviate"]}]

@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-29T22:08+00:00",
+ "updated": "2026-10-29T22:27+00:00",
  "players": [
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -157,6 +157,13 @@
     ]
    ],
    "death_other": 54,
+   "x": {
+    "debris": 66,
+    "creepers": 1113,
+    "netherrack": 21744,
+    "deepslate": 4802,
+    "aviate_km": 1830.0
+   },
    "week_hours": 0.0
   },
   {
@@ -314,6 +321,13 @@
     ]
    ],
    "death_other": 11,
+   "x": {
+    "debris": 49,
+    "creepers": 821,
+    "netherrack": 24012,
+    "deepslate": 4965,
+    "aviate_km": 444.0
+   },
    "week_hours": 0.0
   },
   {
@@ -471,6 +485,13 @@
     ]
    ],
    "death_other": 57,
+   "x": {
+    "debris": 46,
+    "creepers": 169,
+    "netherrack": 38619,
+    "deepslate": 9243,
+    "aviate_km": 113.1
+   },
    "week_hours": 0.0
   },
   {
@@ -628,6 +649,13 @@
     ]
    ],
    "death_other": 16,
+   "x": {
+    "debris": 66,
+    "creepers": 1761,
+    "netherrack": 66308,
+    "deepslate": 18944,
+    "aviate_km": 255.0
+   },
    "week_hours": 0.0
   },
   {
@@ -785,6 +813,13 @@
     ]
    ],
    "death_other": 8,
+   "x": {
+    "debris": 39,
+    "creepers": 1121,
+    "netherrack": 3915,
+    "deepslate": 2454,
+    "aviate_km": 32.5
+   },
    "week_hours": 0.0
   },
   {
@@ -942,6 +977,13 @@
     ]
    ],
    "death_other": 7,
+   "x": {
+    "debris": 33,
+    "creepers": 16,
+    "netherrack": 24657,
+    "deepslate": 1481,
+    "aviate_km": 187.1
+   },
    "week_hours": 0.0
   },
   {
@@ -1097,6 +1139,13 @@
     ]
    ],
    "death_other": 7,
+   "x": {
+    "debris": 0,
+    "creepers": 69,
+    "netherrack": 23,
+    "deepslate": 5830,
+    "aviate_km": 0.0
+   },
    "week_hours": 0.0
   },
   {
@@ -1252,6 +1301,13 @@
     ]
    ],
    "death_other": 13,
+   "x": {
+    "debris": 0,
+    "creepers": 34,
+    "netherrack": 494,
+    "deepslate": 646,
+    "aviate_km": 0.0
+   },
    "week_hours": 0.0
   }
  ]
