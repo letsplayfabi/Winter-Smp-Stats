@@ -8,32 +8,39 @@
 .hero h1{margin:0;font-size:28px}.hero p{margin:6px 0 0;color:#b8c6dc}
 main{max-width:900px;margin:0 auto;padding:18px}
 .card{background:var(--cd);border:1px solid var(--ln);border-radius:14px;padding:18px;margin:16px 0;box-shadow:0 6px 20px rgba(0,0,0,.25)}
-.card h2{margin:0 0 12px;font-size:18px}p.mu,small{color:var(--mu)}
-input[type=text],input[type=password]{width:100%;padding:9px 11px;border-radius:9px;border:1px solid var(--ln);background:#0d1320;color:var(--fg)}
-input:focus{outline:2px solid var(--ac);border-color:transparent}
+.card h2{margin:0 0 12px;font-size:18px}p.mu{color:var(--mu);margin:0 0 10px}
+input[type=text],input[type=password],input[type=date],input[type=time],select,textarea{width:100%;padding:9px 11px;border-radius:9px;border:1px solid var(--ln);background:#0d1320;color:var(--fg);font:inherit}
+textarea{min-height:80px}input:focus,select:focus,textarea:focus{outline:2px solid var(--ac);border-color:transparent}
 .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}.g label{display:block;font-size:13px;color:var(--mu)}
 .cp{display:flex;align-items:center;gap:8px;background:#0d1320;border:1px solid var(--ln);border-radius:9px;padding:6px 8px;font-size:13px;color:var(--fg)!important}
-.cp input{width:34px;height:28px;border:0;padding:0;background:none;cursor:pointer}
+input[type=color]{width:34px;height:28px;border:0;padding:0;background:none;cursor:pointer}
 button{padding:9px 16px;border:0;border-radius:9px;font-weight:700;cursor:pointer;color:#06240f;background:var(--ac)}
 button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 .pr{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-#pv{margin-top:14px;border-radius:10px;padding:14px}#pv div.pn{border-radius:8px;padding:10px}
-#pv .b{height:14px;border-radius:3px;margin:6px 0}
-.pl{display:grid;grid-template-columns:36px 110px 1fr 1fr auto;gap:8px;align-items:center;margin:8px 0}
-.pl img{border-radius:5px;image-rendering:pixelated}@media(max-width:700px){.pl{grid-template-columns:36px 1fr 1fr}.pl input[type=text]{grid-column:span 1}}
+#pv{margin-top:14px;border-radius:10px;padding:14px}#pv .pn{border-radius:8px;padding:10px}#pv .b{height:14px;border-radius:3px;margin:6px 0}
+.pl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0;padding-bottom:10px;border-bottom:1px solid var(--ln)}
+.pl img{border-radius:5px;image-rendering:pixelated}.pl b{min-width:110px}.pl input[type=text]{flex:1 1 140px;width:auto}
+.ev{display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--ln)}.ev img{width:80px;height:50px;object-fit:cover;border-radius:6px}.ev div{flex:1}
 .bar{position:fixed;left:0;right:0;bottom:0;background:rgba(13,17,23,.92);backdrop-filter:blur(8px);border-top:1px solid var(--ln);padding:12px 18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 </style></head><body>
-<div class="hero"><h1>⚙️ Leaderboard Admin</h1><p>Namen, Kategorien, Farben und Spieler anpassen – direkt im Browser.</p></div>
+<div class="hero"><h1>⚙️ Leaderboard Admin</h1><p>Server, Namen, Kategorien, Farben, Spieler und Events – direkt im Browser.</p></div>
 <main>
 <section class="card"><h2>🔑 Zugang</h2>
 <p class="mu">GitHub-Token (fine-grained, nur dieses Repo: Contents „Read and write“, für „Neu berechnen“ zusätzlich Actions „Read and write“). Er wird nicht gespeichert.</p>
 <div style="display:flex;gap:8px"><input id="tk" type="password" placeholder="github_pat_..."><button id="ld">Laden</button></div></section>
 <div id="ed" hidden>
+<section class="card"><h2>🌍 Server</h2><p class="mu">Alles unten (Seite, Kategorien, Spieler) gilt für den gewählten Server. Farben und Events gelten für alle.</p><select id="sel"></select></section>
 <section class="card"><h2>🏷️ Seite</h2><div class="g">
 <label>Titel<input id="st" type="text"></label><label>Badge (oben rechts)<input id="sb" type="text"></label><label>Einleitung<input id="si" type="text"></label></div></section>
-<section class="card"><h2>🎨 Farben</h2><div class="pr" id="pre"></div><div class="g" id="cl"></div><div id="pv"></div></section>
 <section class="card"><h2>🗂️ Kategorienamen</h2><p class="mu">Leer lassen = Standardname.</p><div class="g" id="cats"></div></section>
-<section class="card"><h2>👥 Spieler</h2><p class="mu">Anzeigename, Titel (z. B. „Baumeister“) und Ausblenden.</p><div id="rows"></div></section>
+<section class="card"><h2>👥 Spieler</h2><p class="mu">Anzeigename, Titel, eigene Farbe (↺ = Standardfarbe nach Platz) und Ausblenden.</p><div id="rows"></div></section>
+<section class="card"><h2>🎨 Farben (alle Server)</h2><div class="pr" id="pre"></div><div class="g" id="cl"></div><div id="pv"></div></section>
+<section class="card"><h2>📅 Events (alle Server)</h2>
+<p class="mu">Events werden sofort gespeichert, ohne „Speichern“ unten.</p>
+<div class="g"><label>Name<input id="en" type="text"></label><label>Datum<input id="ed1" type="date"></label><label>Uhrzeit<input id="et" type="time"></label>
+<label>Server<select id="es"></select></label><label>Bild<input id="ei" type="file" accept="image/*"></label></div>
+<label style="display:block;margin:12px 0;color:var(--mu);font-size:13px">Beschreibung<textarea id="edsc"></textarea></label>
+<button id="ea">➕ Event hinzufügen</button><div id="evl" style="margin-top:14px"></div></section>
 </div></main>
 <div class="bar" id="ab" hidden><button id="sv">💾 Speichern</button><button id="rc" class="s">🔄 Neu berechnen</button><span id="msg"></span></div>
 <script>
@@ -47,45 +54,83 @@ Hell:{bg:"#f1f4f9",panel:"#ffffff",text:"#1b2433",muted:"#5b6b82",accent:"#1f9d5
 const $=id=>document.getElementById(id);
 function el(tag,text,parent,cls){const e=document.createElement(tag);e.textContent=text;if(cls)e.className=cls;parent&&parent.append(e);return e}
 const H=()=>({Authorization:"Bearer "+tk.value.trim(),Accept:"application/vnd.github+json"});
-const say=t=>msg.textContent=t;let sha=null,rowEls=[],catEls=[],clEls={},plEls=[];
-const b64=s=>btoa(String.fromCharCode(...new TextEncoder().encode(s)));
+const say=t=>msg.textContent=t;
+let OV={},OVSHA=null,SERVERS=[],cur="",rowEls=[],catEls=[],clEls={},plEls=[],EVS=[];
+function u8b64(u){let s="";for(let i=0;i<u.length;i+=8192)s+=String.fromCharCode(...u.subarray(i,i+8192));return btoa(s)}
+const b64s=s=>u8b64(new TextEncoder().encode(s));
 const unb64=s=>new TextDecoder().decode(Uint8Array.from(atob(s.replace(/\n/g,"")),c=>c.charCodeAt(0)));
+async function getFile(p){const r=await fetch(`${api}/contents/${p}`,{headers:H()});if(r.status===404)return null;if(!r.ok)throw new Error(`GitHub ${r.status} bei ${p} – Token/Rechte prüfen`);const j=await r.json();return{sha:j.sha,text:unb64(j.content)}}
+async function putFile(p,content,m,sha){const r=await fetch(`${api}/contents/${p}`,{method:"PUT",headers:H(),body:JSON.stringify({message:m,content,sha:sha||undefined})});if(!r.ok)throw new Error(`Speichern fehlgeschlagen (${r.status})`);return(await r.json()).content.sha}
 function picker(parent,label,val){const l=el("label","",parent,"cp"),i=document.createElement("input");i.type="color";i.value=val;i.oninput=pv;l.append(i,document.createTextNode(label));return i}
-function getTheme(){const t={players:plEls.map(i=>i.value)};TK.forEach(([k])=>t[k]=clEls[k].value);return t}
+const getTheme=()=>{const t={players:plEls.map(i=>i.value)};TK.forEach(([k])=>t[k]=clEls[k].value);return t};
 function setTheme(t){TK.forEach(([k])=>clEls[k].value=t[k]);plEls.forEach((i,x)=>i.value=t.players[x]);pv()}
 function pv(){const t=getTheme(),box=$("pv");box.replaceChildren();box.style.background=t.bg;box.style.color=t.text;
-  const pn=el("div","",box,"pn");pn.style.background=t.panel;const h=el("b","Vorschau",pn);h.style.color=t.accent;
-  t.players.forEach((c,i)=>{const b=el("div","",pn,"b");b.style.cssText=`background:${c};width:${90-i*12}%`});}
+  const pn=el("div","",box,"pn");pn.style.background=t.panel;el("b","Vorschau",pn).style.color=t.accent;
+  t.players.forEach((c,i)=>{const b=el("div","",pn,"b");b.style.cssText=`background:${c};width:${90-i*12}%`})}
+async function buildServer(key){
+  cur=key;let players=[];try{players=(await (await fetch(`data/${key}/stats.json`,{cache:"no-cache"})).json()).players}catch{}
+  const sv=OV.servers[key]||{},s=sv.site||{};st.value=s.title||"";sb.value=s.badge??"Season Stats";si.value=s.intro||"";
+  cats.replaceChildren();catEls=[];CK.forEach(([k,d])=>{const l=el("label",d,cats),i=document.createElement("input");i.type="text";i.placeholder=d;i.value=(sv.categories||{})[k]||"";l.append(i);catEls.push([k,i])});
+  rows.replaceChildren();rowEls=[];
+  players.forEach(p=>{const o=(sv.players||{})[p.uuid]||{},r=el("div","",rows,"pl"),im=document.createElement("img");im.src=`https://mc-heads.net/avatar/${p.uuid}/36`;im.width=im.height=36;im.onerror=()=>im.remove();r.append(im);
+    el("b",p.name,r);const a=document.createElement("input"),t=document.createElement("input"),c=document.createElement("input"),h=document.createElement("input");
+    a.type=t.type="text";a.placeholder="Anzeigename";t.placeholder="Titel";a.value=o.display_name||"";t.value=o.title||"";
+    c.type="color";c.value=o.color||"#888888";if(o.color)c.dataset.s=1;c.oninput=()=>c.dataset.s=1;
+    const rs=el("button","↺",r,"s");rs.onclick=()=>{delete c.dataset.s;c.value="#888888"};
+    h.type="checkbox";h.checked=!!o.hidden;const hl=el("label","ausblenden ",r);hl.prepend(h);r.insertBefore(a,rs);r.insertBefore(t,rs);r.insertBefore(c,rs);rowEls.push([p.uuid,a,t,c,h])});
+}
+function collect(){
+  const sv={site:{title:st.value,intro:si.value,badge:sb.value},categories:{},players:{}};
+  catEls.forEach(([k,i])=>{if(i.value)sv.categories[k]=i.value});
+  rowEls.forEach(([u,a,t,c,h])=>{if(a.value||t.value||h.checked||c.dataset.s)sv.players[u]={display_name:a.value,title:t.value,hidden:h.checked,...(c.dataset.s?{color:c.value}:{})}});
+  OV.servers[cur]=sv;OV.theme=getTheme();
+}
+function renderEvents(){const b=$("evl");b.replaceChildren();if(!EVS.length)el("p","Noch keine Events.",b,"mu");
+  EVS.forEach(e=>{const r=el("div","",b,"ev");if(e.image){const i=document.createElement("img");i.src=e.image;r.append(i)}
+    const d=el("div","",r);el("b",e.name,d);el("div",`${e.date} ${e.time||""} · ${e.server==="all"||!e.server?"Alle Server":(SERVERS.find(s=>s.key===e.server)||{}).name}`,d,"mu");
+    el("button","🗑",r,"s").onclick=()=>delEvent(e)})}
+async function evList(){const f=await getFile("docs/events.json");return{sha:f&&f.sha,list:f?JSON.parse(f.text).events||[]:[]}}
+async function shrink(file){const bmp=await createImageBitmap(file),sc=Math.min(1,1000/bmp.width),c=document.createElement("canvas");c.width=Math.round(bmp.width*sc);c.height=Math.round(bmp.height*sc);
+  c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);const blob=await new Promise(r=>c.toBlob(r,"image/jpeg",.82));return u8b64(new Uint8Array(await blob.arrayBuffer()))}
+ea.onclick=async()=>{
+  try{if(!en.value||!ed1.value)throw new Error("Name und Datum sind Pflicht");say("Speichere Event …");
+    const id="e"+Date.now();let image="";
+    if(ei.files[0]){await putFile(`docs/events/${id}.jpg`,await shrink(ei.files[0]),"Event-Bild");image=`events/${id}.jpg`}
+    const f=await evList();f.list.push({id,name:en.value,desc:edsc.value,date:ed1.value,time:et.value,image,server:es.value});
+    await putFile("docs/events.json",b64s(JSON.stringify({events:f.list},null,2)),"Event hinzugefügt",f.sha);
+    EVS=f.list;renderEvents();en.value=edsc.value=ed1.value=et.value=ei.value="";say("✅ Event gespeichert – in ca. 1 Minute sichtbar.");
+  }catch(e){say("❌ "+e.message)}
+};
+async function delEvent(e){
+  try{if(!confirm(`„${e.name}“ löschen?`))return;const f=await evList();
+    await putFile("docs/events.json",b64s(JSON.stringify({events:f.list.filter(x=>x.id!==e.id)},null,2)),"Event gelöscht",f.sha);
+    if(e.image){const im=await getFile("docs/"+e.image);if(im)await fetch(`${api}/contents/docs/${e.image}`,{method:"DELETE",headers:H(),body:JSON.stringify({message:"Event-Bild gelöscht",sha:im.sha})})}
+    EVS=f.list.filter(x=>x.id!==e.id);renderEvents();say("✅ Event gelöscht.");
+  }catch(x){say("❌ "+x.message)}
+}
 ld.onclick=async()=>{
   try{
-    const players=(await (await fetch("stats.json",{cache:"no-cache"})).json()).players;
-    const r=await fetch(api+"/contents/docs/overrides.json",{headers:H()});
-    let ov={site:{},players:{}};
-    if(r.ok){const j=await r.json();sha=j.sha;ov=JSON.parse(unb64(j.content))}else if(r.status!==404)throw new Error("GitHub antwortet "+r.status+" – Token/Rechte prüfen");
-    const s=ov.site||{};st.value=s.title||"";sb.value=s.badge??"Season Stats";si.value=s.intro||"";
-    pre.replaceChildren();Object.keys(PRE).forEach(k=>{const b=el("button",k,pre,"s");b.onclick=()=>setTheme(PRE[k])});
+    SERVERS=await (await fetch("servers.json",{cache:"no-cache"})).json().catch(()=>{throw new Error("servers.json fehlt – erst den Workflow einmal ausführen")});
+    const f=await getFile("docs/overrides.json");OVSHA=f&&f.sha;OV=f?JSON.parse(f.text):{};
+    if(!OV.servers){OV.servers={};if(OV.site||OV.categories||OV.players)OV.servers[SERVERS[0].key]={site:OV.site||{},categories:OV.categories||{},players:OV.players||{}};delete OV.site;delete OV.categories;delete OV.players}
+    sel.replaceChildren();es.replaceChildren();el("option","Alle Server",es).value="all";
+    SERVERS.forEach(s=>{el("option",s.name,sel).value=s.key;el("option",s.name,es).value=s.key});
+    pre.replaceChildren();Object.keys(PRE).forEach(k=>{el("button",k,pre,"s").onclick=()=>setTheme(PRE[k])});
     cl.replaceChildren();clEls={};TK.forEach(([k,l])=>clEls[k]=picker(cl,l,PRE.Standard[k]));
-    plEls=PRE.Standard.players.map((c,i)=>picker(cl,"Spieler-Farbe "+(i+1),c));
-    setTheme({...PRE.Standard,...(ov.theme||{}),players:(ov.theme||{}).players||PRE.Standard.players});
-    cats.replaceChildren();catEls=[];CK.forEach(([k,d])=>{const l=el("label",d,cats),i=document.createElement("input");i.type="text";i.placeholder=d;i.value=(ov.categories||{})[k]||"";l.append(i);catEls.push([k,i])});
-    rows.replaceChildren();rowEls=[];
-    players.forEach(p=>{const o=(ov.players||{})[p.uuid]||{},r=el("div","",rows,"pl"),im=document.createElement("img");im.src=`https://mc-heads.net/avatar/${p.uuid}/36`;im.width=im.height=36;im.onerror=()=>im.remove();r.append(im);
-      el("b",p.name,r);const a=document.createElement("input"),t=document.createElement("input"),h=document.createElement("input");
-      a.type=t.type="text";a.placeholder="Anzeigename";t.placeholder="Titel";a.value=o.display_name||"";t.value=o.title||"";h.type="checkbox";h.checked=!!o.hidden;
-      const hl=el("label","ausblenden ",r);hl.prepend(h);r.insertBefore(a,hl);r.insertBefore(t,hl);rowEls.push([p.uuid,a,t,h])});
+    plEls=PRE.Standard.players.map((c,i)=>picker(cl,"Standardfarbe Platz "+(i+1),c));
+    setTheme({...PRE.Standard,...(OV.theme||{}),players:(OV.theme||{}).players||PRE.Standard.players});
+    sel.value=SERVERS[0].key;await buildServer(SERVERS[0].key);EVS=(await evList()).list;renderEvents();
     ed.hidden=false;ab.hidden=false;say("Geladen.");
   }catch(e){say("Fehler: "+e.message)}
 };
+sel.onchange=async()=>{collect();await buildServer(sel.value)};
 sv.onclick=async()=>{
-  const ov={site:{title:st.value,intro:si.value,badge:sb.value},theme:getTheme(),categories:{},players:{}};
-  catEls.forEach(([k,i])=>{if(i.value)ov.categories[k]=i.value});
-  rowEls.forEach(([u,a,t,h])=>{if(a.value||t.value||h.checked)ov.players[u]={display_name:a.value,title:t.value,hidden:h.checked}});
-  const r=await fetch(api+"/contents/docs/overrides.json",{method:"PUT",headers:H(),body:JSON.stringify({message:"Overrides aktualisiert",content:b64(JSON.stringify(ov,null,2)),sha:sha||undefined})});
-  if(r.ok){sha=(await r.json()).content.sha;say("✅ Gespeichert – die Seite aktualisiert sich in ca. 1 Minute.")}else say("❌ Fehler beim Speichern: "+r.status);
+  try{collect();const f=await getFile("docs/overrides.json");
+    OVSHA=await putFile("docs/overrides.json",b64s(JSON.stringify(OV,null,2)),"Overrides aktualisiert",f&&f.sha);say("✅ Gespeichert – die Seite aktualisiert sich in ca. 1 Minute.")
+  }catch(e){say("❌ "+e.message)}
 };
 rc.onclick=async()=>{
   const r=await fetch(api+"/actions/workflows/update-stats.yml/dispatches",{method:"POST",headers:H(),body:JSON.stringify({ref:"main"})});
   say(r.status===204?"✅ Neuberechnung gestartet (ca. 1 Minute).":"❌ Fehler: "+r.status+" – Token braucht Actions-Recht");
 };
 </script></body></html>
-
