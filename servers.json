@@ -1,4 +1,5 @@
 [
   { "key": "winter", "name": "Winter SMP", "env": "EXAROTON_SERVER_ID" },
-  { "key": "chill", "name": "Chill SMP", "env": "EXAROTON_SERVER_ID_2" }
+  { "key": "chill", "name": "Chill SMP", "env": "EXAROTON_SERVER_ID_2",
+    "extra": ["netherite", "creepers", "netherrack", "deepslate", "aviate"] }
 ]
