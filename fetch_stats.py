@@ -25,8 +25,19 @@ def remote(sid, path):
         raise
 
 
-def load(local, sid, WORLD):
-    dirs = [f"{WORLD}/players/stats", f"{WORLD}/stats"]  # ab 26.1 / davor
+def level_name(sid):
+    """Liest den Namen des Welt-Ordners aus der server.properties."""
+    try:
+        for line in remote(sid, "data/server.properties").decode(errors="replace").splitlines():
+            if line.startswith("level-name="):
+                return line.split("=", 1)[1].strip() or "world"
+    except Exception as e:
+        print("server.properties nicht lesbar:", e)
+    return "world"
+
+
+def load(local, sid, worlds):
+    dirs = [f"{w}/{sub}" for w in worlds for sub in ("players/stats", "stats")]  # players/stats ab 26.1
     if local:
         b = Path(local)
         d = next((b / x for x in dirs if (b / x).is_dir() and any((b / x).glob("*.json"))), b / dirs[0])
@@ -37,10 +48,12 @@ def load(local, sid, WORLD):
         x, children = dirs[0], []
         for x in dirs:
             try:
-                children = json.loads(remote(sid, f"info/{x}"))["data"].get("children") or []
-            except urllib.error.HTTPError:
+                children = (json.loads(remote(sid, f"info/{x}")).get("data") or {}).get("children") or []
+            except Exception:
+                print(f"  {x}: nicht vorhanden")
+                children = []
                 continue
-            print(f"{len(children)} Einträge in {x}")
+            print(f"  {x}: {len(children)} Einträge")
             if any(c["name"].endswith(".json") for c in children):
                 break
         files = {c["name"][:-5]: json.loads(remote(sid, f"data/{x}/{c['name']}"))
@@ -50,6 +63,8 @@ def load(local, sid, WORLD):
         except Exception as e:
             print("usercache.json nicht lesbar:", e)
             users = []
+    if not files:
+        print("  WARNUNG: keine Statistik-Dateien gefunden – stimmt der Welt-Ordner? (Eintrag \"world\" in servers.json)")
     return files, {u["uuid"].lower(): u["name"] for u in users}
 
 
@@ -92,7 +107,10 @@ def process(sv, local, first):
         print(f"Überspringe {sv['name']}: Secret {sv['env']} fehlt")
         return
     base = local and (str(Path(local) / sv["key"]) if (Path(local) / sv["key"]).is_dir() else local)
-    files, names = load(base, sid, sv.get("world", os.environ.get("WORLD_DIR", "world")))
+    w = sv.get("world") or os.environ.get("WORLD_DIR") or ("world" if local else level_name(sid))
+    worlds = list(dict.fromkeys([w, "world"]))
+    print(f"{sv['name']}: suche Statistiken in Welt-Ordner {worlds}")
+    files, names = load(base, sid, worlds)
     players = [summarize(u, raw, names.get(u.lower()) or mojang(u) or u[:8]) for u, raw in files.items()]
     print(f"{sv['name']}: {len(players)} Spieler, Namen: {[p['name'] for p in players]}")
     out = D / "data" / sv["key"]
