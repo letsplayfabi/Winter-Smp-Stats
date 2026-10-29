@@ -6,7 +6,6 @@ from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 API = "https://api.exaroton.com/v1"
-WORLD = os.environ.get("WORLD_DIR", "world")
 D = Path("docs")
 
 
@@ -15,8 +14,8 @@ def get(url, headers=None):
         return r.read()
 
 
-def remote(path):
-    url = f"{API}/servers/{os.environ['EXAROTON_SERVER_ID']}/files/{urllib.parse.quote(path)}"
+def remote(sid, path):
+    url = f"{API}/servers/{sid}/files/{urllib.parse.quote(path)}"
     h = {"Authorization": f"Bearer {os.environ['EXAROTON_TOKEN'].strip()}", "User-Agent": "mc-stats-site/1.0"}
     try:
         return get(url, h)
@@ -25,7 +24,7 @@ def remote(path):
         raise
 
 
-def load(local):
+def load(local, sid, WORLD):
     dirs = [f"{WORLD}/players/stats", f"{WORLD}/stats"]  # ab 26.1 / davor
     if local:
         b = Path(local)
@@ -37,16 +36,16 @@ def load(local):
         x, children = dirs[0], []
         for x in dirs:
             try:
-                children = json.loads(remote(f"info/{x}"))["data"].get("children") or []
+                children = json.loads(remote(sid, f"info/{x}"))["data"].get("children") or []
             except urllib.error.HTTPError:
                 continue
             print(f"{len(children)} Einträge in {x}")
             if any(c["name"].endswith(".json") for c in children):
                 break
-        files = {c["name"][:-5]: json.loads(remote(f"data/{x}/{c['name']}"))
+        files = {c["name"][:-5]: json.loads(remote(sid, f"data/{x}/{c['name']}"))
                  for c in children if c["name"].endswith(".json")}
         try:
-            users = json.loads(remote("data/usercache.json"))
+            users = json.loads(remote(sid, "data/usercache.json"))
         except Exception as e:
             print("usercache.json nicht lesbar:", e)
             users = []
@@ -86,29 +85,52 @@ def summarize(uuid, raw, name):
     }
 
 
-def main():
-    local = sys.argv[sys.argv.index("--local") + 1] if "--local" in sys.argv else None
-    files, names = load(local)
+def process(sv, local, first):
+    sid = os.environ.get(sv["env"], "").strip()
+    if not sid and not local:
+        print(f"Überspringe {sv['name']}: Secret {sv['env']} fehlt")
+        return
+    base = local and (str(Path(local) / sv["key"]) if (Path(local) / sv["key"]).is_dir() else local)
+    files, names = load(base, sid, sv.get("world", os.environ.get("WORLD_DIR", "world")))
     players = [summarize(u, raw, names.get(u.lower()) or mojang(u) or u[:8]) for u, raw in files.items()]
-    print(f"{len(players)} Spieler, Namen: {[p['name'] for p in players]}")
-
-    D.mkdir(exist_ok=True)
-    hp = D / "history.json"
+    print(f"{sv['name']}: {len(players)} Spieler, Namen: {[p['name'] for p in players]}")
+    out = D / "data" / sv["key"]
+    out.mkdir(parents=True, exist_ok=True)
+    hp = out / "history.json"
+    if first and not hp.exists() and (D / "history.json").exists():
+        hp.write_text((D / "history.json").read_text())
     hist = json.loads(hp.read_text()) if hp.exists() else {}
     today = datetime.now(timezone.utc).date()
     hist[today.isoformat()] = {p["uuid"]: p["hours"] for p in players}
     for d in sorted(hist)[:-60]:
         del hist[d]
     old = [d for d in sorted(hist) if d <= (today - timedelta(days=7)).isoformat()]
-    base = hist[old[-1] if old else sorted(hist)[0]]
+    base_h = hist[old[-1] if old else sorted(hist)[0]]
     for p in players:
-        p["week_hours"] = round(max(p["hours"] - base.get(p["uuid"], 0), 0), 1)
+        p["week_hours"] = round(max(p["hours"] - base_h.get(p["uuid"], 0), 0), 1)
     hp.write_text(json.dumps(hist))
-
     players.sort(key=lambda p: p["hours"], reverse=True)
-    (D / "stats.json").write_text(json.dumps(
+    (out / "stats.json").write_text(json.dumps(
         {"updated": datetime.now(timezone.utc).isoformat(timespec="minutes"), "players": players},
         ensure_ascii=False, indent=1))
+
+
+def main():
+    local = sys.argv[sys.argv.index("--local") + 1] if "--local" in sys.argv else None
+    sp = Path("servers.json")
+    servers = json.loads(sp.read_text()) if sp.exists() else [{"key": "winter", "name": "Winter SMP", "env": "EXAROTON_SERVER_ID"}]
+    D.mkdir(exist_ok=True)
+    failed = []
+    for i, sv in enumerate(servers):
+        try:
+            process(sv, local, i == 0)
+        except Exception as e:
+            print(f"FEHLER bei {sv['name']}: {e}")
+            failed.append(sv["name"])
+    ok = [{"key": s["key"], "name": s["name"]} for s in servers if (D / "data" / s["key"] / "stats.json").exists()]
+    (D / "servers.json").write_text(json.dumps(ok, ensure_ascii=False))
+    if failed:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
