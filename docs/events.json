@@ -1,15 +1,6 @@
 {
   "events": [
     {
-      "id": "e1793267948627",
-      "name": "Test 2",
-      "desc": "Diesmal mit Bild ",
-      "date": "2026-10-29",
-      "time": "11:04",
-      "image": "events/e1793267948627.jpg",
-      "server": "winter"
-    },
-    {
       "id": "e1793296516857",
       "name": "Gerichtstermin",
       "desc": "Wir müssen den bösen X-Rayer finden.",
