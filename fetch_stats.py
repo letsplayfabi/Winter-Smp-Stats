@@ -149,7 +149,7 @@ def main():
         except Exception as e:
             print(f"FEHLER bei {sv['name']}: {e}")
             failed.append(sv["name"])
-    ok = [{"key": s["key"], "name": s["name"], "extra": s.get("extra", [])} for s in servers if (D / "data" / s["key"] / "stats.json").exists()]
+    ok = [{"key": s["key"], "name": s["name"], "extra": s.get("extra", []), "hide": s.get("hide", [])} for s in servers if (D / "data" / s["key"] / "stats.json").exists()]
     (D / "servers.json").write_text(json.dumps(ok, ensure_ascii=False))
     if failed:
         sys.exit(1)
