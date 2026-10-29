@@ -21,17 +21,18 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 .pl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0;padding-bottom:10px;border-bottom:1px solid var(--ln)}
 .pl img{border-radius:5px;image-rendering:pixelated}.pl b{min-width:110px}.pl input[type=text]{flex:1 1 140px;width:auto}
 .ev{display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--ln)}.ev img{width:80px;height:50px;object-fit:cover;border-radius:6px}.ev div{flex:1}
-.bar{position:fixed;left:0;right:0;bottom:0;background:rgba(13,17,23,.92);backdrop-filter:blur(8px);border-top:1px solid var(--ln);padding:12px 18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.bar[hidden]{display:none}.bar{position:fixed;left:0;right:0;bottom:0;background:rgba(13,17,23,.92);backdrop-filter:blur(8px);border-top:1px solid var(--ln);padding:12px 18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 </style></head><body>
-<div class="hero"><h1>⚙️ Leaderboard Admin</h1><p>Server, Namen, Kategorien, Farben, Spieler und Events – direkt im Browser.</p></div>
+<div class="hero"><h1>⚙️ Leaderboard Admin</h1><p>Server, Namen, Kategorien, Farben, Spieler, Events und Umfragen – direkt im Browser. <a href="./" style="color:#fff">← Zur Statistikseite</a></p></div>
 <main>
 <section class="card"><h2>🔑 Zugang</h2>
 <p class="mu">GitHub-Token (fine-grained, nur dieses Repo: Contents „Read and write“, für „Neu berechnen“ zusätzlich Actions „Read and write“). Er wird nicht gespeichert.</p>
 <div style="display:flex;gap:8px"><input id="tk" type="password" placeholder="github_pat_..."><button id="ld">Laden</button></div></section>
 <div id="ed" hidden>
-<section class="card"><h2>🌍 Server</h2><p class="mu">Alles unten (Seite, Kategorien, Spieler) gilt für den gewählten Server. Farben und Events gelten für alle.</p><select id="sel"></select></section>
+<section class="card"><h2>🌍 Server</h2><p class="mu">Alles unten (Seite, Kategorien, Spieler) gilt für den gewählten Server. Farben und Events gelten für alle.</p><select id="sel"></select><label style="display:block;margin-top:12px"><input type="checkbox" id="sa"> Admin-Reiter auf der Seite anzeigen</label></section>
+<section class="card"><h2>💬 Discord-Button (alle Server)</h2><div class="g"><label>Link<input id="dl" type="text"></label><label>Button-Text<input id="dt" type="text"></label></div><p class="mu" style="margin-top:8px">Link leer lassen = Button ausblenden.</p></section>
 <section class="card"><h2>🏷️ Seite</h2><div class="g">
-<label>Titel<input id="st" type="text"></label><label>Badge (oben rechts)<input id="sb" type="text"></label><label>Einleitung<input id="si" type="text"></label></div></section>
+<label>Titel<input id="st" type="text"></label><label>Einleitung<input id="si" type="text"></label></div></section>
 <section class="card"><h2>🗂️ Kategorienamen</h2><p class="mu">Leer lassen = Standardname.</p><div class="g" id="cats"></div></section>
 <section class="card"><h2>👥 Spieler</h2><p class="mu">Anzeigename, Titel, eigene Farbe (↺ = Standardfarbe nach Platz) und Ausblenden.</p><div id="rows"></div></section>
 <section class="card"><h2>🎨 Farben (alle Server)</h2><div class="pr" id="pre"></div><div class="g" id="cl"></div><div id="pv"></div></section>
@@ -40,7 +41,15 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 <div class="g"><label>Name<input id="en" type="text"></label><label>Datum<input id="ed1" type="date"></label><label>Uhrzeit<input id="et" type="time"></label>
 <label>Server<select id="es"></select></label><label>Bild<input id="ei" type="file" accept="image/*"></label></div>
 <label style="display:block;margin:12px 0;color:var(--mu);font-size:13px">Beschreibung<textarea id="edsc"></textarea></label>
-<button id="ea">➕ Event hinzufügen</button><div id="evl" style="margin-top:14px"></div></section>
+<p class="mu" id="eh"></p><button id="ea">➕ Event hinzufügen</button> <button id="ec" class="s" hidden>Abbrechen</button><div id="evl" style="margin-top:14px"></div></section>
+<section class="card"><h2>🗳️ Umfragen (alle Server)</h2>
+<p class="mu">Die Stimmen laufen über ein kleines Google-Apps-Script (siehe Anleitung). Hier trägst du dessen Web-App-URL ein.</p>
+<div style="display:flex;gap:8px"><input id="papi" type="text" placeholder="https://script.google.com/macros/s/.../exec"><button id="pas" class="s">URL speichern</button></div>
+<div class="g" style="margin-top:12px"><label>Titel<input id="pt" type="text"></label><label>Server (für „Spieler als Optionen“ und Wählerliste)<select id="ps"></select></label>
+<label>Ende<input id="pe" type="datetime-local"></label><label>Stimmen pro Person<input id="pm" type="number" min="1" value="1"></label></div>
+<label style="display:block;margin:12px 0;color:var(--mu);font-size:13px">Beschreibung<textarea id="pd"></textarea></label>
+<div id="po"></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0"><button id="pao" class="s">➕ Option</button><button id="pap" class="s">👥 Spieler als Optionen</button></div>
+<p class="mu" id="ph2"></p><button id="pa">➕ Umfrage erstellen</button> <button id="pc" class="s" hidden>Abbrechen</button><div id="pll" style="margin-top:14px"></div></section>
 </div></main>
 <div class="bar" id="ab" hidden><button id="sv">💾 Speichern</button><button id="rc" class="s">🔄 Neu berechnen</button><span id="msg"></span></div>
 <script>
@@ -51,6 +60,7 @@ const PRE={Standard:{bg:"#0a111f",panel:"#131b2b",text:"#ffffff",muted:"#8fa0b8"
 Nether:{bg:"#1a0b0b",panel:"#2a1212",text:"#ffe9e0",muted:"#c08a7a",accent:"#ff7a3d",players:["#ff7a3d","#e63946","#f4a261","#e9c46a","#b5179e","#8d99ae"]},
 Ozean:{bg:"#06141f",panel:"#0c2233",text:"#eaf6ff",muted:"#86a5bd",accent:"#2ec4b6",players:["#2ec4b6","#3a86ff","#8ecae6","#ffb703","#c77dff","#ff6b6b"]},
 Hell:{bg:"#f1f4f9",panel:"#ffffff",text:"#1b2433",muted:"#5b6b82",accent:"#1f9d55",players:["#1f9d55","#2b7de9","#d99a1c","#8a5cd6","#e57a3c","#d6455d"]}};
+const DEFDC="https://discord.gg/87mqfdznp4";
 const $=id=>document.getElementById(id);
 function el(tag,text,parent,cls){const e=document.createElement(tag);e.textContent=text;if(cls)e.className=cls;parent&&parent.append(e);return e}
 const H=()=>({Authorization:"Bearer "+tk.value.trim(),Accept:"application/vnd.github+json"});
@@ -69,7 +79,7 @@ function pv(){const t=getTheme(),box=$("pv");box.replaceChildren();box.style.bac
   t.players.forEach((c,i)=>{const b=el("div","",pn,"b");b.style.cssText=`background:${c};width:${90-i*12}%`})}
 async function buildServer(key){
   cur=key;let players=[];try{players=(await (await fetch(`data/${key}/stats.json`,{cache:"no-cache"})).json()).players}catch{}
-  const sv=OV.servers[key]||{},s=sv.site||{};st.value=s.title||"";sb.value=s.badge??"Season Stats";si.value=s.intro||"";
+  const sv=OV.servers[key]||{},s=sv.site||{};st.value=s.title||"";si.value=s.intro||"";
   cats.replaceChildren();catEls=[];CK.forEach(([k,d])=>{const l=el("label",d,cats),i=document.createElement("input");i.type="text";i.placeholder=d;i.value=(sv.categories||{})[k]||"";l.append(i);catEls.push([k,i])});
   rows.replaceChildren();rowEls=[];
   players.forEach(p=>{const o=(sv.players||{})[p.uuid]||{},r=el("div","",rows,"pl"),im=document.createElement("img");im.src=`https://mc-heads.net/avatar/${p.uuid}/36`;im.width=im.height=36;im.onerror=()=>im.remove();r.append(im);
@@ -80,46 +90,82 @@ async function buildServer(key){
     h.type="checkbox";h.checked=!!o.hidden;const hl=el("label","ausblenden ",r);hl.prepend(h);r.insertBefore(a,rs);r.insertBefore(t,rs);r.insertBefore(c,rs);rowEls.push([p.uuid,a,t,c,h])});
 }
 function collect(){
-  const sv={site:{title:st.value,intro:si.value,badge:sb.value},categories:{},players:{}};
+  const sv={site:{title:st.value,intro:si.value},categories:{},players:{}};
   catEls.forEach(([k,i])=>{if(i.value)sv.categories[k]=i.value});
   rowEls.forEach(([u,a,t,c,h])=>{if(a.value||t.value||h.checked||c.dataset.s)sv.players[u]={display_name:a.value,title:t.value,hidden:h.checked,...(c.dataset.s?{color:c.value}:{})}});
-  OV.servers[cur]=sv;OV.theme=getTheme();
+  OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;
 }
+let EDIT=null,POPTS=[],PEDIT=null,PL={api:"",polls:[]};
 function renderEvents(){const b=$("evl");b.replaceChildren();if(!EVS.length)el("p","Noch keine Events.",b,"mu");
   EVS.forEach(e=>{const r=el("div","",b,"ev");if(e.image){const i=document.createElement("img");i.src=e.image;r.append(i)}
     const d=el("div","",r);el("b",e.name,d);el("div",`${e.date} ${e.time||""} · ${e.server==="all"||!e.server?"Alle Server":(SERVERS.find(s=>s.key===e.server)||{}).name}`,d,"mu");
-    el("button","🗑",r,"s").onclick=()=>delEvent(e)})}
+    el("button","✏️",r,"s").onclick=()=>editEvent(e);el("button","🗑",r,"s").onclick=()=>delEvent(e)})}
+function editEvent(e){EDIT=e.id;en.value=e.name;ed1.value=e.date;et.value=e.time||"";es.value=e.server||"all";edsc.value=e.desc||"";ei.value="";
+  eh.textContent=`Bearbeite „${e.name}“ – ein Bild nur auswählen, wenn es ersetzt werden soll.`;ea.textContent="💾 Änderung speichern";ec.hidden=false;en.scrollIntoView({behavior:"smooth",block:"center"})}
+function resetForm(){EDIT=null;en.value=edsc.value=ed1.value=et.value=ei.value="";es.value="all";eh.textContent="";ea.textContent="➕ Event hinzufügen";ec.hidden=true}
+ec.onclick=resetForm;
+async function delImg(path){try{const im=await getFile("docs/"+path);if(im)await fetch(`${api}/contents/docs/${path}`,{method:"DELETE",headers:H(),body:JSON.stringify({message:"Bild gelöscht",sha:im.sha})})}catch{}}
 async function evList(){const f=await getFile("docs/events.json");return{sha:f&&f.sha,list:f?JSON.parse(f.text).events||[]:[]}}
-async function shrink(file){const bmp=await createImageBitmap(file),sc=Math.min(1,1000/bmp.width),c=document.createElement("canvas");c.width=Math.round(bmp.width*sc);c.height=Math.round(bmp.height*sc);
+async function shrink(file,w=1000){const bmp=await createImageBitmap(file),sc=Math.min(1,w/bmp.width),c=document.createElement("canvas");c.width=Math.round(bmp.width*sc);c.height=Math.round(bmp.height*sc);
   c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);const blob=await new Promise(r=>c.toBlob(r,"image/jpeg",.82));return u8b64(new Uint8Array(await blob.arrayBuffer()))}
 ea.onclick=async()=>{
   try{if(!en.value||!ed1.value)throw new Error("Name und Datum sind Pflicht");say("Speichere Event …");
-    const id="e"+Date.now();let image="";
-    if(ei.files[0]){await putFile(`docs/events/${id}.jpg`,await shrink(ei.files[0]),"Event-Bild");image=`events/${id}.jpg`}
-    const f=await evList();f.list.push({id,name:en.value,desc:edsc.value,date:ed1.value,time:et.value,image,server:es.value});
-    await putFile("docs/events.json",b64s(JSON.stringify({events:f.list},null,2)),"Event hinzugefügt",f.sha);
-    EVS=f.list;renderEvents();en.value=edsc.value=ed1.value=et.value=ei.value="";say("✅ Event gespeichert – in ca. 1 Minute sichtbar.");
+    const f=await evList();let e=EDIT&&f.list.find(x=>x.id===EDIT);const isNew=!e;if(isNew){e={id:"e"+Date.now(),image:""};f.list.push(e)}
+    if(ei.files[0]){const path=`events/${e.id}-${Date.now()}.jpg`;await putFile("docs/"+path,await shrink(ei.files[0]),"Event-Bild");if(e.image)delImg(e.image);e.image=path}
+    Object.assign(e,{name:en.value,desc:edsc.value,date:ed1.value,time:et.value,server:es.value});
+    await putFile("docs/events.json",b64s(JSON.stringify({events:f.list},null,2)),isNew?"Event hinzugefügt":"Event geändert",f.sha);
+    EVS=f.list;renderEvents();resetForm();say("✅ Event gespeichert – in ca. 1 Minute sichtbar.");
   }catch(e){say("❌ "+e.message)}
 };
 async function delEvent(e){
   try{if(!confirm(`„${e.name}“ löschen?`))return;const f=await evList();
     await putFile("docs/events.json",b64s(JSON.stringify({events:f.list.filter(x=>x.id!==e.id)},null,2)),"Event gelöscht",f.sha);
-    if(e.image){const im=await getFile("docs/"+e.image);if(im)await fetch(`${api}/contents/docs/${e.image}`,{method:"DELETE",headers:H(),body:JSON.stringify({message:"Event-Bild gelöscht",sha:im.sha})})}
-    EVS=f.list.filter(x=>x.id!==e.id);renderEvents();say("✅ Event gelöscht.");
+    if(e.image)delImg(e.image);EVS=f.list.filter(x=>x.id!==e.id);renderEvents();if(EDIT===e.id)resetForm();say("✅ Event gelöscht.");
   }catch(x){say("❌ "+x.message)}
 }
+async function getPolls(){const f=await getFile("docs/polls.json");return{sha:f&&f.sha,data:f?JSON.parse(f.text):{api:"",polls:[]}}}
+const putPolls=(f,m)=>putFile("docs/polls.json",b64s(JSON.stringify(f.data,null,2)),m,f.sha);
+function addOpt(o={}){const r=el("div","",$("po"),"ev"),im=document.createElement("img"),d=el("div","",r),t=document.createElement("input"),f=document.createElement("input"),x=el("button","✕",r,"s");
+  t.type="text";t.placeholder="Optionstext";t.value=o.text||"";f.type="file";f.accept="image/*";f.style.marginTop="6px";d.append(t,f);if(o.image)im.src=o.image;else im.hidden=true;r.prepend(im);
+  const ent={id:o.id||"o"+Date.now()+POPTS.length,t,f,image:o.image||""};x.onclick=()=>{r.remove();POPTS=POPTS.filter(z=>z!==ent)};POPTS.push(ent)}
+pao.onclick=()=>addOpt();
+pap.onclick=async()=>{try{const ks=ps.value==="all"?SERVERS.map(s=>s.key):[ps.value],seen=new Set(POPTS.map(o=>o.pid).filter(Boolean));
+  for(const k of ks){const d=await (await fetch(`data/${k}/stats.json`,{cache:"no-cache"})).json(),o=((OV.servers||{})[k]||{}).players||{};
+    d.players.forEach(p=>{const x=o[p.uuid]||{};if(x.hidden||seen.has(p.uuid))return;seen.add(p.uuid);addOpt({text:x.display_name||p.name,image:`https://mc-heads.net/avatar/${p.uuid}/64`});POPTS[POPTS.length-1].pid=p.uuid})}
+}catch(e){say("❌ "+e.message)}};
+function renderPolls(){const b=$("pll");b.replaceChildren();if(!PL.polls.length)el("p","Noch keine Umfragen.",b,"mu");
+  PL.polls.forEach(p=>{const r=el("div","",b,"ev"),d=el("div","",r),ended=new Date(p.ends)<=new Date();el("b",p.title,d);
+    el("div",`${ended?"beendet":"endet"} ${new Date(p.ends).toLocaleString("de-AT")} · ${p.options.length} Optionen · ${p.max||1} Stimme(n)`,d,"mu");
+    el("button","✏️",r,"s").onclick=()=>editPoll(p);if(!ended)el("button","⏹",r,"s").onclick=()=>endPoll(p);el("button","🗑",r,"s").onclick=()=>delPoll(p)})}
+function editPoll(p){PEDIT=p.id;pt.value=p.title;pd.value=p.desc||"";ps.value=p.server||"all";pm.value=p.max||1;const d=new Date(p.ends);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());pe.value=d.toISOString().slice(0,16);
+  $("po").replaceChildren();POPTS=[];p.options.forEach(o=>addOpt(o));ph2.textContent=`Bearbeite „${p.title}“ – Bilder nur auswählen, wenn sie ersetzt werden sollen.`;pa.textContent="💾 Änderung speichern";pc.hidden=false;pt.scrollIntoView({behavior:"smooth",block:"center"})}
+function resetPoll(){PEDIT=null;pt.value=pd.value=pe.value="";pm.value=1;$("po").replaceChildren();POPTS=[];ph2.textContent="";pa.textContent="➕ Umfrage erstellen";pc.hidden=true}
+pc.onclick=resetPoll;
+pa.onclick=async()=>{try{
+  const opts=POPTS.filter(o=>o.t.value.trim());if(!pt.value||!pe.value||opts.length<2)throw new Error("Titel, Ende und mindestens 2 Optionen sind Pflicht");say("Speichere Umfrage …");
+  const f=await getPolls();let p=PEDIT&&f.data.polls.find(x=>x.id===PEDIT);const isNew=!p;if(isNew){p={id:"p"+Date.now()};f.data.polls.push(p)}
+  const options=[];for(const o of opts){let image=o.image;if(o.f.files[0]){const path=`polls/${p.id}-${o.id}-${Date.now()}.jpg`;await putFile("docs/"+path,await shrink(o.f.files[0],500),"Umfrage-Bild");if(o.image.startsWith("polls/"))delImg(o.image);image=path}options.push({id:o.id,text:o.t.value.trim(),image})}
+  (p.options||[]).forEach(o=>{if((o.image||"").startsWith("polls/")&&!options.some(n=>n.image===o.image))delImg(o.image)});
+  Object.assign(p,{title:pt.value,desc:pd.value,server:ps.value,max:Math.max(1,+pm.value||1),ends:new Date(pe.value).toISOString(),options});
+  if(papi.value.trim())f.data.api=papi.value.trim();await putPolls(f,isNew?"Umfrage erstellt":"Umfrage geändert");PL=f.data;renderPolls();resetPoll();say("✅ Umfrage gespeichert – in ca. 1 Minute sichtbar.");
+}catch(e){say("❌ "+e.message)}};
+async function endPoll(p){try{if(!confirm(`„${p.title}“ jetzt beenden?`))return;const f=await getPolls();const q=f.data.polls.find(x=>x.id===p.id);if(q)q.ends=new Date().toISOString();await putPolls(f,"Umfrage beendet");PL=f.data;renderPolls();say("✅ Umfrage beendet.")}catch(e){say("❌ "+e.message)}}
+async function delPoll(p){try{if(!confirm(`„${p.title}“ löschen?`))return;const f=await getPolls();f.data.polls=f.data.polls.filter(x=>x.id!==p.id);await putPolls(f,"Umfrage gelöscht");
+  p.options.forEach(o=>{if((o.image||"").startsWith("polls/"))delImg(o.image)});PL=f.data;renderPolls();say("✅ Umfrage gelöscht.")}catch(e){say("❌ "+e.message)}}
+pas.onclick=async()=>{try{const f=await getPolls();f.data.api=papi.value.trim();await putPolls(f,"Umfrage-Backend");PL=f.data;say("✅ URL gespeichert.")}catch(e){say("❌ "+e.message)}};
 ld.onclick=async()=>{
   try{
     SERVERS=await (await fetch("servers.json",{cache:"no-cache"})).json().catch(()=>{throw new Error("servers.json fehlt – erst den Workflow einmal ausführen")});
     const f=await getFile("docs/overrides.json");OVSHA=f&&f.sha;OV=f?JSON.parse(f.text):{};
     if(!OV.servers){OV.servers={};if(OV.site||OV.categories||OV.players)OV.servers[SERVERS[0].key]={site:OV.site||{},categories:OV.categories||{},players:OV.players||{}};delete OV.site;delete OV.categories;delete OV.players}
     sel.replaceChildren();es.replaceChildren();el("option","Alle Server",es).value="all";
-    SERVERS.forEach(s=>{el("option",s.name,sel).value=s.key;el("option",s.name,es).value=s.key});
+    ps.replaceChildren();el("option","Alle Server",ps).value="all";SERVERS.forEach(s=>{el("option",s.name,sel).value=s.key;el("option",s.name,es).value=s.key;el("option",s.name,ps).value=s.key});
     pre.replaceChildren();Object.keys(PRE).forEach(k=>{el("button",k,pre,"s").onclick=()=>setTheme(PRE[k])});
     cl.replaceChildren();clEls={};TK.forEach(([k,l])=>clEls[k]=picker(cl,l,PRE.Standard[k]));
     plEls=PRE.Standard.players.map((c,i)=>picker(cl,"Standardfarbe Platz "+(i+1),c));
     setTheme({...PRE.Standard,...(OV.theme||{}),players:(OV.theme||{}).players||PRE.Standard.players});
-    sel.value=SERVERS[0].key;await buildServer(SERVERS[0].key);EVS=(await evList()).list;renderEvents();
+    sel.value=SERVERS[0].key;await buildServer(SERVERS[0].key);EVS=(await evList()).list;renderEvents();PL=(await getPolls()).data;papi.value=PL.api||"";renderPolls();
+    dl.value=(OV.discord||{}).url??DEFDC;dt.value=(OV.discord||{}).text||"Discord";sa.checked=OV.showAdmin!==false;
     ed.hidden=false;ab.hidden=false;say("Geladen.");
   }catch(e){say("Fehler: "+e.message)}
 };
