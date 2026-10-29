@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-29T09:45+00:00",
+ "updated": "2026-10-29T10:48+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -307,28 +307,28 @@
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
    "name": "CapyDreamXD",
-   "minutes": 2271,
-   "hours": 37.8,
+   "minutes": 2291,
+   "hours": 38.2,
    "deaths": 22,
-   "mob_kills": 398,
+   "mob_kills": 400,
    "player_kills": 0,
-   "entities_killed": 390,
-   "items_used": 36075,
-   "damage": 6928,
-   "blocks_mined": 21479,
+   "entities_killed": 392,
+   "items_used": 37572,
+   "damage": 6962,
+   "blocks_mined": 22922,
    "diamonds": 79,
-   "km_travelled": 439.6,
-   "jumps": 64746,
+   "km_travelled": 442.7,
+   "jumps": 65136,
    "travel": {
     "boat": 33.6,
-    "crouch": 4.7,
+    "crouch": 4.8,
     "climb": 0.1,
     "minecart": 1.4,
-    "walk": 33.0,
+    "walk": 33.4,
     "walk_under_water": 2.0,
-    "horse": 154.5,
-    "sprint": 58.2,
-    "fly": 146.4,
+    "horse": 155.7,
+    "sprint": 58.8,
+    "fly": 147.2,
     "walk_on_water": 1.4,
     "swim": 3.3,
     "nautilus": 1.0
@@ -344,7 +344,7 @@
     ],
     [
      "skeleton",
-     54
+     55
     ],
     [
      "spider",
@@ -352,7 +352,7 @@
     ],
     [
      "creeper",
-     28
+     29
     ],
     [
      "sheep",
@@ -370,23 +370,23 @@
    "top_blocks": [
     [
      "grass_block",
-     4417
+     4700
     ],
     [
      "stone",
-     3848
+     4448
+    ],
+    [
+     "dirt",
+     2340
     ],
     [
      "cobblestone",
      2237
     ],
     [
-     "dirt",
-     1908
-    ],
-    [
      "coal_ore",
-     1834
+     1866
     ],
     [
      "sculk",
@@ -394,7 +394,7 @@
     ],
     [
      "spruce_log",
-     873
+     946
     ],
     [
      "sand",
@@ -416,7 +416,7 @@
     ],
     [
      "diamond_pickaxe",
-     1772
+     2407
     ],
     [
      "diamond_hoe",
@@ -428,11 +428,11 @@
     ],
     [
      "dirt",
-     1357
+     1389
     ],
     [
-     "lime_wool",
-     1033
+     "diamond_shovel",
+     1319
     ]
    ],
    "death_causes": [
@@ -458,7 +458,7 @@
     ]
    ],
    "death_other": 7,
-   "week_hours": 0.0
+   "week_hours": 0.4
   },
   {
    "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
