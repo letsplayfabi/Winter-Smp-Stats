@@ -33,7 +33,7 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 <section class="card"><h2>💬 Discord-Button (alle Server)</h2><div class="g"><label>Link<input id="dl" type="text"></label><label>Button-Text<input id="dt" type="text"></label></div><p class="mu" style="margin-top:8px">Link leer lassen = Button ausblenden.</p></section>
 <section class="card"><h2>🏷️ Seite</h2><div class="g">
 <label>Titel<input id="st" type="text"></label><label>Einleitung<input id="si" type="text"></label></div></section>
-<section class="card"><h2>🗂️ Kategorienamen</h2><p class="mu">Leer lassen = Standardname.</p><div class="g" id="cats"></div></section>
+<section class="card"><h2>🗂️ Kategorien dieses Servers</h2><p class="mu">Häkchen = wird auf diesem Server angezeigt (so schaltest du eine Kategorie bei einem Server mit einem Klick zu oder ab). Namensfeld leer lassen = Standardname.</p><div class="g" id="cats"></div></section>
 <section class="card"><h2>👥 Spieler</h2><p class="mu">Anzeigename, Titel, eigene Farbe (↺ = Standardfarbe nach Platz) und Ausblenden.</p><div id="rows"></div></section>
 <section class="card"><h2>🎨 Farben (alle Server)</h2><div class="pr" id="pre"></div><div class="g" id="cl"></div><div id="pv"></div></section>
 <section class="card"><h2>📅 Events (alle Server)</h2>
@@ -48,7 +48,8 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 <script>
 const own=location.hostname.split(".")[0],repo=location.pathname.split("/")[1],api=`https://api.github.com/repos/${own}/${repo}`;
 const CK=[["playtime","Spielzeit"],["player_kills","Spieler-Kills"],["deaths","Tode"],["travel","Gereist (km)"],["mined","Blöcke abgebaut"],["used","Items verwendet"],["killed","Entities getötet"],["damage","Schaden ausgeteilt (HP)"],["diamonds","💎 Diamanten"]];
-const CKX={netherite:["netherite","Netherite gefarmt"],creepers:["creepers","Creeper getötet"],netherrack:["netherrack","Netherrack abgebaut"],deepslate:["deepslate","Deepslate abgebaut"],aviate:["aviate","Elytra-Strecke (km)"]};
+const CKX={netherite:["netherite","Netherite gefarmt"],creepers:["creepers","Creeper getötet"],netherrack:["netherrack","Netherrack abgebaut"],deepslate:["deepslate","Deepslate abgebaut"],elytra:["elytra","Elytra-Strecke (km)"]};
+const ALLK=[...CK,...Object.values(CKX)];
 const TK=[["bg","Hintergrund"],["panel","Karten"],["text","Text"],["muted","Nebentext"],["accent","Akzent"]];
 const PRE={Standard:{bg:"#0a111f",panel:"#131b2b",text:"#ffffff",muted:"#8fa0b8",accent:"#52e585",players:["#52e585","#45b0f5","#e9bc57","#bb92f2","#f39a68","#f2677a"]},
 Nether:{bg:"#1a0b0b",panel:"#2a1212",text:"#ffe9e0",muted:"#c08a7a",accent:"#ff7a3d",players:["#ff7a3d","#e63946","#f4a261","#e9c46a","#b5179e","#8d99ae"]},
@@ -74,7 +75,8 @@ function pv(){const t=getTheme(),box=$("pv");box.replaceChildren();box.style.bac
 async function buildServer(key){
   cur=key;let players=[];try{players=(await (await fetch(`data/${key}/stats.json`,{cache:"no-cache"})).json()).players}catch{}
   const sv=OV.servers[key]||{},s=sv.site||{};st.value=s.title||"";si.value=s.intro||"";
-  cats.replaceChildren();catEls=[];[...CK,...((SERVERS.find(s=>s.key===key)||{}).extra||[]).map(x=>CKX[x]).filter(Boolean)].forEach(([k,d])=>{const l=el("label",d,cats),i=document.createElement("input");i.type="text";i.placeholder=d;i.value=(sv.categories||{})[k]||"";l.append(i);catEls.push([k,i])});
+  cats.replaceChildren();catEls=[];const sv0=SERVERS.find(x=>x.key===key)||{},defOn=[...CK.map(c=>c[0]),...(sv0.extra||[])].filter(k=>!(sv0.hide||[]).includes(k)),on=sv.enabled||defOn;
+  ALLK.forEach(([k,d])=>{const l=el("label","",cats),c=document.createElement("input"),i=document.createElement("input");c.type="checkbox";c.checked=on.includes(k);i.type="text";i.placeholder=d;i.value=(sv.categories||{})[k]||"";l.append(c,document.createTextNode(" "+d),i);catEls.push([k,i,c])});
   rows.replaceChildren();rowEls=[];
   players.forEach(p=>{const o=(sv.players||{})[p.uuid]||{},r=el("div","",rows,"pl"),im=document.createElement("img");im.src=`https://mc-heads.net/avatar/${p.uuid}/36`;im.width=im.height=36;im.onerror=()=>im.remove();r.append(im);
     el("b",p.name,r);const a=document.createElement("input"),t=document.createElement("input"),c=document.createElement("input"),h=document.createElement("input");
@@ -85,7 +87,7 @@ async function buildServer(key){
 }
 function collect(){
   const sv={site:{title:st.value,intro:si.value},categories:{},players:{}};
-  catEls.forEach(([k,i])=>{if(i.value)sv.categories[k]=i.value});
+  catEls.forEach(([k,i])=>{if(i.value)sv.categories[k]=i.value});sv.enabled=catEls.filter(x=>x[2].checked).map(x=>x[0]);
   rowEls.forEach(([u,a,t,c,h])=>{if(a.value||t.value||h.checked||c.dataset.s)sv.players[u]={display_name:a.value,title:t.value,hidden:h.checked,...(c.dataset.s?{color:c.value}:{})}});
   OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;
 }
