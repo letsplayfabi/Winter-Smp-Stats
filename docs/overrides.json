@@ -1,9 +1,4 @@
 {
-  "site": {
-    "title": "Winter SMP – Statistiken",
-    "intro": "Wird täglich aktualisiert.",
-    "badge": "Season Stats"
-  },
   "theme": {
     "players": [
       "#52e585",
@@ -19,6 +14,15 @@
     "muted": "#8fa0b8",
     "accent": "#52e585"
   },
-  "categories": {},
-  "players": {}
+  "servers": {
+    "winter": {
+      "site": {
+        "title": "Winter SMP – Statistiken",
+        "intro": "Wird täglich aktualisiert.",
+        "badge": "Season Stats"
+      },
+      "categories": {},
+      "players": {}
+    }
+  }
 }
