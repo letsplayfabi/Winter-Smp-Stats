@@ -1,4 +1,1258 @@
 {
- "updated": "2026-10-29T22:01+00:00",
- "players": []
+ "updated": "2026-10-29T22:08+00:00",
+ "players": [
+  {
+   "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
+   "name": "CapyDreamXD",
+   "minutes": 18068,
+   "hours": 301.1,
+   "deaths": 135,
+   "mob_kills": 29640,
+   "player_kills": 47,
+   "entities_killed": 29491,
+   "items_used": 379162,
+   "damage": 53035,
+   "blocks_mined": 181383,
+   "diamonds": 289,
+   "km_travelled": 3897.6,
+   "jumps": 333360,
+   "travel": {
+    "boat": 115.9,
+    "aviate": 1830.0,
+    "strider": 0.0,
+    "happy_ghast": 44.0,
+    "crouch": 67.0,
+    "climb": 22.5,
+    "minecart": 52.1,
+    "walk": 308.8,
+    "walk_under_water": 72.3,
+    "horse": 17.3,
+    "sprint": 455.9,
+    "fly": 770.6,
+    "walk_on_water": 35.6,
+    "swim": 105.6
+   },
+   "top_mobs": [
+    [
+     "pillager",
+     23457
+    ],
+    [
+     "zombie",
+     1113
+    ],
+    [
+     "creeper",
+     1113
+    ],
+    [
+     "vindicator",
+     1029
+    ],
+    [
+     "skeleton",
+     822
+    ],
+    [
+     "witch",
+     303
+    ],
+    [
+     "evoker",
+     270
+    ],
+    [
+     "frog",
+     223
+    ]
+   ],
+   "top_blocks": [
+    [
+     "netherrack",
+     21744
+    ],
+    [
+     "sand",
+     16434
+    ],
+    [
+     "stone",
+     12825
+    ],
+    [
+     "cobblestone",
+     12806
+    ],
+    [
+     "nether_quartz_ore",
+     7921
+    ],
+    [
+     "grass_block",
+     6811
+    ],
+    [
+     "snow",
+     5983
+    ],
+    [
+     "sugar_cane",
+     5961
+    ]
+   ],
+   "top_used": [
+    [
+     "netherite_pickaxe",
+     73545
+    ],
+    [
+     "diamond_shovel",
+     28529
+    ],
+    [
+     "stone",
+     26936
+    ],
+    [
+     "diamond_pickaxe",
+     22620
+    ],
+    [
+     "netherite_shovel",
+     16317
+    ],
+    [
+     "netherite_axe",
+     15105
+    ],
+    [
+     "dirt",
+     14830
+    ],
+    [
+     "diamond_axe",
+     13068
+    ]
+   ],
+   "death_causes": [
+    [
+     "player",
+     21
+    ],
+    [
+     "zombie",
+     9
+    ],
+    [
+     "creeper",
+     8
+    ],
+    [
+     "stray",
+     7
+    ],
+    [
+     "skeleton",
+     5
+    ]
+   ],
+   "death_other": 54,
+   "week_hours": 0.0
+  },
+  {
+   "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
+   "name": "letsplayfabi",
+   "minutes": 15565,
+   "hours": 259.4,
+   "deaths": 77,
+   "mob_kills": 36541,
+   "player_kills": 139,
+   "entities_killed": 36443,
+   "items_used": 327904,
+   "damage": 120382,
+   "blocks_mined": 186232,
+   "diamonds": 1139,
+   "km_travelled": 1823.6,
+   "jumps": 228388,
+   "travel": {
+    "boat": 56.7,
+    "aviate": 444.0,
+    "happy_ghast": 9.9,
+    "crouch": 27.2,
+    "climb": 4.7,
+    "minecart": 61.9,
+    "walk": 151.3,
+    "walk_under_water": 32.7,
+    "horse": 38.6,
+    "sprint": 244.6,
+    "fly": 648.5,
+    "walk_on_water": 23.9,
+    "swim": 79.6
+   },
+   "top_mobs": [
+    [
+     "pillager",
+     26597
+    ],
+    [
+     "zombie",
+     1286
+    ],
+    [
+     "vindicator",
+     1175
+    ],
+    [
+     "silverfish",
+     1070
+    ],
+    [
+     "slime",
+     1000
+    ],
+    [
+     "skeleton",
+     828
+    ],
+    [
+     "creeper",
+     821
+    ],
+    [
+     "stray",
+     514
+    ]
+   ],
+   "top_blocks": [
+    [
+     "stone",
+     54007
+    ],
+    [
+     "netherrack",
+     24012
+    ],
+    [
+     "cobblestone",
+     14972
+    ],
+    [
+     "spruce_log",
+     9929
+    ],
+    [
+     "grass_block",
+     8777
+    ],
+    [
+     "dirt",
+     8400
+    ],
+    [
+     "deepslate",
+     4965
+    ],
+    [
+     "dark_oak_log",
+     4340
+    ]
+   ],
+   "top_used": [
+    [
+     "diamond_pickaxe",
+     73572
+    ],
+    [
+     "netherite_pickaxe",
+     43695
+    ],
+    [
+     "diamond_shovel",
+     22722
+    ],
+    [
+     "dirt",
+     14554
+    ],
+    [
+     "diamond_axe",
+     12128
+    ],
+    [
+     "netherite_sword",
+     9730
+    ],
+    [
+     "stone_bricks",
+     9189
+    ],
+    [
+     "netherite_axe",
+     8792
+    ]
+   ],
+   "death_causes": [
+    [
+     "player",
+     37
+    ],
+    [
+     "zombie",
+     8
+    ],
+    [
+     "vindicator",
+     4
+    ],
+    [
+     "creeper",
+     3
+    ],
+    [
+     "zombified_piglin",
+     3
+    ]
+   ],
+   "death_other": 11,
+   "week_hours": 0.0
+  },
+  {
+   "uuid": "ec853876-a510-49e7-a792-f08fa3e3b89d",
+   "name": "Imposta_und_inn",
+   "minutes": 10425,
+   "hours": 173.8,
+   "deaths": 305,
+   "mob_kills": 13867,
+   "player_kills": 33,
+   "entities_killed": 13601,
+   "items_used": 206330,
+   "damage": 65497,
+   "blocks_mined": 140230,
+   "diamonds": 694,
+   "km_travelled": 1203.3,
+   "jumps": 192334,
+   "travel": {
+    "boat": 62.3,
+    "aviate": 113.1,
+    "happy_ghast": 5.7,
+    "crouch": 25.6,
+    "climb": 6.6,
+    "minecart": 31.8,
+    "walk": 221.9,
+    "walk_under_water": 19.0,
+    "horse": 42.7,
+    "sprint": 233.0,
+    "fly": 365.4,
+    "walk_on_water": 21.8,
+    "swim": 54.4
+   },
+   "top_mobs": [
+    [
+     "pillager",
+     10837
+    ],
+    [
+     "zombie",
+     579
+    ],
+    [
+     "skeleton",
+     296
+    ],
+    [
+     "spider",
+     217
+    ],
+    [
+     "cow",
+     193
+    ],
+    [
+     "creeper",
+     169
+    ],
+    [
+     "sheep",
+     169
+    ],
+    [
+     "iron_golem",
+     162
+    ]
+   ],
+   "top_blocks": [
+    [
+     "netherrack",
+     38619
+    ],
+    [
+     "sand",
+     17928
+    ],
+    [
+     "spruce_log",
+     13552
+    ],
+    [
+     "dirt",
+     10025
+    ],
+    [
+     "deepslate",
+     9243
+    ],
+    [
+     "stone",
+     6688
+    ],
+    [
+     "grass_block",
+     5480
+    ],
+    [
+     "dark_oak_log",
+     2274
+    ]
+   ],
+   "top_used": [
+    [
+     "diamond_pickaxe",
+     60465
+    ],
+    [
+     "diamond_shovel",
+     34864
+    ],
+    [
+     "diamond_axe",
+     15114
+    ],
+    [
+     "stone_bricks",
+     8214
+    ],
+    [
+     "iron_pickaxe",
+     5106
+    ],
+    [
+     "netherite_pickaxe",
+     4280
+    ],
+    [
+     "netherite_axe",
+     3916
+    ],
+    [
+     "dirt",
+     3379
+    ]
+   ],
+   "death_causes": [
+    [
+     "player",
+     141
+    ],
+    [
+     "zombie",
+     29
+    ],
+    [
+     "pillager",
+     15
+    ],
+    [
+     "iron_golem",
+     14
+    ],
+    [
+     "skeleton",
+     11
+    ]
+   ],
+   "death_other": 57,
+   "week_hours": 0.0
+  },
+  {
+   "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
+   "name": "Trosser",
+   "minutes": 5720,
+   "hours": 95.3,
+   "deaths": 48,
+   "mob_kills": 6059,
+   "player_kills": 20,
+   "entities_killed": 5971,
+   "items_used": 176780,
+   "damage": 45938,
+   "blocks_mined": 133471,
+   "diamonds": 117,
+   "km_travelled": 987.9,
+   "jumps": 168882,
+   "travel": {
+    "boat": 20.8,
+    "aviate": 255.0,
+    "happy_ghast": 6.3,
+    "crouch": 7.1,
+    "climb": 4.2,
+    "minecart": 3.7,
+    "walk": 117.9,
+    "walk_under_water": 24.6,
+    "horse": 0.0,
+    "sprint": 173.3,
+    "fly": 324.9,
+    "walk_on_water": 9.2,
+    "swim": 40.9
+   },
+   "top_mobs": [
+    [
+     "creeper",
+     1761
+    ],
+    [
+     "zombie",
+     1545
+    ],
+    [
+     "skeleton",
+     1415
+    ],
+    [
+     "pillager",
+     223
+    ],
+    [
+     "piglin",
+     181
+    ],
+    [
+     "spider",
+     113
+    ],
+    [
+     "hoglin",
+     112
+    ],
+    [
+     "zombified_piglin",
+     87
+    ]
+   ],
+   "top_blocks": [
+    [
+     "netherrack",
+     66308
+    ],
+    [
+     "deepslate",
+     18944
+    ],
+    [
+     "stone",
+     10614
+    ],
+    [
+     "spruce_log",
+     5092
+    ],
+    [
+     "sand",
+     4004
+    ],
+    [
+     "dirt",
+     3002
+    ],
+    [
+     "granite",
+     1658
+    ],
+    [
+     "sugar_cane",
+     1634
+    ]
+   ],
+   "top_used": [
+    [
+     "netherite_pickaxe",
+     88975
+    ],
+    [
+     "diamond_pickaxe",
+     15856
+    ],
+    [
+     "polished_deepslate",
+     11600
+    ],
+    [
+     "diamond_axe",
+     6044
+    ],
+    [
+     "diamond_shovel",
+     4449
+    ],
+    [
+     "dirt",
+     4249
+    ],
+    [
+     "netherite_axe",
+     3956
+    ],
+    [
+     "diamond_sword",
+     3374
+    ]
+   ],
+   "death_causes": [
+    [
+     "player",
+     17
+    ],
+    [
+     "creeper",
+     5
+    ],
+    [
+     "skeleton",
+     4
+    ],
+    [
+     "iron_golem",
+     4
+    ],
+    [
+     "piglin",
+     2
+    ]
+   ],
+   "death_other": 16,
+   "week_hours": 0.0
+  },
+  {
+   "uuid": "61a0350a-3e08-4c83-9d5a-559dd7ec3f00",
+   "name": "EliasD00",
+   "minutes": 4783,
+   "hours": 79.7,
+   "deaths": 39,
+   "mob_kills": 10513,
+   "player_kills": 17,
+   "entities_killed": 10419,
+   "items_used": 97918,
+   "damage": 26102,
+   "blocks_mined": 48888,
+   "diamonds": 429,
+   "km_travelled": 600.0,
+   "jumps": 81682,
+   "travel": {
+    "boat": 125.1,
+    "aviate": 32.5,
+    "happy_ghast": 0.1,
+    "crouch": 6.4,
+    "climb": 1.1,
+    "minecart": 15.2,
+    "walk": 94.3,
+    "walk_under_water": 20.9,
+    "horse": 0.0,
+    "sprint": 118.9,
+    "fly": 160.4,
+    "walk_on_water": 7.0,
+    "swim": 18.1
+   },
+   "top_mobs": [
+    [
+     "pillager",
+     6654
+    ],
+    [
+     "creeper",
+     1121
+    ],
+    [
+     "zombie",
+     977
+    ],
+    [
+     "skeleton",
+     876
+    ],
+    [
+     "stray",
+     198
+    ],
+    [
+     "spider",
+     96
+    ],
+    [
+     "slime",
+     50
+    ],
+    [
+     "cow",
+     39
+    ]
+   ],
+   "top_blocks": [
+    [
+     "stone",
+     14402
+    ],
+    [
+     "netherrack",
+     3915
+    ],
+    [
+     "deepslate",
+     2454
+    ],
+    [
+     "spruce_log",
+     2371
+    ],
+    [
+     "oak_leaves",
+     2339
+    ],
+    [
+     "sugar_cane",
+     1774
+    ],
+    [
+     "cobblestone",
+     1554
+    ],
+    [
+     "sand",
+     1459
+    ]
+   ],
+   "top_used": [
+    [
+     "netherite_pickaxe",
+     16674
+    ],
+    [
+     "cobblestone",
+     12577
+    ],
+    [
+     "diamond_pickaxe",
+     8106
+    ],
+    [
+     "diamond_sword",
+     6455
+    ],
+    [
+     "iron_pickaxe",
+     5296
+    ],
+    [
+     "netherite_axe",
+     2831
+    ],
+    [
+     "dirt",
+     2485
+    ],
+    [
+     "bone_meal",
+     2368
+    ]
+   ],
+   "death_causes": [
+    [
+     "player",
+     16
+    ],
+    [
+     "creeper",
+     4
+    ],
+    [
+     "stray",
+     4
+    ],
+    [
+     "piglin_brute",
+     1
+    ],
+    [
+     "witch",
+     1
+    ]
+   ],
+   "death_other": 8,
+   "week_hours": 0.0
+  },
+  {
+   "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
+   "name": "SirMemo",
+   "minutes": 3741,
+   "hours": 62.4,
+   "deaths": 24,
+   "mob_kills": 5362,
+   "player_kills": 1,
+   "entities_killed": 5336,
+   "items_used": 62079,
+   "damage": 16426,
+   "blocks_mined": 45105,
+   "diamonds": 488,
+   "km_travelled": 533.9,
+   "jumps": 72259,
+   "travel": {
+    "boat": 13.9,
+    "aviate": 187.1,
+    "happy_ghast": 6.5,
+    "crouch": 6.1,
+    "climb": 4.0,
+    "minecart": 11.4,
+    "walk": 35.6,
+    "walk_under_water": 2.0,
+    "horse": 11.3,
+    "sprint": 111.5,
+    "fly": 131.1,
+    "walk_on_water": 4.1,
+    "swim": 9.3
+   },
+   "top_mobs": [
+    [
+     "pillager",
+     4152
+    ],
+    [
+     "zombie",
+     175
+    ],
+    [
+     "vindicator",
+     165
+    ],
+    [
+     "pig",
+     159
+    ],
+    [
+     "sheep",
+     139
+    ],
+    [
+     "cow",
+     110
+    ],
+    [
+     "skeleton",
+     107
+    ],
+    [
+     "chicken",
+     50
+    ]
+   ],
+   "top_blocks": [
+    [
+     "netherrack",
+     24657
+    ],
+    [
+     "sand",
+     3191
+    ],
+    [
+     "stone",
+     3143
+    ],
+    [
+     "deepslate",
+     1481
+    ],
+    [
+     "nether_quartz_ore",
+     1195
+    ],
+    [
+     "grass_block",
+     1075
+    ],
+    [
+     "basalt",
+     1070
+    ],
+    [
+     "dirt",
+     866
+    ]
+   ],
+   "top_used": [
+    [
+     "diamond_pickaxe",
+     31036
+    ],
+    [
+     "diamond_shovel",
+     4048
+    ],
+    [
+     "netherite_pickaxe",
+     3507
+    ],
+    [
+     "diamond_sword",
+     3273
+    ],
+    [
+     "firework_rocket",
+     1454
+    ],
+    [
+     "netherite_sword",
+     1416
+    ],
+    [
+     "diamond_axe",
+     1251
+    ],
+    [
+     "iron_pickaxe",
+     1010
+    ]
+   ],
+   "death_causes": [
+    [
+     "player",
+     6
+    ],
+    [
+     "skeleton",
+     4
+    ],
+    [
+     "creeper",
+     3
+    ],
+    [
+     "zombie",
+     2
+    ],
+    [
+     "enderman",
+     1
+    ]
+   ],
+   "death_other": 7,
+   "week_hours": 0.0
+  },
+  {
+   "uuid": "2f1805a1-9ee7-4576-a400-023a5731e065",
+   "name": "Mensch3344",
+   "minutes": 1930,
+   "hours": 32.2,
+   "deaths": 62,
+   "mob_kills": 2234,
+   "player_kills": 25,
+   "entities_killed": 2199,
+   "items_used": 24025,
+   "damage": 10677,
+   "blocks_mined": 14528,
+   "diamonds": 373,
+   "km_travelled": 294.9,
+   "jumps": 40076,
+   "travel": {
+    "boat": 19.4,
+    "crouch": 2.4,
+    "climb": 0.9,
+    "minecart": 3.9,
+    "walk": 56.9,
+    "walk_under_water": 3.0,
+    "horse": 67.7,
+    "sprint": 59.7,
+    "fly": 72.7,
+    "walk_on_water": 3.0,
+    "swim": 5.3
+   },
+   "top_mobs": [
+    [
+     "pillager",
+     1585
+    ],
+    [
+     "zombie",
+     177
+    ],
+    [
+     "skeleton",
+     108
+    ],
+    [
+     "creeper",
+     69
+    ],
+    [
+     "slime",
+     68
+    ],
+    [
+     "spider",
+     40
+    ],
+    [
+     "sheep",
+     22
+    ],
+    [
+     "squid",
+     18
+    ]
+   ],
+   "top_blocks": [
+    [
+     "deepslate",
+     5830
+    ],
+    [
+     "stone",
+     1969
+    ],
+    [
+     "potatoes",
+     1079
+    ],
+    [
+     "dirt",
+     500
+    ],
+    [
+     "tuff",
+     422
+    ],
+    [
+     "sweet_berry_bush",
+     380
+    ],
+    [
+     "deepslate_diamond_ore",
+     373
+    ],
+    [
+     "deepslate_redstone_ore",
+     269
+    ]
+   ],
+   "top_used": [
+    [
+     "diamond_pickaxe",
+     5614
+    ],
+    [
+     "iron_pickaxe",
+     1995
+    ],
+    [
+     "copper_pickaxe",
+     1558
+    ],
+    [
+     "potato",
+     1454
+    ],
+    [
+     "iron_sword",
+     1120
+    ],
+    [
+     "diamond_sword",
+     880
+    ],
+    [
+     "cobbled_deepslate",
+     793
+    ],
+    [
+     "bow",
+     662
+    ]
+   ],
+   "death_causes": [
+    [
+     "player",
+     28
+    ],
+    [
+     "zombie",
+     8
+    ],
+    [
+     "piglin",
+     7
+    ],
+    [
+     "piglin_brute",
+     4
+    ],
+    [
+     "creeper",
+     2
+    ]
+   ],
+   "death_other": 7,
+   "week_hours": 0.0
+  },
+  {
+   "uuid": "0c56fc04-4280-4fac-89e9-cae61668ee89",
+   "name": "JonasD00",
+   "minutes": 1224,
+   "hours": 20.4,
+   "deaths": 53,
+   "mob_kills": 253,
+   "player_kills": 5,
+   "entities_killed": 252,
+   "items_used": 18025,
+   "damage": 2243,
+   "blocks_mined": 8782,
+   "diamonds": 153,
+   "km_travelled": 132.7,
+   "jumps": 18415,
+   "travel": {
+    "boat": 13.4,
+    "crouch": 1.8,
+    "climb": 0.7,
+    "minecart": 0.0,
+    "walk": 46.2,
+    "walk_under_water": 1.3,
+    "horse": 0.1,
+    "sprint": 38.0,
+    "fly": 28.7,
+    "walk_on_water": 1.0,
+    "swim": 1.5
+   },
+   "top_mobs": [
+    [
+     "zombie",
+     69
+    ],
+    [
+     "stray",
+     54
+    ],
+    [
+     "skeleton",
+     50
+    ],
+    [
+     "creeper",
+     34
+    ],
+    [
+     "spider",
+     8
+    ],
+    [
+     "wolf",
+     5
+    ],
+    [
+     "witch",
+     4
+    ],
+    [
+     "breeze",
+     4
+    ]
+   ],
+   "top_blocks": [
+    [
+     "stone",
+     2101
+    ],
+    [
+     "sand",
+     1137
+    ],
+    [
+     "grass_block",
+     904
+    ],
+    [
+     "dirt",
+     723
+    ],
+    [
+     "deepslate",
+     646
+    ],
+    [
+     "netherrack",
+     494
+    ],
+    [
+     "oak_log",
+     388
+    ],
+    [
+     "dirt_path",
+     216
+    ]
+   ],
+   "top_used": [
+    [
+     "diamond_pickaxe",
+     2202
+    ],
+    [
+     "copper_shovel",
+     2088
+    ],
+    [
+     "stone_pickaxe",
+     1380
+    ],
+    [
+     "dirt",
+     833
+    ],
+    [
+     "netherrack",
+     816
+    ],
+    [
+     "sweet_berries",
+     751
+    ],
+    [
+     "stone_bricks",
+     577
+    ],
+    [
+     "diamond_axe",
+     530
+    ]
+   ],
+   "death_causes": [
+    [
+     "player",
+     25
+    ],
+    [
+     "creeper",
+     5
+    ],
+    [
+     "zombie",
+     4
+    ],
+    [
+     "piglin",
+     2
+    ],
+    [
+     "skeleton",
+     1
+    ]
+   ],
+   "death_other": 13,
+   "week_hours": 0.0
+  }
+ ]
 }
