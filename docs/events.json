@@ -1,0 +1,13 @@
+{
+  "events": [
+    {
+      "id": "e1793267426109",
+      "name": "Test Event",
+      "desc": "Das erste Event als test",
+      "date": "2026-10-29",
+      "time": "20:50",
+      "image": "",
+      "server": "winter"
+    }
+  ]
+}
