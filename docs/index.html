@@ -39,17 +39,11 @@ dialog::backdrop{background:rgba(0,0,0,.65);backdrop-filter:blur(4px)}@keyframes
 .dc{background:#5865F2;color:#fff;font-weight:700;text-decoration:none;padding:8px 16px;border-radius:99px;white-space:nowrap}
 #pill{position:fixed;right:16px;bottom:16px;max-width:calc(100vw - 32px);display:flex;align-items:center;gap:8px;background:var(--ac);color:#000;padding:10px 14px;border-radius:99px;font-weight:700;text-decoration:none;box-shadow:0 6px 18px rgba(0,0,0,.4);animation:pop .3s ease;z-index:5}
 #pill[hidden]{display:none}#pill span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#pill b{cursor:pointer;opacity:.6;padding:0 4px}
-.pc{background:var(--pn);border:1px solid var(--ln);border-radius:12px;padding:16px;margin:16px 0}.pc h3{margin:0 0 4px;font-size:20px}
-.po{display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;border:1px solid var(--ln);margin:6px 0;cursor:pointer;position:relative;overflow:hidden}
-.po>*{position:relative;z-index:1}.po>.fill{position:absolute;left:0;top:0;bottom:0;background:var(--ac);opacity:.2;z-index:0}
-.po img{width:44px;height:44px;object-fit:cover;border-radius:6px}.po .t{flex:1}.po em{font-style:normal;color:var(--mu);font-size:13px}.po.win{border-color:var(--ac)}
-.pc select,.pc button{padding:8px 12px;border-radius:8px;border:1px solid var(--ln);background:var(--bg);color:var(--fg);font:inherit}.pc button{background:var(--ac);color:#000;font-weight:700;border:0;cursor:pointer}
 </style></head><body><main>
 <nav class="nav" id="nav"></nav>
 <section id="lb"><header><div><h1 id="t">Server Leaderboard</h1><p class="sub" id="s"></p></div><a class="dc" id="dcl" target="_blank" rel="noopener" hidden></a></header>
 <p class="ex" id="i"></p><div class="grid" id="g"></div><footer id="f"></footer></section>
 <section id="ev" hidden></section>
-<section id="pl" hidden></section>
 <a id="pill" href="#events" hidden></a>
 <dialog id="d"><div id="dc"></div></dialog>
 </main>
@@ -65,6 +59,12 @@ const CATS=[
 ["damage","Schaden ausgeteilt (HP)",1,p=>p.damage],
 ["diamonds","💎 Diamanten",1,p=>p.diamonds]];
 const MOB={zombie:"Zombie",skeleton:"Skelett",creeper:"Creeper",spider:"Spinne",enderman:"Enderman",cow:"Kuh",pig:"Schwein",sheep:"Schaf",chicken:"Huhn",witch:"Hexe",slime:"Schleim",drowned:"Ertrunkener",player:"Spieler"};
+const EXTRA={
+netherite:["netherite","Netherite gefarmt",1,p=>(p.x||{}).debris||0],
+creepers:["creepers","Creeper getötet",1,p=>(p.x||{}).creepers||0],
+netherrack:["netherrack","Netherrack abgebaut",1,p=>(p.x||{}).netherrack||0],
+deepslate:["deepslate","Deepslate abgebaut",1,p=>(p.x||{}).deepslate||0],
+aviate:["aviate","Elytra-Strecke (km)",1,p=>(p.x||{}).aviate_km||0]};
 const COL=["#52e585","#45b0f5","#e9bc57","#bb92f2","#f39a68","#f2677a"];
 const $=id=>document.getElementById(id),n=v=>Number(v).toLocaleString("de-AT",{maximumFractionDigits:1});
 const pretty=(id,m)=>(m&&m[id])||(/\s/.test(id)?id:id.replace(/_/g," ").replace(/\b\w/g,c=>c.toUpperCase()));
@@ -108,25 +108,25 @@ $("d").onclick=e=>{if(e.target===$("d"))$("d").close()};
 $("d").addEventListener("close",()=>document.body.style.overflow="");
 
 async function server(k){
-  $("ev").hidden=true;$("pl").hidden=true;$("lb").hidden=false;$("g").replaceChildren();$("f").replaceChildren();$("i").textContent="Lade …";
-  const sv0=SERVERS.find(s=>s.key===k)||SERVERS[0];let d;
+  $("ev").hidden=true;$("lb").hidden=false;$("g").replaceChildren();$("f").replaceChildren();$("i").textContent="Lade …";
+  const sv0=SERVERS.find(s=>s.key===k)||SERVERS[0],cats=[...CATS,...(sv0.extra||[]).map(x=>EXTRA[x]).filter(Boolean)];let d;
   try{d=await fetch(`data/${sv0.key}/stats.json`,{cache:"no-cache"}).then(r=>{if(!r.ok)throw 0;return r.json()})}catch{$("i").textContent="stats.json konnte nicht geladen werden.";return}
   const sv=(OV.servers&&OV.servers[sv0.key])||(!OV.servers&&sv0===SERVERS[0]?OV:{}),o=sv.players||{},s=sv.site||{},lab=sv.categories||{};
   const data=d.players.map(p=>{const x=o[p.uuid]||o[p.name]||{};return{...p,display_name:x.display_name||p.name,title:x.title||"",hidden:!!x.hidden,color:x.color||""}}).filter(p=>!p.hidden);
   $("t").textContent=s.title||sv0.name+" Leaderboard";
-  $("s").textContent=`Minecraft • ${data.length} Spieler • ${CATS.length} Kategorien`;
+  $("s").textContent=`Minecraft • ${data.length} Spieler • ${cats.length} Kategorien`;
   $("i").textContent=[s.intro,"Stand: "+new Date(d.updated).toLocaleString("de-AT")].filter(Boolean).join(" · ");
   if(!data.length){$("g").textContent="Noch keine Statistiken gefunden.";return}
-  const R=CATS.map(c=>rank(c,data)),tot=new Map(data.map(p=>[p.uuid,0]));
+  const R=cats.map(c=>rank(c,data)),tot=new Map(data.map(p=>[p.uuid,0]));
   R.forEach(r=>r.pts.forEach((v,k)=>tot.set(k,tot.get(k)+v)));
   const order=[...data].sort((a,b)=>tot.get(b.uuid)-tot.get(a.uuid)),cm=new Map(order.map((p,i)=>[p.uuid,COLS[i%COLS.length]])),col=p=>p.color||cm.get(p.uuid),N=data.length;CTX={col,tot,order};
   chart($("g"),`Gesamtwertung · ${N} Punkte für Platz 1 bis 1 Punkt für Platz ${N}`,"Bei Gleichstand: Punkte der belegten Plätze gemittelt",order,p=>tot.get(p.uuid),v=>n(v)+" P",col,"",1);
-  CATS.forEach((c,i)=>{const r=R[i],ex=c[5]?"Beispiele ("+r.s[0].display_name+"): "+c[5](r.s[0]).slice(0,3).map(([k,v])=>pretty(k)+" "+n(v)).join(" · "):"";
+  cats.forEach((c,i)=>{const r=R[i],ex=c[5]?"Beispiele ("+r.s[0].display_name+"): "+c[5](r.s[0]).slice(0,3).map(([k,v])=>pretty(k)+" "+n(v)).join(" · "):"";
     chart($("g"),lab[c[0]]||c[1],c[2]?"Mehr ist besser":"Weniger ist besser",r.s,c[3],c[4]||n,col,ex)});
   el("b","MVP der Statistiken",$("f"));el("div",order[0].display_name+" führt die Gesamtwertung an.",$("f"));
 }
 async function events(){
-  $("lb").hidden=true;$("pl").hidden=true;const box=$("ev");box.hidden=false;box.replaceChildren();el("h1","Events",box);
+  $("lb").hidden=true;const box=$("ev");box.hidden=false;box.replaceChildren();el("h1","Events",box);
   let list=[];try{list=(await fetch("events.json",{cache:"no-cache"}).then(r=>r.json())).events||[]}catch{}
   const now=Date.now(),t=e=>new Date(e.date+"T"+(e.time||"00:00")).getTime();
   const up=list.filter(e=>t(e)>=now).sort((a,b)=>t(a)-t(b)),past=list.filter(e=>t(e)<now).sort((a,b)=>t(b)-t(a));
@@ -142,43 +142,13 @@ async function events(){
 }
 let NEXT=null,PX=false;const DEFDC="https://discord.gg/87mqfdznp4",T=e=>new Date(e.date+"T"+(e.time||"00:00")).getTime();
 const when=e=>{const d=Math.ceil((T(e)-Date.now())/864e5);return d<=0?"heute":d===1?"morgen":"in "+d+" Tagen"};
-const left=iso=>{const ms=new Date(iso)-Date.now(),d=Math.floor(ms/864e5),h=Math.floor(ms%864e5/36e5),m=Math.floor(ms%36e5/6e4);return d>0?`noch ${d} T ${h} Std`:`noch ${h} Std ${m} Min`};
-const LS=(k,v)=>{try{return v===undefined?localStorage.getItem(k):localStorage.setItem(k,v)}catch{return null}};
-async function polls(){
-  $("lb").hidden=true;$("ev").hidden=true;const box=$("pl");box.hidden=false;box.replaceChildren();el("h1","Umfragen",box);
-  let P={polls:[]};try{P=await fetch("polls.json",{cache:"no-cache"}).then(r=>r.json())}catch{}
-  const now=Date.now(),list=P.polls||[];if(!list.length){el("p","Noch keine Umfragen.",box,"ex");return}
-  list.filter(p=>new Date(p.ends)>now).sort((a,b)=>new Date(a.ends)-new Date(b.ends)).forEach(p=>pollCard(box,p,P.api,0));
-  const done=list.filter(p=>new Date(p.ends)<=now).sort((a,b)=>new Date(b.ends)-new Date(a.ends));
-  if(done.length){el("h2","Beendete Umfragen",box).style.margin="28px 0 0";done.forEach(p=>pollCard(box,p,P.api,1))}
-}
-function pollCard(box,p,api,ended){
-  const c=el("article","",box,"pc"),max=p.max||1,sel=new Set(),rows=new Map();el("h3",p.title,c);if(p.desc)el("p",p.desc,c,"ex").style.whiteSpace="pre-wrap";
-  const ends=new Date(p.ends).toLocaleString("de-AT");el("div",ended?"Beendet am "+ends:`Endet ${ends} · ${left(p.ends)} · bis zu ${max} Stimme${max>1?"n":""}`,c,"ex");
-  const info=el("div","",c,"ex"),btn=document.createElement("button"),vs=document.createElement("select");
-  p.options.forEach(o=>{const r=el("label","",c,"po"),f=el("div","",r,"fill"),cb=document.createElement("input");cb.type=max>1?"checkbox":"radio";cb.name=p.id;cb.disabled=ended||!api;
-    cb.onchange=()=>{if(max===1){sel.clear();sel.add(o.id)}else cb.checked?sel.add(o.id):sel.delete(o.id);rows.forEach(x=>{if(max>1)x.cb.disabled=!x.cb.checked&&sel.size>=max});btn.textContent=`Abstimmen (${sel.size}/${max})`};
-    r.append(cb);if(o.image){const i=document.createElement("img");i.src=o.image;i.alt="";r.append(i)}el("span",o.text,r,"t");rows.set(o.id,{r,f,em:el("em","",r),cb})});
-  const show=res=>{const cn=res.counts||{},mx=Math.max(0,...Object.values(cn)),v=res.voters||0;
-    rows.forEach((x,id)=>{const k=cn[id]||0;x.f.style.width=(v?k/v*100:0)+"%";x.em.textContent=k+(k===1?" Stimme":" Stimmen");x.r.classList.toggle("win",ended&&mx>0&&k===mx)});info.textContent=v+" Teilnehmer"};
-  const call=q=>fetch(api+"?"+q).then(r=>r.json());
-  if(!api){info.textContent="Abstimmen ist noch nicht eingerichtet.";return}
-  call(`action=results&poll=${encodeURIComponent(p.id)}`).then(show).catch(()=>info.textContent="Ergebnisse konnten nicht geladen werden.");
-  if(ended)return;
-  const ks=p.server&&p.server!=="all"?[p.server]:SERVERS.map(s=>s.key),seen=new Set(),bar=el("div","",c);bar.style.cssText="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px";
-  el("option","Wer bist du?",vs).value="";bar.append(vs,btn);btn.textContent=`Abstimmen (0/${max})`;
-  Promise.all(ks.map(k=>fetch(`data/${k}/stats.json`).then(r=>r.json()).then(d=>{const o=((OV.servers||{})[k]||{}).players||{};d.players.forEach(pl=>{if(seen.has(pl.uuid)||(o[pl.uuid]||{}).hidden)return;seen.add(pl.uuid);el("option",(o[pl.uuid]||{}).display_name||pl.name,vs).value=pl.uuid})}).catch(()=>0))).then(()=>{vs.value=LS("voter")||"";if(vs.value!==(LS("voter")||""))vs.value=""});
-  btn.onclick=async()=>{if(!vs.value)return info.textContent="Bitte wähle zuerst deinen Spielernamen.";if(!sel.size)return info.textContent="Bitte wähle mindestens eine Option.";
-    LS("voter",vs.value);try{const r=await call(`action=vote&poll=${encodeURIComponent(p.id)}&voter=v_${encodeURIComponent(vs.value)}&choices=${[...sel].join(",")}`);
-      if(r.error)throw new Error(r.error);show(r);info.textContent="✅ Stimme gespeichert – du kannst sie bis zum Ende ändern. "+info.textContent}catch(e){info.textContent="❌ "+e.message}};
-}
 function pill(){const p=$("pill");p.replaceChildren();if(!NEXT||PX||location.hash==="#events"){p.hidden=true;return}
   el("span","📅 "+NEXT.name+" · "+when(NEXT),p);const x=el("b","×",p);x.onclick=e=>{e.preventDefault();PX=true;p.hidden=true};p.hidden=false}
 function show(){const k=location.hash.slice(1)||SERVERS[0].key,b=$("nav");b.replaceChildren();
-  [...SERVERS.map(s=>[s.key,s.name,"#"+s.key]),["events","📅 Events"+(NEXT?" ●":""),"#events"],["polls","🗳️ Umfragen","#polls"],...(OV.showAdmin!==false?[["admin","⚙️ Admin","admin.html"]]:[])]
+  [...SERVERS.map(s=>[s.key,s.name,"#"+s.key]),["events","📅 Events"+(NEXT?" ●":""),"#events"],...(OV.showAdmin!==false?[["admin","⚙️ Admin","admin.html"]]:[])]
     .forEach(([id,l,h])=>{const a=el("a",l,b,id===k?"on":"");a.href=h});
   const dc=OV.discord||{},u=dc.url??DEFDC,d=$("dcl");d.hidden=!u;d.href=u||"#";d.textContent="💬 "+(dc.text||"Discord");
-  pill();k==="events"?events():k==="polls"?polls():server(k)}
+  pill();k==="events"?events():server(k)}
 window.onhashchange=show;
 Promise.all([fetch("servers.json",{cache:"no-cache"}).then(r=>r.json()).catch(()=>[{key:"winter",name:"Server"}]),
   fetch("overrides.json",{cache:"no-cache"}).then(r=>r.ok?r.json():{}).catch(()=>({})),
