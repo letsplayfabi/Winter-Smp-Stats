@@ -64,7 +64,8 @@ netherite:["netherite","Netherite gefarmt",1,p=>(p.x||{}).debris||0],
 creepers:["creepers","Creeper getötet",1,p=>(p.x||{}).creepers||0],
 netherrack:["netherrack","Netherrack abgebaut",1,p=>(p.x||{}).netherrack||0],
 deepslate:["deepslate","Deepslate abgebaut",1,p=>(p.x||{}).deepslate||0],
-aviate:["aviate","Elytra-Strecke (km)",1,p=>(p.x||{}).aviate_km||0]};
+elytra:["elytra","Elytra-Strecke (km)",1,p=>(p.x||{}).aviate_km||0]};
+const TRAV={walk:"Gehen",sprint:"Sprinten",crouch:"Schleichen",swim:"Schwimmen",fly:"Fliegen",aviate:"Elytra",boat:"Boot",horse:"Pferd",minecart:"Lore",pig:"Schwein",strider:"Schreiter",climb:"Klettern",walk_on_water:"Über Wasser",walk_under_water:"Unter Wasser",happy_ghast:"Glücklicher Ghast",nautilus:"Nautilus"};
 const COL=["#52e585","#45b0f5","#e9bc57","#bb92f2","#f39a68","#f2677a"];
 const $=id=>document.getElementById(id),n=v=>Number(v).toLocaleString("de-AT",{maximumFractionDigits:1});
 const pretty=(id,m)=>(m&&m[id])||(/\s/.test(id)?id:id.replace(/_/g," ").replace(/\b\w/g,c=>c.toUpperCase()));
@@ -100,7 +101,7 @@ function profile(p){
   cs.sort((a,z)=>z[1]-a[1]);
   el("div",p.deaths?"💀 Häufigste Todesursache: "+(cs[0]?cs[0][0]+" ("+cs[0][1]+"×)":"unbekannt"):"🎉 Noch nie gestorben",pb,"death");
   mini(pb,"Todesursachen",cs,null,c);mini(pb,"Meistgetötete Mobs",p.top_mobs,MOB,c);mini(pb,"Meistabgebaute Blöcke",p.top_blocks,null,c);
-  mini(pb,"Gereist nach Art (km)",Object.entries(p.travel).sort((a,z)=>z[1]-a[1]),null,c);
+  mini(pb,"Gereist nach Art (km)",Object.entries(p.travel).sort((a,z)=>z[1]-a[1]),TRAV,c);
   el("button","Schließen",pb).onclick=()=>$("d").close();
   document.body.style.overflow="hidden";$("d").scrollTop=0;$("d").showModal();
 }
@@ -109,9 +110,10 @@ $("d").addEventListener("close",()=>document.body.style.overflow="");
 
 async function server(k){
   $("ev").hidden=true;$("lb").hidden=false;$("g").replaceChildren();$("f").replaceChildren();$("i").textContent="Lade …";
-  const sv0=SERVERS.find(s=>s.key===k)||SERVERS[0],cats=[...CATS,...(sv0.extra||[]).map(x=>EXTRA[x]).filter(Boolean)];let d;
+  const sv0=SERVERS.find(s=>s.key===k)||SERVERS[0];let d;
   try{d=await fetch(`data/${sv0.key}/stats.json`,{cache:"no-cache"}).then(r=>{if(!r.ok)throw 0;return r.json()})}catch{$("i").textContent="stats.json konnte nicht geladen werden.";return}
-  const sv=(OV.servers&&OV.servers[sv0.key])||(!OV.servers&&sv0===SERVERS[0]?OV:{}),o=sv.players||{},s=sv.site||{},lab=sv.categories||{};
+  const sv=(OV.servers&&OV.servers[sv0.key])||(!OV.servers&&sv0===SERVERS[0]?OV:{}),o=sv.players||{},s=sv.site||{},lab=sv.categories||{},CM=Object.fromEntries([...CATS,...Object.values(EXTRA)].map(c=>[c[0],c])),
+    defOn=[...CATS.map(c=>c[0]),...(sv0.extra||[])].filter(x=>!(sv0.hide||[]).includes(x)),cats=(sv.enabled||defOn).map(x=>CM[x]).filter(Boolean);
   const data=d.players.map(p=>{const x=o[p.uuid]||o[p.name]||{};return{...p,display_name:x.display_name||p.name,title:x.title||"",hidden:!!x.hidden,color:x.color||""}}).filter(p=>!p.hidden);
   $("t").textContent=s.title||sv0.name+" Leaderboard";
   $("s").textContent=`Minecraft • ${data.length} Spieler • ${cats.length} Kategorien`;
