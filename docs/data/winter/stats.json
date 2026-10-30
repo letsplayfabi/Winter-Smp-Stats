@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-29T22:36+00:00",
+ "updated": "2026-10-30T01:30+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -159,8 +159,8 @@
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
    "name": "Trosser",
-   "minutes": 4028,
-   "hours": 67.1,
+   "minutes": 4100,
+   "hours": 68.3,
    "deaths": 33,
    "mob_kills": 496,
    "player_kills": 8,
@@ -169,14 +169,14 @@
    "damage": 8342,
    "blocks_mined": 15853,
    "diamonds": 0,
-   "km_travelled": 990.2,
+   "km_travelled": 1033.7,
    "jumps": 132876,
    "travel": {
     "boat": 37.5,
     "swim": 4.3,
     "crouch": 4.2,
     "climb": 0.9,
-    "minecart": 462.3,
+    "minecart": 505.8,
     "walk": 44.0,
     "walk_under_water": 1.0,
     "horse": 16.2,
@@ -316,7 +316,7 @@
     "deepslate": 78,
     "aviate_km": 0.0
    },
-   "week_hours": 7.9
+   "week_hours": 9.1
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
