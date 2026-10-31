@@ -39,13 +39,18 @@ dialog::backdrop{background:rgba(0,0,0,.65);backdrop-filter:blur(4px)}@keyframes
 .dc{background:#5865F2;color:#fff;font-weight:700;text-decoration:none;padding:8px 16px;border-radius:99px;white-space:nowrap}
 #pill{position:fixed;right:16px;bottom:16px;max-width:calc(100vw - 32px);display:flex;align-items:center;gap:8px;background:var(--ac);color:#000;padding:10px 14px;border-radius:99px;font-weight:700;text-decoration:none;box-shadow:0 6px 18px rgba(0,0,0,.4);animation:pop .3s ease;z-index:5}
 #pill[hidden]{display:none}#pill span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#pill b{cursor:pointer;opacity:.6;padding:0 4px}
+.hr{display:flex;gap:8px;align-items:center;flex-wrap:wrap}#cmpb{background:var(--pn);color:var(--fg);border:1px solid var(--ln);cursor:pointer;font:inherit;font-weight:700}
+#cc{padding:20px}.ct{width:100%;border-collapse:collapse;margin:10px 0}.ct td,.ct th{padding:6px 8px;border-bottom:1px solid var(--ln)}.ct td:nth-child(n+2),.ct th:nth-child(n+2){text-align:right}.ct .w{color:var(--ac);font-weight:700}
+#cc select{padding:8px;border-radius:8px;border:1px solid var(--ln);background:var(--bg);color:var(--fg);font:inherit;flex:1}#cc button{margin-top:8px;padding:8px 18px;border:0;border-radius:8px;background:var(--ac);color:#000;font-weight:700;cursor:pointer}
+.cb{display:inline-block;margin:10px 8px 0 0;padding:6px 12px;border-radius:8px;border:1px solid var(--ln);background:var(--bg);color:var(--fg);font:inherit;font-size:13px;cursor:pointer;text-decoration:none}
 </style></head><body><main>
 <nav class="nav" id="nav"></nav>
-<section id="lb"><header><div><h1 id="t">Server Leaderboard</h1><p class="sub" id="s"></p></div><a class="dc" id="dcl" target="_blank" rel="noopener" hidden></a></header>
+<section id="lb"><header><div><h1 id="t">Server Leaderboard</h1><p class="sub" id="s"></p><p class="ex" id="stt"></p></div><div class="hr"><button class="dc" id="cmpb" hidden>⚖️ Vergleichen</button><a class="dc" id="dcl" target="_blank" rel="noopener" hidden></a></div></header>
 <p class="ex" id="i"></p><div class="grid" id="g"></div><footer id="f"></footer></section>
 <section id="ev" hidden></section>
 <a id="pill" href="#events" hidden></a>
 <dialog id="d"><div id="dc"></div></dialog>
+<dialog id="cmp"><div id="cc"></div></dialog>
 </main>
 <script>
 const CATS=[
@@ -80,7 +85,7 @@ function rank(c,players){
 function chart(parent,title,note,sorted,get,fmt,color,extra,big){
   const card=el("section","",parent,big?"big":""),hd=el("div","",card,"hd");el("h2",title,hd);el("small",note,hd);
   const box=el("div","",card,"box"),max=Math.max(...sorted.map(get),1);
-  sorted.forEach(p=>{const r=el("div","",box,"row"),nm=el("span","",r,"nm");nm.append(head(p,20),document.createTextNode(p.display_name));nm.onclick=()=>profile(p);
+  sorted.forEach(p=>{const r=el("div","",box,"row"),nm=el("span","",r,"nm");nm.append(head(p,20),document.createTextNode(p.display_name+(big&&p.badges&&p.badges.length?" "+p.badges.slice(0,4).map(a=>a.icon||"🏆").join(""):"")));if(big&&p.badges&&p.badges.length)nm.title=p.badges.map(a=>a.title).join(", ");nm.onclick=()=>profile(p);
     const t=el("div","",r,"tr"),b=el("div","",t,"bar");b.style.cssText=`width:${get(p)/max*80}%;background:${color(p)}`;el("span",fmt(get(p)),t,"val")});
   if(extra)el("div",extra,card,"ex");
 }
@@ -100,6 +105,7 @@ function profile(p){
   const cs=p.death_causes.map(([k,v])=>[pretty(k,MOB),v]);if(p.death_other>0)cs.push(["Umwelt/Sonstiges (Sturz, Lava, Ertrinken …)",p.death_other]);
   cs.sort((a,z)=>z[1]-a[1]);
   el("div",p.deaths?"💀 Häufigste Todesursache: "+(cs[0]?cs[0][0]+" ("+cs[0][1]+"×)":"unbekannt"):"🎉 Noch nie gestorben",pb,"death");
+  if(p.badges&&p.badges.length){el("h3","🏆 Erfolge",pb);p.badges.forEach(a=>el("div",`${a.icon||"🏆"} ${a.title}`+(a.desc?" – "+a.desc:""),pb,"death"))}
   mini(pb,"Todesursachen",cs,null,c);mini(pb,"Meistgetötete Mobs",p.top_mobs,MOB,c);mini(pb,"Meistabgebaute Blöcke",p.top_blocks,null,c);
   mini(pb,"Gereist nach Art (km)",Object.entries(p.travel).sort((a,z)=>z[1]-a[1]),TRAV,c);
   el("button","Schließen",pb).onclick=()=>$("d").close();
@@ -108,20 +114,54 @@ function profile(p){
 $("d").onclick=e=>{if(e.target===$("d"))$("d").close()};
 $("d").addEventListener("close",()=>document.body.style.overflow="");
 
+let CUR="";
+const STT={online:"online",offline:"offline",starting:"startet",stopping:"stoppt",restarting:"startet neu",saving:"speichert",loading:"lädt",crashed:"abgestürzt",pending:"wartet",preparing:"bereitet vor"};
+const hm=iso=>new Date(iso).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"});
+async function status(d,k){const st=d.status||{},box=$("stt");box.textContent="";box.title="";
+  if(st.state){box.textContent=`${st.state==="online"?"🟢":st.state==="offline"?"🔴":"🟡"} ${st.state==="online"?st.count+"/"+st.max+" online":STT[st.state]||st.state} · Stand ${hm(st.checked||d.updated)}`;box.title=(st.list||[]).join(", ")}
+  if(!st.address)return;
+  try{const c=new AbortController();setTimeout(()=>c.abort(),6000);
+    const r=await fetch("https://api.mcsrvstat.us/3/"+encodeURIComponent(st.address),{signal:c.signal}).then(r=>r.json());
+    if(CUR===k&&typeof r.online==="boolean"){const p=r.players||{};box.textContent=r.online?`🟢 ${p.online??0}/${p.max??"?"} online · Live`:"🔴 offline · Live";box.title=(p.list||[]).map(x=>x.name).join(", ")}}catch{}}
+const GET=()=>({...Object.fromEntries([...CATS,...Object.values(EXTRA)].map(c=>[c[0],c[3]])),jumps:p=>p.jumps});
+function badges(data,key){const L=(OV.achievements||[]).filter(a=>!a.server||a.server==="all"||a.server===key),G=GET();data.forEach(p=>p.badges=[]);
+  L.forEach(a=>{const g=G[a.metric];if(!g||!data.length)return;
+    if(a.type==="top"){const vs=data.map(g),best=a.dir==="min"?Math.min(...vs):Math.max(...vs);if(a.dir!=="min"&&best<=0)return;data.forEach(p=>{if(g(p)===best)p.badges.push(a)})}
+    else data.forEach(p=>{if(g(p)>=(a.value||0))p.badges.push(a)})})}
+function compare(){
+  const b=$("cc"),D=CTX.data;b.replaceChildren();el("h2","Spielervergleich",b).style.margin="0 0 10px";
+  const row=el("div","",b);row.style.cssText="display:flex;gap:8px";const sel=[0,1].map(i=>{const s=document.createElement("select");D.forEach(p=>el("option",p.display_name,s).value=p.uuid);s.value=D[i%D.length].uuid;row.append(s);return s});
+  const out=el("div","",b);
+  const draw=()=>{out.replaceChildren();const [A,B]=sel.map(s=>D.find(p=>p.uuid===s.value)),t=el("table","",out,"ct"),h=el("tr","",t);el("th","",h);[A,B].forEach(p=>{const th=el("th","",h);th.append(head(p,24),document.createTextNode(" "+p.display_name))});
+    let wa=0,wb=0;CTX.cats.forEach(c=>{const g=c[3],f=c[4]||n,x=g(A),y=g(B),r=el("tr","",t);el("td",CTX.lab[c[0]]||c[1],r);
+      const better=x===y?0:(c[2]?x>y:x<y)?1:2;if(better===1)wa++;if(better===2)wb++;el("td",f(x),r,better===1?"w":"");el("td",f(y),r,better===2?"w":"")});
+    el("p",`Kategorien gewonnen: ${A.display_name} ${wa} : ${wb} ${B.display_name}`,out,"ex")};
+  sel.forEach(s=>s.onchange=draw);draw();el("button","Schließen",b).onclick=()=>$("cmp").close();document.body.style.overflow="hidden";$("cmp").showModal();
+}
+$("cmpb").onclick=compare;$("cmp").onclick=e=>{if(e.target===$("cmp"))$("cmp").close()};$("cmp").addEventListener("close",()=>document.body.style.overflow="");
+const fz=ms=>new Date(ms-new Date(ms).getTimezoneOffset()*6e4).toISOString().replace(/[-:]/g,"").slice(0,15);
+function ics(e){const esc=x=>(x||"").replace(/\\/g,"\\\\").replace(/\n/g,"\\n").replace(/,/g,"\\,").replace(/;/g,"\\;"),s=T(e),L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Server Leaderboard//DE","BEGIN:VEVENT","UID:"+e.id+"@leaderboard","DTSTAMP:"+new Date().toISOString().replace(/[-:]/g,"").slice(0,15)+"Z"];
+  if(e.time)L.push("DTSTART:"+fz(s),"DTEND:"+fz(s+36e5));else L.push("DTSTART;VALUE=DATE:"+e.date.replace(/-/g,""),"DTEND;VALUE=DATE:"+fz(s+864e5).slice(0,8));
+  L.push("SUMMARY:"+esc(e.name),"DESCRIPTION:"+esc(e.desc),"END:VEVENT","END:VCALENDAR");return L.join("\r\n")}
+function calBtns(e,box){const b=el("button","📅 In Kalender speichern (.ics)",box,"cb");
+  b.onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([ics(e)],{type:"text/calendar"}));a.download=(e.name||"event").replace(/[^\w-]+/g,"_")+".ics";a.click()};
+  const g=el("a","Google Kalender",box,"cb");g.target="_blank";g.rel="noopener";
+  g.href=`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(e.name)}&dates=${e.time?fz(T(e))+"/"+fz(T(e)+36e5):e.date.replace(/-/g,"")+"/"+fz(T(e)+864e5).slice(0,8)}&details=${encodeURIComponent(e.desc||"")}`}
 async function server(k){
-  $("ev").hidden=true;$("lb").hidden=false;$("g").replaceChildren();$("f").replaceChildren();$("i").textContent="Lade …";
+  CUR=k;$("ev").hidden=true;$("lb").hidden=false;$("stt").textContent="";$("g").replaceChildren();$("f").replaceChildren();$("i").textContent="Lade …";
   const sv0=SERVERS.find(s=>s.key===k)||SERVERS[0];let d;
   try{d=await fetch(`data/${sv0.key}/stats.json`,{cache:"no-cache"}).then(r=>{if(!r.ok)throw 0;return r.json()})}catch{$("i").textContent="stats.json konnte nicht geladen werden.";return}
   const sv=(OV.servers&&OV.servers[sv0.key])||(!OV.servers&&sv0===SERVERS[0]?OV:{}),o=sv.players||{},s=sv.site||{},lab=sv.categories||{},CM=Object.fromEntries([...CATS,...Object.values(EXTRA)].map(c=>[c[0],c])),
     defOn=[...CATS.map(c=>c[0]),...(sv0.extra||[])].filter(x=>!(sv0.hide||[]).includes(x)),cats=(sv.enabled||defOn).map(x=>CM[x]).filter(Boolean);
   const data=d.players.map(p=>{const x=o[p.uuid]||o[p.name]||{};return{...p,display_name:x.display_name||p.name,title:x.title||"",hidden:!!x.hidden,color:x.color||""}}).filter(p=>!p.hidden);
+  badges(data,sv0.key);status(d,k);$("cmpb").hidden=data.length<2;
   $("t").textContent=s.title||sv0.name+" Leaderboard";
   $("s").textContent=`Minecraft • ${data.length} Spieler • ${cats.length} Kategorien`;
   $("i").textContent=[s.intro,"Stand: "+new Date(d.updated).toLocaleString("de-AT")].filter(Boolean).join(" · ");
   if(!data.length){$("g").textContent="Noch keine Statistiken gefunden.";return}
   const R=cats.map(c=>rank(c,data)),tot=new Map(data.map(p=>[p.uuid,0]));
   R.forEach(r=>r.pts.forEach((v,k)=>tot.set(k,tot.get(k)+v)));
-  const order=[...data].sort((a,b)=>tot.get(b.uuid)-tot.get(a.uuid)),cm=new Map(order.map((p,i)=>[p.uuid,COLS[i%COLS.length]])),col=p=>p.color||cm.get(p.uuid),N=data.length;CTX={col,tot,order};
+  const order=[...data].sort((a,b)=>tot.get(b.uuid)-tot.get(a.uuid)),cm=new Map(order.map((p,i)=>[p.uuid,COLS[i%COLS.length]])),col=p=>p.color||cm.get(p.uuid),N=data.length;CTX={col,tot,order,data,cats,lab};
   chart($("g"),`Gesamtwertung · ${N} Punkte für Platz 1 bis 1 Punkt für Platz ${N}`,"Bei Gleichstand: Punkte der belegten Plätze gemittelt",order,p=>tot.get(p.uuid),v=>n(v)+" P",col,"",1);
   cats.forEach((c,i)=>{const r=R[i],ex=c[5]?"Beispiele ("+r.s[0].display_name+"): "+c[5](r.s[0]).slice(0,3).map(([k,v])=>pretty(k)+" "+n(v)).join(" · "):"";
     chart($("g"),lab[c[0]]||c[1],c[2]?"Mehr ist besser":"Weniger ist besser",r.s,c[3],c[4]||n,col,ex)});
@@ -139,7 +179,7 @@ async function events(){
     el("div",new Date(t(e)).toLocaleString("de-AT",{weekday:"long",day:"numeric",month:"long",year:"numeric",...(e.time?{hour:"2-digit",minute:"2-digit"}:{})})+(e.time?" Uhr":""),b,"evd");
     const dd=Math.ceil((t(e)-now)/864e5),sv=SERVERS.find(s=>s.key===e.server);
     el("small",isPast?"vorbei":dd<=0?"heute":dd===1?"morgen":"in "+dd+" Tagen"+(sv?" · "+sv.name:""),b,"ex");
-    if(e.desc)el("p",e.desc,b)};
+    if(e.desc)el("p",e.desc,b);if(!isPast)calBtns(e,b)};
   up.forEach(e=>card(e,0));if(past.length){el("h2","Vergangene Events",box).style.margin="28px 0 0";past.forEach(e=>card(e,1))}
 }
 let NEXT=null,PX=false;const DEFDC="https://discord.gg/87mqfdznp4",T=e=>new Date(e.date+"T"+(e.time||"00:00")).getTime();
