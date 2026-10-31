@@ -18,11 +18,121 @@
     "winter": {
       "site": {
         "title": "Winter SMP – Statistiken",
-        "intro": "Wird täglich aktualisiert.",
-        "badge": "Season Stats"
+        "intro": "Wird täglich aktualisiert."
       },
       "categories": {},
-      "players": {}
+      "players": {},
+      "enabled": [
+        "playtime",
+        "player_kills",
+        "deaths",
+        "travel",
+        "mined",
+        "used",
+        "killed",
+        "damage",
+        "diamonds"
+      ]
     }
+  },
+  "discord": {
+    "url": "https://discord.gg/87mqfdznp4",
+    "text": "Discord"
+  },
+  "showAdmin": true,
+  "achievements": [
+    {
+      "id": "a17934339768270",
+      "icon": "💎",
+      "title": "Diamantenkönig",
+      "desc": "Meiste Diamanten",
+      "type": "top",
+      "metric": "diamonds",
+      "dir": "max",
+      "value": 0,
+      "server": "all"
+    },
+    {
+      "id": "a17934339768271",
+      "icon": "🏃",
+      "title": "Weltenbummler",
+      "desc": "Meiste Strecke gereist",
+      "type": "top",
+      "metric": "travel",
+      "dir": "max",
+      "value": 0,
+      "server": "all"
+    },
+    {
+      "id": "a17934339768272",
+      "icon": "⛏️",
+      "title": "Minenarbeiter",
+      "desc": "Meiste Blöcke abgebaut",
+      "type": "top",
+      "metric": "mined",
+      "dir": "max",
+      "value": 0,
+      "server": "all"
+    },
+    {
+      "id": "a17934339768273",
+      "icon": "☠️",
+      "title": "Todesmutig",
+      "desc": "Meiste Tode",
+      "type": "top",
+      "metric": "deaths",
+      "dir": "max",
+      "value": 0,
+      "server": "all"
+    },
+    {
+      "id": "a17934339768274",
+      "icon": "⚔️",
+      "title": "Kämpfer",
+      "desc": "Meiste Spieler-Kills",
+      "type": "top",
+      "metric": "player_kills",
+      "dir": "max",
+      "value": 0,
+      "server": "all"
+    },
+    {
+      "id": "a17934339768275",
+      "icon": "💥",
+      "title": "Creeper-Jäger",
+      "desc": "Meiste Creeper getötet",
+      "type": "top",
+      "metric": "creepers",
+      "dir": "max",
+      "value": 0,
+      "server": "all"
+    },
+    {
+      "id": "a17934339768276",
+      "icon": "🕒",
+      "title": "Dauerzocker",
+      "desc": "Über 100 Stunden gespielt",
+      "type": "threshold",
+      "metric": "playtime",
+      "dir": "max",
+      "value": 6000,
+      "server": "all"
+    },
+    {
+      "id": "a17934339768277",
+      "icon": "🦘",
+      "title": "Hüpfer",
+      "desc": "Über 10.000 Sprünge",
+      "type": "threshold",
+      "metric": "jumps",
+      "dir": "max",
+      "value": 10000,
+      "server": "all"
+    }
+  ],
+  "notify": {
+    "events": true,
+    "weekly": true,
+    "milestones": true
   }
 }
