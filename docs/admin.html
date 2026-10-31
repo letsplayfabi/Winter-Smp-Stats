@@ -22,27 +22,42 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 .pl img{border-radius:5px;image-rendering:pixelated}.pl b{min-width:110px}.pl input[type=text]{flex:1 1 140px;width:auto}
 .ev{display:flex;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--ln)}.ev img{width:80px;height:50px;object-fit:cover;border-radius:6px}.ev div{flex:1}
 .bar[hidden]{display:none}.bar{position:fixed;left:0;right:0;bottom:0;background:rgba(13,17,23,.92);backdrop-filter:blur(8px);border-top:1px solid var(--ln);padding:12px 18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tabs{display:flex;gap:8px;margin:16px 0;flex-wrap:wrap}.tabs button{background:#26324a;color:var(--fg)}.tabs button.on{background:var(--ac);color:#06240f}
 </style></head><body>
 <div class="hero"><h1>⚙️ Leaderboard Admin</h1><p>Server, Namen, Kategorien, Farben, Spieler und Events – direkt im Browser. <a href="./" style="color:#fff">← Zur Statistikseite</a></p></div>
 <main>
 <section class="card"><h2>🔑 Zugang</h2>
 <p class="mu">GitHub-Token (fine-grained, nur dieses Repo: Contents „Read and write“, für „Neu berechnen“ zusätzlich Actions „Read and write“). Er wird nicht gespeichert.</p>
-<div style="display:flex;gap:8px"><input id="tk" type="password" placeholder="github_pat_..."><button id="ld">Laden</button></div></section>
+<div style="display:flex;gap:8px"><input id="tk" type="password" placeholder="github_pat_..."><button id="ld">Laden</button></div>
+<div style="margin-top:14px"><input id="pw" type="password" placeholder="Admin-Passwort (schützt den gespeicherten Token auf diesem Gerät)">
+<label style="display:block;margin:8px 0;color:var(--mu);font-size:13px"><input type="checkbox" id="rem"> Token mit diesem Passwort auf diesem Gerät merken</label>
+<button id="unl" class="s" hidden>🔓 Mit Passwort entsperren</button> <button id="fg" class="s" hidden>Gespeicherten Zugang löschen</button></div></section>
 <div id="ed" hidden>
-<section class="card"><h2>🌍 Server</h2><p class="mu">Alles unten (Seite, Kategorien, Spieler) gilt für den gewählten Server. Farben und Events gelten für alle.</p><select id="sel"></select><label style="display:block;margin-top:12px"><input type="checkbox" id="sa"> Admin-Reiter auf der Seite anzeigen</label></section>
-<section class="card"><h2>💬 Discord-Button (alle Server)</h2><div class="g"><label>Link<input id="dl" type="text"></label><label>Button-Text<input id="dt" type="text"></label></div><p class="mu" style="margin-top:8px">Link leer lassen = Button ausblenden.</p></section>
-<section class="card"><h2>🏷️ Seite</h2><div class="g">
+<div class="tabs"><button data-t="a" class="on">⚙️ Allgemein</button><button data-t="e">📅 Events</button><button data-t="x">🏆 Erfolge</button></div>
+<section class="card" data-tab="a"><h2>🌍 Server</h2><p class="mu">Alles unten (Seite, Kategorien, Spieler) gilt für den gewählten Server. Farben und Events gelten für alle.</p><select id="sel"></select><label style="display:block;margin-top:12px"><input type="checkbox" id="sa"> Admin-Reiter auf der Seite anzeigen</label></section>
+<section class="card" data-tab="a"><h2>💬 Discord-Button (alle Server)</h2><div class="g"><label>Link<input id="dl" type="text"></label><label>Button-Text<input id="dt" type="text"></label></div><p class="mu" style="margin-top:8px">Link leer lassen = Button ausblenden.</p>
+<h3 style="margin:14px 0 6px;font-size:15px">Discord-Meldungen (Webhook)</h3>
+<p class="mu">Der Webhook-Link kommt als GitHub-Secret <b>DISCORD_WEBHOOK</b> (siehe Anleitung), nicht hierher. Hier wählst du nur, was gemeldet wird.</p>
+<label style="display:block"><input type="checkbox" id="nev"> Neue Events</label><label style="display:block"><input type="checkbox" id="nwk"> Wochen-Top-3 (montags)</label><label style="display:block"><input type="checkbox" id="nms"> Meilensteine (z. B. 100 Diamanten)</label></section>
+<section class="card" data-tab="a"><h2>🏷️ Seite</h2><div class="g">
 <label>Titel<input id="st" type="text"></label><label>Einleitung<input id="si" type="text"></label></div></section>
-<section class="card"><h2>🗂️ Kategorien dieses Servers</h2><p class="mu">Häkchen = wird auf diesem Server angezeigt (so schaltest du eine Kategorie bei einem Server mit einem Klick zu oder ab). Namensfeld leer lassen = Standardname.</p><div class="g" id="cats"></div></section>
-<section class="card"><h2>👥 Spieler</h2><p class="mu">Anzeigename, Titel, eigene Farbe (↺ = Standardfarbe nach Platz) und Ausblenden.</p><div id="rows"></div></section>
-<section class="card"><h2>🎨 Farben (alle Server)</h2><div class="pr" id="pre"></div><div class="g" id="cl"></div><div id="pv"></div></section>
-<section class="card"><h2>📅 Events (alle Server)</h2>
+<section class="card" data-tab="a"><h2>🗂️ Kategorien dieses Servers</h2><p class="mu">Häkchen = wird auf diesem Server angezeigt (so schaltest du eine Kategorie bei einem Server mit einem Klick zu oder ab). Namensfeld leer lassen = Standardname.</p><div class="g" id="cats"></div></section>
+<section class="card" data-tab="a"><h2>👥 Spieler</h2><p class="mu">Anzeigename, Titel, eigene Farbe (↺ = Standardfarbe nach Platz) und Ausblenden.</p><div id="rows"></div></section>
+<section class="card" data-tab="a"><h2>🎨 Farben (alle Server)</h2><div class="pr" id="pre"></div><div class="g" id="cl"></div><div id="pv"></div></section>
+<section class="card" data-tab="e"><h2>📅 Events (alle Server)</h2>
 <p class="mu">Events werden sofort gespeichert, ohne „Speichern“ unten.</p>
 <div class="g"><label>Name<input id="en" type="text"></label><label>Datum<input id="ed1" type="date"></label><label>Uhrzeit<input id="et" type="time"></label>
 <label>Server<select id="es"></select></label><label>Bild<input id="ei" type="file" accept="image/*"></label></div>
 <label style="display:block;margin:12px 0;color:var(--mu);font-size:13px">Beschreibung<textarea id="edsc"></textarea></label>
 <p class="mu" id="eh"></p><button id="ea">➕ Event hinzufügen</button> <button id="ec" class="s" hidden>Abbrechen</button><div id="evl" style="margin-top:14px"></div></section>
 
+<section class="card" data-tab="x" hidden><h2>🏆 Erfolge</h2>
+<p class="mu">Erfolge erscheinen als Abzeichen im Spielerprofil und als Symbol neben dem Namen in der Gesamtwertung. Änderungen gelten nach „Speichern“ in der unteren Leiste.</p>
+<div class="g"><label>Symbol (Emoji)<input id="ai" type="text" placeholder="💎"></label><label>Titel<input id="at" type="text" placeholder="Diamantenkönig"></label><label>Beschreibung<input id="ad" type="text"></label>
+<label>Art<select id="aty"><option value="top">Bester Spieler einer Kategorie</option><option value="threshold">Ab einem bestimmten Wert</option></select></label>
+<label>Kategorie<select id="am"></select></label><label>Wer bekommt es?<select id="adir"><option value="max">höchster Wert</option><option value="min">niedrigster Wert</option></select></label>
+<label style="display:none">Wert (ab …)<input id="av" type="number" min="0"></label><label>Server<select id="asv"></select></label></div>
+<div style="margin:12px 0;display:flex;gap:8px;flex-wrap:wrap"><button id="aa">➕ Erfolg hinzufügen</button><button id="ac" class="s" hidden>Abbrechen</button><button id="aex" class="s">✨ Beispiele hinzufügen</button></div><div id="axl"></div></section>
 </div></main>
 <div class="bar" id="ab" hidden><button id="sv">💾 Speichern</button><button id="rc" class="s">🔄 Neu berechnen</button><span id="msg"></span></div>
 <script>
@@ -89,7 +104,7 @@ function collect(){
   const sv={site:{title:st.value,intro:si.value},categories:{},players:{}};
   catEls.forEach(([k,i])=>{if(i.value)sv.categories[k]=i.value});sv.enabled=catEls.filter(x=>x[2].checked).map(x=>x[0]);
   rowEls.forEach(([u,a,t,c,h])=>{if(a.value||t.value||h.checked||c.dataset.s)sv.players[u]={display_name:a.value,title:t.value,hidden:h.checked,...(c.dataset.s?{color:c.value}:{})}});
-  OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;
+  OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;OV.achievements=ACH;OV.notify={events:nev.checked,weekly:nwk.checked,milestones:nms.checked};
 }
 let EDIT=null;
 function renderEvents(){const b=$("evl");b.replaceChildren();if(!EVS.length)el("p","Noch keine Events.",b,"mu");
@@ -119,6 +134,32 @@ async function delEvent(e){
     if(e.image)delImg(e.image);EVS=f.list.filter(x=>x.id!==e.id);renderEvents();if(EDIT===e.id)resetForm();say("✅ Event gelöscht.");
   }catch(x){say("❌ "+x.message)}
 }
+const ACHM=[["playtime","Spielzeit (Wert in Minuten)"],["player_kills","Spieler-Kills"],["deaths","Tode"],["travel","Gereist (km)"],["mined","Blöcke abgebaut"],["used","Items verwendet"],["killed","Entities getötet"],["damage","Schaden (HP)"],["diamonds","Diamanten"],["jumps","Sprünge"],["netherite","Netherite gefarmt"],["creepers","Creeper getötet"],["netherrack","Netherrack abgebaut"],["deepslate","Deepslate abgebaut"],["elytra","Elytra-Strecke (km)"]];
+let ACH=[],AEDIT=null;
+function tab(t){document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));document.querySelectorAll("[data-tab]").forEach(s=>s.hidden=s.dataset.tab!==t)}
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>tab(b.dataset.t));
+const mlabel=k=>(ACHM.find(m=>m[0]===k)||[0,k])[1];
+function renderAch(){const b=$("axl");b.replaceChildren();if(!ACH.length)el("p","Noch keine Erfolge.",b,"mu");
+  ACH.forEach(a=>{const r=el("div","",b,"ev"),d=el("div","",r),sv=(SERVERS.find(s=>s.key===a.server)||{}).name||"Alle Server";el("b",`${a.icon||"🏆"} ${a.title}`,d);
+    el("div",(a.type==="top"?(a.dir==="min"?"Niedrigster":"Höchster")+" Wert bei ":`Ab ${a.value} bei `)+mlabel(a.metric)+" · "+sv,d,"mu");
+    el("button","✏️",r,"s").onclick=()=>editAch(a);el("button","🗑",r,"s").onclick=()=>{ACH=ACH.filter(x=>x!==a);renderAch();say("Gelöscht – zum Übernehmen unten auf „Speichern“ klicken.")}})}
+function achForm(){adir.parentElement.style.display=aty.value==="top"?"":"none";av.parentElement.style.display=aty.value==="top"?"none":""}
+aty.onchange=achForm;
+function editAch(a){AEDIT=a;ai.value=a.icon||"";at.value=a.title;ad.value=a.desc||"";aty.value=a.type;am.value=a.metric;adir.value=a.dir||"max";av.value=a.value||0;asv.value=a.server||"all";achForm();aa.textContent="💾 Änderung übernehmen";ac.hidden=false;at.scrollIntoView({behavior:"smooth",block:"center"})}
+function resetAch(){AEDIT=null;ai.value=at.value=ad.value="";av.value="";aty.value="top";adir.value="max";achForm();aa.textContent="➕ Erfolg hinzufügen";ac.hidden=true}
+ac.onclick=resetAch;
+aa.onclick=()=>{if(!at.value)return say("❌ Bitte einen Titel eingeben.");const o={icon:ai.value||"🏆",title:at.value,desc:ad.value,type:aty.value,metric:am.value,dir:adir.value,value:+av.value||0,server:asv.value};
+  if(AEDIT)Object.assign(AEDIT,o);else ACH.push({id:"a"+Date.now(),...o});resetAch();renderAch();say("Erfolg übernommen – unten auf „Speichern“ klicken.")};
+aex.onclick=()=>{[["💎","Diamantenkönig","Meiste Diamanten","top","diamonds"],["🏃","Weltenbummler","Meiste Strecke gereist","top","travel"],["⛏️","Minenarbeiter","Meiste Blöcke abgebaut","top","mined"],["☠️","Todesmutig","Meiste Tode","top","deaths"],["⚔️","Kämpfer","Meiste Spieler-Kills","top","player_kills"],["💥","Creeper-Jäger","Meiste Creeper getötet","top","creepers"],["🕒","Dauerzocker","Über 100 Stunden gespielt","threshold","playtime",6000],["🦘","Hüpfer","Über 10.000 Sprünge","threshold","jumps",10000]]
+  .forEach(([icon,title,desc,type,metric,value],i)=>ACH.push({id:"a"+Date.now()+i,icon,title,desc,type,metric,dir:"max",value:value||0,server:"all"}));renderAch();say("Beispiele hinzugefügt – unten auf „Speichern“ klicken.")};
+const kd=async(pw,salt)=>crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:250000,hash:"SHA-256"},await crypto.subtle.importKey("raw",new TextEncoder().encode(pw),"PBKDF2",false,["deriveKey"]),{name:"AES-GCM",length:256},false,["encrypt","decrypt"]);
+const ub=x=>Uint8Array.from(atob(x),c=>c.charCodeAt(0));
+async function lockTok(pw,token){const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),ct=new Uint8Array(await crypto.subtle.encrypt({name:"AES-GCM",iv},await kd(pw,salt),new TextEncoder().encode(token)));
+  localStorage.setItem("adm",JSON.stringify({s:u8b64(salt),i:u8b64(iv),c:u8b64(ct)}))}
+async function unlockTok(pw){const o=JSON.parse(localStorage.getItem("adm"));return new TextDecoder().decode(await crypto.subtle.decrypt({name:"AES-GCM",iv:ub(o.i)},await kd(pw,ub(o.s)),ub(o.c)))}
+unl.onclick=async()=>{try{tk.value=await unlockTok(pw.value);ld.click()}catch{say("❌ Falsches Passwort.")}};
+fg.onclick=()=>{localStorage.removeItem("adm");unl.hidden=fg.hidden=true;say("Gespeicherter Zugang gelöscht.")};
+try{if(localStorage.getItem("adm")){unl.hidden=fg.hidden=false;say("Gespeicherter Zugang gefunden – Passwort eingeben und entsperren.")}}catch{}
 ld.onclick=async()=>{
   try{
     SERVERS=await (await fetch("servers.json",{cache:"no-cache"})).json().catch(()=>{throw new Error("servers.json fehlt – erst den Workflow einmal ausführen")});
@@ -132,7 +173,10 @@ ld.onclick=async()=>{
     setTheme({...PRE.Standard,...(OV.theme||{}),players:(OV.theme||{}).players||PRE.Standard.players});
     sel.value=SERVERS[0].key;await buildServer(SERVERS[0].key);EVS=(await evList()).list;renderEvents();
     dl.value=(OV.discord||{}).url??DEFDC;dt.value=(OV.discord||{}).text||"Discord";sa.checked=OV.showAdmin!==false;
-    ed.hidden=false;ab.hidden=false;say("Geladen.");
+    ACH=OV.achievements||[];const nf=OV.notify||{};nev.checked=nf.events!==false;nwk.checked=nf.weekly!==false;nms.checked=nf.milestones!==false;
+    am.replaceChildren();ACHM.forEach(([k,l])=>el("option",l,am).value=k);asv.replaceChildren();el("option","Alle Server",asv).value="all";SERVERS.forEach(x=>el("option",x.name,asv).value=x.key);resetAch();renderAch();
+    ed.hidden=false;ab.hidden=false;tab("a");say("Geladen.");
+    if(rem.checked&&pw.value){await lockTok(pw.value,tk.value.trim());fg.hidden=false;say("Geladen. 🔒 Zugang auf diesem Gerät gespeichert.")}
   }catch(e){say("Fehler: "+e.message)}
 };
 sel.onchange=async()=>{collect();await buildServer(sel.value)};
