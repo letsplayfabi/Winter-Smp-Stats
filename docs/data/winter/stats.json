@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-31T09:13+00:00",
+ "updated": "2026-10-31T15:27+00:00",
  "players": [
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -321,36 +321,36 @@
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
    "name": "CapyDreamXD",
-   "minutes": 3264,
-   "hours": 54.4,
+   "minutes": 3363,
+   "hours": 56.0,
    "deaths": 36,
-   "mob_kills": 655,
+   "mob_kills": 658,
    "player_kills": 0,
-   "entities_killed": 637,
-   "items_used": 62903,
-   "damage": 11068,
-   "blocks_mined": 44839,
+   "entities_killed": 640,
+   "items_used": 63020,
+   "damage": 11138,
+   "blocks_mined": 44887,
    "diamonds": 124,
-   "km_travelled": 602.4,
-   "jumps": 86262,
+   "km_travelled": 603.8,
+   "jumps": 86436,
    "travel": {
     "boat": 40.3,
-    "crouch": 6.5,
+    "crouch": 6.6,
     "climb": 0.2,
     "minecart": 1.4,
-    "walk": 48.2,
-    "walk_under_water": 3.8,
+    "walk": 48.8,
+    "walk_under_water": 3.9,
     "horse": 222.9,
-    "sprint": 81.8,
-    "fly": 188.7,
+    "sprint": 81.9,
+    "fly": 188.9,
     "walk_on_water": 1.9,
-    "swim": 5.7,
+    "swim": 6.0,
     "nautilus": 1.0
    },
    "top_mobs": [
     [
      "zombie",
-     163
+     164
     ],
     [
      "cow",
@@ -358,7 +358,7 @@
     ],
     [
      "skeleton",
-     99
+     100
     ],
     [
      "creeper",
@@ -404,7 +404,7 @@
     ],
     [
      "cobblestone",
-     2290
+     2308
     ],
     [
      "coal_ore",
@@ -426,7 +426,7 @@
     ],
     [
      "diamond_shovel",
-     6569
+     6571
     ],
     [
      "iron_shovel",
@@ -434,7 +434,7 @@
     ],
     [
      "diamond_pickaxe",
-     5639
+     5657
     ],
     [
      "smooth_stone",
@@ -442,7 +442,7 @@
     ],
     [
      "diamond_axe",
-     3337
+     3341
     ],
     [
      "dirt",
@@ -479,7 +479,7 @@
     "deepslate": 810,
     "aviate_km": 0.0
    },
-   "week_hours": 16.6
+   "week_hours": 18.2
   },
   {
    "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
@@ -941,11 +941,11 @@
   }
  ],
  "status": {
-  "state": "offline",
+  "state": "online",
   "count": 0,
   "max": 20,
   "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-10-31T09:13+00:00"
+  "checked": "2026-10-31T15:27+00:00"
  }
 }
