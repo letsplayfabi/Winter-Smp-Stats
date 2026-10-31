@@ -1,38 +1,38 @@
 {
- "updated": "2026-10-30T23:26+00:00",
+ "updated": "2026-10-31T02:38+00:00",
  "players": [
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
    "name": "Trosser",
-   "minutes": 4644,
-   "hours": 77.4,
+   "minutes": 4793,
+   "hours": 79.9,
    "deaths": 35,
-   "mob_kills": 499,
+   "mob_kills": 500,
    "player_kills": 8,
-   "entities_killed": 487,
-   "items_used": 36441,
-   "damage": 8422,
-   "blocks_mined": 16080,
+   "entities_killed": 488,
+   "items_used": 36491,
+   "damage": 8441,
+   "blocks_mined": 16100,
    "diamonds": 0,
-   "km_travelled": 1300.4,
-   "jumps": 141027,
+   "km_travelled": 1376.4,
+   "jumps": 142342,
    "travel": {
     "boat": 37.5,
     "swim": 5.2,
     "crouch": 4.3,
     "climb": 0.9,
-    "minecart": 747.7,
-    "walk": 44.9,
+    "minecart": 820.1,
+    "walk": 45.0,
     "walk_under_water": 1.2,
     "horse": 16.5,
-    "sprint": 130.0,
-    "fly": 309.6,
+    "sprint": 130.7,
+    "fly": 312.4,
     "walk_on_water": 2.6
    },
    "top_mobs": [
     [
      "zombie",
-     268
+     269
     ],
     [
      "skeleton",
@@ -70,7 +70,7 @@
     ],
     [
      "stone",
-     2040
+     2046
     ],
     [
      "packed_ice",
@@ -78,11 +78,11 @@
     ],
     [
      "short_grass",
-     599
+     600
     ],
     [
      "iron_ore",
-     517
+     523
     ],
     [
      "cobblestone",
@@ -90,11 +90,11 @@
     ],
     [
      "dirt",
-     454
+     458
     ],
     [
      "grass_block",
-     441
+     444
     ]
    ],
    "top_used": [
@@ -108,11 +108,11 @@
     ],
     [
      "iron_pickaxe",
-     4049
+     4063
     ],
     [
      "cobblestone",
-     1984
+     1990
     ],
     [
      "yellow_wool",
@@ -120,7 +120,7 @@
     ],
     [
      "bread",
-     1191
+     1207
     ],
     [
      "blue_wool",
@@ -128,7 +128,7 @@
     ],
     [
      "iron_sword",
-     864
+     867
     ]
    ],
    "death_causes": [
@@ -161,7 +161,7 @@
     "deepslate": 84,
     "aviate_km": 0.0
    },
-   "week_hours": 18.2
+   "week_hours": 20.7
   },
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -321,30 +321,30 @@
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
    "name": "CapyDreamXD",
-   "minutes": 3132,
-   "hours": 52.2,
+   "minutes": 3264,
+   "hours": 54.4,
    "deaths": 36,
-   "mob_kills": 653,
+   "mob_kills": 655,
    "player_kills": 0,
-   "entities_killed": 635,
-   "items_used": 62602,
-   "damage": 11040,
-   "blocks_mined": 44748,
+   "entities_killed": 637,
+   "items_used": 62903,
+   "damage": 11068,
+   "blocks_mined": 44839,
    "diamonds": 124,
-   "km_travelled": 596.1,
-   "jumps": 85556,
+   "km_travelled": 602.4,
+   "jumps": 86262,
    "travel": {
-    "boat": 39.6,
-    "crouch": 6.4,
+    "boat": 40.3,
+    "crouch": 6.5,
     "climb": 0.2,
     "minecart": 1.4,
-    "walk": 47.8,
+    "walk": 48.2,
     "walk_under_water": 3.8,
-    "horse": 220.3,
-    "sprint": 81.1,
-    "fly": 187.3,
-    "walk_on_water": 1.8,
-    "swim": 5.4,
+    "horse": 222.9,
+    "sprint": 81.8,
+    "fly": 188.7,
+    "walk_on_water": 1.9,
+    "swim": 5.7,
     "nautilus": 1.0
    },
    "top_mobs": [
@@ -362,11 +362,11 @@
     ],
     [
      "creeper",
-     68
+     69
     ],
     [
      "spider",
-     60
+     61
     ],
     [
      "pillager",
@@ -392,7 +392,7 @@
     ],
     [
      "stone",
-     6333
+     6337
     ],
     [
      "dirt",
@@ -400,11 +400,11 @@
     ],
     [
      "spruce_log",
-     3735
+     3748
     ],
     [
      "cobblestone",
-     2267
+     2290
     ],
     [
      "coal_ore",
@@ -418,7 +418,7 @@
    "top_used": [
     [
      "diamond_hoe",
-     11301
+     11302
     ],
     [
      "iron_pickaxe",
@@ -426,7 +426,7 @@
     ],
     [
      "diamond_shovel",
-     6558
+     6569
     ],
     [
      "iron_shovel",
@@ -434,7 +434,7 @@
     ],
     [
      "diamond_pickaxe",
-     5604
+     5639
     ],
     [
      "smooth_stone",
@@ -442,7 +442,7 @@
     ],
     [
      "diamond_axe",
-     3310
+     3337
     ],
     [
      "dirt",
@@ -474,12 +474,12 @@
    "death_other": 10,
    "x": {
     "debris": 0,
-    "creepers": 68,
+    "creepers": 69,
     "netherrack": 1,
     "deepslate": 810,
     "aviate_km": 0.0
    },
-   "week_hours": 14.4
+   "week_hours": 16.6
   },
   {
    "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
