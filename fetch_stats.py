@@ -9,6 +9,14 @@ API = "https://api.exaroton.com/v1"
 D = Path("docs")
 
 
+STATES = {0: "offline", 1: "online", 2: "starting", 3: "stopping", 4: "restarting", 5: "saving", 6: "loading", 7: "crashed", 8: "pending", 9: "preparing"}
+
+
+def server_info(sid):
+    h = {"Authorization": f"Bearer {os.environ['EXAROTON_TOKEN'].strip()}", "User-Agent": "mc-stats-site/1.0"}
+    return json.loads(get(f"{API}/servers/{sid}", h))["data"]
+
+
 def get(url, headers=None):
     with urllib.request.urlopen(urllib.request.Request(url, headers=headers or {}), timeout=30) as r:
         return r.read()
@@ -132,8 +140,18 @@ def process(sv, local, first):
         p["week_hours"] = round(max(p["hours"] - base_h.get(p["uuid"], 0), 0), 1)
     hp.write_text(json.dumps(hist))
     players.sort(key=lambda p: p["hours"], reverse=True)
+    status = {}
+    if not local:
+        try:
+            info = server_info(sid)
+            pl = info.get("players") or {}
+            status = {"state": STATES.get(info.get("status"), "unknown"), "count": pl.get("count", 0), "max": pl.get("max", 0),
+                      "list": pl.get("list") or [], "address": info.get("address", ""),
+                      "checked": datetime.now(timezone.utc).isoformat(timespec="minutes")}
+        except Exception as e:
+            print("Status nicht lesbar:", e)
     (out / "stats.json").write_text(json.dumps(
-        {"updated": datetime.now(timezone.utc).isoformat(timespec="minutes"), "players": players},
+        {"updated": datetime.now(timezone.utc).isoformat(timespec="minutes"), "players": players, "status": status},
         ensure_ascii=False, indent=1))
 
 
