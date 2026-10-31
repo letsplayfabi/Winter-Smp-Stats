@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-31T02:38+00:00",
+ "updated": "2026-10-31T08:01+00:00",
  "players": [
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -1310,5 +1310,13 @@
    },
    "week_hours": 0.0
   }
- ]
+ ],
+ "status": {
+  "state": "offline",
+  "count": 0,
+  "max": 8,
+  "list": [],
+  "address": "chillsmp187.exaroton.me",
+  "checked": "2026-10-31T08:01+00:00"
+ }
 }
