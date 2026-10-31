@@ -1,27 +1,27 @@
 {
- "updated": "2026-10-31T15:27+00:00",
+ "updated": "2026-10-31T19:28+00:00",
  "players": [
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
    "name": "Trosser",
-   "minutes": 4793,
+   "minutes": 4797,
    "hours": 79.9,
    "deaths": 35,
    "mob_kills": 500,
    "player_kills": 8,
    "entities_killed": 488,
-   "items_used": 36491,
+   "items_used": 36492,
    "damage": 8441,
-   "blocks_mined": 16100,
+   "blocks_mined": 16101,
    "diamonds": 0,
-   "km_travelled": 1376.4,
-   "jumps": 142342,
+   "km_travelled": 1376.7,
+   "jumps": 142353,
    "travel": {
     "boat": 37.5,
     "swim": 5.2,
     "crouch": 4.3,
     "climb": 0.9,
-    "minecart": 820.1,
+    "minecart": 820.4,
     "walk": 45.0,
     "walk_under_water": 1.2,
     "horse": 16.5,
@@ -86,7 +86,7 @@
     ],
     [
      "cobblestone",
-     468
+     469
     ],
     [
      "dirt",
@@ -108,7 +108,7 @@
     ],
     [
      "iron_pickaxe",
-     4063
+     4064
     ],
     [
      "cobblestone",
@@ -941,11 +941,11 @@
   }
  ],
  "status": {
-  "state": "online",
+  "state": "offline",
   "count": 0,
   "max": 20,
   "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-10-31T15:27+00:00"
+  "checked": "2026-10-31T19:28+00:00"
  }
 }
