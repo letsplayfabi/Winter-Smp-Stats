@@ -38,8 +38,8 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 <section class="card" data-tab="a"><h2>💬 Discord-Button (alle Server)</h2><div class="g"><label>Link<input id="dl" type="text"></label><label>Button-Text<input id="dt" type="text"></label></div><p class="mu" style="margin-top:8px">Link leer lassen = Button ausblenden.</p>
 <h3 style="margin:14px 0 6px;font-size:15px">Discord-Meldungen (Webhook)</h3>
 <p class="mu">Der Webhook-Link kommt als GitHub-Secret <b>DISCORD_WEBHOOK</b> (siehe Anleitung), nicht hierher. Hier wählst du nur, was gemeldet wird.</p>
-<label style="display:block"><input type="checkbox" id="nev"> Neue Events</label><label style="display:block"><input type="checkbox" id="nwk"> Wochen-Top-3 (montags)</label><label style="display:block"><input type="checkbox" id="nms"> Meilensteine (z. B. 100 Diamanten)</label>
-<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button id="dtest" class="s">📨 Testnachricht senden</button><button id="dupd" class="s">🔄 Jetzt aktualisieren</button></div></section>
+<label style="display:block"><input type="checkbox" id="nev"> Neue Events</label><label style="display:block"><input type="checkbox" id="nwk"> Wochen-Top-3 (montags)</label><label style="display:block"><input type="checkbox" id="nms"> Meilensteine (z. B. 100 Diamanten)</label><label style="display:block"><input type="checkbox" id="nac"> Erfolge (neue Erfolge und Wechsel beim Platz 1)</label>
+<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button id="dtest" class="s">📨 Testnachricht senden</button></div></section>
 <section class="card" data-tab="a"><h2>🏷️ Seite</h2><div class="g">
 <label>Titel<input id="st" type="text"></label><label>Einleitung<input id="si" type="text"></label></div></section>
 <section class="card" data-tab="a"><h2>🗂️ Kategorien dieses Servers</h2><p class="mu">Häkchen = wird auf diesem Server angezeigt (so schaltest du eine Kategorie bei einem Server mit einem Klick zu oder ab). Namensfeld leer lassen = Standardname.</p><div class="g" id="cats"></div></section>
@@ -58,10 +58,10 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 <div class="g"><label>Symbol (Emoji)<input id="ai" type="text" placeholder="💎"></label><label>Titel<input id="at" type="text" placeholder="Diamantenkönig"></label><label>Beschreibung<input id="ad" type="text"></label>
 <label>Art<select id="aty"><option value="top">Bester Spieler einer Kategorie</option><option value="threshold">Ab einem bestimmten Wert</option></select></label>
 <label>Kategorie<select id="am"></select></label><label>Wer bekommt es?<select id="adir"><option value="max">höchster Wert</option><option value="min">niedrigster Wert</option></select></label>
-<label style="display:none">Wert (ab …)<input id="av" type="number" min="0"></label><label>Server<select id="asv"></select></label></div>
+<label style="display:none">Wert (ab …)<input id="av" type="number" min="0"></label><label>Server<select id="asv"></select></label><label style="color:var(--fg)"><input type="checkbox" id="aan" checked> Auf Discord melden</label></div>
 <div style="margin:12px 0;display:flex;gap:8px;flex-wrap:wrap"><button id="aa">➕ Erfolg hinzufügen</button><button id="ac" class="s" hidden>Abbrechen</button><button id="aex" class="s">✨ Beispiele hinzufügen</button></div><div id="axl"></div></section>
 </div></main>
-<div class="bar" id="ab" hidden><button id="sv">💾 Speichern</button><button id="rc" class="s">🔄 Neu berechnen</button><span id="msg"></span></div>
+<div class="bar" id="ab" hidden><button id="sv">💾 Speichern</button><button id="rc" class="s">🔄 Jetzt aktualisieren</button><span id="msg"></span></div>
 <script>
 const own=location.hostname.split(".")[0],repo=location.pathname.split("/")[1],api=`https://api.github.com/repos/${own}/${repo}`;
 const CK=[["playtime","Spielzeit"],["player_kills","Spieler-Kills"],["deaths","Tode"],["travel","Gereist (km)"],["mined","Blöcke abgebaut"],["used","Items verwendet"],["killed","Entities getötet"],["damage","Schaden ausgeteilt (HP)"],["diamonds","💎 Diamanten"]];
@@ -106,7 +106,7 @@ function collect(){
   const sv={site:{title:st.value,intro:si.value},categories:{},players:{}};
   catEls.forEach(([k,i])=>{if(i.value)sv.categories[k]=i.value});sv.enabled=catEls.filter(x=>x[2].checked).map(x=>x[0]);
   rowEls.forEach(([u,a,t,c,h])=>{if(a.value||t.value||h.checked||c.dataset.s)sv.players[u]={display_name:a.value,title:t.value,hidden:h.checked,...(c.dataset.s?{color:c.value}:{})}});
-  OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;OV.achievements=ACH;OV.badges={names:bnm.checked,profile:bpr.checked};OV.notify={events:nev.checked,weekly:nwk.checked,milestones:nms.checked};
+  OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;OV.achievements=ACH;OV.badges={names:bnm.checked,profile:bpr.checked};OV.notify={events:nev.checked,weekly:nwk.checked,milestones:nms.checked,achievements:nac.checked};
 }
 let EDIT=null;
 function renderEvents(){const b=$("evl");b.replaceChildren();if(!EVS.length)el("p","Noch keine Events.",b,"mu");
@@ -143,14 +143,14 @@ document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>tab(b.dataset
 const mlabel=k=>(ACHM.find(m=>m[0]===k)||[0,k])[1];
 function renderAch(){const b=$("axl");b.replaceChildren();if(!ACH.length)el("p","Noch keine Erfolge.",b,"mu");
   ACH.forEach(a=>{const r=el("div","",b,"ev"),d=el("div","",r),sv=(SERVERS.find(s=>s.key===a.server)||{}).name||"Alle Server";el("b",`${a.icon||"🏆"} ${a.title}`,d);
-    el("div",(a.type==="top"?(a.dir==="min"?"Niedrigster":"Höchster")+" Wert bei ":`Ab ${a.value} bei `)+mlabel(a.metric)+" · "+sv,d,"mu");
+    el("div",(a.type==="top"?(a.dir==="min"?"Niedrigster":"Höchster")+" Wert bei ":`Ab ${a.value} bei `)+mlabel(a.metric)+" · "+sv+(a.announce===false?" · nicht auf Discord":""),d,"mu");
     el("button","✏️",r,"s").onclick=()=>editAch(a);el("button","🗑",r,"s").onclick=()=>{ACH=ACH.filter(x=>x!==a);renderAch();say("Gelöscht – zum Übernehmen unten auf „Speichern“ klicken.")}})}
 function achForm(){adir.parentElement.style.display=aty.value==="top"?"":"none";av.parentElement.style.display=aty.value==="top"?"none":""}
 aty.onchange=achForm;
-function editAch(a){AEDIT=a;ai.value=a.icon||"";at.value=a.title;ad.value=a.desc||"";aty.value=a.type;am.value=a.metric;adir.value=a.dir||"max";av.value=a.value||0;asv.value=a.server||"all";achForm();aa.textContent="💾 Änderung übernehmen";ac.hidden=false;at.scrollIntoView({behavior:"smooth",block:"center"})}
-function resetAch(){AEDIT=null;ai.value=at.value=ad.value="";av.value="";aty.value="top";adir.value="max";achForm();aa.textContent="➕ Erfolg hinzufügen";ac.hidden=true}
+function editAch(a){AEDIT=a;ai.value=a.icon||"";at.value=a.title;ad.value=a.desc||"";aty.value=a.type;am.value=a.metric;adir.value=a.dir||"max";av.value=a.value||0;asv.value=a.server||"all";aan.checked=a.announce!==false;achForm();aa.textContent="💾 Änderung übernehmen";ac.hidden=false;at.scrollIntoView({behavior:"smooth",block:"center"})}
+function resetAch(){AEDIT=null;aan.checked=true;ai.value=at.value=ad.value="";av.value="";aty.value="top";adir.value="max";achForm();aa.textContent="➕ Erfolg hinzufügen";ac.hidden=true}
 ac.onclick=resetAch;
-aa.onclick=()=>{if(!at.value)return say("❌ Bitte einen Titel eingeben.");const o={icon:ai.value||"🏆",title:at.value,desc:ad.value,type:aty.value,metric:am.value,dir:adir.value,value:+av.value||0,server:asv.value};
+aa.onclick=()=>{if(!at.value)return say("❌ Bitte einen Titel eingeben.");const o={icon:ai.value||"🏆",title:at.value,desc:ad.value,type:aty.value,metric:am.value,dir:adir.value,value:+av.value||0,server:asv.value,announce:aan.checked};
   if(AEDIT)Object.assign(AEDIT,o);else ACH.push({id:"a"+Date.now(),...o});resetAch();renderAch();say("Erfolg übernommen – unten auf „Speichern“ klicken.")};
 aex.onclick=()=>{[["💎","Diamantenkönig","Meiste Diamanten","top","diamonds"],["🏃","Weltenbummler","Meiste Strecke gereist","top","travel"],["⛏️","Minenarbeiter","Meiste Blöcke abgebaut","top","mined"],["☠️","Todesmutig","Meiste Tode","top","deaths"],["⚔️","Kämpfer","Meiste Spieler-Kills","top","player_kills"],["💥","Creeper-Jäger","Meiste Creeper getötet","top","creepers"],["🕒","Dauerzocker","Über 100 Stunden gespielt","threshold","playtime",6000],["🦘","Hüpfer","Über 10.000 Sprünge","threshold","jumps",10000]]
   .forEach(([icon,title,desc,type,metric,value],i)=>ACH.push({id:"a"+Date.now()+i,icon,title,desc,type,metric,dir:"max",value:value||0,server:"all"}));renderAch();say("Beispiele hinzugefügt – unten auf „Speichern“ klicken.")};
@@ -175,7 +175,7 @@ ld.onclick=async()=>{
     setTheme({...PRE.Standard,...(OV.theme||{}),players:(OV.theme||{}).players||PRE.Standard.players});
     sel.value=SERVERS[0].key;await buildServer(SERVERS[0].key);EVS=(await evList()).list;renderEvents();
     dl.value=(OV.discord||{}).url??DEFDC;dt.value=(OV.discord||{}).text||"Discord";sa.checked=OV.showAdmin!==false;
-    ACH=OV.achievements||[];bnm.checked=(OV.badges||{}).names!==false;bpr.checked=(OV.badges||{}).profile!==false;const nf=OV.notify||{};nev.checked=nf.events!==false;nwk.checked=nf.weekly!==false;nms.checked=nf.milestones!==false;
+    ACH=OV.achievements||[];bnm.checked=(OV.badges||{}).names!==false;bpr.checked=(OV.badges||{}).profile!==false;const nf=OV.notify||{};nev.checked=nf.events!==false;nwk.checked=nf.weekly!==false;nms.checked=nf.milestones!==false;nac.checked=nf.achievements!==false;
     am.replaceChildren();ACHM.forEach(([k,l])=>el("option",l,am).value=k);asv.replaceChildren();el("option","Alle Server",asv).value="all";SERVERS.forEach(x=>el("option",x.name,asv).value=x.key);resetAch();renderAch();
     ed.hidden=false;ab.hidden=false;tab("a");say("Geladen.");
     if(rem.checked&&pw.value){await lockTok(pw.value,tk.value.trim());fg.hidden=false;say("Geladen. 🔒 Zugang auf diesem Gerät gespeichert.")}
@@ -196,6 +196,6 @@ async function run(wf,label){
     const j=((await q.json()).workflow_runs||[])[0];
     if(j&&new Date(j.created_at)>t0){if(j.status==="completed")return say(j.conclusion==="success"?`✅ ${label} fertig.`:`❌ ${label} fehlgeschlagen (${j.conclusion}) – Details im Reiter Actions.`);say(`⏳ ${label} läuft …`)}}
   say("Der Lauf dauert länger – siehe Reiter Actions.")}
-rc.onclick=dupd.onclick=()=>run("update-stats.yml","Aktualisierung");
+rc.onclick=()=>run("update-stats.yml","Aktualisierung");
 dtest.onclick=()=>run("discord-test.yml","Testnachricht");
 </script></body></html>
