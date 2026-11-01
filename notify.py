@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Discord-Meldungen: neue Events, Wochen-Top-3 (montags), Meilensteine. Braucht das GitHub-Secret DISCORD_WEBHOOK."""
-import json, os, urllib.request
+import json, os, sys, urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -28,6 +28,20 @@ def post(payload):
 
 
 def main():
+    if "--test" in sys.argv:
+        if not HOOK:
+            print("FEHLER: Das Secret DISCORD_WEBHOOK fehlt oder ist leer.")
+            sys.exit(1)
+        owner, _, repo = os.environ.get("GITHUB_REPOSITORY", "/").partition("/")
+        try:
+            post({"embeds": [{"title": "✅ Testnachricht", "color": 0x52E585,
+                              "url": os.environ.get("SITE_URL") or f"https://{owner.lower()}.github.io/{repo}/",
+                              "description": "Dein Server-Leaderboard ist mit Discord verbunden. Neue Events, Wochen-Top-3 und Meilensteine landen ab jetzt hier."}]})
+            print("Testnachricht gesendet.")
+        except Exception as e:
+            print("FEHLER beim Senden:", e)
+            sys.exit(1)
+        return
     if not HOOK:
         print("Kein DISCORD_WEBHOOK gesetzt – keine Discord-Meldungen.")
         return
