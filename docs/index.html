@@ -85,7 +85,7 @@ function rank(c,players){
 function chart(parent,title,note,sorted,get,fmt,color,extra,big){
   const card=el("section","",parent,big?"big":""),hd=el("div","",card,"hd");el("h2",title,hd);el("small",note,hd);
   const box=el("div","",card,"box"),max=Math.max(...sorted.map(get),1);
-  sorted.forEach(p=>{const r=el("div","",box,"row"),nm=el("span","",r,"nm");nm.append(head(p,20),document.createTextNode(p.display_name+(big&&p.badges&&p.badges.length?" "+p.badges.slice(0,4).map(a=>a.icon||"🏆").join(""):"")));if(big&&p.badges&&p.badges.length)nm.title=p.badges.map(a=>a.title).join(", ");nm.onclick=()=>profile(p);
+  sorted.forEach(p=>{const r=el("div","",box,"row"),nm=el("span","",r,"nm");nm.append(head(p,20),document.createTextNode(p.display_name+(big&&BADGE.names&&p.badges&&p.badges.length?" "+p.badges.slice(0,4).map(a=>a.icon||"🏆").join(""):"")));if(big&&BADGE.names&&p.badges&&p.badges.length)nm.title=p.badges.map(a=>a.title).join(", ");nm.onclick=()=>profile(p);
     const t=el("div","",r,"tr"),b=el("div","",t,"bar");b.style.cssText=`width:${get(p)/max*80}%;background:${color(p)}`;el("span",fmt(get(p)),t,"val")});
   if(extra)el("div",extra,card,"ex");
 }
@@ -105,7 +105,7 @@ function profile(p){
   const cs=p.death_causes.map(([k,v])=>[pretty(k,MOB),v]);if(p.death_other>0)cs.push(["Umwelt/Sonstiges (Sturz, Lava, Ertrinken …)",p.death_other]);
   cs.sort((a,z)=>z[1]-a[1]);
   el("div",p.deaths?"💀 Häufigste Todesursache: "+(cs[0]?cs[0][0]+" ("+cs[0][1]+"×)":"unbekannt"):"🎉 Noch nie gestorben",pb,"death");
-  if(p.badges&&p.badges.length){el("h3","🏆 Erfolge",pb);p.badges.forEach(a=>el("div",`${a.icon||"🏆"} ${a.title}`+(a.desc?" – "+a.desc:""),pb,"death"))}
+  if(BADGE.profile&&p.badges&&p.badges.length){el("h3","🏆 Erfolge",pb);p.badges.forEach(a=>el("div",`${a.icon||"🏆"} ${a.title}`+(a.desc?" – "+a.desc:""),pb,"death"))}
   mini(pb,"Todesursachen",cs,null,c);mini(pb,"Meistgetötete Mobs",p.top_mobs,MOB,c);mini(pb,"Meistabgebaute Blöcke",p.top_blocks,null,c);
   mini(pb,"Gereist nach Art (km)",Object.entries(p.travel).sort((a,z)=>z[1]-a[1]),TRAV,c);
   el("button","Schließen",pb).onclick=()=>$("d").close();
@@ -114,7 +114,7 @@ function profile(p){
 $("d").onclick=e=>{if(e.target===$("d"))$("d").close()};
 $("d").addEventListener("close",()=>document.body.style.overflow="");
 
-let CUR="";
+let CUR="",BADGE={names:true,profile:true};
 const STT={online:"online",offline:"offline",starting:"startet",stopping:"stoppt",restarting:"startet neu",saving:"speichert",loading:"lädt",crashed:"abgestürzt",pending:"wartet",preparing:"bereitet vor"};
 const hm=iso=>new Date(iso).toLocaleTimeString("de-AT",{hour:"2-digit",minute:"2-digit"});
 async function status(d,k){const st=d.status||{},box=$("stt");box.textContent="";box.title="";
@@ -195,7 +195,7 @@ window.onhashchange=show;
 Promise.all([fetch("servers.json",{cache:"no-cache"}).then(r=>r.json()).catch(()=>[{key:"winter",name:"Server"}]),
   fetch("overrides.json",{cache:"no-cache"}).then(r=>r.ok?r.json():{}).catch(()=>({})),
   fetch("events.json",{cache:"no-cache"}).then(r=>r.ok?r.json():{}).catch(()=>({}))]).then(([sv,ov,ev])=>{
-  SERVERS=sv;OV=ov;NEXT=(ev.events||[]).filter(e=>T(e)>=Date.now()).sort((a,b)=>T(a)-T(b))[0]||null;const th=ov.theme||{},rs=document.documentElement.style;
+  SERVERS=sv;OV=ov;BADGE={names:(ov.badges||{}).names!==false,profile:(ov.badges||{}).profile!==false};NEXT=(ev.events||[]).filter(e=>T(e)>=Date.now()).sort((a,b)=>T(a)-T(b))[0]||null;const th=ov.theme||{},rs=document.documentElement.style;
   [["bg","--bg"],["panel","--pn"],["text","--fg"],["muted","--mu"],["accent","--ac"]].forEach(([k,v])=>th[k]&&rs.setProperty(v,th[k]));
   if(th.players&&th.players.length)COLS=th.players;show();
 });
