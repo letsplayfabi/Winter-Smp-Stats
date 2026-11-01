@@ -38,7 +38,8 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 <section class="card" data-tab="a"><h2>💬 Discord-Button (alle Server)</h2><div class="g"><label>Link<input id="dl" type="text"></label><label>Button-Text<input id="dt" type="text"></label></div><p class="mu" style="margin-top:8px">Link leer lassen = Button ausblenden.</p>
 <h3 style="margin:14px 0 6px;font-size:15px">Discord-Meldungen (Webhook)</h3>
 <p class="mu">Der Webhook-Link kommt als GitHub-Secret <b>DISCORD_WEBHOOK</b> (siehe Anleitung), nicht hierher. Hier wählst du nur, was gemeldet wird.</p>
-<label style="display:block"><input type="checkbox" id="nev"> Neue Events</label><label style="display:block"><input type="checkbox" id="nwk"> Wochen-Top-3 (montags)</label><label style="display:block"><input type="checkbox" id="nms"> Meilensteine (z. B. 100 Diamanten)</label></section>
+<label style="display:block"><input type="checkbox" id="nev"> Neue Events</label><label style="display:block"><input type="checkbox" id="nwk"> Wochen-Top-3 (montags)</label><label style="display:block"><input type="checkbox" id="nms"> Meilensteine (z. B. 100 Diamanten)</label>
+<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button id="dtest" class="s">📨 Testnachricht senden</button><button id="dupd" class="s">🔄 Jetzt aktualisieren</button></div></section>
 <section class="card" data-tab="a"><h2>🏷️ Seite</h2><div class="g">
 <label>Titel<input id="st" type="text"></label><label>Einleitung<input id="si" type="text"></label></div></section>
 <section class="card" data-tab="a"><h2>🗂️ Kategorien dieses Servers</h2><p class="mu">Häkchen = wird auf diesem Server angezeigt (so schaltest du eine Kategorie bei einem Server mit einem Klick zu oder ab). Namensfeld leer lassen = Standardname.</p><div class="g" id="cats"></div></section>
@@ -53,6 +54,7 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 
 <section class="card" data-tab="x" hidden><h2>🏆 Erfolge</h2>
 <p class="mu">Erfolge erscheinen als Abzeichen im Spielerprofil und als Symbol neben dem Namen in der Gesamtwertung. Änderungen gelten nach „Speichern“ in der unteren Leiste.</p>
+<label style="display:block"><input type="checkbox" id="bnm"> Symbole (Emojis) neben den Namen in der Wertung anzeigen</label><label style="display:block;margin-bottom:12px"><input type="checkbox" id="bpr"> Erfolge im Spielerprofil anzeigen</label>
 <div class="g"><label>Symbol (Emoji)<input id="ai" type="text" placeholder="💎"></label><label>Titel<input id="at" type="text" placeholder="Diamantenkönig"></label><label>Beschreibung<input id="ad" type="text"></label>
 <label>Art<select id="aty"><option value="top">Bester Spieler einer Kategorie</option><option value="threshold">Ab einem bestimmten Wert</option></select></label>
 <label>Kategorie<select id="am"></select></label><label>Wer bekommt es?<select id="adir"><option value="max">höchster Wert</option><option value="min">niedrigster Wert</option></select></label>
@@ -104,7 +106,7 @@ function collect(){
   const sv={site:{title:st.value,intro:si.value},categories:{},players:{}};
   catEls.forEach(([k,i])=>{if(i.value)sv.categories[k]=i.value});sv.enabled=catEls.filter(x=>x[2].checked).map(x=>x[0]);
   rowEls.forEach(([u,a,t,c,h])=>{if(a.value||t.value||h.checked||c.dataset.s)sv.players[u]={display_name:a.value,title:t.value,hidden:h.checked,...(c.dataset.s?{color:c.value}:{})}});
-  OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;OV.achievements=ACH;OV.notify={events:nev.checked,weekly:nwk.checked,milestones:nms.checked};
+  OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;OV.achievements=ACH;OV.badges={names:bnm.checked,profile:bpr.checked};OV.notify={events:nev.checked,weekly:nwk.checked,milestones:nms.checked};
 }
 let EDIT=null;
 function renderEvents(){const b=$("evl");b.replaceChildren();if(!EVS.length)el("p","Noch keine Events.",b,"mu");
@@ -173,7 +175,7 @@ ld.onclick=async()=>{
     setTheme({...PRE.Standard,...(OV.theme||{}),players:(OV.theme||{}).players||PRE.Standard.players});
     sel.value=SERVERS[0].key;await buildServer(SERVERS[0].key);EVS=(await evList()).list;renderEvents();
     dl.value=(OV.discord||{}).url??DEFDC;dt.value=(OV.discord||{}).text||"Discord";sa.checked=OV.showAdmin!==false;
-    ACH=OV.achievements||[];const nf=OV.notify||{};nev.checked=nf.events!==false;nwk.checked=nf.weekly!==false;nms.checked=nf.milestones!==false;
+    ACH=OV.achievements||[];bnm.checked=(OV.badges||{}).names!==false;bpr.checked=(OV.badges||{}).profile!==false;const nf=OV.notify||{};nev.checked=nf.events!==false;nwk.checked=nf.weekly!==false;nms.checked=nf.milestones!==false;
     am.replaceChildren();ACHM.forEach(([k,l])=>el("option",l,am).value=k);asv.replaceChildren();el("option","Alle Server",asv).value="all";SERVERS.forEach(x=>el("option",x.name,asv).value=x.key);resetAch();renderAch();
     ed.hidden=false;ab.hidden=false;tab("a");say("Geladen.");
     if(rem.checked&&pw.value){await lockTok(pw.value,tk.value.trim());fg.hidden=false;say("Geladen. 🔒 Zugang auf diesem Gerät gespeichert.")}
@@ -185,8 +187,15 @@ sv.onclick=async()=>{
     OVSHA=await putFile("docs/overrides.json",b64s(JSON.stringify(OV,null,2)),"Overrides aktualisiert",f&&f.sha);say("✅ Gespeichert – die Seite aktualisiert sich in ca. 1 Minute.")
   }catch(e){say("❌ "+e.message)}
 };
-rc.onclick=async()=>{
-  const r=await fetch(api+"/actions/workflows/update-stats.yml/dispatches",{method:"POST",headers:H(),body:JSON.stringify({ref:"main"})});
-  say(r.status===204?"✅ Neuberechnung gestartet (ca. 1 Minute).":"❌ Fehler: "+r.status+" – Token braucht Actions-Recht");
-};
+async function run(wf,label){
+  const t0=Date.now()-30000,r=await fetch(`${api}/actions/workflows/${wf}/dispatches`,{method:"POST",headers:H(),body:JSON.stringify({ref:"main"})});
+  if(r.status!==204)return say(r.status===404?`❌ Die Datei ${wf} fehlt im Repo.`:"❌ Fehler: "+r.status+" – Token braucht das Recht „Actions: Read and write“.");
+  say(`⏳ ${label} gestartet …`);
+  for(let i=0;i<30;i++){await new Promise(x=>setTimeout(x,5000));
+    const q=await fetch(`${api}/actions/workflows/${wf}/runs?per_page=1&event=workflow_dispatch`,{headers:H()});if(!q.ok)return say(`✅ ${label} gestartet (Status nicht lesbar).`);
+    const j=((await q.json()).workflow_runs||[])[0];
+    if(j&&new Date(j.created_at)>t0){if(j.status==="completed")return say(j.conclusion==="success"?`✅ ${label} fertig.`:`❌ ${label} fehlgeschlagen (${j.conclusion}) – Details im Reiter Actions.`);say(`⏳ ${label} läuft …`)}}
+  say("Der Lauf dauert länger – siehe Reiter Actions.")}
+rc.onclick=dupd.onclick=()=>run("update-stats.yml","Aktualisierung");
+dtest.onclick=()=>run("discord-test.yml","Testnachricht");
 </script></body></html>
