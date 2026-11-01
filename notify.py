@@ -20,6 +20,15 @@ def jl(p, default):
         return default
 
 
+def mval(p, m):
+    x = p.get("x") or {}
+    return {"playtime": p.get("minutes", 0), "player_kills": p.get("player_kills", 0), "deaths": p.get("deaths", 0),
+            "travel": p.get("km_travelled", 0), "mined": p.get("blocks_mined", 0), "used": p.get("items_used", 0),
+            "killed": p.get("entities_killed", 0), "damage": p.get("damage", 0), "diamonds": p.get("diamonds", 0),
+            "jumps": p.get("jumps", 0), "netherite": x.get("debris", 0), "creepers": x.get("creepers", 0),
+            "netherrack": x.get("netherrack", 0), "deepslate": x.get("deepslate", 0), "elytra": x.get("aviate_km", 0)}.get(m)
+
+
 def post(payload):
     payload["allowed_mentions"] = {"parse": []}
     req = urllib.request.Request(HOOK, json.dumps(payload).encode(),
@@ -46,13 +55,15 @@ def main():
         print("Kein DISCORD_WEBHOOK gesetzt – keine Discord-Meldungen.")
         return
     ov = jl(D / "overrides.json", {})
-    cfg = {"events": True, "weekly": True, "milestones": True, **(ov.get("notify") or {})}
+    cfg = {"events": True, "weekly": True, "milestones": True, "achievements": True, **(ov.get("notify") or {})}
     servers = jl(D / "servers.json", [])
     events = (jl(D / "events.json", {}) or {}).get("events", [])
     first = not STATE.exists()
     st = jl(STATE, {})
     st.setdefault("events", [])
+    ach_first = "ach" not in st
     st.setdefault("ms", {})
+    st.setdefault("ach", {})
     owner, _, repo = os.environ.get("GITHUB_REPOSITORY", "/").partition("/")
     site = os.environ.get("SITE_URL") or f"https://{owner.lower()}.github.io/{repo}/"
     now = datetime.now(timezone.utc)
@@ -96,6 +107,29 @@ def main():
                     seen[p["uuid"]][metric] = best
                     if not first and cfg["milestones"]:
                         lines.append(f"🎉 **{n}** ({sv['name']}): {best:,} {label}!".replace(",", "."))
+        names = {p["uuid"]: n for n, p in players}
+        sa = st["ach"].setdefault(sv["key"], {})
+        for a in ov.get("achievements") or []:
+            if a.get("server") not in (None, "all", sv["key"]) or not players:
+                continue
+            vals = {p["uuid"]: mval(p, a.get("metric")) for _, p in players}
+            if any(v is None for v in vals.values()):
+                continue
+            if a.get("type") == "top":
+                best = (min if a.get("dir") == "min" else max)(vals.values())
+                holders = [] if a.get("dir") != "min" and best <= 0 else [u for u, v in vals.items() if v == best]
+            else:
+                holders = [u for u, v in vals.items() if v >= (a.get("value") or 0)]
+            prev = sa.get(a["id"], [])
+            new = [u for u in holders if u not in prev]
+            sa[a["id"]] = holders
+            if new and not ach_first and cfg["achievements"] and a.get("announce", True):
+                title = f"{a.get('icon') or '🏆'} **{a['title']}**"
+                who = ", ".join(f"**{names[u]}**" for u in new)
+                if a.get("type") == "top" and prev:
+                    lines.append(f"👑 {title} ({sv['name']}) geht jetzt an {who} (vorher {', '.join(names.get(u, 'jemand') for u in prev)})")
+                else:
+                    lines.append(f"🏆 {who} hat den Erfolg {title} erhalten ({sv['name']})")
         if weekly:
             top = sorted([(p.get("week_hours", 0), n) for n, p in players if p.get("week_hours", 0) > 0], reverse=True)[:3]
             if top:
