@@ -9,7 +9,7 @@
 main{max-width:900px;margin:0 auto;padding:18px}
 .card{background:var(--cd);border:1px solid var(--ln);border-radius:14px;padding:18px;margin:16px 0;box-shadow:0 6px 20px rgba(0,0,0,.25)}
 .card h2{margin:0 0 12px;font-size:18px}p.mu{color:var(--mu);margin:0 0 10px}
-input[type=text],input[type=password],input[type=date],input[type=time],select,textarea{width:100%;padding:9px 11px;border-radius:9px;border:1px solid var(--ln);background:#0d1320;color:var(--fg);font:inherit}
+input[type=text],input[type=password],input[type=date],input[type=time],input[type=number],select,textarea{width:100%;padding:9px 11px;border-radius:9px;border:1px solid var(--ln);background:#0d1320;color:var(--fg);font:inherit}
 textarea{min-height:80px}input:focus,select:focus,textarea:focus{outline:2px solid var(--ac);border-color:transparent}
 .g{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}.g label{display:block;font-size:13px;color:var(--mu)}
 .cp{display:flex;align-items:center;gap:8px;background:#0d1320;border:1px solid var(--ln);border-radius:9px;padding:6px 8px;font-size:13px;color:var(--fg)!important}
@@ -33,7 +33,7 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 <label style="display:block;margin:8px 0;color:var(--mu);font-size:13px"><input type="checkbox" id="rem"> Token mit diesem Passwort auf diesem Gerät merken</label>
 <button id="unl" class="s" hidden>🔓 Mit Passwort entsperren</button> <button id="fg" class="s" hidden>Gespeicherten Zugang löschen</button></div></section>
 <div id="ed" hidden>
-<div class="tabs"><button data-t="a" class="on">⚙️ Allgemein</button><button data-t="e">📅 Events</button><button data-t="x">🏆 Erfolge</button></div>
+<div class="tabs"><button data-t="a" class="on">⚙️ Allgemein</button><button data-t="e">📅 Events</button><button data-t="x">🏆 Erfolge</button><button data-t="c">📊 Eigene Stats</button></div>
 <section class="card" data-tab="a"><h2>🌍 Server</h2><p class="mu">Alles unten (Seite, Kategorien, Spieler) gilt für den gewählten Server. Farben und Events gelten für alle.</p><select id="sel"></select><label style="display:block;margin-top:12px"><input type="checkbox" id="sa"> Admin-Reiter auf der Seite anzeigen</label></section>
 <section class="card" data-tab="a"><h2>💬 Discord-Button (alle Server)</h2><div class="g"><label>Link<input id="dl" type="text"></label><label>Button-Text<input id="dt" type="text"></label></div><p class="mu" style="margin-top:8px">Link leer lassen = Button ausblenden.</p>
 <h3 style="margin:14px 0 6px;font-size:15px">Discord-Meldungen (Webhook)</h3>
@@ -52,6 +52,11 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 <label style="display:block;margin:12px 0;color:var(--mu);font-size:13px">Beschreibung<textarea id="edsc"></textarea></label>
 <p class="mu" id="eh"></p><button id="ea">➕ Event hinzufügen</button> <button id="ec" class="s" hidden>Abbrechen</button><div id="evl" style="margin-top:14px"></div></section>
 
+<section class="card" data-tab="c" hidden><h2>📊 Eigene Statistiken</h2>
+<p class="mu">Selbst gepflegte Zahlen pro Spieler, zum Beispiel „Bezahlt“ (€). Sie erscheinen als eigene Kategorie und sind für alle sichtbar. Änderungen gelten nach „Speichern“ in der unteren Leiste.</p>
+<div class="g"><label>Name<input id="cn" type="text" placeholder="Bezahlt"></label><label>Einheit<input id="cu" type="text" placeholder="€"></label><label>Server<select id="cs"></select></label>
+<label style="color:var(--fg)"><input type="checkbox" id="cp"> In der Gesamtwertung mitzählen</label></div>
+<div style="margin:12px 0;display:flex;gap:8px;flex-wrap:wrap"><button id="ca">➕ Statistik anlegen</button><button id="cx" class="s">💶 „Bezahlt (€)“ anlegen</button></div><div id="csl"></div></section>
 <section class="card" data-tab="x" hidden><h2>🏆 Erfolge</h2>
 <p class="mu">Erfolge erscheinen als Abzeichen im Spielerprofil und als Symbol neben dem Namen in der Gesamtwertung. Änderungen gelten nach „Speichern“ in der unteren Leiste.</p>
 <label style="display:block"><input type="checkbox" id="bnm"> Symbole (Emojis) neben den Namen in der Wertung anzeigen</label><label style="display:block;margin-bottom:12px"><input type="checkbox" id="bpr"> Erfolge im Spielerprofil anzeigen</label>
@@ -106,7 +111,7 @@ function collect(){
   const sv={site:{title:st.value,intro:si.value},categories:{},players:{}};
   catEls.forEach(([k,i])=>{if(i.value)sv.categories[k]=i.value});sv.enabled=catEls.filter(x=>x[2].checked).map(x=>x[0]);
   rowEls.forEach(([u,a,t,c,h])=>{if(a.value||t.value||h.checked||c.dataset.s)sv.players[u]={display_name:a.value,title:t.value,hidden:h.checked,...(c.dataset.s?{color:c.value}:{})}});
-  OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;OV.achievements=ACH;OV.badges={names:bnm.checked,profile:bpr.checked};OV.notify={events:nev.checked,weekly:nwk.checked,milestones:nms.checked,achievements:nac.checked};
+  OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;OV.achievements=ACH;OV.custom=CUS;OV.badges={names:bnm.checked,profile:bpr.checked};OV.notify={events:nev.checked,weekly:nwk.checked,milestones:nms.checked,achievements:nac.checked};
 }
 let EDIT=null;
 function renderEvents(){const b=$("evl");b.replaceChildren();if(!EVS.length)el("p","Noch keine Events.",b,"mu");
@@ -162,6 +167,26 @@ async function unlockTok(pw){const o=JSON.parse(localStorage.getItem("adm"));ret
 unl.onclick=async()=>{try{tk.value=await unlockTok(pw.value);ld.click()}catch{say("❌ Falsches Passwort.")}};
 fg.onclick=()=>{localStorage.removeItem("adm");unl.hidden=fg.hidden=true;say("Gespeicherter Zugang gelöscht.")};
 try{if(localStorage.getItem("adm")){unl.hidden=fg.hidden=false;say("Gespeicherter Zugang gefunden – Passwort eingeben und entsperren.")}}catch{}
+let CUS=[],PC={};
+async function playersFor(srv){const ks=srv==="all"?SERVERS.map(s=>s.key):[srv],m=new Map();
+  for(const k of ks){if(!PC[k])PC[k]=await fetch(`data/${k}/stats.json`,{cache:"no-cache"}).then(r=>r.json()).then(d=>d.players).catch(()=>[]);PC[k].forEach(p=>m.set(p.uuid,p.name))}return[...m]}
+async function renderCus(){const b=$("csl");b.replaceChildren();if(!CUS.length)el("p","Noch keine eigenen Statistiken.",b,"mu");
+  for(const c of CUS){c.values=c.values||{};const box=el("div","",b);box.style.cssText="border:1px solid var(--ln);border-radius:10px;padding:12px;margin:12px 0";
+    const h=el("div","",box);h.style.cssText="display:flex;gap:8px;flex-wrap:wrap;align-items:center";
+    const mk=(v,ph,w)=>{const i=document.createElement("input");i.type="text";i.value=v||"";i.placeholder=ph;i.style.cssText=`flex:${w} 1 90px;width:auto`;h.append(i);return i};
+    mk(c.name,"Name",3).oninput=e=>c.name=e.target.value;mk(c.unit,"Einheit",1).oninput=e=>c.unit=e.target.value;
+    const sv=document.createElement("select");sv.style.cssText="flex:2 1 120px;width:auto";el("option","Alle Server",sv).value="all";SERVERS.forEach(s=>el("option",s.name,sv).value=s.key);sv.value=c.server||"all";sv.onchange=()=>{c.server=sv.value;renderCus()};h.append(sv);
+    const pl=document.createElement("label");pl.style.cssText="color:var(--fg);font-size:13px";const pc=document.createElement("input");pc.type="checkbox";pc.checked=!!c.points;pc.onchange=()=>c.points=pc.checked;pl.append(pc," Gesamtwertung");h.append(pl);
+    el("button","🗑",h,"s").onclick=()=>{if(confirm(`„${c.name}“ löschen?`)){CUS=CUS.filter(x=>x!==c);renderCus()}};
+    const sum=el("p","",box,"mu"),upd=()=>sum.textContent="Summe: "+Math.round(Object.values(c.values).reduce((x,v)=>x+(+v||0),0)*100)/100+" "+(c.unit||"");
+    for(const [uuid,name] of await playersFor(c.server||"all")){const r=el("div","",box,"pl"),im=document.createElement("img");im.src=`https://mc-heads.net/avatar/${uuid}/28`;im.width=im.height=28;im.onerror=()=>im.remove();r.append(im);el("b",name,r);
+      const v=document.createElement("input"),a=document.createElement("input");v.type=a.type="number";v.step=a.step="any";v.value=c.values[uuid]??"";v.placeholder="Wert";a.placeholder="+ Betrag";v.style.cssText=a.style.cssText="flex:1 1 90px;width:auto";
+      v.oninput=()=>{if(v.value==="")delete c.values[uuid];else c.values[uuid]=+v.value;upd()};
+      const bt=el("button","＋ hinzufügen",r,"s");bt.onclick=()=>{if(a.value==="")return;const nv=Math.round(((+c.values[uuid]||0)+(+a.value))*100)/100;c.values[uuid]=nv;v.value=nv;a.value="";upd()};
+      r.insertBefore(v,bt);r.insertBefore(a,bt)}
+    upd()}}
+ca.onclick=()=>{if(!cn.value)return say("❌ Bitte einen Namen eingeben.");CUS.push({id:"c"+Date.now(),name:cn.value,unit:cu.value,server:cs.value,points:cp.checked,values:{}});cn.value=cu.value="";renderCus();say("Statistik angelegt – Werte eintragen, dann unten auf „Speichern“ klicken.")};
+cx.onclick=()=>{CUS.push({id:"c"+Date.now(),name:"Bezahlt",unit:"€",server:"all",points:false,values:{}});renderCus();say("„Bezahlt (€)“ angelegt – Werte eintragen, dann unten auf „Speichern“ klicken.")};
 ld.onclick=async()=>{
   try{
     SERVERS=await (await fetch("servers.json",{cache:"no-cache"})).json().catch(()=>{throw new Error("servers.json fehlt – erst den Workflow einmal ausführen")});
@@ -177,6 +202,7 @@ ld.onclick=async()=>{
     dl.value=(OV.discord||{}).url??DEFDC;dt.value=(OV.discord||{}).text||"Discord";sa.checked=OV.showAdmin!==false;
     ACH=OV.achievements||[];bnm.checked=(OV.badges||{}).names!==false;bpr.checked=(OV.badges||{}).profile!==false;const nf=OV.notify||{};nev.checked=nf.events!==false;nwk.checked=nf.weekly!==false;nms.checked=nf.milestones!==false;nac.checked=nf.achievements!==false;
     am.replaceChildren();ACHM.forEach(([k,l])=>el("option",l,am).value=k);asv.replaceChildren();el("option","Alle Server",asv).value="all";SERVERS.forEach(x=>el("option",x.name,asv).value=x.key);resetAch();renderAch();
+    CUS=OV.custom||[];cs.replaceChildren();el("option","Alle Server",cs).value="all";SERVERS.forEach(x=>el("option",x.name,cs).value=x.key);renderCus();
     ed.hidden=false;ab.hidden=false;tab("a");say("Geladen.");
     if(rem.checked&&pw.value){await lockTok(pw.value,tk.value.trim());fg.hidden=false;say("Geladen. 🔒 Zugang auf diesem Gerät gespeichert.")}
   }catch(e){say("Fehler: "+e.message)}
