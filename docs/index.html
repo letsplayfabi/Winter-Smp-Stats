@@ -5,7 +5,7 @@
 <style>
 :root{--ac:#52e585;--bg:#0a111f;--pn:#131b2b;--fg:#fff;--mu:#8fa0b8;--ln:#26324a}
 body{margin:0;font:15px system-ui,sans-serif;background:var(--bg);color:var(--fg);padding:24px 16px}
-main{max-width:1100px;margin:0 auto}
+main{max-width:var(--w,1700px);margin:0 auto}
 .nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
 .nav a{padding:8px 16px;border-radius:99px;background:var(--pn);color:var(--fg);text-decoration:none;font-weight:600;border:1px solid var(--ln)}
 .nav a.on{background:var(--ac);color:#000;border-color:transparent}
@@ -13,7 +13,7 @@ header{display:flex;justify-content:space-between;align-items:flex-start;gap:12p
 h1{margin:0;font-size:clamp(26px,5vw,44px);text-transform:uppercase}
 .sub{color:var(--mu);text-transform:uppercase;margin:4px 0 0}.bd{color:var(--ac);font-weight:700;text-transform:uppercase}
 h2{font-size:17px;text-transform:uppercase;margin:0}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:28px 32px;margin-top:28px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:28px 32px;margin-top:28px}
 @media(max-width:760px){.grid{grid-template-columns:1fr}}
 .big{grid-column:1/-1}.hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;gap:8px}
 .hd small,.ex{color:var(--mu);font-size:12px}.hd small{text-transform:uppercase}
@@ -51,6 +51,12 @@ dialog::backdrop{background:rgba(0,0,0,.65);backdrop-filter:blur(4px)}@keyframes
 .col .ct2{height:150px;width:100%;display:flex;align-items:flex-end}.col .cb2{width:100%;border-radius:3px 3px 0 0;min-height:2px}.col .nl{flex-direction:column;font-size:12px;max-width:84px;word-break:break-word}
 .pw{display:flex;gap:20px;align-items:center;flex-wrap:wrap}.pie{width:180px;height:180px;flex:0 0 auto}.lg{flex:1 1 200px}.lr{display:flex;align-items:center;gap:8px;margin:5px 0}.lr i{width:12px;height:12px;border-radius:3px;flex:0 0 auto}.mu2{margin-left:auto;color:var(--mu);font-size:13px;white-space:nowrap}
 .lt{width:100%;border-collapse:collapse}.lt td{padding:7px 8px;border-bottom:1px solid var(--ln)}.lt td:first-child{width:34px;color:var(--mu)}.lt td:last-child{text-align:right}.lt tr.me2{outline:1px solid var(--ac)}
+.box{container-type:inline-size}.nm{min-width:0}.nm .t,.nl .t{overflow:hidden;text-overflow:ellipsis}
+.cols{justify-content:space-around}.col{flex:1 1 64px;max-width:110px}
+@container (max-width:460px){
+.cols{gap:6px}.col{flex:1 1 30px}.col small{writing-mode:vertical-rl;transform:rotate(180deg);font-size:11px;white-space:nowrap}
+.col .nl{max-width:none}.col .nl img{width:18px;height:18px}.col .nl .t{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;max-height:90px}
+.col .ct2{height:110px}.col small{height:80px}.col .nl{min-height:92px}.pie{width:140px;height:140px}}
 </style></head><body><main>
 <nav class="nav" id="nav"></nav>
 <section id="lb"><header><div><h1 id="t">Server Leaderboard</h1><p class="sub" id="s"></p><p class="ex" id="stt"></p><p class="ex" id="mine"></p></div><div class="hr"><button class="dc" id="setb">⚙️ Einstellungen</button><button class="dc" id="cmpb" hidden>⚖️ Vergleichen</button><a class="dc" id="dcl" target="_blank" rel="noopener" hidden></a></div></header>
@@ -95,7 +101,7 @@ function chart(parent,title,note,sorted,get,fmt,color,extra,big){
   const card=el("section","",parent,big?"big":""),hd=el("div","",card,"hd");el("h2",title,hd);el("small",note,hd);
   const box=el("div","",card,"box"),max=Math.max(...sorted.map(get),1);
   if((PREF.chart||"bars")!=="bars"&&RENDER[PREF.chart]){RENDER[PREF.chart](box,sorted,get,fmt,color,big);if(extra)el("div",extra,card,"ex");return}
-  sorted.forEach(p=>{const r=el("div","",box,"row"),nm=el("span","",r,"nm");if(p.uuid===PREF.me)r.classList.add("me");nm.append(...(PREF.heads!==false?[head(p,20)]:[]),document.createTextNode((p.uuid===PREF.me?"⭐ ":"")+p.display_name+(big&&BADGE.names&&p.badges&&p.badges.length?" "+p.badges.slice(0,4).map(a=>a.icon||"🏆").join(""):"")));if(big&&BADGE.names&&p.badges&&p.badges.length)nm.title=p.badges.map(a=>a.title).join(", ");nm.onclick=()=>profile(p);
+  sorted.forEach(p=>{const r=el("div","",box,"row"),nm=el("span","",r,"nm");if(p.uuid===PREF.me)r.classList.add("me");nm.title=p.display_name;nm.append(...(PREF.heads!==false?[head(p,20)]:[]),tspan((p.uuid===PREF.me?"⭐ ":"")+p.display_name+(big&&BADGE.names&&p.badges&&p.badges.length?" "+p.badges.slice(0,4).map(a=>a.icon||"🏆").join(""):"")));if(big&&BADGE.names&&p.badges&&p.badges.length)nm.title=p.badges.map(a=>a.title).join(", ");nm.onclick=()=>profile(p);
     const t=el("div","",r,"tr"),b=el("div","",t,"bar");b.style.cssText=`width:${get(p)/max*80}%;background:${color(p)}`;el("span",fmt(get(p)),t,"val")});
   if(extra)el("div",extra,card,"ex");
 }
@@ -157,10 +163,11 @@ function calBtns(e,box){const b=el("button","📅 In Kalender speichern (.ics)",
   b.onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([ics(e)],{type:"text/calendar"}));a.download=(e.name||"event").replace(/[^\w-]+/g,"_")+".ics";a.click()};
   const g=el("a","Google Kalender",box,"cb");g.target="_blank";g.rel="noopener";
   g.href=`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(e.name)}&dates=${e.time?fz(T(e))+"/"+fz(T(e)+36e5):e.date.replace(/-/g,"")+"/"+fz(T(e)+864e5).slice(0,8)}&details=${encodeURIComponent(e.desc||"")}`}
-const PREF={me:"",cols:0,heads:true,compact:false,hide:[],chart:"bars",bar:true};
+const PREF={me:"",cols:0,heads:true,compact:false,hide:[],chart:"bars",bar:true,width:"wide"};
 try{Object.assign(PREF,JSON.parse(localStorage.getItem("lbp")||"{}"))}catch{}
+const tspan=t=>{const s=document.createElement("span");s.className="t";s.textContent=t;return s};
 function nameEl(p,big,cls){const s=document.createElement("span");s.className=cls||"nl";const bd=big&&BADGE.names&&p.badges&&p.badges.length;
-  if(PREF.heads!==false)s.append(head(p,20));s.append(document.createTextNode((p.uuid===PREF.me?"⭐ ":"")+p.display_name+(bd?" "+p.badges.slice(0,4).map(a=>a.icon||"🏆").join(""):"")));
+  if(PREF.heads!==false)s.append(head(p,20));s.append(tspan((p.uuid===PREF.me?"⭐ ":"")+p.display_name+(bd?" "+p.badges.slice(0,4).map(a=>a.icon||"🏆").join(""):"")));
   if(bd)s.title=p.badges.map(a=>a.title).join(", ");s.onclick=()=>profile(p);return s}
 const RENDER={
   cols(box,S,get,fmt,color,big){const mx=Math.max(...S.map(get),1),w=el("div","",box,"cols");
@@ -180,21 +187,23 @@ function chartCtl(){const b=$("ctl");b.replaceChildren();b.style.display=PREF.ba
   [["bars","▤ Balken"],["cols","▥ Säulen"],["pie","◔ Kuchen"],["donut","◎ Ring"],["list","☰ Liste"]].forEach(([k,l])=>{const x=el("button",l,b,(PREF.chart||"bars")===k?"on":"");
     x.onclick=()=>{PREF.chart=k;try{localStorage.setItem("lbp",JSON.stringify(PREF))}catch{}server(CUR)}})}
 function applyPrefs(){const g=$("g");g.style.gridTemplateColumns=PREF.cols?`repeat(${PREF.cols},1fr)`:"";g.classList.toggle("compact",!!PREF.compact);
+  document.documentElement.style.setProperty("--w",{normal:"1100px",wide:"1700px",full:"100%"}[PREF.width||"wide"]);
   document.documentElement.style.setProperty("--nm",PREF.cols>=2||PREF.compact?"100px":"140px")}
 function settings(){
   const b=$("sc"),D=CTX.data||[];b.replaceChildren();el("h2","Meine Einstellungen",b).style.margin="0 0 4px";el("p","Gelten nur für dich auf diesem Gerät.",b,"ex");
   const row=(t,node)=>{const l=el("label",t+" ",b,"k");l.append(node);return node};
   const me=document.createElement("select");el("option","– niemand –",me).value="";D.forEach(p=>el("option",p.display_name,me).value=p.uuid);me.value=PREF.me;const me0=me.value;row("Ich bin (wird markiert):",me);
-  const cols=document.createElement("select");[["0","Automatisch"],["1","1 Statistik pro Zeile"],["2","2 Statistiken pro Zeile"],["3","3 Statistiken pro Zeile"],["4","4 Statistiken pro Zeile"]].forEach(([v,t])=>el("option",t,cols).value=v);cols.value=String(PREF.cols||0);row("Layout:",cols);
+  const cols=document.createElement("select");[["0","Automatisch"],["1","1 Statistik pro Zeile"],["2","2 Statistiken pro Zeile"],["3","3 Statistiken pro Zeile"],["4","4 Statistiken pro Zeile"],["5","5 Statistiken pro Zeile"]].forEach(([v,t])=>el("option",t,cols).value=v);cols.value=String(PREF.cols||0);row("Layout:",cols);
+  const wd=document.createElement("select");[["normal","Normal"],["wide","Breit"],["full","Volle Breite"]].forEach(([v,t])=>el("option",t,wd).value=v);wd.value=PREF.width||"wide";row("Seitenbreite:",wd);
   const ch=document.createElement("select");[["bars","Balken"],["cols","Säulen"],["pie","Kuchen"],["donut","Ring"],["list","Liste"]].forEach(([v,t])=>el("option",t,ch).value=v);ch.value=PREF.chart||"bars";row("Diagrammart:",ch);
   const chk=(t,v)=>{const c=document.createElement("input");c.type="checkbox";c.checked=v;const l=el("label","",b,"k");l.append(c,document.createTextNode(" "+t));return c};
   const hd=chk("Skin-Köpfe anzeigen",PREF.heads!==false),cp=chk("Kompakte Balken",!!PREF.compact),qb=chk("Schnellauswahl für die Diagrammart über der Statistik anzeigen",PREF.bar!==false);
   el("h3","Kategorien anzeigen",b);const cb=(CTX.cats||[]).map(c=>[c[0],chk(CTX.lab&&CTX.lab[c[0]]||c[1],!PREF.hide.includes(c[0]))]);
   const bar=el("div","",b);bar.style.marginTop="12px";
-  el("button","Speichern",bar).onclick=()=>{if(me.value!==me0)PREF.me=me.value;PREF.cols=+cols.value;PREF.chart=ch.value;PREF.bar=qb.checked;PREF.heads=hd.checked;PREF.compact=cp.checked;PREF.hide=cb.filter(x=>!x[1].checked).map(x=>x[0]);
+  el("button","Speichern",bar).onclick=()=>{if(me.value!==me0)PREF.me=me.value;PREF.cols=+cols.value;PREF.width=wd.value;PREF.chart=ch.value;PREF.bar=qb.checked;PREF.heads=hd.checked;PREF.compact=cp.checked;PREF.hide=cb.filter(x=>!x[1].checked).map(x=>x[0]);
     try{localStorage.setItem("lbp",JSON.stringify(PREF))}catch{}$("set").close();server(CUR)};
   const rs=el("button","Zurücksetzen",bar);rs.style.cssText="margin-left:8px;background:var(--bg);color:var(--fg);border:1px solid var(--ln)";
-  rs.onclick=()=>{try{localStorage.removeItem("lbp")}catch{}Object.assign(PREF,{me:"",cols:0,heads:true,compact:false,hide:[],chart:"bars",bar:true});$("set").close();server(CUR)};
+  rs.onclick=()=>{try{localStorage.removeItem("lbp")}catch{}Object.assign(PREF,{me:"",cols:0,heads:true,compact:false,hide:[],chart:"bars",bar:true,width:"wide"});$("set").close();server(CUR)};
   document.body.style.overflow="hidden";$("set").showModal();
 }
 $("setb").onclick=settings;$("set").onclick=e=>{if(e.target===$("set"))$("set").close()};$("set").addEventListener("close",()=>document.body.style.overflow="");
