@@ -33,6 +33,30 @@
         "damage",
         "diamonds"
       ]
+    },
+    "chill": {
+      "site": {
+        "title": "",
+        "intro": ""
+      },
+      "categories": {},
+      "players": {},
+      "enabled": [
+        "playtime",
+        "player_kills",
+        "deaths",
+        "travel",
+        "mined",
+        "used",
+        "killed",
+        "damage",
+        "diamonds",
+        "netherite",
+        "creepers",
+        "netherrack",
+        "deepslate",
+        "elytra"
+      ]
     }
   },
   "discord": {
@@ -133,7 +157,8 @@
   "notify": {
     "events": true,
     "weekly": true,
-    "milestones": true
+    "milestones": true,
+    "achievements": true
   },
   "badges": {
     "names": false,
