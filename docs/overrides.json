@@ -162,5 +162,19 @@
   "badges": {
     "names": false,
     "profile": true
-  }
+  },
+  "custom": [
+    {
+      "id": "c1793651295795",
+      "name": "Bezahlt",
+      "unit": "€",
+      "server": "winter",
+      "points": false,
+      "values": {
+        "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f": 5.86,
+        "0c95a02f-d9c7-4467-a71c-310e2b070c08": 5.05,
+        "67968945-1afd-4ee6-989a-8c4889f73f9d": 5
+      }
+    }
+  ]
 }
