@@ -139,6 +139,7 @@ def main():
     if first or weekly:
         st["weekly"] = today
 
+    lines = list(dict.fromkeys(lines))  # identische Zeilen nur einmal
     posts = [{"embeds": embeds[i:i + 10]} for i in range(0, len(embeds), 10)]
     chunk = ""
     for ln in lines:
