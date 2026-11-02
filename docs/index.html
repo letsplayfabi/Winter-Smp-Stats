@@ -18,7 +18,7 @@ h2{font-size:17px;text-transform:uppercase;margin:0}
 .big{grid-column:1/-1}.hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px;gap:8px}
 .hd small,.ex{color:var(--mu);font-size:12px}.hd small{text-transform:uppercase}
 .box{background:var(--pn);padding:10px 12px;border-radius:4px}
-.row{display:grid;grid-template-columns:140px 1fr;align-items:center;gap:10px;margin:6px 0}
+.row{display:grid;grid-template-columns:var(--nm,140px) 1fr;align-items:center;gap:10px;margin:6px 0}
 .nm{display:flex;justify-content:flex-end;align-items:center;gap:6px;cursor:pointer;white-space:nowrap;overflow:hidden}.nm img{border-radius:3px;image-rendering:pixelated}
 .tr{display:flex;align-items:center;gap:8px}.bar{height:22px;border-radius:2px;min-width:2px}.val{font-size:13px;white-space:nowrap}
 .ex{margin-top:6px}footer{margin-top:32px}footer b{color:var(--ac);text-transform:uppercase;font-size:13px}
@@ -39,18 +39,27 @@ dialog::backdrop{background:rgba(0,0,0,.65);backdrop-filter:blur(4px)}@keyframes
 .dc{background:#5865F2;color:#fff;font-weight:700;text-decoration:none;padding:8px 16px;border-radius:99px;white-space:nowrap}
 #pill{position:fixed;right:16px;bottom:16px;max-width:calc(100vw - 32px);display:flex;align-items:center;gap:8px;background:var(--ac);color:#000;padding:10px 14px;border-radius:99px;font-weight:700;text-decoration:none;box-shadow:0 6px 18px rgba(0,0,0,.4);animation:pop .3s ease;z-index:5}
 #pill[hidden]{display:none}#pill span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#pill b{cursor:pointer;opacity:.6;padding:0 4px}
-.hr{display:flex;gap:8px;align-items:center;flex-wrap:wrap}#cmpb{background:var(--pn);color:var(--fg);border:1px solid var(--ln);cursor:pointer;font:inherit;font-weight:700}
-#cc{padding:20px}.ct{width:100%;border-collapse:collapse;margin:10px 0}.ct td,.ct th{padding:6px 8px;border-bottom:1px solid var(--ln)}.ct td:nth-child(n+2),.ct th:nth-child(n+2){text-align:right}.ct .w{color:var(--ac);font-weight:700}
-#cc select{padding:8px;border-radius:8px;border:1px solid var(--ln);background:var(--bg);color:var(--fg);font:inherit;flex:1}#cc button{margin-top:8px;padding:8px 18px;border:0;border-radius:8px;background:var(--ac);color:#000;font-weight:700;cursor:pointer}
+.hr{display:flex;gap:8px;align-items:center;flex-wrap:wrap}#cmpb,#setb{background:var(--pn);color:var(--fg);border:1px solid var(--ln);cursor:pointer;font:inherit;font-weight:700}
+#cc,#sc{padding:20px}.ct{width:100%;border-collapse:collapse;margin:10px 0}.ct td,.ct th{padding:6px 8px;border-bottom:1px solid var(--ln)}.ct td:nth-child(n+2),.ct th:nth-child(n+2){text-align:right}.ct .w{color:var(--ac);font-weight:700}
+#cc select,#sc select{padding:8px;border-radius:8px;border:1px solid var(--ln);background:var(--bg);color:var(--fg);font:inherit;flex:1}#cc button,#sc button{margin-top:8px;padding:8px 18px;border:0;border-radius:8px;background:var(--ac);color:#000;font-weight:700;cursor:pointer}
 .cb{display:inline-block;margin:10px 8px 0 0;padding:6px 12px;border-radius:8px;border:1px solid var(--ln);background:var(--bg);color:var(--fg);font:inherit;font-size:13px;cursor:pointer;text-decoration:none}
+.row.me{outline:1px solid var(--ac);border-radius:6px;background:color-mix(in srgb,var(--ac) 14%,transparent)}.row.me .nm{font-weight:700;color:var(--ac)}
+.compact .bar{height:14px}.compact .row{margin:3px 0}#sc label.k{display:block;margin:6px 0;cursor:pointer}#sc h3{margin:14px 0 4px;font-size:13px;text-transform:uppercase;color:var(--mu)}
+#ctl{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0 0}#ctl button{padding:6px 12px;border-radius:99px;border:1px solid var(--ln);background:var(--pn);color:var(--fg);font:inherit;font-size:13px;cursor:pointer}#ctl button.on{background:var(--ac);color:#000;border-color:transparent;font-weight:700}
+.nl{display:inline-flex;align-items:center;gap:6px;cursor:pointer}.nl img{border-radius:3px;image-rendering:pixelated}
+.cols{display:flex;gap:10px;align-items:flex-end;overflow-x:auto;padding:4px 0}.col{flex:1 0 64px;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center}.col small{font-size:12px}
+.col .ct2{height:150px;width:100%;display:flex;align-items:flex-end}.col .cb2{width:100%;border-radius:3px 3px 0 0;min-height:2px}.col .nl{flex-direction:column;font-size:12px;max-width:84px;word-break:break-word}
+.pw{display:flex;gap:20px;align-items:center;flex-wrap:wrap}.pie{width:180px;height:180px;flex:0 0 auto}.lg{flex:1 1 200px}.lr{display:flex;align-items:center;gap:8px;margin:5px 0}.lr i{width:12px;height:12px;border-radius:3px;flex:0 0 auto}.mu2{margin-left:auto;color:var(--mu);font-size:13px;white-space:nowrap}
+.lt{width:100%;border-collapse:collapse}.lt td{padding:7px 8px;border-bottom:1px solid var(--ln)}.lt td:first-child{width:34px;color:var(--mu)}.lt td:last-child{text-align:right}.lt tr.me2{outline:1px solid var(--ac)}
 </style></head><body><main>
 <nav class="nav" id="nav"></nav>
-<section id="lb"><header><div><h1 id="t">Server Leaderboard</h1><p class="sub" id="s"></p><p class="ex" id="stt"></p></div><div class="hr"><button class="dc" id="cmpb" hidden>⚖️ Vergleichen</button><a class="dc" id="dcl" target="_blank" rel="noopener" hidden></a></div></header>
-<p class="ex" id="i"></p><div class="grid" id="g"></div><footer id="f"></footer></section>
+<section id="lb"><header><div><h1 id="t">Server Leaderboard</h1><p class="sub" id="s"></p><p class="ex" id="stt"></p><p class="ex" id="mine"></p></div><div class="hr"><button class="dc" id="setb">⚙️ Einstellungen</button><button class="dc" id="cmpb" hidden>⚖️ Vergleichen</button><a class="dc" id="dcl" target="_blank" rel="noopener" hidden></a></div></header>
+<p class="ex" id="i"></p><div id="ctl"></div><div class="grid" id="g"></div><footer id="f"></footer></section>
 <section id="ev" hidden></section>
 <a id="pill" href="#events" hidden></a>
 <dialog id="d"><div id="dc"></div></dialog>
 <dialog id="cmp"><div id="cc"></div></dialog>
+<dialog id="set"><div id="sc"></div></dialog>
 </main>
 <script>
 const CATS=[
@@ -85,7 +94,8 @@ function rank(c,players){
 function chart(parent,title,note,sorted,get,fmt,color,extra,big){
   const card=el("section","",parent,big?"big":""),hd=el("div","",card,"hd");el("h2",title,hd);el("small",note,hd);
   const box=el("div","",card,"box"),max=Math.max(...sorted.map(get),1);
-  sorted.forEach(p=>{const r=el("div","",box,"row"),nm=el("span","",r,"nm");nm.append(head(p,20),document.createTextNode(p.display_name+(big&&BADGE.names&&p.badges&&p.badges.length?" "+p.badges.slice(0,4).map(a=>a.icon||"🏆").join(""):"")));if(big&&BADGE.names&&p.badges&&p.badges.length)nm.title=p.badges.map(a=>a.title).join(", ");nm.onclick=()=>profile(p);
+  if((PREF.chart||"bars")!=="bars"&&RENDER[PREF.chart]){RENDER[PREF.chart](box,sorted,get,fmt,color,big);if(extra)el("div",extra,card,"ex");return}
+  sorted.forEach(p=>{const r=el("div","",box,"row"),nm=el("span","",r,"nm");if(p.uuid===PREF.me)r.classList.add("me");nm.append(...(PREF.heads!==false?[head(p,20)]:[]),document.createTextNode((p.uuid===PREF.me?"⭐ ":"")+p.display_name+(big&&BADGE.names&&p.badges&&p.badges.length?" "+p.badges.slice(0,4).map(a=>a.icon||"🏆").join(""):"")));if(big&&BADGE.names&&p.badges&&p.badges.length)nm.title=p.badges.map(a=>a.title).join(", ");nm.onclick=()=>profile(p);
     const t=el("div","",r,"tr"),b=el("div","",t,"bar");b.style.cssText=`width:${get(p)/max*80}%;background:${color(p)}`;el("span",fmt(get(p)),t,"val")});
   if(extra)el("div",extra,card,"ex");
 }
@@ -147,12 +157,53 @@ function calBtns(e,box){const b=el("button","📅 In Kalender speichern (.ics)",
   b.onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([ics(e)],{type:"text/calendar"}));a.download=(e.name||"event").replace(/[^\w-]+/g,"_")+".ics";a.click()};
   const g=el("a","Google Kalender",box,"cb");g.target="_blank";g.rel="noopener";
   g.href=`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(e.name)}&dates=${e.time?fz(T(e))+"/"+fz(T(e)+36e5):e.date.replace(/-/g,"")+"/"+fz(T(e)+864e5).slice(0,8)}&details=${encodeURIComponent(e.desc||"")}`}
+const PREF={me:"",cols:0,heads:true,compact:false,hide:[],chart:"bars",bar:true};
+try{Object.assign(PREF,JSON.parse(localStorage.getItem("lbp")||"{}"))}catch{}
+function nameEl(p,big,cls){const s=document.createElement("span");s.className=cls||"nl";const bd=big&&BADGE.names&&p.badges&&p.badges.length;
+  if(PREF.heads!==false)s.append(head(p,20));s.append(document.createTextNode((p.uuid===PREF.me?"⭐ ":"")+p.display_name+(bd?" "+p.badges.slice(0,4).map(a=>a.icon||"🏆").join(""):"")));
+  if(bd)s.title=p.badges.map(a=>a.title).join(", ");s.onclick=()=>profile(p);return s}
+const RENDER={
+  cols(box,S,get,fmt,color,big){const mx=Math.max(...S.map(get),1),w=el("div","",box,"cols");
+    S.forEach(p=>{const c=el("div","",w,"col"),v=get(p);el("small",fmt(v),c);const t=el("div","",c,"ct2"),b=el("div","",t,"cb2");b.style.cssText=`height:${v/mx*100}%;background:${color(p)}`;c.append(nameEl(p,big))})},
+  pie(box,S,get,fmt,color,big,hole){const tot=S.reduce((a,p)=>a+Math.max(get(p),0),0),w=el("div","",box,"pw");
+    if(tot<=0){el("p","Noch keine Daten.",w,"ex");return}
+    const NS="http://www.w3.org/2000/svg",svg=document.createElementNS(NS,"svg"),r=hole?38:25,sw=hole?24:50,C=2*Math.PI*r;let off=0;svg.setAttribute("viewBox","0 0 100 100");svg.setAttribute("class","pie");
+    S.forEach(p=>{const v=Math.max(get(p),0);if(!v)return;const f=v/tot,c=document.createElementNS(NS,"circle");
+      [["cx",50],["cy",50],["r",r],["fill","none"],["stroke",color(p)],["stroke-width",sw],["stroke-dasharray",`${f*C} ${C}`],["stroke-dashoffset",-off*C],["transform","rotate(-90 50 50)"]].forEach(([k,x])=>c.setAttribute(k,x));
+      const t=document.createElementNS(NS,"title");t.textContent=`${p.display_name}: ${fmt(get(p))}`;c.append(t);svg.append(c);off+=f});
+    w.append(svg);const lg=el("div","",w,"lg");
+    S.forEach(p=>{const v=get(p),r2=el("div","",lg,"lr");el("i","",r2).style.background=color(p);r2.append(nameEl(p,big));el("span",`${fmt(v)} · ${Math.round(Math.max(v,0)/tot*100)} %`,r2,"mu2")})},
+  donut(box,S,get,fmt,color,big){RENDER.pie(box,S,get,fmt,color,big,1)},
+  list(box,S,get,fmt,color,big){const t=el("table","",box,"lt");
+    S.forEach((p,i)=>{const r=el("tr","",t);if(p.uuid===PREF.me)r.classList.add("me2");el("td",(i+1)+".",r);el("td","",r).append(nameEl(p,big));const v=el("td",fmt(get(p)),r);v.style.cssText="font-weight:700;color:"+color(p)})}};
+function chartCtl(){const b=$("ctl");b.replaceChildren();b.style.display=PREF.bar===false?"none":"flex";if(PREF.bar===false)return;
+  [["bars","▤ Balken"],["cols","▥ Säulen"],["pie","◔ Kuchen"],["donut","◎ Ring"],["list","☰ Liste"]].forEach(([k,l])=>{const x=el("button",l,b,(PREF.chart||"bars")===k?"on":"");
+    x.onclick=()=>{PREF.chart=k;try{localStorage.setItem("lbp",JSON.stringify(PREF))}catch{}server(CUR)}})}
+function applyPrefs(){const g=$("g");g.style.gridTemplateColumns=PREF.cols?`repeat(${PREF.cols},1fr)`:"";g.classList.toggle("compact",!!PREF.compact);
+  document.documentElement.style.setProperty("--nm",PREF.cols>=2||PREF.compact?"100px":"140px")}
+function settings(){
+  const b=$("sc"),D=CTX.data||[];b.replaceChildren();el("h2","Meine Einstellungen",b).style.margin="0 0 4px";el("p","Gelten nur für dich auf diesem Gerät.",b,"ex");
+  const row=(t,node)=>{const l=el("label",t+" ",b,"k");l.append(node);return node};
+  const me=document.createElement("select");el("option","– niemand –",me).value="";D.forEach(p=>el("option",p.display_name,me).value=p.uuid);me.value=PREF.me;const me0=me.value;row("Ich bin (wird markiert):",me);
+  const cols=document.createElement("select");[["0","Automatisch"],["1","1 Statistik pro Zeile"],["2","2 Statistiken pro Zeile"],["3","3 Statistiken pro Zeile"],["4","4 Statistiken pro Zeile"]].forEach(([v,t])=>el("option",t,cols).value=v);cols.value=String(PREF.cols||0);row("Layout:",cols);
+  const ch=document.createElement("select");[["bars","Balken"],["cols","Säulen"],["pie","Kuchen"],["donut","Ring"],["list","Liste"]].forEach(([v,t])=>el("option",t,ch).value=v);ch.value=PREF.chart||"bars";row("Diagrammart:",ch);
+  const chk=(t,v)=>{const c=document.createElement("input");c.type="checkbox";c.checked=v;const l=el("label","",b,"k");l.append(c,document.createTextNode(" "+t));return c};
+  const hd=chk("Skin-Köpfe anzeigen",PREF.heads!==false),cp=chk("Kompakte Balken",!!PREF.compact),qb=chk("Schnellauswahl für die Diagrammart über der Statistik anzeigen",PREF.bar!==false);
+  el("h3","Kategorien anzeigen",b);const cb=(CTX.cats||[]).map(c=>[c[0],chk(CTX.lab&&CTX.lab[c[0]]||c[1],!PREF.hide.includes(c[0]))]);
+  const bar=el("div","",b);bar.style.marginTop="12px";
+  el("button","Speichern",bar).onclick=()=>{if(me.value!==me0)PREF.me=me.value;PREF.cols=+cols.value;PREF.chart=ch.value;PREF.bar=qb.checked;PREF.heads=hd.checked;PREF.compact=cp.checked;PREF.hide=cb.filter(x=>!x[1].checked).map(x=>x[0]);
+    try{localStorage.setItem("lbp",JSON.stringify(PREF))}catch{}$("set").close();server(CUR)};
+  const rs=el("button","Zurücksetzen",bar);rs.style.cssText="margin-left:8px;background:var(--bg);color:var(--fg);border:1px solid var(--ln)";
+  rs.onclick=()=>{try{localStorage.removeItem("lbp")}catch{}Object.assign(PREF,{me:"",cols:0,heads:true,compact:false,hide:[],chart:"bars",bar:true});$("set").close();server(CUR)};
+  document.body.style.overflow="hidden";$("set").showModal();
+}
+$("setb").onclick=settings;$("set").onclick=e=>{if(e.target===$("set"))$("set").close()};$("set").addEventListener("close",()=>document.body.style.overflow="");
 async function server(k){
-  CUR=k;$("ev").hidden=true;$("lb").hidden=false;$("stt").textContent="";$("g").replaceChildren();$("f").replaceChildren();$("i").textContent="Lade …";
+  CUR=k;applyPrefs();chartCtl();$("ev").hidden=true;$("lb").hidden=false;$("stt").textContent="";$("g").replaceChildren();$("f").replaceChildren();$("i").textContent="Lade …";
   const sv0=SERVERS.find(s=>s.key===k)||SERVERS[0];let d;
   try{d=await fetch(`data/${sv0.key}/stats.json`,{cache:"no-cache"}).then(r=>{if(!r.ok)throw 0;return r.json()})}catch{$("i").textContent="stats.json konnte nicht geladen werden.";return}
   const sv=(OV.servers&&OV.servers[sv0.key])||(!OV.servers&&sv0===SERVERS[0]?OV:{}),o=sv.players||{},s=sv.site||{},lab=sv.categories||{},CM=Object.fromEntries([...CATS,...Object.values(EXTRA)].map(c=>[c[0],c])),
-    defOn=[...CATS.map(c=>c[0]),...(sv0.extra||[])].filter(x=>!(sv0.hide||[]).includes(x)),cats=(sv.enabled||defOn).map(x=>CM[x]).filter(Boolean);
+    defOn=[...CATS.map(c=>c[0]),...(sv0.extra||[])].filter(x=>!(sv0.hide||[]).includes(x)),cats=[...(sv.enabled||defOn).map(x=>CM[x]).filter(Boolean),...(OV.custom||[]).filter(c=>!c.server||c.server==="all"||c.server===sv0.key).map(c=>["c_"+c.id,c.name,1,p=>+((c.values||{})[p.uuid])||0,v=>n(v)+(c.unit?" "+c.unit:""),0,!c.points])];
   const data=d.players.map(p=>{const x=o[p.uuid]||o[p.name]||{};return{...p,display_name:x.display_name||p.name,title:x.title||"",hidden:!!x.hidden,color:x.color||""}}).filter(p=>!p.hidden);
   badges(data,sv0.key);status(d,k);$("cmpb").hidden=data.length<2;
   $("t").textContent=s.title||sv0.name+" Leaderboard";
@@ -160,10 +211,10 @@ async function server(k){
   $("i").textContent=[s.intro,"Stand: "+new Date(d.updated).toLocaleString("de-AT")].filter(Boolean).join(" · ");
   if(!data.length){$("g").textContent="Noch keine Statistiken gefunden.";return}
   const R=cats.map(c=>rank(c,data)),tot=new Map(data.map(p=>[p.uuid,0]));
-  R.forEach(r=>r.pts.forEach((v,k)=>tot.set(k,tot.get(k)+v)));
-  const order=[...data].sort((a,b)=>tot.get(b.uuid)-tot.get(a.uuid)),cm=new Map(order.map((p,i)=>[p.uuid,COLS[i%COLS.length]])),col=p=>p.color||cm.get(p.uuid),N=data.length;CTX={col,tot,order,data,cats,lab};
+  R.forEach((r,i)=>{if(!cats[i][6])r.pts.forEach((v,k)=>tot.set(k,tot.get(k)+v))});
+  const order=[...data].sort((a,b)=>tot.get(b.uuid)-tot.get(a.uuid)),cm=new Map(order.map((p,i)=>[p.uuid,COLS[i%COLS.length]])),col=p=>p.color||cm.get(p.uuid),N=data.length;CTX={col,tot,order,data,cats,lab};$("mine").textContent=PREF.me&&order.some(p=>p.uuid===PREF.me)?`⭐ Du: Platz ${order.findIndex(p=>p.uuid===PREF.me)+1} von ${N} · ${n(tot.get(PREF.me))} Punkte`:"";
   chart($("g"),`Gesamtwertung · ${N} Punkte für Platz 1 bis 1 Punkt für Platz ${N}`,"Bei Gleichstand: Punkte der belegten Plätze gemittelt",order,p=>tot.get(p.uuid),v=>n(v)+" P",col,"",1);
-  cats.forEach((c,i)=>{const r=R[i],ex=c[5]?"Beispiele ("+r.s[0].display_name+"): "+c[5](r.s[0]).slice(0,3).map(([k,v])=>pretty(k)+" "+n(v)).join(" · "):"";
+  cats.forEach((c,i)=>{if(PREF.hide.includes(c[0]))return;const r=R[i],ex=c[5]?"Beispiele ("+r.s[0].display_name+"): "+c[5](r.s[0]).slice(0,3).map(([k,v])=>pretty(k)+" "+n(v)).join(" · "):"";
     chart($("g"),lab[c[0]]||c[1],c[2]?"Mehr ist besser":"Weniger ist besser",r.s,c[3],c[4]||n,col,ex)});
   el("b","MVP der Statistiken",$("f"));el("div",order[0].display_name+" führt die Gesamtwertung an.",$("f"));
 }
