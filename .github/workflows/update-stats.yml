@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main   # immer den neuesten Stand holen, nie den Stand vom Start-Zeitpunkt
       - run: python fetch_stats.py
         env:
           EXAROTON_TOKEN: ${{ secrets.EXAROTON_TOKEN }}
