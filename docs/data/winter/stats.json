@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-02T22:04+00:00",
+ "updated": "2026-11-03T03:33+00:00",
  "players": [
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -321,28 +321,28 @@
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
    "name": "CapyDreamXD",
-   "minutes": 4097,
-   "hours": 68.3,
+   "minutes": 4136,
+   "hours": 68.9,
    "deaths": 36,
-   "mob_kills": 1056,
+   "mob_kills": 1061,
    "player_kills": 0,
-   "entities_killed": 1025,
-   "items_used": 82346,
-   "damage": 18938,
-   "blocks_mined": 54938,
+   "entities_killed": 1030,
+   "items_used": 84564,
+   "damage": 19011,
+   "blocks_mined": 55152,
    "diamonds": 148,
-   "km_travelled": 750.8,
-   "jumps": 108776,
+   "km_travelled": 756.5,
+   "jumps": 109753,
    "travel": {
     "boat": 45.0,
-    "crouch": 11.0,
+    "crouch": 12.1,
     "climb": 0.2,
     "minecart": 13.1,
-    "walk": 62.0,
-    "walk_under_water": 4.8,
+    "walk": 62.3,
+    "walk_under_water": 4.9,
     "horse": 259.6,
-    "sprint": 104.9,
-    "fly": 238.9,
+    "sprint": 105.9,
+    "fly": 242.1,
     "walk_on_water": 3.1,
     "swim": 7.2,
     "nautilus": 1.0
@@ -350,11 +350,11 @@
    "top_mobs": [
     [
      "creeper",
-     301
+     302
     ],
     [
      "zombie",
-     218
+     222
     ],
     [
      "cow",
@@ -388,7 +388,7 @@
     ],
     [
      "stone",
-     9722
+     9780
     ],
     [
      "grass_block",
@@ -400,11 +400,11 @@
     ],
     [
      "spruce_log",
-     3983
+     4086
     ],
     [
      "coal_ore",
-     2606
+     2617
     ],
     [
      "cobblestone",
@@ -422,7 +422,7 @@
     ],
     [
      "diamond_pickaxe",
-     10827
+     10919
     ],
     [
      "diamond_shovel",
@@ -446,7 +446,7 @@
     ],
     [
      "diamond_axe",
-     3645
+     3764
     ]
    ],
    "death_causes": [
@@ -474,12 +474,12 @@
    "death_other": 10,
    "x": {
     "debris": 0,
-    "creepers": 301,
-    "netherrack": 285,
+    "creepers": 302,
+    "netherrack": 292,
     "deepslate": 963,
     "aviate_km": 0.0
    },
-   "week_hours": 30.5
+   "week_hours": 31.1
   },
   {
    "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
@@ -946,6 +946,6 @@
   "max": 20,
   "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-02T22:04+00:00"
+  "checked": "2026-11-03T03:33+00:00"
  }
 }
