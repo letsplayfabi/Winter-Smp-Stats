@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T07:46+00:00",
+ "updated": "2026-11-05T18:45+00:00",
  "players": [
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -166,36 +166,36 @@
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 4988,
-   "hours": 83.1,
+   "minutes": 5177,
+   "hours": 86.3,
    "deaths": 14,
-   "mob_kills": 1981,
+   "mob_kills": 1988,
    "player_kills": 8,
-   "entities_killed": 1813,
-   "items_used": 69485,
-   "damage": 29025,
-   "blocks_mined": 38530,
+   "entities_killed": 1818,
+   "items_used": 71008,
+   "damage": 29158,
+   "blocks_mined": 38562,
    "diamonds": 97,
-   "km_travelled": 752.3,
-   "jumps": 65227,
+   "km_travelled": 759.4,
+   "jumps": 66207,
    "travel": {
     "boat": 28.9,
-    "crouch": 11.4,
+    "crouch": 12.3,
     "climb": 0.2,
     "minecart": 17.3,
-    "walk": 50.1,
+    "walk": 51.1,
     "walk_under_water": 21.9,
-    "horse": 132.4,
-    "sprint": 82.8,
-    "fly": 359.4,
-    "walk_on_water": 7.2,
+    "horse": 133.6,
+    "sprint": 84.0,
+    "fly": 362.0,
+    "walk_on_water": 7.4,
     "swim": 39.6,
     "nautilus": 1.1
    },
    "top_mobs": [
     [
      "zombie",
-     287
+     289
     ],
     [
      "cow",
@@ -237,7 +237,7 @@
     ],
     [
      "snow",
-     2765
+     2777
     ],
     [
      "dirt",
@@ -263,15 +263,15 @@
    "top_used": [
     [
      "diamond_pickaxe",
-     9909
+     9919
     ],
     [
      "diamond_shovel",
-     8191
+     8203
     ],
     [
      "wheat_seeds",
-     7864
+     8166
     ],
     [
      "iron_pickaxe",
@@ -279,11 +279,11 @@
     ],
     [
      "trident",
-     3075
+     3103
     ],
     [
      "diamond_sword",
-     2318
+     2328
     ],
     [
      "iron_shovel",
@@ -316,7 +316,7 @@
     "deepslate": 210,
     "aviate_km": 0.0
    },
-   "week_hours": 10.2
+   "week_hours": 13.4
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -946,6 +946,6 @@
   "max": 20,
   "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-05T07:46+00:00"
+  "checked": "2026-11-05T18:45+00:00"
  }
 }
