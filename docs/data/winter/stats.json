@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-04T12:45+00:00",
+ "updated": "2026-11-05T00:58+00:00",
  "players": [
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
    "name": "Trosser",
-   "minutes": 5461,
-   "hours": 91.0,
+   "minutes": 5466,
+   "hours": 91.1,
    "deaths": 43,
    "mob_kills": 553,
    "player_kills": 8,
    "entities_killed": 538,
-   "items_used": 49574,
-   "damage": 9759,
+   "items_used": 49578,
+   "damage": 9763,
    "blocks_mined": 22935,
    "diamonds": 0,
-   "km_travelled": 1480.2,
-   "jumps": 166414,
+   "km_travelled": 1481.4,
+   "jumps": 166779,
    "travel": {
     "boat": 38.3,
     "swim": 5.5,
@@ -25,8 +25,8 @@
     "walk": 56.6,
     "walk_under_water": 1.3,
     "horse": 17.4,
-    "sprint": 148.4,
-    "fly": 360.6,
+    "sprint": 148.6,
+    "fly": 361.6,
     "walk_on_water": 3.0
    },
    "top_mobs": [
@@ -116,7 +116,7 @@
     ],
     [
      "bread",
-     1512
+     1516
     ],
     [
      "yellow_wool",
@@ -161,7 +161,7 @@
     "deepslate": 92,
     "aviate_km": 0.0
    },
-   "week_hours": 31.8
+   "week_hours": 24.0
   },
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -316,41 +316,41 @@
     "deepslate": 210,
     "aviate_km": 0.0
    },
-   "week_hours": 13.9
+   "week_hours": 10.2
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
    "name": "CapyDreamXD",
-   "minutes": 4452,
-   "hours": 74.2,
+   "minutes": 4586,
+   "hours": 76.4,
    "deaths": 36,
-   "mob_kills": 1077,
+   "mob_kills": 1082,
    "player_kills": 0,
-   "entities_killed": 1045,
-   "items_used": 100449,
-   "damage": 19262,
-   "blocks_mined": 63202,
+   "entities_killed": 1050,
+   "items_used": 102128,
+   "damage": 19333,
+   "blocks_mined": 64324,
    "diamonds": 148,
-   "km_travelled": 813.8,
-   "jumps": 118042,
+   "km_travelled": 833.7,
+   "jumps": 122178,
    "travel": {
     "boat": 45.8,
-    "crouch": 17.3,
-    "climb": 0.3,
-    "minecart": 21.0,
-    "walk": 70.0,
+    "crouch": 17.6,
+    "climb": 0.4,
+    "minecart": 21.3,
+    "walk": 72.0,
     "walk_under_water": 5.0,
     "horse": 259.6,
-    "sprint": 116.1,
-    "fly": 266.7,
-    "walk_on_water": 3.8,
-    "swim": 7.2,
+    "sprint": 121.5,
+    "fly": 278.3,
+    "walk_on_water": 3.9,
+    "swim": 7.3,
     "nautilus": 1.0
    },
    "top_mobs": [
     [
      "creeper",
-     305
+     306
     ],
     [
      "zombie",
@@ -362,7 +362,7 @@
     ],
     [
      "skeleton",
-     123
+     124
     ],
     [
      "spider",
@@ -384,7 +384,7 @@
    "top_blocks": [
     [
      "stone",
-     12809
+     12877
     ],
     [
      "sculk",
@@ -392,33 +392,33 @@
     ],
     [
      "grass_block",
-     9197
+     9200
     ],
     [
      "dirt",
-     6393
+     6396
     ],
     [
      "spruce_log",
-     4940
+     5348
     ],
     [
      "coal_ore",
-     2665
+     2687
     ],
     [
      "cobblestone",
-     2381
+     2384
     ],
     [
      "netherrack",
-     1624
+     1700
     ]
    ],
    "top_used": [
     [
      "diamond_pickaxe",
-     16194
+     16720
     ],
     [
      "diamond_hoe",
@@ -426,7 +426,7 @@
     ],
     [
      "diamond_shovel",
-     10623
+     10688
     ],
     [
      "iron_pickaxe",
@@ -434,7 +434,7 @@
     ],
     [
      "stone_bricks",
-     6978
+     6987
     ],
     [
      "iron_shovel",
@@ -442,11 +442,11 @@
     ],
     [
      "dirt",
-     5559
+     5561
     ],
     [
      "diamond_axe",
-     4943
+     5459
     ]
    ],
    "death_causes": [
@@ -474,12 +474,12 @@
    "death_other": 10,
    "x": {
     "debris": 0,
-    "creepers": 305,
-    "netherrack": 1624,
+    "creepers": 306,
+    "netherrack": 1700,
     "deepslate": 963,
     "aviate_km": 0.0
    },
-   "week_hours": 36.4
+   "week_hours": 34.0
   },
   {
    "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
@@ -639,7 +639,7 @@
     "deepslate": 0,
     "aviate_km": 0.0
    },
-   "week_hours": 1.0
+   "week_hours": 0.0
   },
   {
    "uuid": "61a0350a-3e08-4c83-9d5a-559dd7ec3f00",
@@ -946,6 +946,6 @@
   "max": 20,
   "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-04T12:45+00:00"
+  "checked": "2026-11-05T00:58+00:00"
  }
 }
