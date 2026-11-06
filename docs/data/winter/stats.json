@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-05T18:45+00:00",
+ "updated": "2026-11-06T02:41+00:00",
  "players": [
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -161,7 +161,7 @@
     "deepslate": 92,
     "aviate_km": 0.0
    },
-   "week_hours": 24.0
+   "week_hours": 13.7
   },
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -479,7 +479,7 @@
     "deepslate": 963,
     "aviate_km": 0.0
    },
-   "week_hours": 34.0
+   "week_hours": 24.2
   },
   {
    "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
@@ -946,6 +946,6 @@
   "max": 20,
   "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-05T18:45+00:00"
+  "checked": "2026-11-06T02:41+00:00"
  }
 }
