@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-06T10:18+00:00",
+ "updated": "2026-11-06T17:37+00:00",
  "players": [
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -941,11 +941,13 @@
   }
  ],
  "status": {
-  "state": "offline",
-  "count": 0,
+  "state": "online",
+  "count": 1,
   "max": 20,
-  "list": [],
+  "list": [
+   "CapyDreamXD"
+  ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-06T10:18+00:00"
+  "checked": "2026-11-06T17:37+00:00"
  }
 }
