@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-07T20:23+00:00",
+ "updated": "2026-11-07T23:46+00:00",
  "players": [
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -166,30 +166,30 @@
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 5285,
-   "hours": 88.1,
+   "minutes": 5443,
+   "hours": 90.7,
    "deaths": 14,
-   "mob_kills": 1996,
+   "mob_kills": 2036,
    "player_kills": 8,
-   "entities_killed": 1825,
-   "items_used": 71180,
-   "damage": 29374,
-   "blocks_mined": 38589,
+   "entities_killed": 1865,
+   "items_used": 73977,
+   "damage": 29957,
+   "blocks_mined": 38631,
    "diamonds": 97,
-   "km_travelled": 768.5,
-   "jumps": 67565,
+   "km_travelled": 782.0,
+   "jumps": 68146,
    "travel": {
     "boat": 28.9,
-    "crouch": 12.5,
+    "crouch": 13.1,
     "climb": 0.3,
-    "minecart": 17.3,
-    "walk": 51.4,
-    "walk_under_water": 21.9,
+    "minecart": 22.8,
+    "walk": 51.8,
+    "walk_under_water": 23.5,
     "horse": 136.3,
-    "sprint": 85.2,
-    "fly": 366.5,
-    "walk_on_water": 7.5,
-    "swim": 39.6,
+    "sprint": 85.5,
+    "fly": 370.3,
+    "walk_on_water": 7.8,
+    "swim": 40.6,
     "nautilus": 1.1
    },
    "top_mobs": [
@@ -218,18 +218,18 @@
      153
     ],
     [
-     "wither_skeleton",
-     87
+     "pillager",
+     95
     ],
     [
-     "sheep",
-     68
+     "wither_skeleton",
+     87
     ]
    ],
    "top_blocks": [
     [
      "stone",
-     6670
+     6679
     ],
     [
      "wheat",
@@ -263,7 +263,7 @@
    "top_used": [
     [
      "diamond_pickaxe",
-     9937
+     9962
     ],
     [
      "diamond_shovel",
@@ -279,11 +279,11 @@
     ],
     [
      "trident",
-     3148
+     3267
     ],
     [
      "diamond_sword",
-     2347
+     2430
     ],
     [
      "iron_shovel",
@@ -316,7 +316,7 @@
     "deepslate": 210,
     "aviate_km": 0.0
    },
-   "week_hours": 15.2
+   "week_hours": 17.8
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -941,11 +941,11 @@
   }
  ],
  "status": {
-  "state": "offline",
+  "state": "online",
   "count": 0,
   "max": 20,
   "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-07T20:23+00:00"
+  "checked": "2026-11-07T23:46+00:00"
  }
 }
