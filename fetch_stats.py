@@ -9,6 +9,10 @@ API = "https://api.exaroton.com/v1"
 D = Path("docs")
 
 
+FOOD = set("""apple golden_apple enchanted_golden_apple bread carrot golden_carrot potato baked_potato poisonous_potato beetroot beetroot_soup
+melon_slice sweet_berries glow_berries cookie pumpkin_pie mushroom_stew rabbit_stew suspicious_stew beef cooked_beef porkchop cooked_porkchop
+mutton cooked_mutton chicken cooked_chicken cod cooked_cod salmon cooked_salmon tropical_fish pufferfish rabbit cooked_rabbit rotten_flesh
+spider_eye dried_kelp chorus_fruit honey_bottle milk_bucket""".split())
 STATES = {0: "offline", 1: "online", 2: "starting", 3: "stopping", 4: "restarting", 5: "saving", 6: "loading", 7: "crashed", 8: "pending", 9: "preparing"}
 
 
@@ -106,6 +110,9 @@ def summarize(uuid, raw, name):
         "jumps": c.get("minecraft:jump", 0),
         "travel": travel, "top_mobs": top(k), "top_blocks": top(m), "top_used": top(u),
         "death_causes": top(kb, 5), "death_other": max(deaths - sum(kb.values()), 0),
+        "f": {"eaten": sum(v for k_, v in u.items() if k_[10:] in FOOD), "fall_m": round(c.get("minecraft:fall_one_cm", 0) / 100),
+              "trades": c.get("minecraft:traded_with_villager", 0), "fish": c.get("minecraft:fish_caught", 0),
+              "bred": c.get("minecraft:animals_bred", 0), "sleeps": c.get("minecraft:sleep_in_bed", 0)},
         "x": {"debris": m.get("minecraft:ancient_debris", 0), "creepers": k.get("minecraft:creeper", 0),
               "netherrack": m.get("minecraft:netherrack", 0), "deepslate": m.get("minecraft:deepslate", 0),
               "aviate_km": round(c.get("minecraft:aviate_one_cm", 0) / 100000, 1)},
@@ -139,6 +146,13 @@ def process(sv, local, first):
     for p in players:
         p["week_hours"] = round(max(p["hours"] - base_h.get(p["uuid"], 0), 0), 1)
     hp.write_text(json.dumps(hist))
+    sp = out / "snapshots.json"
+    snaps = json.loads(sp.read_text()) if sp.exists() else {}
+    keys = ["minutes", "player_kills", "deaths", "km_travelled", "blocks_mined", "items_used", "entities_killed", "damage", "diamonds", "jumps"]
+    snaps[today.isoformat()] = {p["uuid"]: {**{k: p.get(k, 0) for k in keys}, "x": p.get("x", {})} for p in players}
+    for d in sorted(snaps)[:-35]:
+        del snaps[d]
+    sp.write_text(json.dumps(snaps, separators=(",", ":")))
     players.sort(key=lambda p: p["hours"], reverse=True)
     status = {}
     if not local:
