@@ -1,55 +1,55 @@
 {
- "updated": "2026-11-08T17:11+00:00",
+ "updated": "2026-11-08T21:16+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 5590,
-   "hours": 93.2,
+   "minutes": 5733,
+   "hours": 95.5,
    "deaths": 14,
-   "mob_kills": 8718,
+   "mob_kills": 8822,
    "player_kills": 8,
-   "entities_killed": 8314,
-   "items_used": 76879,
-   "damage": 30047,
-   "blocks_mined": 38641,
+   "entities_killed": 8417,
+   "items_used": 77360,
+   "damage": 30152,
+   "blocks_mined": 38742,
    "diamonds": 97,
-   "km_travelled": 787.6,
-   "jumps": 68417,
+   "km_travelled": 806.4,
+   "jumps": 70711,
    "travel": {
     "boat": 28.9,
-    "crouch": 13.3,
-    "climb": 0.3,
-    "minecart": 24.5,
-    "walk": 52.1,
-    "walk_under_water": 24.0,
-    "horse": 136.3,
-    "sprint": 85.7,
-    "fly": 371.9,
-    "walk_on_water": 7.9,
-    "swim": 41.6,
+    "crouch": 13.4,
+    "climb": 0.4,
+    "minecart": 30.6,
+    "walk": 52.7,
+    "walk_under_water": 24.1,
+    "horse": 138.0,
+    "sprint": 88.1,
+    "fly": 378.0,
+    "walk_on_water": 8.1,
+    "swim": 43.0,
     "nautilus": 1.1
    },
    "top_mobs": [
     [
      "pillager",
-     3786
+     3842
     ],
     [
      "vindicator",
-     1987
+     2015
     ],
     [
      "witch",
-     497
+     507
     ],
     [
      "zombie",
-     292
+     295
     ],
     [
      "evoker",
-     279
+     283
     ],
     [
      "cow",
@@ -71,7 +71,7 @@
     ],
     [
      "wheat",
-     5836
+     5837
     ],
     [
      "snow",
@@ -109,11 +109,11 @@
     ],
     [
      "wheat_seeds",
-     8166
+     8169
     ],
     [
      "diamond_sword",
-     5078
+     5139
     ],
     [
      "iron_pickaxe",
@@ -121,7 +121,7 @@
     ],
     [
      "trident",
-     3319
+     3432
     ],
     [
      "iron_shovel",
@@ -148,12 +148,12 @@
    ],
    "death_other": 6,
    "f": {
-    "eaten": 962,
-    "fall_m": 26396,
+    "eaten": 984,
+    "fall_m": 27648,
     "trades": 131,
     "fish": 134,
     "bred": 585,
-    "sleeps": 124
+    "sleeps": 127
    },
    "x": {
     "debris": 0,
@@ -162,44 +162,44 @@
     "deepslate": 210,
     "aviate_km": 0.0
    },
-   "week_hours": 20.3
+   "week_hours": 22.6
   },
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
    "name": "Trosser",
-   "minutes": 5466,
-   "hours": 91.1,
-   "deaths": 43,
-   "mob_kills": 553,
+   "minutes": 5531,
+   "hours": 92.2,
+   "deaths": 44,
+   "mob_kills": 556,
    "player_kills": 8,
-   "entities_killed": 538,
-   "items_used": 49578,
-   "damage": 9763,
-   "blocks_mined": 22935,
-   "diamonds": 0,
-   "km_travelled": 1481.4,
-   "jumps": 166779,
+   "entities_killed": 541,
+   "items_used": 49854,
+   "damage": 9829,
+   "blocks_mined": 22992,
+   "diamonds": 19,
+   "km_travelled": 1491.1,
+   "jumps": 170026,
    "travel": {
     "boat": 38.3,
-    "swim": 5.5,
-    "crouch": 5.6,
+    "crouch": 5.7,
     "climb": 1.1,
-    "minecart": 842.4,
-    "walk": 56.6,
+    "minecart": 842.6,
+    "walk": 57.0,
     "walk_under_water": 1.3,
-    "horse": 17.4,
-    "sprint": 148.6,
-    "fly": 361.6,
-    "walk_on_water": 3.0
+    "horse": 17.8,
+    "sprint": 150.5,
+    "fly": 368.2,
+    "walk_on_water": 3.1,
+    "swim": 5.5
    },
    "top_mobs": [
     [
      "zombie",
-     293
+     295
     ],
     [
      "skeleton",
-     91
+     92
     ],
     [
      "spider",
@@ -229,7 +229,7 @@
    "top_blocks": [
     [
      "stone",
-     7025
+     7036
     ],
     [
      "wheat",
@@ -241,7 +241,7 @@
     ],
     [
      "dirt",
-     653
+     655
     ],
     [
      "short_grass",
@@ -253,17 +253,17 @@
     ],
     [
      "cobblestone",
-     533
+     546
     ],
     [
      "grass_block",
-     494
+     497
     ]
    ],
    "top_used": [
     [
      "iron_pickaxe",
-     10225
+     10274
     ],
     [
      "wheat_seeds",
@@ -275,11 +275,11 @@
     ],
     [
      "cobblestone",
-     4609
+     4740
     ],
     [
      "bread",
-     1516
+     1556
     ],
     [
      "yellow_wool",
@@ -287,21 +287,21 @@
     ],
     [
      "dirt",
-     1248
+     1252
     ],
     [
-     "blue_wool",
-     1084
+     "iron_sword",
+     1089
     ]
    ],
    "death_causes": [
     [
-     "creeper",
+     "skeleton",
      8
     ],
     [
-     "skeleton",
-     7
+     "creeper",
+     8
     ],
     [
      "zombie",
@@ -318,8 +318,8 @@
    ],
    "death_other": 15,
    "f": {
-    "eaten": 2082,
-    "fall_m": 77545,
+    "eaten": 2122,
+    "fall_m": 79356,
     "trades": 41,
     "fish": 16,
     "bred": 192,
@@ -329,38 +329,38 @@
     "debris": 0,
     "creepers": 20,
     "netherrack": 0,
-    "deepslate": 92,
+    "deepslate": 97,
     "aviate_km": 0.0
    },
-   "week_hours": 5.4
+   "week_hours": 6.5
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
    "name": "CapyDreamXD",
-   "minutes": 4727,
-   "hours": 78.8,
+   "minutes": 4904,
+   "hours": 81.7,
    "deaths": 36,
-   "mob_kills": 1086,
+   "mob_kills": 1109,
    "player_kills": 0,
-   "entities_killed": 1054,
-   "items_used": 105724,
-   "damage": 19414,
-   "blocks_mined": 66517,
+   "entities_killed": 1075,
+   "items_used": 106699,
+   "damage": 19696,
+   "blocks_mined": 66904,
    "diamonds": 148,
-   "km_travelled": 863.3,
-   "jumps": 126397,
+   "km_travelled": 913.8,
+   "jumps": 133301,
    "travel": {
-    "boat": 50.0,
-    "crouch": 18.6,
+    "boat": 56.6,
+    "crouch": 18.8,
     "climb": 0.4,
-    "minecart": 22.1,
-    "walk": 74.6,
-    "walk_under_water": 5.2,
+    "minecart": 32.0,
+    "walk": 76.1,
+    "walk_under_water": 5.4,
     "horse": 259.6,
-    "sprint": 126.4,
-    "fly": 293.5,
-    "walk_on_water": 4.3,
-    "swim": 7.6,
+    "sprint": 132.0,
+    "fly": 317.9,
+    "walk_on_water": 4.5,
+    "swim": 9.5,
     "nautilus": 1.0
    },
    "top_mobs": [
@@ -370,11 +370,11 @@
     ],
     [
      "zombie",
-     231
+     232
     ],
     [
      "cow",
-     136
+     148
     ],
     [
      "skeleton",
@@ -386,7 +386,7 @@
     ],
     [
      "drowned",
-     30
+     31
     ],
     [
      "pillager",
@@ -400,7 +400,7 @@
    "top_blocks": [
     [
      "stone",
-     12896
+     12909
     ],
     [
      "sculk",
@@ -408,11 +408,11 @@
     ],
     [
      "grass_block",
-     9202
+     9203
     ],
     [
      "dirt",
-     6400
+     6402
     ],
     [
      "spruce_log",
@@ -420,21 +420,21 @@
     ],
     [
      "coal_ore",
-     2727
+     2731
     ],
     [
      "cobblestone",
-     2384
+     2386
     ],
     [
      "netherrack",
-     1700
+     1785
     ]
    ],
    "top_used": [
     [
      "diamond_pickaxe",
-     18681
+     18853
     ],
     [
      "diamond_hoe",
@@ -442,7 +442,7 @@
     ],
     [
      "diamond_shovel",
-     10853
+     10883
     ],
     [
      "iron_pickaxe",
@@ -458,11 +458,11 @@
     ],
     [
      "dirt",
-     6275
+     6276
     ],
     [
      "diamond_axe",
-     5477
+     5510
     ]
    ],
    "death_causes": [
@@ -489,21 +489,21 @@
    ],
    "death_other": 10,
    "f": {
-    "eaten": 1498,
-    "fall_m": 57177,
-    "trades": 1755,
+    "eaten": 1559,
+    "fall_m": 61105,
+    "trades": 2666,
     "fish": 15,
     "bred": 87,
-    "sleeps": 210
+    "sleeps": 219
    },
    "x": {
     "debris": 0,
     "creepers": 307,
-    "netherrack": 1700,
+    "netherrack": 1785,
     "deepslate": 963,
     "aviate_km": 0.0
    },
-   "week_hours": 16.4
+   "week_hours": 19.3
   },
   {
    "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
@@ -989,11 +989,15 @@
   }
  ],
  "status": {
-  "state": "offline",
-  "count": 0,
+  "state": "online",
+  "count": 3,
   "max": 20,
-  "list": [],
+  "list": [
+   "letsplayfabi",
+   "CapyDreamXD",
+   "Trosser"
+  ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-08T17:11+00:00"
+  "checked": "2026-11-08T21:16+00:00"
  }
 }
