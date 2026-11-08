@@ -8,6 +8,15 @@
       "time": "19:30",
       "image": "events/e1793296516857.jpg",
       "server": "winter"
+    },
+    {
+      "id": "e1794168389361",
+      "image": "events/e1794168389361-1794168389361.jpg",
+      "name": "Gerichtstermien",
+      "desc": "Fragen über Vanilla Progression\nHauptgrund Michi hat kein Bock darauf",
+      "date": "2026-11-08",
+      "time": "21:10",
+      "server": "winter"
     }
   ]
 }
