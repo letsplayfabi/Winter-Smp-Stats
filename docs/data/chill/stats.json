@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-08T11:26+00:00",
+ "updated": "2026-11-08T16:50+00:00",
  "players": [
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -157,6 +157,14 @@
     ]
    ],
    "death_other": 54,
+   "f": {
+    "eaten": 4997,
+    "fall_m": 125629,
+    "trades": 4050,
+    "fish": 3,
+    "bred": 121,
+    "sleeps": 973
+   },
    "x": {
     "debris": 66,
     "creepers": 1113,
@@ -321,6 +329,14 @@
     ]
    ],
    "death_other": 11,
+   "f": {
+    "eaten": 3625,
+    "fall_m": 83693,
+    "trades": 6463,
+    "fish": 1,
+    "bred": 341,
+    "sleeps": 254
+   },
    "x": {
     "debris": 49,
     "creepers": 821,
@@ -485,6 +501,14 @@
     ]
    ],
    "death_other": 57,
+   "f": {
+    "eaten": 5193,
+    "fall_m": 49499,
+    "trades": 5153,
+    "fish": 0,
+    "bred": 238,
+    "sleeps": 210
+   },
    "x": {
     "debris": 46,
     "creepers": 169,
@@ -649,6 +673,14 @@
     ]
    ],
    "death_other": 16,
+   "f": {
+    "eaten": 4278,
+    "fall_m": 44479,
+    "trades": 1606,
+    "fish": 1,
+    "bred": 44,
+    "sleeps": 149
+   },
    "x": {
     "debris": 66,
     "creepers": 1761,
@@ -813,6 +845,14 @@
     ]
    ],
    "death_other": 8,
+   "f": {
+    "eaten": 3432,
+    "fall_m": 28506,
+    "trades": 604,
+    "fish": 48,
+    "bred": 67,
+    "sleeps": 156
+   },
    "x": {
     "debris": 39,
     "creepers": 1121,
@@ -977,6 +1017,14 @@
     ]
    ],
    "death_other": 7,
+   "f": {
+    "eaten": 1180,
+    "fall_m": 25814,
+    "trades": 238,
+    "fish": 1,
+    "bred": 0,
+    "sleeps": 52
+   },
    "x": {
     "debris": 33,
     "creepers": 16,
@@ -1139,6 +1187,14 @@
     ]
    ],
    "death_other": 7,
+   "f": {
+    "eaten": 2921,
+    "fall_m": 8664,
+    "trades": 13,
+    "fish": 0,
+    "bred": 43,
+    "sleeps": 24
+   },
    "x": {
     "debris": 0,
     "creepers": 69,
@@ -1301,6 +1357,14 @@
     ]
    ],
    "death_other": 13,
+   "f": {
+    "eaten": 1101,
+    "fall_m": 5478,
+    "trades": 0,
+    "fish": 0,
+    "bred": 1,
+    "sleeps": 22
+   },
    "x": {
     "debris": 0,
     "creepers": 34,
@@ -1317,6 +1381,6 @@
   "max": 8,
   "list": [],
   "address": "chillsmp187.exaroton.me",
-  "checked": "2026-11-08T11:26+00:00"
+  "checked": "2026-11-08T16:50+00:00"
  }
 }

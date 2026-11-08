@@ -1,43 +1,55 @@
 {
- "updated": "2026-11-08T11:26+00:00",
+ "updated": "2026-11-08T16:50+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 5495,
-   "hours": 91.6,
+   "minutes": 5590,
+   "hours": 93.2,
    "deaths": 14,
-   "mob_kills": 2262,
+   "mob_kills": 8718,
    "player_kills": 8,
-   "entities_killed": 2058,
-   "items_used": 74170,
-   "damage": 30017,
-   "blocks_mined": 38633,
+   "entities_killed": 8314,
+   "items_used": 76879,
+   "damage": 30047,
+   "blocks_mined": 38641,
    "diamonds": 97,
-   "km_travelled": 783.4,
-   "jumps": 68219,
+   "km_travelled": 787.6,
+   "jumps": 68417,
    "travel": {
     "boat": 28.9,
-    "crouch": 13.2,
+    "crouch": 13.3,
     "climb": 0.3,
-    "minecart": 22.8,
-    "walk": 51.9,
-    "walk_under_water": 23.6,
+    "minecart": 24.5,
+    "walk": 52.1,
+    "walk_under_water": 24.0,
     "horse": 136.3,
-    "sprint": 85.5,
-    "fly": 371.3,
-    "walk_on_water": 7.8,
-    "swim": 40.7,
+    "sprint": 85.7,
+    "fly": 371.9,
+    "walk_on_water": 7.9,
+    "swim": 41.6,
     "nautilus": 1.1
    },
    "top_mobs": [
+    [
+     "pillager",
+     3786
+    ],
+    [
+     "vindicator",
+     1987
+    ],
+    [
+     "witch",
+     497
+    ],
     [
      "zombie",
      292
     ],
     [
-     "pillager",
-     197
+     "evoker",
+     279
     ],
     [
      "cow",
@@ -50,18 +62,6 @@
     [
      "silverfish",
      182
-    ],
-    [
-     "skeleton",
-     161
-    ],
-    [
-     "bogged",
-     153
-    ],
-    [
-     "wither_skeleton",
-     87
     ]
    ],
    "top_blocks": [
@@ -79,7 +79,7 @@
     ],
     [
      "dirt",
-     2209
+     2215
     ],
     [
      "sand",
@@ -101,7 +101,7 @@
    "top_used": [
     [
      "diamond_pickaxe",
-     9962
+     9965
     ],
     [
      "diamond_shovel",
@@ -112,16 +112,16 @@
      8166
     ],
     [
+     "diamond_sword",
+     5078
+    ],
+    [
      "iron_pickaxe",
      3465
     ],
     [
      "trident",
-     3267
-    ],
-    [
-     "diamond_sword",
-     2508
+     3319
     ],
     [
      "iron_shovel",
@@ -147,6 +147,14 @@
     ]
    ],
    "death_other": 6,
+   "f": {
+    "eaten": 962,
+    "fall_m": 26396,
+    "trades": 131,
+    "fish": 134,
+    "bred": 585,
+    "sleeps": 124
+   },
    "x": {
     "debris": 0,
     "creepers": 49,
@@ -154,7 +162,7 @@
     "deepslate": 210,
     "aviate_km": 0.0
    },
-   "week_hours": 18.7
+   "week_hours": 20.3
   },
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -309,6 +317,14 @@
     ]
    ],
    "death_other": 15,
+   "f": {
+    "eaten": 2082,
+    "fall_m": 77545,
+    "trades": 41,
+    "fish": 16,
+    "bred": 192,
+    "sleeps": 97
+   },
    "x": {
     "debris": 0,
     "creepers": 20,
@@ -472,6 +488,14 @@
     ]
    ],
    "death_other": 10,
+   "f": {
+    "eaten": 1498,
+    "fall_m": 57177,
+    "trades": 1755,
+    "fish": 15,
+    "bred": 87,
+    "sleeps": 210
+   },
    "x": {
     "debris": 0,
     "creepers": 307,
@@ -632,6 +656,14 @@
     ]
    ],
    "death_other": 0,
+   "f": {
+    "eaten": 282,
+    "fall_m": 5252,
+    "trades": 0,
+    "fish": 0,
+    "bred": 1,
+    "sleeps": 20
+   },
    "x": {
     "debris": 0,
     "creepers": 3,
@@ -792,6 +824,14 @@
     ]
    ],
    "death_other": 2,
+   "f": {
+    "eaten": 86,
+    "fall_m": 1437,
+    "trades": 0,
+    "fish": 16,
+    "bred": 3,
+    "sleeps": 11
+   },
    "x": {
     "debris": 0,
     "creepers": 0,
@@ -930,6 +970,14 @@
    ],
    "death_causes": [],
    "death_other": 0,
+   "f": {
+    "eaten": 73,
+    "fall_m": 770,
+    "trades": 0,
+    "fish": 12,
+    "bred": 4,
+    "sleeps": 4
+   },
    "x": {
     "debris": 0,
     "creepers": 0,
@@ -946,6 +994,6 @@
   "max": 20,
   "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-08T11:26+00:00"
+  "checked": "2026-11-08T16:50+00:00"
  }
 }
