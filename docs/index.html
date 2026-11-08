@@ -2,6 +2,8 @@
 <html lang="de"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Server-Leaderboard</title>
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0a111f"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Leaderboard">
 <style>
 :root{--ac:#52e585;--bg:#0a111f;--pn:#131b2b;--fg:#fff;--mu:#8fa0b8;--ln:#26324a}
 body{margin:0;font:15px system-ui,sans-serif;background:var(--bg);color:var(--fg);padding:24px 16px}
@@ -57,10 +59,15 @@ dialog::backdrop{background:rgba(0,0,0,.65);backdrop-filter:blur(4px)}@keyframes
 .cols{gap:6px}.col{flex:1 1 30px}.col small{writing-mode:vertical-rl;transform:rotate(180deg);font-size:11px;white-space:nowrap}
 .col .nl{max-width:none}.col .nl img{width:18px;height:18px}.col .nl .t{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;max-height:90px}
 .col .ct2{height:110px}.col small{height:80px}.col .nl{min-height:92px}.pie{width:140px;height:140px}}
+.dl{font-size:11px;font-weight:700;margin-left:4px;white-space:nowrap}.dl.up{color:#52e585}.dl.dn{color:#f2677a}
+.fact{background:#ffd23f;color:#111;border:3px solid #111;box-shadow:5px 5px 0 #111;border-radius:4px;padding:14px 18px;margin:20px 5px 0 0;font-family:ui-monospace,Menlo,Consolas,monospace}
+.fh{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}.fb{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:space-between}
+.ft{font-weight:700;flex:1 1 260px;line-height:1.8}.fp{color:#111;text-decoration:underline;text-decoration-thickness:2px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}.fp img{border-radius:3px;image-rendering:pixelated}
+.fnb{background:#ffd23f;color:#111;border:3px solid #111;box-shadow:3px 3px 0 #111;font:inherit;font-weight:700;font-size:12px;text-transform:uppercase;padding:8px 14px;cursor:pointer}.fnb:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #111}
 </style></head><body><main>
 <nav class="nav" id="nav"></nav>
 <section id="lb"><header><div><h1 id="t">Server Leaderboard</h1><p class="sub" id="s"></p><p class="ex" id="stt"></p><p class="ex" id="mine"></p></div><div class="hr"><button class="dc" id="setb">⚙️ Einstellungen</button><button class="dc" id="cmpb" hidden>⚖️ Vergleichen</button><a class="dc" id="dcl" target="_blank" rel="noopener" hidden></a></div></header>
-<p class="ex" id="i"></p><div id="ctl"></div><div class="grid" id="g"></div><footer id="f"></footer></section>
+<p class="ex" id="i"></p><div id="ctl"></div><div id="fact" class="fact" hidden></div><div class="grid" id="g"></div><footer id="f"></footer></section>
 <section id="ev" hidden></section>
 <a id="pill" href="#events" hidden></a>
 <dialog id="d"><div id="dc"></div></dialog>
@@ -101,7 +108,7 @@ function chart(parent,title,note,sorted,get,fmt,color,extra,big){
   const card=el("section","",parent,big?"big":""),hd=el("div","",card,"hd");el("h2",title,hd);el("small",note,hd);
   const box=el("div","",card,"box"),max=Math.max(...sorted.map(get),1);
   if((PREF.chart||"bars")!=="bars"&&RENDER[PREF.chart]){RENDER[PREF.chart](box,sorted,get,fmt,color,big);if(extra)el("div",extra,card,"ex");return}
-  sorted.forEach(p=>{const r=el("div","",box,"row"),nm=el("span","",r,"nm");if(p.uuid===PREF.me)r.classList.add("me");nm.title=p.display_name;nm.append(...(PREF.heads!==false?[head(p,20)]:[]),tspan((p.uuid===PREF.me?"⭐ ":"")+p.display_name+(big&&BADGE.names&&p.badges&&p.badges.length?" "+p.badges.slice(0,4).map(a=>a.icon||"🏆").join(""):"")));if(big&&BADGE.names&&p.badges&&p.badges.length)nm.title=p.badges.map(a=>a.title).join(", ");nm.onclick=()=>profile(p);
+  sorted.forEach(p=>{const r=el("div","",box,"row"),nm=el("span","",r,"nm");if(p.uuid===PREF.me)r.classList.add("me");nm.title=p.display_name;nm.append(...(PREF.heads!==false?[head(p,20)]:[]),tspan((p.uuid===PREF.me?"⭐ ":"")+p.display_name+(big&&BADGE.names&&p.badges&&p.badges.length?" "+p.badges.slice(0,4).map(a=>a.icon||"🏆").join(""):"")));if(big&&BADGE.names&&p.badges&&p.badges.length)nm.title=p.badges.map(a=>a.title).join(", ");if(big)nm.append(dspan(p));nm.onclick=()=>profile(p);
     const t=el("div","",r,"tr"),b=el("div","",t,"bar");b.style.cssText=`width:${get(p)/max*80}%;background:${color(p)}`;el("span",fmt(get(p)),t,"val")});
   if(extra)el("div",extra,card,"ex");
 }
@@ -113,7 +120,7 @@ function profile(p){
   const bi=document.createElement("img");bi.src=`https://mc-heads.net/body/${p.uuid}/140`;bi.height=140;bi.alt="";
   bi.onerror=()=>{bi.onerror=()=>bi.remove();bi.src=`https://crafatar.com/renders/body/${p.uuid}?scale=4&overlay`};ph.append(bi);
   const ti=el("div","",ph,"pt");el("h2",p.display_name,ti);if(p.title)el("span",p.title,ti,"chip").style.background=c;
-  el("p","Platz "+(CTX.order.indexOf(p)+1)+" · "+n(CTX.tot.get(p.uuid))+" Punkte",ti);
+  el("p","Platz "+(CTX.order.indexOf(p)+1)+" · "+n(CTX.tot.get(p.uuid))+" Punkte"+(p.delta&&PREF.delta!==false?" · "+(p.delta>0?"▲":"▼")+Math.abs(p.delta)+" seit "+p.dSince:""),ti);
   const pb=el("div","",b,"pb"),tl=el("div","",pb,"tiles");
   [["Spielzeit",Math.floor(p.minutes/60)+" h "+p.minutes%60+" min"],["7 Tage",p.week_hours+" h"],["Tode",n(p.deaths)],["Schaden",n(p.damage)+" HP"],["Spieler-Kills",n(p.player_kills)],
    ["Entities getötet",n(p.entities_killed)],["Blöcke",n(p.blocks_mined)],["💎 Diamanten",n(p.diamonds)],["Gereist",p.km_travelled+" km"],["Sprünge",n(p.jumps)]]
@@ -163,12 +170,65 @@ function calBtns(e,box){const b=el("button","📅 In Kalender speichern (.ics)",
   b.onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([ics(e)],{type:"text/calendar"}));a.download=(e.name||"event").replace(/[^\w-]+/g,"_")+".ics";a.click()};
   const g=el("a","Google Kalender",box,"cb");g.target="_blank";g.rel="noopener";
   g.href=`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(e.name)}&dates=${e.time?fz(T(e))+"/"+fz(T(e)+36e5):e.date.replace(/-/g,"")+"/"+fz(T(e)+864e5).slice(0,8)}&details=${encodeURIComponent(e.desc||"")}`}
-const PREF={me:"",cols:0,heads:true,compact:false,hide:[],chart:"bars",bar:true,width:"wide"};
+const PREF={me:"",cols:0,heads:true,compact:false,hide:[],chart:"bars",bar:true,width:"wide",delta:true,facts:true};
 try{Object.assign(PREF,JSON.parse(localStorage.getItem("lbp")||"{}"))}catch{}
+let DEFER=null;addEventListener("beforeinstallprompt",e=>{e.preventDefault();DEFER=e});
+const dspan=p=>{if(!p.delta||PREF.delta===false)return"";const s=document.createElement("span");s.className="dl "+(p.delta>0?"up":"dn");s.textContent=(p.delta>0?"▲":"▼")+Math.abs(p.delta);s.title=`Platz ${p.dFrom} → ${p.dTo} seit ${p.dSince}`;return s};
+const sumPts=(players,cs)=>{const t=new Map(players.map(p=>[p.uuid,0]));cs.forEach(c=>rank(c,players).pts.forEach((v,k)=>t.set(k,t.get(k)+v)));return t};
+const placer=t=>u=>1+[...t.values()].filter(v=>v>t.get(u)).length;
+async function deltas(key,data,cats,d){
+  let sn={};try{sn=await fetch(`data/${key}/snapshots.json`,{cache:"no-cache"}).then(r=>r.ok?r.json():{})}catch{}
+  const today=(d.updated||"").slice(0,10),days=Object.keys(sn).filter(x=>x<today).sort();data.forEach(p=>p.delta=0);if(!days.length)return;
+  const lim=new Date(new Date(today)-7*864e5).toISOString().slice(0,10),ref=[...days].reverse().find(x=>x<=lim)||days[0],pv=sn[ref],common=data.filter(p=>pv[p.uuid]);if(common.length<2)return;
+  const cs=cats.filter(c=>!c[6]&&!String(c[0]).startsWith("c_")),pc=placer(sumPts(common,cs)),po=placer(sumPts(common.map(p=>({...pv[p.uuid],uuid:p.uuid})),cs)),
+    ds=new Date(ref).toLocaleDateString("de-AT",{day:"2-digit",month:"2-digit"});
+  common.forEach(p=>{p.dFrom=po(p.uuid);p.dTo=pc(p.uuid);p.delta=p.dFrom-p.dTo;p.dSince=ds})}
+const dur=s=>{s=Math.round(s);if(s<120)return s+(s===1?" Sekunde":" Sekunden");const m=Math.round(s/60);if(m<120)return m+" Minuten";const h=Math.floor(s/3600);if(h<48)return h+" Std. "+Math.round(s%3600/60)+" Min.";return Math.floor(h/24)+" T "+h%24+" Std."};
+const FAR=[[55,"Wien → Bratislava"],[300,"Wien → Salzburg"],[520,"Wien → Berlin"],[1030,"Wien → Paris"],[1800,"Wien → Madrid"],[2400,"Wien → Kairo"],[6900,"Wien → New York"],[40075,"einmal um die ganze Erde"],[384400,"die Strecke zum Mond"]];
+const far=k=>{const f=[...FAR].reverse().find(x=>k>=x[0]);return f?"das ist mehr als "+f[1]:"ein ordentlicher Spaziergang"};
+const BLK={stone:"Stein",dirt:"Erde",cobblestone:"Bruchstein",deepslate:"Tiefenschiefer",cobbled_deepslate:"Bruchtiefenschiefer",netherrack:"Netherrack",sand:"Sand",gravel:"Kies",oak_log:"Eichenstämme",grass_block:"Grasblöcke",wheat:"Weizen",sugar_cane:"Zuckerrohr",diamond_ore:"Diamanterz",deepslate_diamond_ore:"Tiefenschiefer-Diamanterz",iron_ore:"Eisenerz",coal_ore:"Kohleerz",copper_ore:"Kupfererz",gold_ore:"Golderz",ancient_debris:"Antike Trümmer",obsidian:"Obsidian",snow:"Schnee",granite:"Granit",diorite:"Diorit",andesite:"Andesit",tuff:"Tuff"};
+const ratio=(a,b)=>a>=1.5*b&&b>0?n(a/b):null;
+const FACTS=[
+  p=>{if(p.minutes<10||!p.deaths)return;const s=p.minutes*60/p.deaths;return s<3600?`stirbt im Schnitt alle ${dur(s)}.`:`lebt zwischen zwei Toden im Schnitt ${dur(s)}.`},
+  p=>{if(p.minutes>=60&&!p.deaths)return`ist in ${dur(p.minutes*60)} Spielzeit noch kein einziges Mal gestorben. Respekt!`},
+  p=>{const e=(p.f||{}).eaten;if(p.minutes>=10&&e>20)return`isst im Schnitt alle ${dur(p.minutes*60/e)} etwas.`},
+  p=>{if(p.minutes>=10&&p.jumps>50)return`springt im Schnitt alle ${dur(p.minutes*60/p.jumps)}.`},
+  p=>{if(p.minutes>=10&&p.blocks_mined>50)return`baut im Schnitt alle ${dur(p.minutes*60/p.blocks_mined)} einen Block ab.`},
+  p=>{if(p.minutes>=30&&p.diamonds>0)return`findet im Schnitt alle ${dur(p.minutes*60/p.diamonds)} einen Diamanten.`},
+  p=>{if(p.km_travelled>=1)return`ist insgesamt ${n(p.km_travelled)} km gereist – ${far(p.km_travelled)}.`},
+  p=>{const k=(p.x||{}).aviate_km;if(k>=1)return`ist schon ${n(k)} km mit der Elytra geflogen.`},
+  p=>{if(p.minutes>=120)return`hat insgesamt ${dur(p.minutes*60)} gespielt – das sind ${n(p.minutes/110)} Kinofilme am Stück.`},
+  p=>{if(p.damage>=200)return`hat insgesamt ${n(p.damage/2)} Herzen Schaden ausgeteilt.`},
+  p=>{const c=[...(p.death_causes||[]).map(([k,v])=>[pretty(k,MOB),v,1])];if(p.death_other>0)c.push(["",p.death_other,0]);c.sort((a,z)=>z[1]-a[1]);const t=c[0];
+    if(t&&p.deaths>=3)return t[2]?`wurde am häufigsten von ${t[0]} getötet (${t[1]}×).`:`stirbt am häufigsten durch die Umwelt – Sturz, Lava, Ertrinken … (${t[1]}×).`},
+  p=>{const b=(p.top_blocks||[])[0];if(b&&b[1]>=100)return`hat schon ${n(b[1])}× ${BLK[b[0]]||pretty(b[0])} abgebaut.`},
+  p=>{const m=(p.top_mobs||[])[0];if(m&&m[1]>=20)return`hat schon ${n(m[1])}× ${pretty(m[0],MOB)} erledigt.`},
+  p=>{const t=Object.entries(p.travel||{}).sort((a,z)=>z[1]-a[1])[0];if(t&&t[1]>=5)return`bewegt sich am liebsten per ${pretty(t[0],TRAV)} fort (${n(t[1])} km).`},
+  p=>{if(p.week_hours>0)return`war in den letzten 7 Tagen ${dur(p.week_hours*3600)} online.`},
+  p=>{const v=(p.f||{}).fish;if(v>=10)return`hat schon ${n(v)} Fische geangelt.`},
+  p=>{const v=(p.f||{}).bred;if(v>=10)return`hat ${n(v)} Tiere gezüchtet – Bauernhof-König!`},
+  p=>{const v=(p.f||{}).trades;if(v>=10)return`hat ${n(v)}× mit Dorfbewohnern gehandelt.`},
+  p=>{const v=(p.f||{}).sleeps;if(v>=5)return`hat ${n(v)}× im Bett geschlafen.`},
+  p=>{const v=(p.f||{}).fall_m;if(v>=330)return`ist insgesamt ${n(v)} Meter tief gefallen – das sind ${n(v/330)} Eiffeltürme.`},
+  p=>{if(p.player_kills>0)return`hat ${n(p.player_kills)}× andere Spieler besiegt.`}];
+const PAIRS=[
+  (a,b)=>{const r=a.deaths>=3&&ratio(a.deaths,b.deaths);return r&&`ist ${r}× so oft gestorben wie ${b.display_name}.`},
+  (a,b)=>{const r=ratio(a.minutes,b.minutes);return r&&`hat ${r}× so viel gespielt wie ${b.display_name}.`},
+  (a,b)=>{const r=ratio(a.blocks_mined,b.blocks_mined);return r&&`hat ${r}× so viele Blöcke abgebaut wie ${b.display_name}.`},
+  (a,b)=>{const r=ratio(a.km_travelled,b.km_travelled);return r&&`ist ${r}× so weit gereist wie ${b.display_name}.`}];
+const FACT={list:[],i:0};
+function factPool(D){const out=[];D.forEach(p=>FACTS.forEach(g=>{try{const t=g(p);if(t)out.push({p,t})}catch{}}));
+  PAIRS.forEach(g=>D.forEach(a=>{const c=D.filter(b=>b!==a&&g(a,b));if(c.length){const b=c[Math.floor(Math.random()*c.length)];out.push({p:a,t:g(a,b)})}}));
+  ((OV.facts||{}).custom||[]).forEach(t=>out.push({p:null,t}));
+  for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]]}return out}
+function factBox(){const b=$("fact");b.replaceChildren();if(PREF.facts===false||(OV.facts||{}).show===false||!FACT.list.length){b.hidden=true;return}b.hidden=false;
+  const f=FACT.list[FACT.i%FACT.list.length];el("div","Wusstest du?",b,"fh");const r=el("div","",b,"fb"),t=el("div","",r,"ft");
+  if(f.p){const a=el("a","",t,"fp");a.append(head(f.p,24),document.createTextNode(f.p.display_name));a.onclick=()=>profile(f.p);t.append(document.createTextNode(" "+f.t))}else t.textContent="💡 "+f.t;
+  el("button","Noch einer",r,"fnb").onclick=()=>{FACT.i++;factBox()}}
 const tspan=t=>{const s=document.createElement("span");s.className="t";s.textContent=t;return s};
 function nameEl(p,big,cls){const s=document.createElement("span");s.className=cls||"nl";const bd=big&&BADGE.names&&p.badges&&p.badges.length;
   if(PREF.heads!==false)s.append(head(p,20));s.append(tspan((p.uuid===PREF.me?"⭐ ":"")+p.display_name+(bd?" "+p.badges.slice(0,4).map(a=>a.icon||"🏆").join(""):"")));
-  if(bd)s.title=p.badges.map(a=>a.title).join(", ");s.onclick=()=>profile(p);return s}
+  if(bd)s.title=p.badges.map(a=>a.title).join(", ");if(big)s.append(dspan(p));s.onclick=()=>profile(p);return s}
 const RENDER={
   cols(box,S,get,fmt,color,big){const mx=Math.max(...S.map(get),1),w=el("div","",box,"cols");
     S.forEach(p=>{const c=el("div","",w,"col"),v=get(p);el("small",fmt(v),c);const t=el("div","",c,"ct2"),b=el("div","",t,"cb2");b.style.cssText=`height:${v/mx*100}%;background:${color(p)}`;c.append(nameEl(p,big))})},
@@ -197,13 +257,15 @@ function settings(){
   const wd=document.createElement("select");[["normal","Normal"],["wide","Breit"],["full","Volle Breite"]].forEach(([v,t])=>el("option",t,wd).value=v);wd.value=PREF.width||"wide";row("Seitenbreite:",wd);
   const ch=document.createElement("select");[["bars","Balken"],["cols","Säulen"],["pie","Kuchen"],["donut","Ring"],["list","Liste"]].forEach(([v,t])=>el("option",t,ch).value=v);ch.value=PREF.chart||"bars";row("Diagrammart:",ch);
   const chk=(t,v)=>{const c=document.createElement("input");c.type="checkbox";c.checked=v;const l=el("label","",b,"k");l.append(c,document.createTextNode(" "+t));return c};
-  const hd=chk("Skin-Köpfe anzeigen",PREF.heads!==false),cp=chk("Kompakte Balken",!!PREF.compact),qb=chk("Schnellauswahl für die Diagrammart über der Statistik anzeigen",PREF.bar!==false);
+  const hd=chk("Skin-Köpfe anzeigen",PREF.heads!==false),cp=chk("Kompakte Balken",!!PREF.compact),qb=chk("Schnellauswahl für die Diagrammart über der Statistik anzeigen",PREF.bar!==false),dlt=chk("Platzänderungen (▲▼) in der Gesamtwertung anzeigen",PREF.delta!==false),fx=chk("„Wusstest du?“-Box mit lustigen Fakten anzeigen",PREF.facts!==false);
   el("h3","Kategorien anzeigen",b);const cb=(CTX.cats||[]).map(c=>[c[0],chk(CTX.lab&&CTX.lab[c[0]]||c[1],!PREF.hide.includes(c[0]))]);
+  el("h3","Als App auf dem Startbildschirm",b);el("p","iPhone: Teilen ▸ „Zum Home-Bildschirm“. Android: Browser-Menü ▸ „App installieren“ oder „Zum Startbildschirm hinzufügen“.",b,"ex");
+  if(DEFER){const ib=el("button","📲 App installieren",b);ib.onclick=()=>{DEFER.prompt();DEFER=null;ib.remove()}}
   const bar=el("div","",b);bar.style.marginTop="12px";
-  el("button","Speichern",bar).onclick=()=>{if(me.value!==me0)PREF.me=me.value;PREF.cols=+cols.value;PREF.width=wd.value;PREF.chart=ch.value;PREF.bar=qb.checked;PREF.heads=hd.checked;PREF.compact=cp.checked;PREF.hide=cb.filter(x=>!x[1].checked).map(x=>x[0]);
+  el("button","Speichern",bar).onclick=()=>{if(me.value!==me0)PREF.me=me.value;PREF.cols=+cols.value;PREF.width=wd.value;PREF.chart=ch.value;PREF.bar=qb.checked;PREF.delta=dlt.checked;PREF.facts=fx.checked;PREF.heads=hd.checked;PREF.compact=cp.checked;PREF.hide=cb.filter(x=>!x[1].checked).map(x=>x[0]);
     try{localStorage.setItem("lbp",JSON.stringify(PREF))}catch{}$("set").close();server(CUR)};
   const rs=el("button","Zurücksetzen",bar);rs.style.cssText="margin-left:8px;background:var(--bg);color:var(--fg);border:1px solid var(--ln)";
-  rs.onclick=()=>{try{localStorage.removeItem("lbp")}catch{}Object.assign(PREF,{me:"",cols:0,heads:true,compact:false,hide:[],chart:"bars",bar:true,width:"wide"});$("set").close();server(CUR)};
+  rs.onclick=()=>{try{localStorage.removeItem("lbp")}catch{}Object.assign(PREF,{me:"",cols:0,heads:true,compact:false,hide:[],chart:"bars",bar:true,width:"wide",delta:true,facts:true});$("set").close();server(CUR)};
   document.body.style.overflow="hidden";$("set").showModal();
 }
 $("setb").onclick=settings;$("set").onclick=e=>{if(e.target===$("set"))$("set").close()};$("set").addEventListener("close",()=>document.body.style.overflow="");
@@ -214,8 +276,8 @@ async function server(k){
   const sv=(OV.servers&&OV.servers[sv0.key])||(!OV.servers&&sv0===SERVERS[0]?OV:{}),o=sv.players||{},s=sv.site||{},lab=sv.categories||{},CM=Object.fromEntries([...CATS,...Object.values(EXTRA)].map(c=>[c[0],c])),
     defOn=[...CATS.map(c=>c[0]),...(sv0.extra||[])].filter(x=>!(sv0.hide||[]).includes(x)),cats=[...(sv.enabled||defOn).map(x=>CM[x]).filter(Boolean),...(OV.custom||[]).filter(c=>!c.server||c.server==="all"||c.server===sv0.key).map(c=>["c_"+c.id,c.name,1,p=>+((c.values||{})[p.uuid])||0,v=>n(v)+(c.unit?" "+c.unit:""),0,!c.points])];
   const data=d.players.map(p=>{const x=o[p.uuid]||o[p.name]||{};return{...p,display_name:x.display_name||p.name,title:x.title||"",hidden:!!x.hidden,color:x.color||""}}).filter(p=>!p.hidden);
-  badges(data,sv0.key);status(d,k);$("cmpb").hidden=data.length<2;
-  $("t").textContent=s.title||sv0.name+" Leaderboard";
+  badges(data,sv0.key);status(d,k);await deltas(sv0.key,data,cats,d);FACT.list=factPool(data);FACT.i=0;factBox();$("cmpb").hidden=data.length<2;
+  $("t").textContent=s.title||sv0.name+" Leaderboard";document.title=$("t").textContent;
   $("s").textContent=`Minecraft • ${data.length} Spieler • ${cats.length} Kategorien`;
   $("i").textContent=[s.intro,"Stand: "+new Date(d.updated).toLocaleString("de-AT")].filter(Boolean).join(" · ");
   if(!data.length){$("g").textContent="Noch keine Statistiken gefunden.";return}
@@ -257,6 +319,9 @@ Promise.all([fetch("servers.json",{cache:"no-cache"}).then(r=>r.json()).catch(()
   fetch("events.json",{cache:"no-cache"}).then(r=>r.ok?r.json():{}).catch(()=>({}))]).then(([sv,ov,ev])=>{
   SERVERS=sv;OV=ov;BADGE={names:(ov.badges||{}).names!==false,profile:(ov.badges||{}).profile!==false};NEXT=(ev.events||[]).filter(e=>T(e)>=Date.now()).sort((a,b)=>T(a)-T(b))[0]||null;const th=ov.theme||{},rs=document.documentElement.style;
   [["bg","--bg"],["panel","--pn"],["text","--fg"],["muted","--mu"],["accent","--ac"]].forEach(([k,v])=>th[k]&&rs.setProperty(v,th[k]));
-  if(th.players&&th.players.length)COLS=th.players;show();
+  if(th.players&&th.players.length)COLS=th.players;const tc=document.querySelector('meta[name=theme-color]');if(tc&&th.bg)tc.content=th.bg;show();
 });
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+fetch("apple-touch-icon.png",{method:"HEAD"}).then(r=>{if(!r.ok)throw 0}).catch(()=>{const c=document.createElement("canvas");c.width=c.height=180;const x=c.getContext("2d");x.fillStyle="#0a111f";x.fillRect(0,0,180,180);
+  [["#45b0f5",38,50],["#52e585",76,76],["#e9bc57",114,36]].forEach(([col,l,h])=>{x.fillStyle=col;x.fillRect(l,126-h,28,h)});const u=c.toDataURL("image/png");document.querySelectorAll("link[rel=icon],link[rel=apple-touch-icon]").forEach(l=>l.href=u)});
 </script></body></html>
