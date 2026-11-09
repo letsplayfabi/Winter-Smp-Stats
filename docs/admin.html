@@ -33,17 +33,17 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 <label style="display:block;margin:8px 0;color:var(--mu);font-size:13px"><input type="checkbox" id="rem"> Token mit diesem Passwort auf diesem Gerät merken</label>
 <button id="unl" class="s" hidden>🔓 Mit Passwort entsperren</button> <button id="fg" class="s" hidden>Gespeicherten Zugang löschen</button></div></section>
 <div id="ed" hidden>
-<div class="tabs"><button data-t="a" class="on">⚙️ Allgemein</button><button data-t="e">📅 Events</button><button data-t="x">🏆 Erfolge</button><button data-t="c">📊 Eigene Stats</button></div>
+<div class="tabs"><button data-t="a" class="on">⚙️ Allgemein</button><button data-t="e">📅 Events</button><button data-t="x">🏆 Erfolge</button><button data-t="c">📊 Eigene Stats</button><button data-t="g">🎯 Ziele</button></div>
 <section class="card" data-tab="a"><h2>🌍 Server</h2><p class="mu">Alles unten (Seite, Kategorien, Spieler) gilt für den gewählten Server. Farben und Events gelten für alle.</p><select id="sel"></select><label style="display:block;margin-top:12px"><input type="checkbox" id="sa"> Admin-Reiter auf der Seite anzeigen</label></section>
 <section class="card" data-tab="a"><h2>💬 Discord-Button (alle Server)</h2><div class="g"><label>Link<input id="dl" type="text"></label><label>Button-Text<input id="dt" type="text"></label></div><p class="mu" style="margin-top:8px">Link leer lassen = Button ausblenden.</p>
 <h3 style="margin:14px 0 6px;font-size:15px">Discord-Meldungen (Webhook)</h3>
 <p class="mu">Der Webhook-Link kommt als GitHub-Secret <b>DISCORD_WEBHOOK</b> (siehe Anleitung), nicht hierher. Hier wählst du nur, was gemeldet wird.</p>
-<label style="display:block"><input type="checkbox" id="nev"> Neue Events</label><label style="display:block"><input type="checkbox" id="nwk"> Wochen-Top-3 (montags)</label><label style="display:block"><input type="checkbox" id="nms"> Meilensteine (z. B. 100 Diamanten)</label><label style="display:block"><input type="checkbox" id="nac"> Erfolge (neue Erfolge und Wechsel beim Platz 1)</label>
+<label style="display:block"><input type="checkbox" id="nev"> Neue Events</label><label style="display:block"><input type="checkbox" id="nwk"> Wochen-Top-3 (montags)</label><label style="display:block"><input type="checkbox" id="nms"> Meilensteine (z. B. 100 Diamanten)</label><label style="display:block"><input type="checkbox" id="nac"> Erfolge (neue Erfolge und Wechsel beim Platz 1)</label><label style="display:block"><input type="checkbox" id="ngl"> Server-Ziele (wenn erreicht)</label>
 <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button id="dtest" class="s">📨 Testnachricht senden</button></div></section>
 <section class="card" data-tab="a"><h2>🏷️ Seite</h2><div class="g">
 <label>Titel<input id="st" type="text"></label><label>Einleitung<input id="si" type="text"></label></div></section>
 <section class="card" data-tab="a"><h2>🗂️ Kategorien dieses Servers</h2><p class="mu">Häkchen = wird auf diesem Server angezeigt (so schaltest du eine Kategorie bei einem Server mit einem Klick zu oder ab). Namensfeld leer lassen = Standardname.</p><div class="g" id="cats"></div></section>
-<section class="card" data-tab="a"><h2>👥 Spieler</h2><p class="mu">Anzeigename, Titel, eigene Farbe (↺ = Standardfarbe nach Platz) und Ausblenden.</p><div id="rows"></div></section>
+<section class="card" data-tab="a"><h2>👥 Spieler</h2><p class="mu">Anzeigename, Titel, Zitat/Motto (erscheint im Profil), eigene Farbe (↺ = Standardfarbe nach Platz) und Ausblenden.</p><div id="rows"></div></section>
 <section class="card" data-tab="a"><h2>💡 „Wusstest du?“ (alle Server)</h2>
 <p class="mu">Lustige Fakten aus den Statistiken, z. B. „… stirbt im Schnitt alle 20 Minuten“. Mit „Noch einer“ blättern Besucher weiter.</p>
 <label style="display:block"><input type="checkbox" id="fs"> Box anzeigen</label>
@@ -61,6 +61,11 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 <div class="g"><label>Name<input id="cn" type="text" placeholder="Bezahlt"></label><label>Einheit<input id="cu" type="text" placeholder="€"></label><label>Server<select id="cs"></select></label>
 <label style="color:var(--fg)"><input type="checkbox" id="cp"> In der Gesamtwertung mitzählen</label></div>
 <div style="margin:12px 0;display:flex;gap:8px;flex-wrap:wrap"><button id="ca">➕ Statistik anlegen</button><button id="cx" class="s">💶 „Bezahlt (€)“ anlegen</button></div><div id="csl"></div></section>
+<section class="card" data-tab="g" hidden><h2>🎯 Server-Ziele</h2>
+<p class="mu">Gemeinsame Ziele, an denen alle zusammen arbeiten – als Fortschrittsbalken auf der Seite. Beim Erreichen kommt eine Discord-Meldung. Änderungen gelten nach „Speichern“ in der unteren Leiste.</p>
+<div class="g"><label>Name<input id="gn" type="text" placeholder="1 Million Blöcke abbauen"></label><label>Kategorie<select id="gm"></select></label><label>Zielwert<input id="gv" type="number" min="1" placeholder="1000000"></label><label>Server<select id="gs"></select></label><label style="color:var(--fg)"><input type="checkbox" id="gd" checked> Auf Discord melden</label></div>
+<p class="mu" style="margin-top:8px">Hinweis: Spielzeit gibst du in Minuten an (100 Stunden = 6000), Strecken in km. Bei „Alle Server“ werden die Werte aller Server addiert. Auch eigene Statistiken (z. B. „Bezahlt“) können ein Ziel sein.</p>
+<div style="margin:12px 0;display:flex;gap:8px;flex-wrap:wrap"><button id="ga">➕ Ziel hinzufügen</button><button id="gc" class="s" hidden>Abbrechen</button><button id="gx" class="s">✨ Beispiel: 1 Million Blöcke</button></div><div id="gl"></div></section>
 <section class="card" data-tab="x" hidden><h2>🏆 Erfolge</h2>
 <p class="mu">Erfolge erscheinen als Abzeichen im Spielerprofil und als Symbol neben dem Namen in der Gesamtwertung. Änderungen gelten nach „Speichern“ in der unteren Leiste.</p>
 <label style="display:block"><input type="checkbox" id="bnm"> Symbole (Emojis) neben den Namen in der Wertung anzeigen</label><label style="display:block;margin-bottom:12px"><input type="checkbox" id="bpr"> Erfolge im Spielerprofil anzeigen</label>
@@ -105,17 +110,17 @@ async function buildServer(key){
   ALLK.forEach(([k,d])=>{const l=el("label","",cats),c=document.createElement("input"),i=document.createElement("input");c.type="checkbox";c.checked=on.includes(k);i.type="text";i.placeholder=d;i.value=(sv.categories||{})[k]||"";l.append(c,document.createTextNode(" "+d),i);catEls.push([k,i,c])});
   rows.replaceChildren();rowEls=[];
   players.forEach(p=>{const o=(sv.players||{})[p.uuid]||{},r=el("div","",rows,"pl"),im=document.createElement("img");im.src=`https://mc-heads.net/avatar/${p.uuid}/36`;im.width=im.height=36;im.onerror=()=>im.remove();r.append(im);
-    el("b",p.name,r);const a=document.createElement("input"),t=document.createElement("input"),c=document.createElement("input"),h=document.createElement("input");
+    el("b",p.name,r);const a=document.createElement("input"),t=document.createElement("input"),c=document.createElement("input"),h=document.createElement("input"),q=document.createElement("input");
     a.type=t.type="text";a.placeholder="Anzeigename";t.placeholder="Titel";a.value=o.display_name||"";t.value=o.title||"";
     c.type="color";c.value=o.color||"#888888";if(o.color)c.dataset.s=1;c.oninput=()=>c.dataset.s=1;
     const rs=el("button","↺",r,"s");rs.onclick=()=>{delete c.dataset.s;c.value="#888888"};
-    h.type="checkbox";h.checked=!!o.hidden;const hl=el("label","ausblenden ",r);hl.prepend(h);r.insertBefore(a,rs);r.insertBefore(t,rs);r.insertBefore(c,rs);rowEls.push([p.uuid,a,t,c,h])});
+    h.type="checkbox";h.checked=!!o.hidden;const hl=el("label","ausblenden ",r);hl.prepend(h);r.insertBefore(a,rs);r.insertBefore(t,rs);r.insertBefore(c,rs);q.type="text";q.placeholder="Zitat / Motto";q.value=o.quote||"";r.insertBefore(q,rs);rowEls.push([p.uuid,a,t,c,h,q])});
 }
 function collect(){
   const sv={site:{title:st.value,intro:si.value},categories:{},players:{}};
   catEls.forEach(([k,i])=>{if(i.value)sv.categories[k]=i.value});sv.enabled=catEls.filter(x=>x[2].checked).map(x=>x[0]);
-  rowEls.forEach(([u,a,t,c,h])=>{if(a.value||t.value||h.checked||c.dataset.s)sv.players[u]={display_name:a.value,title:t.value,hidden:h.checked,...(c.dataset.s?{color:c.value}:{})}});
-  OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;OV.achievements=ACH;OV.facts={show:fs.checked,custom:ft.value.split("\n").map(x=>x.trim()).filter(Boolean)};OV.custom=CUS;OV.badges={names:bnm.checked,profile:bpr.checked};OV.notify={events:nev.checked,weekly:nwk.checked,milestones:nms.checked,achievements:nac.checked};
+  rowEls.forEach(([u,a,t,c,h,q])=>{if(a.value||t.value||q.value||h.checked||c.dataset.s)sv.players[u]={display_name:a.value,title:t.value,quote:q.value,hidden:h.checked,...(c.dataset.s?{color:c.value}:{})}});
+  OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;OV.achievements=ACH;OV.goals=GOALS;OV.facts={show:fs.checked,custom:ft.value.split("\n").map(x=>x.trim()).filter(Boolean)};OV.custom=CUS;OV.badges={names:bnm.checked,profile:bpr.checked};OV.notify={events:nev.checked,weekly:nwk.checked,milestones:nms.checked,achievements:nac.checked,goals:ngl.checked};
 }
 let EDIT=null;
 function renderEvents(){const b=$("evl");b.replaceChildren();if(!EVS.length)el("p","Noch keine Events.",b,"mu");
@@ -147,7 +152,7 @@ async function delEvent(e){
 }
 const ACHM=[["playtime","Spielzeit (Wert in Minuten)"],["player_kills","Spieler-Kills"],["deaths","Tode"],["travel","Gereist (km)"],["mined","Blöcke abgebaut"],["used","Items verwendet"],["killed","Entities getötet"],["damage","Schaden (HP)"],["diamonds","Diamanten"],["jumps","Sprünge"],["netherite","Netherite gefarmt"],["creepers","Creeper getötet"],["netherrack","Netherrack abgebaut"],["deepslate","Deepslate abgebaut"],["elytra","Elytra-Strecke (km)"]];
 let ACH=[],AEDIT=null;
-function tab(t){document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));document.querySelectorAll("[data-tab]").forEach(s=>s.hidden=s.dataset.tab!==t)}
+function tab(t){if(t==="g")fillGm();document.querySelectorAll(".tabs button").forEach(b=>b.classList.toggle("on",b.dataset.t===t));document.querySelectorAll("[data-tab]").forEach(s=>s.hidden=s.dataset.tab!==t)}
 document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>tab(b.dataset.t));
 const mlabel=k=>(ACHM.find(m=>m[0]===k)||[0,k])[1];
 function renderAch(){const b=$("axl");b.replaceChildren();if(!ACH.length)el("p","Noch keine Erfolge.",b,"mu");
@@ -191,6 +196,19 @@ async function renderCus(){const b=$("csl");b.replaceChildren();if(!CUS.length)e
     upd()}}
 ca.onclick=()=>{if(!cn.value)return say("❌ Bitte einen Namen eingeben.");CUS.push({id:"c"+Date.now(),name:cn.value,unit:cu.value,server:cs.value,points:cp.checked,values:{}});cn.value=cu.value="";renderCus();say("Statistik angelegt – Werte eintragen, dann unten auf „Speichern“ klicken.")};
 cx.onclick=()=>{CUS.push({id:"c"+Date.now(),name:"Bezahlt",unit:"€",server:"all",points:false,values:{}});renderCus();say("„Bezahlt (€)“ angelegt – Werte eintragen, dann unten auf „Speichern“ klicken.")};
+let GOALS=[],GEDIT=null;
+const gMetrics=()=>[...ACHM,...CUS.map(c=>["c_"+c.id,"Eigene Statistik: "+c.name])];
+function fillGm(){const v=gm.value;gm.replaceChildren();gMetrics().forEach(([k,l])=>el("option",l,gm).value=k);if(v)gm.value=v}
+function renderGoals(){const b=$("gl");b.replaceChildren();if(!GOALS.length)el("p","Noch keine Ziele.",b,"mu");
+  GOALS.forEach(g=>{const r=el("div","",b,"ev"),d=el("div","",r),sv=(SERVERS.find(s=>s.key===g.server)||{}).name||"Alle Server";el("b","🎯 "+g.name,d);
+    el("div",`${(gMetrics().find(m=>m[0]===g.metric)||[0,g.metric])[1]} · Ziel ${g.target} · ${sv}${g.announce===false?" · nicht auf Discord":""}`,d,"mu");
+    el("button","✏️",r,"s").onclick=()=>editGoal(g);el("button","🗑",r,"s").onclick=()=>{GOALS=GOALS.filter(x=>x!==g);renderGoals();say("Gelöscht – unten auf „Speichern“ klicken.")}})}
+function editGoal(g){GEDIT=g;gn.value=g.name;fillGm();gm.value=g.metric;gv.value=g.target;gs.value=g.server||"all";gd.checked=g.announce!==false;ga.textContent="💾 Änderung übernehmen";gc.hidden=false;gn.scrollIntoView({behavior:"smooth",block:"center"})}
+function resetGoal(){GEDIT=null;gn.value=gv.value="";gd.checked=true;ga.textContent="➕ Ziel hinzufügen";gc.hidden=true}
+gc.onclick=resetGoal;
+ga.onclick=()=>{if(!gn.value||!(+gv.value>0))return say("❌ Name und ein Zielwert größer 0 sind nötig.");const o={name:gn.value,metric:gm.value,target:+gv.value,server:gs.value,announce:gd.checked};
+  if(GEDIT)Object.assign(GEDIT,o);else GOALS.push({id:"g"+Date.now(),...o});resetGoal();renderGoals();say("Ziel übernommen – unten auf „Speichern“ klicken.")};
+gx.onclick=()=>{GOALS.push({id:"g"+Date.now(),name:"1 Million Blöcke abbauen",metric:"mined",target:1000000,server:"all",announce:true});renderGoals();say("Beispiel hinzugefügt – unten auf „Speichern“ klicken.")};
 ld.onclick=async()=>{
   try{
     SERVERS=await (await fetch("servers.json",{cache:"no-cache"})).json().catch(()=>{throw new Error("servers.json fehlt – erst den Workflow einmal ausführen")});
@@ -207,6 +225,7 @@ ld.onclick=async()=>{
     ACH=OV.achievements||[];fs.checked=(OV.facts||{}).show!==false;ft.value=((OV.facts||{}).custom||[]).join("\n");bnm.checked=(OV.badges||{}).names!==false;bpr.checked=(OV.badges||{}).profile!==false;const nf=OV.notify||{};nev.checked=nf.events!==false;nwk.checked=nf.weekly!==false;nms.checked=nf.milestones!==false;nac.checked=nf.achievements!==false;
     am.replaceChildren();ACHM.forEach(([k,l])=>el("option",l,am).value=k);asv.replaceChildren();el("option","Alle Server",asv).value="all";SERVERS.forEach(x=>el("option",x.name,asv).value=x.key);resetAch();renderAch();
     CUS=OV.custom||[];cs.replaceChildren();el("option","Alle Server",cs).value="all";SERVERS.forEach(x=>el("option",x.name,cs).value=x.key);renderCus();
+    GOALS=OV.goals||[];gs.replaceChildren();el("option","Alle Server",gs).value="all";SERVERS.forEach(x=>el("option",x.name,gs).value=x.key);fillGm();renderGoals();ngl.checked=(OV.notify||{}).goals!==false;
     ed.hidden=false;ab.hidden=false;tab("a");say("Geladen.");
     if(rem.checked&&pw.value){await lockTok(pw.value,tk.value.trim());fg.hidden=false;say("Geladen. 🔒 Zugang auf diesem Gerät gespeichert.")}
   }catch(e){say("Fehler: "+e.message)}
