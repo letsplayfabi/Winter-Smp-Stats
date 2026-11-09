@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Discord-Meldungen: neue Events, Wochen-Top-3 (montags), Meilensteine. Braucht das GitHub-Secret DISCORD_WEBHOOK."""
 import json, os, sys, urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 D = Path("docs")
@@ -27,6 +27,48 @@ def mval(p, m):
             "killed": p.get("entities_killed", 0), "damage": p.get("damage", 0), "diamonds": p.get("diamonds", 0),
             "jumps": p.get("jumps", 0), "netherite": x.get("debris", 0), "creepers": x.get("creepers", 0),
             "netherrack": x.get("netherrack", 0), "deepslate": x.get("deepslate", 0), "elytra": x.get("aviate_km", 0)}.get(m)
+
+
+BASE = ["playtime", "player_kills", "deaths", "travel", "mined", "used", "killed", "damage", "diamonds"]
+HI = {k: 1 for k in BASE + ["netherite", "creepers", "netherrack", "deepslate", "elytra"]}
+HI["deaths"] = 0
+
+
+def places(recs, keys):
+    pts = {u: 0.0 for u in recs}
+    for key in keys:
+        vals = {u: mval(r, key) or 0 for u, r in recs.items()}
+        order = sorted(vals, key=lambda u: -vals[u] if HI[key] else vals[u])
+        i = 0
+        while i < len(order):
+            j = i
+            while j < len(order) and vals[order[j]] == vals[order[i]]:
+                j += 1
+            s = sum(len(order) - x for x in range(i, j))
+            for x in range(i, j):
+                pts[order[x]] += s / (j - i)
+            i = j
+    return {u: 1 + sum(1 for v in pts.values() if v > pts[u]) for u in pts}
+
+
+def climber(sv, players, ov, today):
+    """Größter Aufsteiger in der Gesamtwertung seit ~7 Tagen: (Name, alter Platz, neuer Platz) oder None."""
+    snaps = jl(D / "data" / sv["key"] / "snapshots.json", {})
+    days = sorted(d for d in snaps if d < today)
+    if not days:
+        return None
+    lim = (datetime.fromisoformat(today) - timedelta(days=7)).date().isoformat()
+    cand = [d for d in days if d <= lim]
+    old = snaps[cand[-1] if cand else days[0]]
+    en = (((ov.get("servers") or {}).get(sv["key"]) or {}).get("enabled")) or [k for k in BASE + sv.get("extra", []) if k not in sv.get("hide", [])]
+    keys = [k for k in en if k in HI]
+    now = {p["uuid"]: p for _, p in players if p["uuid"] in old}
+    if len(now) < 2 or not keys:
+        return None
+    names = {p["uuid"]: n for n, p in players}
+    a, b = places({u: old[u] for u in now}, keys), places(now, keys)
+    u, gain = max(((u, a[u] - b[u]) for u in now), key=lambda t: t[1])
+    return (names[u], a[u], b[u]) if gain > 0 else None
 
 
 def post(payload):
@@ -55,7 +97,7 @@ def main():
         print("Kein DISCORD_WEBHOOK gesetzt – keine Discord-Meldungen.")
         return
     ov = jl(D / "overrides.json", {})
-    cfg = {"events": True, "weekly": True, "milestones": True, "achievements": True, **(ov.get("notify") or {})}
+    cfg = {"events": True, "weekly": True, "milestones": True, "achievements": True, "goals": True, **(ov.get("notify") or {})}
     servers = jl(D / "servers.json", [])
     events = (jl(D / "events.json", {}) or {}).get("events", [])
     first = not STATE.exists()
@@ -134,8 +176,38 @@ def main():
             top = sorted([(p.get("week_hours", 0), n) for n, p in players if p.get("week_hours", 0) > 0], reverse=True)[:3]
             if top:
                 medals = ["🥇", "🥈", "🥉"]
-                embeds.append({"title": f"🏆 Top 3 der Woche – {sv['name']}", "url": site, "color": 0x52E585,
-                               "description": "\n".join(f"{medals[i]} **{n}** – {h:.1f} h".replace(".", ",") for i, (h, n) in enumerate(top))})
+                desc = "\n".join(f"{medals[i]} **{n}** – {h:.1f} h".replace(".", ",") for i, (h, n) in enumerate(top))
+                c = climber(sv, players, ov, today)
+                if c:
+                    desc += f"\n\n📈 **Aufsteiger der Woche:** **{c[0]}** (Platz {c[1]} → {c[2]})"
+                embeds.append({"title": f"🏆 Top 3 der Woche – {sv['name']}", "url": site, "color": 0x52E585, "description": desc})
+    goals = st.setdefault("goals", {})
+    for g in ov.get("goals") or []:
+        m = g.get("metric", "")
+        if m.startswith("c_"):
+            c = next((c for c in (ov.get("custom") or []) if "c_" + str(c.get("id")) == m), None)
+            tot = sum(float(v or 0) for v in (c or {}).get("values", {}).values())
+        else:
+            tot = 0
+            for s2 in servers:
+                if g.get("server") not in (None, "all", s2["key"]):
+                    continue
+                for p in jl(D / "data" / s2["key"] / "stats.json", {}).get("players", []):
+                    if pname(s2["key"], p):
+                        tot += mval(p, m) or 0
+        target = float(g.get("target") or 0)
+        reached = target > 0 and tot >= target
+        prev = goals.get(g.get("id"))
+        if prev is None:
+            goals[g["id"]] = "done" if reached else "open"
+        elif prev == "open" and reached:
+            goals[g["id"]] = "done"
+            if cfg["goals"] and g.get("announce", True):
+                show = (lambda v, m=m: (f"{v / 60:,.0f} h" if m == "playtime" else f"{v:,.0f}").replace(",", "."))
+                embeds.append({"title": "🎯 Server-Ziel erreicht!", "url": site, "color": 0xE9BC57,
+                               "description": f"**{g.get('name', 'Ziel')}**\n{show(tot)} / {show(target)} – das hat die ganze Community gemeinsam geschafft! 🎉"})
+        elif prev == "done" and not reached:
+            goals[g["id"]] = "open"
     if first or weekly:
         st["weekly"] = today
 
