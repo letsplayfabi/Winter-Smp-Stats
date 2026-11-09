@@ -60,14 +60,18 @@ dialog::backdrop{background:rgba(0,0,0,.65);backdrop-filter:blur(4px)}@keyframes
 .col .nl{max-width:none}.col .nl img{width:18px;height:18px}.col .nl .t{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;max-height:90px}
 .col .ct2{height:110px}.col small{height:80px}.col .nl{min-height:92px}.pie{width:140px;height:140px}}
 .dl{font-size:11px;font-weight:700;margin-left:4px;white-space:nowrap}.dl.up{color:#52e585}.dl.dn{color:#f2677a}
-.fact{background:#ffd23f;color:#111;border:3px solid #111;box-shadow:5px 5px 0 #111;border-radius:4px;padding:14px 18px;margin:20px 5px 0 0;font-family:ui-monospace,Menlo,Consolas,monospace}
-.fh{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}.fb{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:space-between}
-.ft{font-weight:700;flex:1 1 260px;line-height:1.8}.fp{color:#111;text-decoration:underline;text-decoration-thickness:2px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}.fp img{border-radius:3px;image-rendering:pixelated}
-.fnb{background:#ffd23f;color:#111;border:3px solid #111;box-shadow:3px 3px 0 #111;font:inherit;font-weight:700;font-size:12px;text-transform:uppercase;padding:8px 14px;cursor:pointer}.fnb:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #111}
+.fact{background:var(--pn);border:1px solid var(--ln);border-left:4px solid var(--ac);border-radius:10px;padding:14px 18px;margin:18px 0 0}
+.fh{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ac);margin-bottom:6px}.fb{display:flex;align-items:center;gap:14px;flex-wrap:wrap;justify-content:space-between}
+.ft{flex:1 1 260px;line-height:1.9}.fp{display:inline;font-weight:700;color:var(--fg);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px;cursor:pointer}
+.fp img{vertical-align:middle;margin-right:6px;border-radius:3px;image-rendering:pixelated}
+.fnb{background:transparent;color:var(--fg);border:1px solid var(--ln);border-radius:8px;font:inherit;font-size:13px;padding:7px 14px;cursor:pointer}.fnb:hover{border-color:var(--ac);color:var(--ac)}
+.goal{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:14px 18px;margin:18px 0 0}.gh{font-weight:700;margin-bottom:8px}
+.gt{height:18px;border-radius:9px;background:var(--bg);overflow:hidden}.gf{height:100%;background:var(--ac);border-radius:9px;transition:width .6s}.goal.done .gf{background:linear-gradient(90deg,var(--ac),#e9bc57)}
+.gi{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:6px;font-size:13px;color:var(--mu)}.pt p.qt{color:var(--fg);font-style:italic;margin:8px 0 0}.ph:focus{outline:none}
 </style></head><body><main>
 <nav class="nav" id="nav"></nav>
-<section id="lb"><header><div><h1 id="t">Server Leaderboard</h1><p class="sub" id="s"></p><p class="ex" id="stt"></p><p class="ex" id="mine"></p></div><div class="hr"><button class="dc" id="setb">⚙️ Einstellungen</button><button class="dc" id="cmpb" hidden>⚖️ Vergleichen</button><a class="dc" id="dcl" target="_blank" rel="noopener" hidden></a></div></header>
-<p class="ex" id="i"></p><div id="ctl"></div><div id="fact" class="fact" hidden></div><div class="grid" id="g"></div><footer id="f"></footer></section>
+<section id="lb"><header><div><h1 id="t">Server Leaderboard</h1><p class="sub" id="s"></p><p class="ex" id="stt"></p><p class="ex" id="mine"></p><p class="ex" id="wk"></p></div><div class="hr"><button class="dc" id="setb">⚙️ Einstellungen</button><button class="dc" id="cmpb" hidden>⚖️ Vergleichen</button><a class="dc" id="dcl" target="_blank" rel="noopener" hidden></a></div></header>
+<p class="ex" id="i"></p><div id="ctl"></div><div id="goals" hidden></div><div id="fact" class="fact" hidden></div><div class="grid" id="g"></div><footer id="f"></footer></section>
 <section id="ev" hidden></section>
 <a id="pill" href="#events" hidden></a>
 <dialog id="d"><div id="dc"></div></dialog>
@@ -114,13 +118,13 @@ function chart(parent,title,note,sorted,get,fmt,color,extra,big){
 }
 function mini(b,title,items,m,c){if(!items.length)return;el("h3",title,b);const mx=items[0][1]||1;
   items.slice(0,5).forEach(([k,v])=>{const r=el("div","",b,"mr");el("span",pretty(k,m),r);const t=el("div","",r,"mt"),x=el("div","",t);x.style.cssText=`width:${v/mx*100}%;background:${c}`;el("em",n(v),r)})}
-function profile(p){
+function profile(p){const w0=p;p=p._p||p;
   const b=$("dc"),c=CTX.col(p);b.replaceChildren();
-  const ph=el("div","",b,"ph");ph.style.background=`linear-gradient(135deg,${c}55,transparent 70%)`;
+  const ph=el("div","",b,"ph");ph.tabIndex=-1;ph.setAttribute("autofocus","");ph.style.background=`linear-gradient(135deg,${c}55,transparent 70%)`;
   const bi=document.createElement("img");bi.src=`https://mc-heads.net/body/${p.uuid}/140`;bi.height=140;bi.alt="";
   bi.onerror=()=>{bi.onerror=()=>bi.remove();bi.src=`https://crafatar.com/renders/body/${p.uuid}?scale=4&overlay`};ph.append(bi);
-  const ti=el("div","",ph,"pt");el("h2",p.display_name,ti);if(p.title)el("span",p.title,ti,"chip").style.background=c;
-  el("p","Platz "+(CTX.order.indexOf(p)+1)+" · "+n(CTX.tot.get(p.uuid))+" Punkte"+(p.delta&&PREF.delta!==false?" · "+(p.delta>0?"▲":"▼")+Math.abs(p.delta)+" seit "+p.dSince:""),ti);
+  const ti=el("div","",ph,"pt");el("h2",p.display_name,ti);if(p.title)el("span",p.title,ti,"chip").style.background=c;if(p.quote)el("p","„"+p.quote+"“",ti,"qt");
+  el("p","Platz "+(CTX.order.findIndex(x=>x.uuid===p.uuid)+1)+" · "+n(CTX.tot.get(p.uuid))+" Punkte"+(PREF.period==="week"?" (diese Woche)":"")+(p.delta&&PREF.delta!==false&&PREF.period!=="week"?" · "+(p.delta>0?"▲":"▼")+Math.abs(p.delta)+" seit "+p.dSince:""),ti);
   const pb=el("div","",b,"pb"),tl=el("div","",pb,"tiles");
   [["Spielzeit",Math.floor(p.minutes/60)+" h "+p.minutes%60+" min"],["7 Tage",p.week_hours+" h"],["Tode",n(p.deaths)],["Schaden",n(p.damage)+" HP"],["Spieler-Kills",n(p.player_kills)],
    ["Entities getötet",n(p.entities_killed)],["Blöcke",n(p.blocks_mined)],["💎 Diamanten",n(p.diamonds)],["Gereist",p.km_travelled+" km"],["Sprünge",n(p.jumps)]]
@@ -132,7 +136,7 @@ function profile(p){
   mini(pb,"Todesursachen",cs,null,c);mini(pb,"Meistgetötete Mobs",p.top_mobs,MOB,c);mini(pb,"Meistabgebaute Blöcke",p.top_blocks,null,c);
   mini(pb,"Gereist nach Art (km)",Object.entries(p.travel).sort((a,z)=>z[1]-a[1]),TRAV,c);
   el("button","Schließen",pb).onclick=()=>$("d").close();
-  document.body.style.overflow="hidden";$("d").scrollTop=0;$("d").showModal();
+  document.body.style.overflow="hidden";$("d").showModal();$("d").scrollTop=0;requestAnimationFrame(()=>{$("d").scrollTop=0});
 }
 $("d").onclick=e=>{if(e.target===$("d"))$("d").close()};
 $("d").addEventListener("close",()=>document.body.style.overflow="");
@@ -170,14 +174,34 @@ function calBtns(e,box){const b=el("button","📅 In Kalender speichern (.ics)",
   b.onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([ics(e)],{type:"text/calendar"}));a.download=(e.name||"event").replace(/[^\w-]+/g,"_")+".ics";a.click()};
   const g=el("a","Google Kalender",box,"cb");g.target="_blank";g.rel="noopener";
   g.href=`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(e.name)}&dates=${e.time?fz(T(e))+"/"+fz(T(e)+36e5):e.date.replace(/-/g,"")+"/"+fz(T(e)+864e5).slice(0,8)}&details=${encodeURIComponent(e.desc||"")}`}
-const PREF={me:"",cols:0,heads:true,compact:false,hide:[],chart:"bars",bar:true,width:"wide",delta:true,facts:true};
+const PREF={me:"",cols:0,heads:true,compact:false,hide:[],chart:"bars",bar:true,width:"wide",delta:true,facts:true,period:"all"};
 try{Object.assign(PREF,JSON.parse(localStorage.getItem("lbp")||"{}"))}catch{}
 let DEFER=null;addEventListener("beforeinstallprompt",e=>{e.preventDefault();DEFER=e});
 const dspan=p=>{if(!p.delta||PREF.delta===false)return"";const s=document.createElement("span");s.className="dl "+(p.delta>0?"up":"dn");s.textContent=(p.delta>0?"▲":"▼")+Math.abs(p.delta);s.title=`Platz ${p.dFrom} → ${p.dTo} seit ${p.dSince}`;return s};
 const sumPts=(players,cs)=>{const t=new Map(players.map(p=>[p.uuid,0]));cs.forEach(c=>rank(c,players).pts.forEach((v,k)=>t.set(k,t.get(k)+v)));return t};
 const placer=t=>u=>1+[...t.values()].filter(v=>v>t.get(u)).length;
+const SNC={};const getSnaps=async key=>SNC[key]||(SNC[key]=await fetch(`data/${key}/snapshots.json`,{cache:"no-cache"}).then(r=>r.ok?r.json():{}).catch(()=>({})));
+async function weekView(key,data,d){const sn=await getSnaps(key),today=(d.updated||"").slice(0,10),days=Object.keys(sn).filter(x=>x<today).sort();if(!days.length)return null;
+  const lim=new Date(new Date(today)-7*864e5).toISOString().slice(0,10),ref=[...days].reverse().find(x=>x<=lim)||days[0],pv=sn[ref],
+    NUM=["minutes","player_kills","deaths","km_travelled","blocks_mined","items_used","entities_killed","damage","diamonds","jumps"];
+  const out=data.map(p=>{const o=pv[p.uuid]||{},q={...p,_p:p,delta:0};NUM.forEach(k=>q[k]=Math.max(0,+(p[k]||0)-(+o[k]||0)));q.km_travelled=Math.round(q.km_travelled*10)/10;
+    q.x={};Object.keys(p.x||{}).forEach(k=>q.x[k]=Math.max(0,Math.round(((+p.x[k]||0)-(+((o.x||{})[k])||0))*10)/10));return q});
+  return{data:out,label:`Zeitraum: seit ${new Date(ref).toLocaleDateString("de-AT",{day:"2-digit",month:"2-digit"})} (${Math.round((new Date(today)-new Date(ref))/864e5)} Tage)`}}
+async function goalsBox(sv0){
+  const b=$("goals");b.replaceChildren();const L=(OV.goals||[]).filter(g=>!g.server||g.server==="all"||g.server===sv0.key);
+  const CM2=Object.fromEntries([...CATS,...Object.values(EXTRA),["jumps","Sprünge",1,p=>p.jumps]].map(c=>[c[0],c]));
+  for(const g of L){let tot=0,fmt=n,who=[];const m=g.metric||"";
+    if(m.startsWith("c_")){const c=(OV.custom||[]).find(x=>"c_"+x.id===m);if(!c)continue;tot=Object.values(c.values||{}).reduce((a,v)=>a+(+v||0),0);fmt=v=>n(v)+(c.unit?" "+c.unit:"")}
+    else{const c=CM2[m];if(!c)continue;fmt=c[4]||n;const ks=!g.server||g.server==="all"?SERVERS.map(s=>s.key):[g.server],acc=new Map();
+      for(const k of ks){const dd=await fetch(`data/${k}/stats.json`,{cache:"no-cache"}).then(r=>r.json()).catch(()=>({players:[]})),o=((OV.servers||{})[k]||{}).players||{};
+        (dd.players||[]).forEach(p=>{const x=o[p.uuid]||{};if(x.hidden)return;const v=+c[3](p)||0;tot+=v;const a=acc.get(p.uuid)||{n:x.display_name||p.name,v:0};a.v+=v;acc.set(p.uuid,a)})}
+      who=[...acc.values()].sort((a,z)=>z.v-a.v)}
+    const t=+g.target||1,pct=Math.min(100,tot/t*100),done=tot>=t,card=el("div","",b,"goal"+(done?" done":""));el("div","🎯 Server-Ziel: "+g.name,card,"gh");
+    el("div","",el("div","",card,"gt"),"gf").style.width=pct+"%";const i=el("div","",card,"gi");el("span",`${fmt(tot)} / ${fmt(t)} · ${pct<10?pct.toFixed(1).replace(".",","):Math.floor(pct)} %`,i);
+    if(done)el("span","🎉 Ziel erreicht!",i);else if(who[0]&&tot>0)el("span",`Größter Beitrag: ${who[0].n} (${Math.round(who[0].v/tot*100)} %)`,i)}
+  b.hidden=!b.children.length}
 async function deltas(key,data,cats,d){
-  let sn={};try{sn=await fetch(`data/${key}/snapshots.json`,{cache:"no-cache"}).then(r=>r.ok?r.json():{})}catch{}
+  const sn=await getSnaps(key);
   const today=(d.updated||"").slice(0,10),days=Object.keys(sn).filter(x=>x<today).sort();data.forEach(p=>p.delta=0);if(!days.length)return;
   const lim=new Date(new Date(today)-7*864e5).toISOString().slice(0,10),ref=[...days].reverse().find(x=>x<=lim)||days[0],pv=sn[ref],common=data.filter(p=>pv[p.uuid]);if(common.length<2)return;
   const cs=cats.filter(c=>!c[6]&&!String(c[0]).startsWith("c_")),pc=placer(sumPts(common,cs)),po=placer(sumPts(common.map(p=>({...pv[p.uuid],uuid:p.uuid})),cs)),
@@ -206,7 +230,7 @@ const FACTS=[
   p=>{const t=Object.entries(p.travel||{}).sort((a,z)=>z[1]-a[1])[0];if(t&&t[1]>=5)return`bewegt sich am liebsten per ${pretty(t[0],TRAV)} fort (${n(t[1])} km).`},
   p=>{if(p.week_hours>0)return`war in den letzten 7 Tagen ${dur(p.week_hours*3600)} online.`},
   p=>{const v=(p.f||{}).fish;if(v>=10)return`hat schon ${n(v)} Fische geangelt.`},
-  p=>{const v=(p.f||{}).bred;if(v>=10)return`hat ${n(v)} Tiere gezüchtet – Bauernhof-König!`},
+  p=>{const v=(p.f||{}).bred;if(v>=10)return`hat schon ${n(v)} Tiere gezüchtet.`},
   p=>{const v=(p.f||{}).trades;if(v>=10)return`hat ${n(v)}× mit Dorfbewohnern gehandelt.`},
   p=>{const v=(p.f||{}).sleeps;if(v>=5)return`hat ${n(v)}× im Bett geschlafen.`},
   p=>{const v=(p.f||{}).fall_m;if(v>=330)return`ist insgesamt ${n(v)} Meter tief gefallen – das sind ${n(v/330)} Eiffeltürme.`},
@@ -216,9 +240,14 @@ const PAIRS=[
   (a,b)=>{const r=ratio(a.minutes,b.minutes);return r&&`hat ${r}× so viel gespielt wie ${b.display_name}.`},
   (a,b)=>{const r=ratio(a.blocks_mined,b.blocks_mined);return r&&`hat ${r}× so viele Blöcke abgebaut wie ${b.display_name}.`},
   (a,b)=>{const r=ratio(a.km_travelled,b.km_travelled);return r&&`ist ${r}× so weit gereist wie ${b.display_name}.`}];
+const TOPS=[[p=>(p.f||{}).bred,v=>`ist mit ${n(v)} gezüchteten Tieren der Bauernhof-König des Servers.`],
+  [p=>(p.f||{}).fish,v=>`ist mit ${n(v)} geangelten Fischen der beste Angler des Servers.`],
+  [p=>(p.f||{}).trades,v=>`ist mit ${n(v)} Handeln der größte Händler des Servers.`],
+  [p=>(p.f||{}).sleeps,v=>`ist mit ${n(v)}× Schlafen die größte Schlafmütze des Servers.`]];
 const FACT={list:[],i:0};
 function factPool(D){const out=[];D.forEach(p=>FACTS.forEach(g=>{try{const t=g(p);if(t)out.push({p,t})}catch{}}));
   PAIRS.forEach(g=>D.forEach(a=>{const c=D.filter(b=>b!==a&&g(a,b));if(c.length){const b=c[Math.floor(Math.random()*c.length)];out.push({p:a,t:g(a,b)})}}));
+  TOPS.forEach(([get,tx])=>{const so=[...D].sort((a,b)=>(+get(b)||0)-(+get(a)||0)),a=so[0],v=a&&+get(a)||0;if(v>=10&&(!so[1]||v>=1.5*(+get(so[1])||0)))out.push({p:a,t:tx(v)})});
   ((OV.facts||{}).custom||[]).forEach(t=>out.push({p:null,t}));
   for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]]}return out}
 function factBox(){const b=$("fact");b.replaceChildren();if(PREF.facts===false||(OV.facts||{}).show===false||!FACT.list.length){b.hidden=true;return}b.hidden=false;
@@ -244,6 +273,7 @@ const RENDER={
   list(box,S,get,fmt,color,big){const t=el("table","",box,"lt");
     S.forEach((p,i)=>{const r=el("tr","",t);if(p.uuid===PREF.me)r.classList.add("me2");el("td",(i+1)+".",r);el("td","",r).append(nameEl(p,big));const v=el("td",fmt(get(p)),r);v.style.cssText="font-weight:700;color:"+color(p)})}};
 function chartCtl(){const b=$("ctl");b.replaceChildren();b.style.display=PREF.bar===false?"none":"flex";if(PREF.bar===false)return;
+  [["all","Gesamt"],["week","Diese Woche"]].forEach(([k,l])=>{const x=el("button",l,b,(PREF.period||"all")===k?"on":"");x.onclick=()=>{PREF.period=k;try{localStorage.setItem("lbp",JSON.stringify(PREF))}catch{}server(CUR)}});el("span","",b).style.width="14px";
   [["bars","▤ Balken"],["cols","▥ Säulen"],["pie","◔ Kuchen"],["donut","◎ Ring"],["list","☰ Liste"]].forEach(([k,l])=>{const x=el("button",l,b,(PREF.chart||"bars")===k?"on":"");
     x.onclick=()=>{PREF.chart=k;try{localStorage.setItem("lbp",JSON.stringify(PREF))}catch{}server(CUR)}})}
 function applyPrefs(){const g=$("g");g.style.gridTemplateColumns=PREF.cols?`repeat(${PREF.cols},1fr)`:"";g.classList.toggle("compact",!!PREF.compact);
@@ -256,16 +286,17 @@ function settings(){
   const cols=document.createElement("select");[["0","Automatisch"],["1","1 Statistik pro Zeile"],["2","2 Statistiken pro Zeile"],["3","3 Statistiken pro Zeile"],["4","4 Statistiken pro Zeile"],["5","5 Statistiken pro Zeile"]].forEach(([v,t])=>el("option",t,cols).value=v);cols.value=String(PREF.cols||0);row("Layout:",cols);
   const wd=document.createElement("select");[["normal","Normal"],["wide","Breit"],["full","Volle Breite"]].forEach(([v,t])=>el("option",t,wd).value=v);wd.value=PREF.width||"wide";row("Seitenbreite:",wd);
   const ch=document.createElement("select");[["bars","Balken"],["cols","Säulen"],["pie","Kuchen"],["donut","Ring"],["list","Liste"]].forEach(([v,t])=>el("option",t,ch).value=v);ch.value=PREF.chart||"bars";row("Diagrammart:",ch);
+  const pr=document.createElement("select");[["all","Gesamt"],["week","Diese Woche (letzte 7 Tage)"]].forEach(([v,t])=>el("option",t,pr).value=v);pr.value=PREF.period||"all";row("Zeitraum:",pr);
   const chk=(t,v)=>{const c=document.createElement("input");c.type="checkbox";c.checked=v;const l=el("label","",b,"k");l.append(c,document.createTextNode(" "+t));return c};
   const hd=chk("Skin-Köpfe anzeigen",PREF.heads!==false),cp=chk("Kompakte Balken",!!PREF.compact),qb=chk("Schnellauswahl für die Diagrammart über der Statistik anzeigen",PREF.bar!==false),dlt=chk("Platzänderungen (▲▼) in der Gesamtwertung anzeigen",PREF.delta!==false),fx=chk("„Wusstest du?“-Box mit lustigen Fakten anzeigen",PREF.facts!==false);
   el("h3","Kategorien anzeigen",b);const cb=(CTX.cats||[]).map(c=>[c[0],chk(CTX.lab&&CTX.lab[c[0]]||c[1],!PREF.hide.includes(c[0]))]);
   el("h3","Als App auf dem Startbildschirm",b);el("p","iPhone: Teilen ▸ „Zum Home-Bildschirm“. Android: Browser-Menü ▸ „App installieren“ oder „Zum Startbildschirm hinzufügen“.",b,"ex");
   if(DEFER){const ib=el("button","📲 App installieren",b);ib.onclick=()=>{DEFER.prompt();DEFER=null;ib.remove()}}
   const bar=el("div","",b);bar.style.marginTop="12px";
-  el("button","Speichern",bar).onclick=()=>{if(me.value!==me0)PREF.me=me.value;PREF.cols=+cols.value;PREF.width=wd.value;PREF.chart=ch.value;PREF.bar=qb.checked;PREF.delta=dlt.checked;PREF.facts=fx.checked;PREF.heads=hd.checked;PREF.compact=cp.checked;PREF.hide=cb.filter(x=>!x[1].checked).map(x=>x[0]);
+  el("button","Speichern",bar).onclick=()=>{if(me.value!==me0)PREF.me=me.value;PREF.cols=+cols.value;PREF.width=wd.value;PREF.chart=ch.value;PREF.period=pr.value;PREF.bar=qb.checked;PREF.delta=dlt.checked;PREF.facts=fx.checked;PREF.heads=hd.checked;PREF.compact=cp.checked;PREF.hide=cb.filter(x=>!x[1].checked).map(x=>x[0]);
     try{localStorage.setItem("lbp",JSON.stringify(PREF))}catch{}$("set").close();server(CUR)};
   const rs=el("button","Zurücksetzen",bar);rs.style.cssText="margin-left:8px;background:var(--bg);color:var(--fg);border:1px solid var(--ln)";
-  rs.onclick=()=>{try{localStorage.removeItem("lbp")}catch{}Object.assign(PREF,{me:"",cols:0,heads:true,compact:false,hide:[],chart:"bars",bar:true,width:"wide",delta:true,facts:true});$("set").close();server(CUR)};
+  rs.onclick=()=>{try{localStorage.removeItem("lbp")}catch{}Object.assign(PREF,{me:"",cols:0,heads:true,compact:false,hide:[],chart:"bars",bar:true,width:"wide",delta:true,facts:true,period:"all"});$("set").close();server(CUR)};
   document.body.style.overflow="hidden";$("set").showModal();
 }
 $("setb").onclick=settings;$("set").onclick=e=>{if(e.target===$("set"))$("set").close()};$("set").addEventListener("close",()=>document.body.style.overflow="");
@@ -275,8 +306,9 @@ async function server(k){
   try{d=await fetch(`data/${sv0.key}/stats.json`,{cache:"no-cache"}).then(r=>{if(!r.ok)throw 0;return r.json()})}catch{$("i").textContent="stats.json konnte nicht geladen werden.";return}
   const sv=(OV.servers&&OV.servers[sv0.key])||(!OV.servers&&sv0===SERVERS[0]?OV:{}),o=sv.players||{},s=sv.site||{},lab=sv.categories||{},CM=Object.fromEntries([...CATS,...Object.values(EXTRA)].map(c=>[c[0],c])),
     defOn=[...CATS.map(c=>c[0]),...(sv0.extra||[])].filter(x=>!(sv0.hide||[]).includes(x)),cats=[...(sv.enabled||defOn).map(x=>CM[x]).filter(Boolean),...(OV.custom||[]).filter(c=>!c.server||c.server==="all"||c.server===sv0.key).map(c=>["c_"+c.id,c.name,1,p=>+((c.values||{})[p.uuid])||0,v=>n(v)+(c.unit?" "+c.unit:""),0,!c.points])];
-  const data=d.players.map(p=>{const x=o[p.uuid]||o[p.name]||{};return{...p,display_name:x.display_name||p.name,title:x.title||"",hidden:!!x.hidden,color:x.color||""}}).filter(p=>!p.hidden);
-  badges(data,sv0.key);status(d,k);await deltas(sv0.key,data,cats,d);FACT.list=factPool(data);FACT.i=0;factBox();$("cmpb").hidden=data.length<2;
+  let data=d.players.map(p=>{const x=o[p.uuid]||o[p.name]||{};return{...p,display_name:x.display_name||p.name,title:x.title||"",hidden:!!x.hidden,color:x.color||"",quote:x.quote||""}}).filter(p=>!p.hidden);
+  badges(data,sv0.key);status(d,k);await deltas(sv0.key,data,cats,d);FACT.list=factPool(data);FACT.i=0;factBox();await goalsBox(sv0);
+  $("wk").textContent="";if(PREF.period==="week"){const w=await weekView(sv0.key,data,d);if(w){data=w.data;cats.splice(0,cats.length,...cats.filter(c=>!String(c[0]).startsWith("c_")));$("wk").textContent=w.label}else $("wk").textContent="Für die Wochenansicht fehlen noch Daten – sie ist ab morgen verfügbar."}$("cmpb").hidden=data.length<2;
   $("t").textContent=s.title||sv0.name+" Leaderboard";document.title=$("t").textContent;
   $("s").textContent=`Minecraft • ${data.length} Spieler • ${cats.length} Kategorien`;
   $("i").textContent=[s.intro,"Stand: "+new Date(d.updated).toLocaleString("de-AT")].filter(Boolean).join(" · ");
