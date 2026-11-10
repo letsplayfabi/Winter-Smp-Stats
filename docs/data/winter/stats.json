@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-09T18:59+00:00",
+ "updated": "2026-11-10T01:57+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -162,44 +162,44 @@
     "deepslate": 210,
     "aviate_km": 0.0
    },
-   "week_hours": 16.3
+   "week_hours": 12.6
   },
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
    "name": "Trosser",
-   "minutes": 5557,
-   "hours": 92.6,
-   "deaths": 50,
-   "mob_kills": 559,
+   "minutes": 5617,
+   "hours": 93.6,
+   "deaths": 51,
+   "mob_kills": 567,
    "player_kills": 8,
-   "entities_killed": 544,
-   "items_used": 50044,
-   "damage": 9895,
-   "blocks_mined": 23047,
+   "entities_killed": 552,
+   "items_used": 50391,
+   "damage": 10090,
+   "blocks_mined": 23232,
    "diamonds": 37,
-   "km_travelled": 1495.6,
-   "jumps": 171544,
+   "km_travelled": 1505.6,
+   "jumps": 174123,
    "travel": {
     "boat": 38.3,
     "crouch": 5.7,
     "climb": 1.1,
-    "minecart": 842.6,
-    "walk": 57.2,
+    "minecart": 844.1,
+    "walk": 58.1,
     "walk_under_water": 1.4,
     "horse": 17.8,
-    "sprint": 151.4,
-    "fly": 371.3,
-    "walk_on_water": 3.2,
-    "swim": 5.6
+    "sprint": 153.0,
+    "fly": 376.9,
+    "walk_on_water": 3.3,
+    "swim": 5.9
    },
    "top_mobs": [
     [
      "zombie",
-     295
+     300
     ],
     [
      "skeleton",
-     95
+     97
     ],
     [
      "spider",
@@ -229,23 +229,23 @@
    "top_blocks": [
     [
      "stone",
-     7045
+     7114
     ],
     [
      "wheat",
      6864
     ],
     [
+     "dirt",
+     669
+    ],
+    [
      "packed_ice",
      667
     ],
     [
-     "dirt",
-     664
-    ],
-    [
      "short_grass",
-     650
+     651
     ],
     [
      "iron_ore",
@@ -253,11 +253,11 @@
     ],
     [
      "cobblestone",
-     546
+     550
     ],
     [
      "grass_block",
-     502
+     503
     ]
    ],
    "top_used": [
@@ -275,11 +275,11 @@
     ],
     [
      "cobblestone",
-     4784
+     4837
     ],
     [
      "bread",
-     1569
+     1593
     ],
     [
      "yellow_wool",
@@ -287,11 +287,11 @@
     ],
     [
      "dirt",
-     1280
+     1281
     ],
     [
      "iron_sword",
-     1096
+     1103
     ]
    ],
    "death_causes": [
@@ -316,14 +316,14 @@
      2
     ]
    ],
-   "death_other": 15,
+   "death_other": 16,
    "f": {
-    "eaten": 2136,
-    "fall_m": 80432,
-    "trades": 41,
+    "eaten": 2160,
+    "fall_m": 81649,
+    "trades": 87,
     "fish": 16,
-    "bred": 192,
-    "sleeps": 97
+    "bred": 214,
+    "sleeps": 99
    },
    "x": {
     "debris": 0,
@@ -332,7 +332,7 @@
     "deepslate": 105,
     "aviate_km": 0.0
    },
-   "week_hours": 5.7
+   "week_hours": 2.6
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -503,7 +503,7 @@
     "deepslate": 963,
     "aviate_km": 0.0
    },
-   "week_hours": 13.6
+   "week_hours": 7.7
   },
   {
    "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
@@ -994,6 +994,6 @@
   "max": 20,
   "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-09T18:59+00:00"
+  "checked": "2026-11-10T01:57+00:00"
  }
 }
