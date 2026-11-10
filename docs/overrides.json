@@ -157,7 +157,8 @@
     "events": true,
     "weekly": true,
     "milestones": true,
-    "achievements": true
+    "achievements": true,
+    "goals": true
   },
   "badges": {
     "names": false,
@@ -176,5 +177,19 @@
         "67968945-1afd-4ee6-989a-8c4889f73f9d": 5
       }
     }
-  ]
+  ],
+  "goals": [
+    {
+      "id": "g1794337462948",
+      "name": "1 Million Blöcke abbauen",
+      "metric": "mined",
+      "target": 1000000,
+      "server": "all",
+      "announce": true
+    }
+  ],
+  "facts": {
+    "show": true,
+    "custom": []
+  }
 }
