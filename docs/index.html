@@ -208,7 +208,7 @@ async function deltas(key,data,cats,d){
     ds=new Date(ref).toLocaleDateString("de-AT",{day:"2-digit",month:"2-digit"});
   common.forEach(p=>{p.dFrom=po(p.uuid);p.dTo=pc(p.uuid);p.delta=p.dFrom-p.dTo;p.dSince=ds})}
 const dur=s=>{s=Math.round(s);if(s<120)return s+(s===1?" Sekunde":" Sekunden");const m=Math.round(s/60);if(m<120)return m+" Minuten";const h=Math.floor(s/3600);if(h<48)return h+" Std. "+Math.round(s%3600/60)+" Min.";return Math.floor(h/24)+" T "+h%24+" Std."};
-const FAR=[[55,"Wien → Bratislava"],[300,"Wien → Salzburg"],[520,"Wien → Berlin"],[1030,"Wien → Paris"],[1800,"Wien → Madrid"],[2400,"Wien → Kairo"],[6900,"Wien → New York"],[40075,"einmal um die ganze Erde"],[384400,"die Strecke zum Mond"]];
+const FAR=[[60,"Graz → Maribor"],[145,"Graz → Wien"],[200,"Graz → Salzburg"],[620,"Graz → Berlin"],[990,"Graz → Paris"],[1700,"Graz → Madrid"],[2330,"Graz → Kairo"],[6800,"Graz → New York"],[40075,"einmal um die ganze Erde"],[384400,"die Strecke zum Mond"]];
 const far=k=>{const f=[...FAR].reverse().find(x=>k>=x[0]);return f?"das ist mehr als "+f[1]:"ein ordentlicher Spaziergang"};
 const BLK={stone:"Stein",dirt:"Erde",cobblestone:"Bruchstein",deepslate:"Tiefenschiefer",cobbled_deepslate:"Bruchtiefenschiefer",netherrack:"Netherrack",sand:"Sand",gravel:"Kies",oak_log:"Eichenstämme",grass_block:"Grasblöcke",wheat:"Weizen",sugar_cane:"Zuckerrohr",diamond_ore:"Diamanterz",deepslate_diamond_ore:"Tiefenschiefer-Diamanterz",iron_ore:"Eisenerz",coal_ore:"Kohleerz",copper_ore:"Kupfererz",gold_ore:"Golderz",ancient_debris:"Antike Trümmer",obsidian:"Obsidian",snow:"Schnee",granite:"Granit",diorite:"Diorit",andesite:"Andesit",tuff:"Tuff"};
 const ratio=(a,b)=>a>=1.5*b&&b>0?n(a/b):null;
