@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-10T17:11+00:00",
+ "updated": "2026-11-10T19:06+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -508,27 +508,27 @@
   {
    "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
    "name": "SirMemo",
-   "minutes": 402,
-   "hours": 6.7,
-   "deaths": 17,
-   "mob_kills": 192,
+   "minutes": 430,
+   "hours": 7.2,
+   "deaths": 19,
+   "mob_kills": 204,
    "player_kills": 0,
-   "entities_killed": 186,
-   "items_used": 2882,
-   "damage": 2596,
-   "blocks_mined": 1552,
+   "entities_killed": 197,
+   "items_used": 3060,
+   "damage": 2822,
+   "blocks_mined": 1614,
    "diamonds": 0,
-   "km_travelled": 66.7,
-   "jumps": 14365,
+   "km_travelled": 71.0,
+   "jumps": 15843,
    "travel": {
     "boat": 10.6,
-    "swim": 0.5,
+    "swim": 0.6,
     "crouch": 0.4,
-    "walk": 5.4,
-    "horse": 0.2,
+    "walk": 5.8,
     "walk_under_water": 0.0,
-    "sprint": 15.3,
-    "fly": 34.1,
+    "horse": 0.2,
+    "sprint": 16.6,
+    "fly": 36.6,
     "walk_on_water": 0.2
    },
    "top_mobs": [
@@ -538,7 +538,7 @@
     ],
     [
      "zombie",
-     43
+     48
     ],
     [
      "pig",
@@ -550,7 +550,7 @@
     ],
     [
      "skeleton",
-     12
+     18
     ],
     [
      "spider",
@@ -568,11 +568,11 @@
    "top_blocks": [
     [
      "stone",
-     271
+     291
     ],
     [
      "short_grass",
-     239
+     240
     ],
     [
      "oak_leaves",
@@ -580,7 +580,7 @@
     ],
     [
      "oak_log",
-     135
+     140
     ],
     [
      "dirt",
@@ -602,19 +602,19 @@
    "top_used": [
     [
      "stone_pickaxe",
-     373
+     396
     ],
     [
      "stone_sword",
-     328
+     378
     ],
     [
      "stone_axe",
-     268
+     280
     ],
     [
      "oak_planks",
-     210
+     222
     ],
     [
      "wooden_sword",
@@ -639,6 +639,10 @@
      6
     ],
     [
+     "creeper",
+     4
+    ],
+    [
      "enderman",
      4
     ],
@@ -647,22 +651,18 @@
      3
     ],
     [
-     "creeper",
-     2
-    ],
-    [
      "skeleton",
      1
     ]
    ],
    "death_other": 0,
    "f": {
-    "eaten": 282,
-    "fall_m": 5252,
+    "eaten": 300,
+    "fall_m": 5762,
     "trades": 0,
     "fish": 0,
     "bred": 1,
-    "sleeps": 20
+    "sleeps": 22
    },
    "x": {
     "debris": 0,
@@ -671,7 +671,7 @@
     "deepslate": 0,
     "aviate_km": 0.0
    },
-   "week_hours": 0.0
+   "week_hours": 0.5
   },
   {
    "uuid": "61a0350a-3e08-4c83-9d5a-559dd7ec3f00",
@@ -989,11 +989,11 @@
   }
  ],
  "status": {
-  "state": "offline",
+  "state": "online",
   "count": 0,
   "max": 20,
   "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-10T17:11+00:00"
+  "checked": "2026-11-10T19:06+00:00"
  }
 }
