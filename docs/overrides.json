@@ -31,7 +31,9 @@
         "used",
         "killed",
         "damage",
-        "diamonds"
+        "diamonds",
+        "netherite",
+        "netherrack"
       ]
     },
     "chill": {
