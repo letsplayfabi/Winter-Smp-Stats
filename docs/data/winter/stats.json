@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-11T09:42+00:00",
+ "updated": "2026-11-11T17:39+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -508,37 +508,37 @@
   {
    "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
    "name": "SirMemo",
-   "minutes": 430,
-   "hours": 7.2,
-   "deaths": 19,
-   "mob_kills": 204,
+   "minutes": 445,
+   "hours": 7.4,
+   "deaths": 21,
+   "mob_kills": 209,
    "player_kills": 0,
-   "entities_killed": 197,
-   "items_used": 3060,
-   "damage": 2822,
-   "blocks_mined": 1614,
+   "entities_killed": 202,
+   "items_used": 3164,
+   "damage": 2928,
+   "blocks_mined": 1665,
    "diamonds": 0,
-   "km_travelled": 71.0,
-   "jumps": 15843,
+   "km_travelled": 73.1,
+   "jumps": 16481,
    "travel": {
     "boat": 10.6,
     "swim": 0.6,
-    "crouch": 0.4,
-    "walk": 5.8,
+    "crouch": 0.5,
+    "walk": 5.9,
     "walk_under_water": 0.0,
     "horse": 0.2,
-    "sprint": 16.6,
-    "fly": 36.6,
+    "sprint": 17.3,
+    "fly": 37.8,
     "walk_on_water": 0.2
    },
    "top_mobs": [
     [
-     "cow",
-     50
+     "zombie",
+     51
     ],
     [
-     "zombie",
-     48
+     "cow",
+     50
     ],
     [
      "pig",
@@ -554,7 +554,7 @@
     ],
     [
      "spider",
-     10
+     12
     ],
     [
      "chicken",
@@ -568,7 +568,7 @@
    "top_blocks": [
     [
      "stone",
-     291
+     328
     ],
     [
      "short_grass",
@@ -601,12 +601,12 @@
    ],
    "top_used": [
     [
-     "stone_pickaxe",
-     396
+     "stone_sword",
+     403
     ],
     [
-     "stone_sword",
-     378
+     "stone_pickaxe",
+     396
     ],
     [
      "stone_axe",
@@ -618,7 +618,7 @@
     ],
     [
      "wooden_sword",
-     146
+     148
     ],
     [
      "oak_stairs",
@@ -640,7 +640,7 @@
     ],
     [
      "creeper",
-     4
+     5
     ],
     [
      "enderman",
@@ -652,17 +652,17 @@
     ],
     [
      "skeleton",
-     1
+     2
     ]
    ],
    "death_other": 0,
    "f": {
-    "eaten": 300,
-    "fall_m": 5762,
+    "eaten": 308,
+    "fall_m": 5966,
     "trades": 0,
     "fish": 0,
     "bred": 1,
-    "sleeps": 22
+    "sleeps": 23
    },
    "x": {
     "debris": 0,
@@ -671,7 +671,7 @@
     "deepslate": 0,
     "aviate_km": 0.0
    },
-   "week_hours": 0.5
+   "week_hours": 0.7
   },
   {
    "uuid": "61a0350a-3e08-4c83-9d5a-559dd7ec3f00",
@@ -994,6 +994,6 @@
   "max": 20,
   "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-11T09:42+00:00"
+  "checked": "2026-11-11T17:39+00:00"
  }
 }
