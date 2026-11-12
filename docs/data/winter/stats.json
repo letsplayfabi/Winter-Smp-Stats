@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-12T15:29+00:00",
+ "updated": "2026-11-12T18:54+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 5744,
-   "hours": 95.7,
+   "minutes": 5745,
+   "hours": 95.8,
    "deaths": 14,
    "mob_kills": 8822,
    "player_kills": 8,
    "entities_killed": 8417,
-   "items_used": 77364,
+   "items_used": 77365,
    "damage": 30152,
    "blocks_mined": 38742,
    "diamonds": 97,
    "km_travelled": 806.5,
-   "jumps": 70756,
+   "jumps": 70757,
    "travel": {
     "boat": 28.9,
     "crouch": 13.4,
@@ -162,7 +162,7 @@
     "deepslate": 210,
     "aviate_km": 0.0
    },
-   "week_hours": 9.4
+   "week_hours": 9.5
   },
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -337,64 +337,64 @@
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
    "name": "CapyDreamXD",
-   "minutes": 4912,
-   "hours": 81.9,
+   "minutes": 5051,
+   "hours": 84.2,
    "deaths": 36,
-   "mob_kills": 1109,
+   "mob_kills": 1142,
    "player_kills": 0,
-   "entities_killed": 1075,
-   "items_used": 106769,
-   "damage": 19696,
-   "blocks_mined": 66907,
+   "entities_killed": 1099,
+   "items_used": 113454,
+   "damage": 19973,
+   "blocks_mined": 70074,
    "diamonds": 148,
-   "km_travelled": 915.2,
-   "jumps": 133708,
+   "km_travelled": 936.7,
+   "jumps": 137833,
    "travel": {
     "boat": 56.6,
-    "crouch": 18.8,
+    "crouch": 21.6,
     "climb": 0.4,
-    "minecart": 32.0,
-    "walk": 76.1,
+    "minecart": 32.6,
+    "walk": 79.3,
     "walk_under_water": 5.4,
     "horse": 259.6,
-    "sprint": 132.2,
-    "fly": 319.0,
-    "walk_on_water": 4.6,
+    "sprint": 135.6,
+    "fly": 330.3,
+    "walk_on_water": 4.8,
     "swim": 9.5,
     "nautilus": 1.0
    },
    "top_mobs": [
     [
      "creeper",
-     307
+     310
     ],
     [
      "zombie",
-     232
+     235
     ],
     [
      "cow",
-     148
+     159
     ],
     [
      "skeleton",
-     124
+     127
     ],
     [
      "spider",
-     96
+     97
     ],
     [
      "drowned",
      31
     ],
     [
-     "pillager",
-     20
+     "chicken",
+     21
     ],
     [
-     "chicken",
-     19
+     "pillager",
+     20
     ]
    ],
    "top_blocks": [
@@ -423,18 +423,18 @@
      2731
     ],
     [
-     "cobblestone",
-     2387
+     "terracotta",
+     2502
     ],
     [
-     "netherrack",
-     1785
+     "cobblestone",
+     2387
     ]
    ],
    "top_used": [
     [
      "diamond_pickaxe",
-     18855
+     21997
     ],
     [
      "diamond_hoe",
@@ -442,7 +442,7 @@
     ],
     [
      "diamond_shovel",
-     10883
+     10884
     ],
     [
      "iron_pickaxe",
@@ -462,7 +462,7 @@
     ],
     [
      "diamond_axe",
-     5510
+     5522
     ]
    ],
    "death_causes": [
@@ -489,21 +489,21 @@
    ],
    "death_other": 10,
    "f": {
-    "eaten": 1562,
-    "fall_m": 61477,
-    "trades": 2666,
+    "eaten": 1601,
+    "fall_m": 63915,
+    "trades": 2724,
     "fish": 15,
     "bred": 87,
-    "sleeps": 221
+    "sleeps": 228
    },
    "x": {
-    "debris": 0,
-    "creepers": 307,
-    "netherrack": 1785,
+    "debris": 7,
+    "creepers": 310,
+    "netherrack": 2258,
     "deepslate": 963,
     "aviate_km": 0.0
    },
-   "week_hours": 5.5
+   "week_hours": 7.8
   },
   {
    "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
@@ -989,11 +989,15 @@
   }
  ],
  "status": {
-  "state": "offline",
-  "count": 0,
+  "state": "online",
+  "count": 3,
   "max": 20,
-  "list": [],
+  "list": [
+   "CapyDreamXD",
+   "letsplayfabi",
+   "Trosser"
+  ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-12T15:29+00:00"
+  "checked": "2026-11-12T18:54+00:00"
  }
 }
