@@ -68,11 +68,14 @@ dialog::backdrop{background:rgba(0,0,0,.65);backdrop-filter:blur(4px)}@keyframes
 .goal{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:14px 18px;margin:18px 0 0}.gh{font-weight:700;margin-bottom:8px}
 .gt{height:18px;border-radius:9px;background:var(--bg);overflow:hidden}.gf{height:100%;background:var(--ac);border-radius:9px;transition:width .6s}.goal.done .gf{background:linear-gradient(90deg,var(--ac),#e9bc57)}
 .gi{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:6px;font-size:13px;color:var(--mu)}.pt p.qt{color:var(--fg);font-style:italic;margin:8px 0 0}.ph:focus{outline:none}
+.gg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:16px}.gcard{background:var(--pn);border:1px solid var(--ln);border-radius:10px;padding:16px}.gcard h3{margin:0 0 6px}.gcard .fnb{margin-top:10px}
+.rb{height:240px;border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:20px;color:#fff;cursor:pointer;user-select:none;background:#2b6cb0;padding:16px}.gres{margin-top:12px;text-align:center}.gres h2{text-transform:none}
 </style></head><body><main>
 <nav class="nav" id="nav"></nav>
 <section id="lb"><header><div><h1 id="t">Server Leaderboard</h1><p class="sub" id="s"></p><p class="ex" id="stt"></p><p class="ex" id="mine"></p><p class="ex" id="wk"></p></div><div class="hr"><button class="dc" id="setb">⚙️ Einstellungen</button><button class="dc" id="cmpb" hidden>⚖️ Vergleichen</button><a class="dc" id="dcl" target="_blank" rel="noopener" hidden></a></div></header>
 <p class="ex" id="i"></p><div id="ctl"></div><div id="goals" hidden></div><div id="fact" class="fact" hidden></div><div class="grid" id="g"></div><footer id="f"></footer></section>
 <section id="ev" hidden></section>
+<section id="gm" hidden></section>
 <a id="pill" href="#events" hidden></a>
 <dialog id="d"><div id="dc"></div></dialog>
 <dialog id="cmp"><div id="cc"></div></dialog>
@@ -301,7 +304,7 @@ function settings(){
 }
 $("setb").onclick=settings;$("set").onclick=e=>{if(e.target===$("set"))$("set").close()};$("set").addEventListener("close",()=>document.body.style.overflow="");
 async function server(k){
-  CUR=k;applyPrefs();chartCtl();$("ev").hidden=true;$("lb").hidden=false;$("stt").textContent="";$("g").replaceChildren();$("f").replaceChildren();$("i").textContent="Lade …";
+  CUR=k;applyPrefs();chartCtl();$("ev").hidden=true;$("gm").hidden=true;$("lb").hidden=false;$("stt").textContent="";$("g").replaceChildren();$("f").replaceChildren();$("i").textContent="Lade …";
   const sv0=SERVERS.find(s=>s.key===k)||SERVERS[0];let d;
   try{d=await fetch(`data/${sv0.key}/stats.json`,{cache:"no-cache"}).then(r=>{if(!r.ok)throw 0;return r.json()})}catch{$("i").textContent="stats.json konnte nicht geladen werden.";return}
   const sv=(OV.servers&&OV.servers[sv0.key])||(!OV.servers&&sv0===SERVERS[0]?OV:{}),o=sv.players||{},s=sv.site||{},lab=sv.categories||{},CM=Object.fromEntries([...CATS,...Object.values(EXTRA)].map(c=>[c[0],c])),
@@ -322,7 +325,7 @@ async function server(k){
   el("b","MVP der Statistiken",$("f"));el("div",order[0].display_name+" führt die Gesamtwertung an.",$("f"));
 }
 async function events(){
-  $("lb").hidden=true;const box=$("ev");box.hidden=false;box.replaceChildren();el("h1","Events",box);
+  $("lb").hidden=true;$("gm").hidden=true;const box=$("ev");box.hidden=false;box.replaceChildren();el("h1","Events",box);
   let list=[];try{list=(await fetch("events.json",{cache:"no-cache"}).then(r=>r.json())).events||[]}catch{}
   const now=Date.now(),t=e=>new Date(e.date+"T"+(e.time||"00:00")).getTime();
   const up=list.filter(e=>t(e)>=now).sort((a,b)=>t(a)-t(b)),past=list.filter(e=>t(e)<now).sort((a,b)=>t(b)-t(a));
@@ -340,11 +343,54 @@ let NEXT=null,PX=false;const DEFDC="https://discord.gg/87mqfdznp4",T=e=>new Date
 const when=e=>{const d=Math.ceil((T(e)-Date.now())/864e5);return d<=0?"heute":d===1?"morgen":"in "+d+" Tagen"};
 function pill(){const p=$("pill");p.replaceChildren();if(!NEXT||PX||location.hash==="#events"){p.hidden=true;return}
   el("span","📅 "+NEXT.name+" · "+when(NEXT),p);const x=el("b","×",p);x.onclick=e=>{e.preventDefault();PX=true;p.hidden=true};p.hidden=false}
-function show(){const k=location.hash.slice(1)||SERVERS[0].key,b=$("nav");b.replaceChildren();
-  [...SERVERS.map(s=>[s.key,s.name,"#"+s.key]),["events","📅 Events"+(NEXT?" ●":""),"#events"],...(OV.showAdmin!==false?[["admin","⚙️ Admin","admin.html"]]:[])]
+let GSTOP=null;
+const HS=(()=>{try{return JSON.parse(localStorage.getItem("lbhs")||"{}")}catch{return{}}})();
+const hsSave=(k,v,low)=>{if(HS[k]==null||(low?v<HS[k]:v>HS[k])){HS[k]=v;try{localStorage.setItem("lbhs",JSON.stringify(HS))}catch{}return true}return false};
+function loop(step){let last=performance.now(),id,dead=0;const f=t=>{if(dead)return;const dt=Math.min(.05,(t-last)/1e3);last=t;step(dt);id=requestAnimationFrame(f)};id=requestAnimationFrame(f);return()=>{dead=1;cancelAnimationFrame(id)}}
+function cv(root,W,H){const c=document.createElement("canvas");c.width=W;c.height=H;c.style.cssText=`width:min(100%,${W}px);background:#0d1424;border-radius:10px;touch-action:none;display:block;margin:0 auto`;root.append(c);
+  return{c,x:c.getContext("2d"),pos:e=>{const r=c.getBoundingClientRect();return[(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*H/r.height]}}}
+function gReact(root,done){let t0=0,to,st=0,res=[];const b=el("div","Klicken zum Starten",root,"rb");
+  const arm=()=>{st=1;b.textContent="Warte … noch nicht klicken!";b.style.background="#b3413f";to=setTimeout(()=>{st=2;t0=performance.now();b.textContent="JETZT!";b.style.background="#2fae5b"},1500+Math.random()*2500)};
+  b.onclick=()=>{if(st===0)arm();else if(st===1){clearTimeout(to);st=0;b.textContent="Zu früh! Klicken zum Neustart";b.style.background="#c98a1a"}
+    else{const ms=Math.round(performance.now()-t0);res.push(ms);st=0;b.style.background="#2b6cb0";b.textContent=`${ms} ms – nochmal klicken (${res.length}/5)`;if(res.length>=5){clearTimeout(to);done(Math.round(res.reduce((a,v)=>a+v,0)/5))}}};
+  return()=>clearTimeout(to)}
+function gAim(root,done){const{c,x,pos}=cv(root,360,360);let hits=0,time=30,tg=[],sp=0,over=0;
+  const stop=loop(dt=>{time-=dt;sp-=dt;if(sp<=0){sp=.55;tg.push({x:30+Math.random()*300,y:60+Math.random()*270,r:26,life:1.3})}
+    tg.forEach(t=>t.life-=dt);tg=tg.filter(t=>t.life>0);x.fillStyle="#0d1424";x.fillRect(0,0,360,360);
+    tg.forEach(t=>{const s=t.r*Math.min(1,t.life/.4);x.fillStyle="#3fae4a";x.fillRect(t.x-s,t.y-s,2*s,2*s);x.fillStyle="#0b3d12";x.fillRect(t.x-s*.6,t.y-s*.5,s*.4,s*.4);x.fillRect(t.x+s*.2,t.y-s*.5,s*.4,s*.4);x.fillRect(t.x-s*.2,t.y,s*.4,s*.7)});
+    x.fillStyle="#fff";x.font="16px system-ui";x.fillText(`Treffer ${hits}   Zeit ${Math.ceil(Math.max(time,0))}`,10,22);if(time<=0&&!over){over=1;stop();done(hits)}});
+  c.onpointerdown=e=>{const[px,py]=pos(e),i=tg.findIndex(t=>Math.abs(px-t.x)<t.r&&Math.abs(py-t.y)<t.r);if(i>=0){tg.splice(i,1);hits++}};return stop}
+function gCatch(root,done){const{c,x,pos}=cv(root,360,480);let px=180,sc=0,lives=5,it=[],sp=0,t=0,keys={};
+  const mv=e=>{px=pos(e)[0]};c.onpointermove=mv;c.onpointerdown=mv;const kd=e=>keys[e.key]=1,ku=e=>keys[e.key]=0;addEventListener("keydown",kd);addEventListener("keyup",ku);
+  const stop=loop(dt=>{t+=dt;if(keys.ArrowLeft)px-=340*dt;if(keys.ArrowRight)px+=340*dt;px=Math.max(30,Math.min(330,px));sp-=dt;
+    if(sp<=0){sp=Math.max(.3,.9-t/60);it.push({x:20+Math.random()*320,y:-20,tnt:Math.random()<.25,v:140+t*4})}
+    it.forEach(i=>i.y+=i.v*dt);it=it.filter(i=>{if(i.y>430&&i.y<470&&Math.abs(i.x-px)<38){if(i.tnt)lives--;else sc++;return false}if(i.y>500){if(!i.tnt)lives--;return false}return true});
+    x.fillStyle="#0d1424";x.fillRect(0,0,360,480);x.font="28px serif";x.textAlign="center";it.forEach(i=>x.fillText(i.tnt?"🧨":"💎",i.x,i.y));x.fillText("🧺",px,462);
+    x.textAlign="left";x.font="16px system-ui";x.fillStyle="#fff";x.fillText(`💎 ${sc}   ${"❤️".repeat(Math.max(lives,0))}`,10,24);if(lives<=0){stop();done(sc)}});
+  return()=>{stop();removeEventListener("keydown",kd);removeEventListener("keyup",ku)}}
+function gFlap(root,done){const{c,x}=cv(root,360,480);let y=240,v=0,sc=0,ps=[],sp=0,dead=0;
+  const flap=()=>{v=-300};c.onpointerdown=flap;const kd=e=>{if(e.key===" "||e.key==="ArrowUp"){e.preventDefault();flap()}};addEventListener("keydown",kd);
+  const stop=loop(dt=>{v+=900*dt;y+=v*dt;sp-=dt;if(sp<=0){sp=1.6;ps.push({x:380,g:130+Math.random()*220})}ps.forEach(p=>{p.x-=150*dt;if(!p.c&&p.x<40){p.c=1;sc++}});ps=ps.filter(p=>p.x>-60);
+    let hit=y<10||y>470;ps.forEach(p=>{if(p.x<100&&p.x+50>60&&(y<p.g-62||y>p.g+62))hit=true});
+    x.fillStyle="#0d1424";x.fillRect(0,0,360,480);x.fillStyle="#5b3a8c";ps.forEach(p=>{x.fillRect(p.x,0,50,p.g-62);x.fillRect(p.x,p.g+62,50,480)});
+    x.font="30px serif";x.textAlign="center";x.fillText("🪂",80,y+10);x.textAlign="left";x.font="16px system-ui";x.fillStyle="#fff";x.fillText("Punkte "+sc,10,24);if(hit&&!dead){dead=1;stop();done(sc)}});
+  return()=>{stop();removeEventListener("keydown",kd)}}
+const GAMES=[["react","⚡ Reaktionstest","Klick, sobald das Feld grün wird. Fünf Versuche, der Durchschnitt zählt.",gReact,1," ms"],
+  ["aim","🎯 Creeper-Jagd","30 Sekunden Zeit: Triff so viele Creeper wie möglich, bevor sie verschwinden.",gAim,0,""],
+  ["catch","💎 Diamantenfang","Fang Diamanten mit dem Korb, weiche dem TNT aus. Verpasste Diamanten und TNT kosten Leben.",gCatch,0,""],
+  ["flap","🪂 Elytra-Flug","Tippen oder Leertaste: flieg durch die Lücken der Obsidiansäulen.",gFlap,0,""]];
+function games(){$("lb").hidden=true;$("ev").hidden=true;const box=$("gm");box.hidden=false;document.title="Minispiele";gMenu()}
+function gMenu(){const box=$("gm");if(GSTOP){GSTOP();GSTOP=null}box.replaceChildren();el("h1","Minispiele",box);el("p","Kleine Geschicklichkeitsspiele für zwischendurch. Highscores werden nur auf diesem Gerät gespeichert.",box,"ex");
+  const g=el("div","",box,"gg");GAMES.forEach(([k,t,d,,,u])=>{const c=el("div","",g,"gcard");el("h3",t,c);el("p",d,c,"ex");el("div",HS[k]!=null?`Beste: ${HS[k]}${u}`:"Noch kein Ergebnis",c,"ex");el("button","Spielen",c,"fnb").onclick=()=>gPlay(k)})}
+function gPlay(k){const box=$("gm"),[,t,d,fn,low,u]=GAMES.find(x=>x[0]===k);if(GSTOP){GSTOP();GSTOP=null}box.replaceChildren();
+  const h=el("div","",box);h.style.cssText="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap";el("h1",t,h).style.fontSize="26px";el("button","← Alle Spiele",h,"fnb").onclick=gMenu;
+  el("p",d,box,"ex");const root=el("div","",box),res=el("div","",box,"gres");root.style.margin="14px 0";
+  GSTOP=fn(root,score=>{if(GSTOP){GSTOP();GSTOP=null}const nb=hsSave(k,score,low);res.replaceChildren();el("h2",`Ergebnis: ${score}${u}${nb?" 🏆 Neuer Highscore!":""}`,res);el("button","Nochmal",res,"fnb").onclick=()=>gPlay(k)})}
+function show(){if(GSTOP){GSTOP();GSTOP=null}const k=location.hash.slice(1)||SERVERS[0].key,b=$("nav");b.replaceChildren();
+  [...SERVERS.map(s=>[s.key,s.name,"#"+s.key]),["events","📅 Events"+(NEXT?" ●":""),"#events"],...(OV.showGames!==false?[["games","🎮 Spiele","#games"]]:[]),...(OV.showAdmin!==false?[["admin","⚙️ Admin","admin.html"]]:[])]
     .forEach(([id,l,h])=>{const a=el("a",l,b,id===k?"on":"");a.href=h});
   const dc=OV.discord||{},u=dc.url??DEFDC,d=$("dcl");d.hidden=!u;d.href=u||"#";d.textContent="💬 "+(dc.text||"Discord");
-  pill();k==="events"?events():server(k)}
+  pill();k==="events"?events():k==="games"?games():server(k)}
 window.onhashchange=show;
 Promise.all([fetch("servers.json",{cache:"no-cache"}).then(r=>r.json()).catch(()=>[{key:"winter",name:"Server"}]),
   fetch("overrides.json",{cache:"no-cache"}).then(r=>r.ok?r.json():{}).catch(()=>({})),
