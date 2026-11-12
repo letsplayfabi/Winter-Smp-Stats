@@ -34,7 +34,7 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 <button id="unl" class="s" hidden>🔓 Mit Passwort entsperren</button> <button id="fg" class="s" hidden>Gespeicherten Zugang löschen</button></div></section>
 <div id="ed" hidden>
 <div class="tabs"><button data-t="a" class="on">⚙️ Allgemein</button><button data-t="e">📅 Events</button><button data-t="x">🏆 Erfolge</button><button data-t="c">📊 Eigene Stats</button><button data-t="g">🎯 Ziele</button></div>
-<section class="card" data-tab="a"><h2>🌍 Server</h2><p class="mu">Alles unten (Seite, Kategorien, Spieler) gilt für den gewählten Server. Farben und Events gelten für alle.</p><select id="sel"></select><label style="display:block;margin-top:12px"><input type="checkbox" id="sa"> Admin-Reiter auf der Seite anzeigen</label></section>
+<section class="card" data-tab="a"><h2>🌍 Server</h2><p class="mu">Alles unten (Seite, Kategorien, Spieler) gilt für den gewählten Server. Farben und Events gelten für alle.</p><select id="sel"></select><label style="display:block;margin-top:12px"><input type="checkbox" id="sa"> Admin-Reiter auf der Seite anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="sg"> Reiter „Spiele“ (Minispiele) anzeigen</label></section>
 <section class="card" data-tab="a"><h2>💬 Discord-Button (alle Server)</h2><div class="g"><label>Link<input id="dl" type="text"></label><label>Button-Text<input id="dt" type="text"></label></div><p class="mu" style="margin-top:8px">Link leer lassen = Button ausblenden.</p>
 <h3 style="margin:14px 0 6px;font-size:15px">Discord-Meldungen (Webhook)</h3>
 <p class="mu">Der Webhook-Link kommt als GitHub-Secret <b>DISCORD_WEBHOOK</b> (siehe Anleitung), nicht hierher. Hier wählst du nur, was gemeldet wird.</p>
@@ -120,7 +120,7 @@ function collect(){
   const sv={site:{title:st.value,intro:si.value},categories:{},players:{}};
   catEls.forEach(([k,i])=>{if(i.value)sv.categories[k]=i.value});sv.enabled=catEls.filter(x=>x[2].checked).map(x=>x[0]);
   rowEls.forEach(([u,a,t,c,h,q])=>{if(a.value||t.value||q.value||h.checked||c.dataset.s)sv.players[u]={display_name:a.value,title:t.value,quote:q.value,hidden:h.checked,...(c.dataset.s?{color:c.value}:{})}});
-  OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;OV.achievements=ACH;OV.goals=GOALS;OV.facts={show:fs.checked,custom:ft.value.split("\n").map(x=>x.trim()).filter(Boolean)};OV.custom=CUS;OV.badges={names:bnm.checked,profile:bpr.checked};OV.notify={events:nev.checked,weekly:nwk.checked,milestones:nms.checked,achievements:nac.checked,goals:ngl.checked};
+  OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;OV.showGames=sg.checked;OV.achievements=ACH;OV.goals=GOALS;OV.facts={show:fs.checked,custom:ft.value.split("\n").map(x=>x.trim()).filter(Boolean)};OV.custom=CUS;OV.badges={names:bnm.checked,profile:bpr.checked};OV.notify={events:nev.checked,weekly:nwk.checked,milestones:nms.checked,achievements:nac.checked,goals:ngl.checked};
 }
 let EDIT=null;
 function renderEvents(){const b=$("evl");b.replaceChildren();if(!EVS.length)el("p","Noch keine Events.",b,"mu");
@@ -221,7 +221,7 @@ ld.onclick=async()=>{
     plEls=PRE.Standard.players.map((c,i)=>picker(cl,"Standardfarbe Platz "+(i+1),c));
     setTheme({...PRE.Standard,...(OV.theme||{}),players:(OV.theme||{}).players||PRE.Standard.players});
     sel.value=SERVERS[0].key;await buildServer(SERVERS[0].key);EVS=(await evList()).list;renderEvents();
-    dl.value=(OV.discord||{}).url??DEFDC;dt.value=(OV.discord||{}).text||"Discord";sa.checked=OV.showAdmin!==false;
+    dl.value=(OV.discord||{}).url??DEFDC;dt.value=(OV.discord||{}).text||"Discord";sa.checked=OV.showAdmin!==false;sg.checked=OV.showGames!==false;
     ACH=OV.achievements||[];fs.checked=(OV.facts||{}).show!==false;ft.value=((OV.facts||{}).custom||[]).join("\n");bnm.checked=(OV.badges||{}).names!==false;bpr.checked=(OV.badges||{}).profile!==false;const nf=OV.notify||{};nev.checked=nf.events!==false;nwk.checked=nf.weekly!==false;nms.checked=nf.milestones!==false;nac.checked=nf.achievements!==false;
     am.replaceChildren();ACHM.forEach(([k,l])=>el("option",l,am).value=k);asv.replaceChildren();el("option","Alle Server",asv).value="all";SERVERS.forEach(x=>el("option",x.name,asv).value=x.key);resetAch();renderAch();
     CUS=OV.custom||[];cs.replaceChildren();el("option","Alle Server",cs).value="all";SERVERS.forEach(x=>el("option",x.name,cs).value=x.key);renderCus();
