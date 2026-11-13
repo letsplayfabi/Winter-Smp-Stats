@@ -379,13 +379,113 @@ const GAMES=[["react","⚡ Reaktionstest","Klick, sobald das Feld grün wird. F�
   ["aim","🎯 Creeper-Jagd","30 Sekunden Zeit: Triff so viele Creeper wie möglich, bevor sie verschwinden.",gAim,0,""],
   ["catch","💎 Diamantenfang","Fang Diamanten mit dem Korb, weiche dem TNT aus. Verpasste Diamanten und TNT kosten Leben.",gCatch,0,""],
   ["flap","🪂 Elytra-Flug","Tippen oder Leertaste: flieg durch die Lücken der Obsidiansäulen.",gFlap,0,""]];
+async function gPlayers(){const out=new Map();for(const s of SERVERS){const d=await fetch(`data/${s.key}/stats.json`,{cache:"no-cache"}).then(r=>r.json()).catch(()=>({players:[]})),o=((OV.servers||{})[s.key]||{}).players||{};(d.players||[]).forEach(p=>{const x=o[p.uuid]||{};if(!x.hidden&&!out.has(p.uuid))out.set(p.uuid,{...p,display_name:x.display_name||p.name})})}return[...out.values()]}
+const GST=[["Spielzeit (Stunden)",p=>p.minutes/60],["Diamanten",p=>p.diamonds],["Tode",p=>p.deaths],["abgebauten Blöcke",p=>p.blocks_mined],["Kilometer gereist",p=>p.km_travelled],["getöteten Kreaturen",p=>p.entities_killed],["Sprünge",p=>p.jumps]];
+const hsBest=(k,low)=>{const v=Object.entries(HS).filter(([a])=>a===k||a.startsWith(k+"_")).map(x=>x[1]);return v.length?(low?Math.min(...v):Math.max(...v)):null};
+const rnd=a=>a[Math.random()*a.length|0];
+function gStack(root,done){const{c,x}=cv(root,300,480);let L=[{x:75,w:150}],cx=0,w=150,dir=1,sp=120,sc=0;
+  const stop=loop(dt=>{cx+=dir*sp*dt;if(cx<0||cx+w>300){dir=-dir;cx=Math.max(0,Math.min(300-w,cx))}x.fillStyle="#0d1424";x.fillRect(0,0,300,480);const h=22,oy=Math.max(0,(L.length-12)*h);
+    L.forEach((b,i)=>{x.fillStyle=`hsl(${i*25%360} 60% 55%)`;x.fillRect(b.x,470-(i+1)*h+oy,b.w,h-2)});x.fillStyle="#fff";x.fillRect(cx,470-(L.length+1)*h+oy,w,h-2);x.font="16px system-ui";x.fillText("Höhe "+sc,8,22)});
+  c.onpointerdown=()=>{const p=L[L.length-1],l=Math.max(cx,p.x),r=Math.min(cx+w,p.x+p.w);if(r-l<=2){stop();done(sc)}else{w=r-l;L.push({x:l,w});sc++;sp+=6;cx=0}};return stop}
+function gBow(root,done){const{c,x,pos}=cv(root,360,300);let ar=null,dr=null,sc=0,n=5,msg="",T={x:280,y:150,r:30};
+  const stop=loop(dt=>{if(ar){ar.vy+=420*dt;ar.x+=ar.vx*dt;ar.y+=ar.vy*dt;const d=Math.hypot(ar.x-T.x,ar.y-T.y);
+      if(Math.abs(ar.x-T.x)<6&&d<T.r){const p=d<8?10:d<18?6:3;sc+=p;msg="+"+p;ar=null}else if(ar.x>360||ar.y>300||ar.y<-80){msg="Daneben";ar=null}
+      if(!ar){n--;T={x:240+Math.random()*100,y:60+Math.random()*190,r:30};if(n<=0){stop();setTimeout(()=>done(sc),400)}}}
+    x.fillStyle="#0d1424";x.fillRect(0,0,360,300);[30,18,8].forEach((r,i)=>{x.fillStyle=["#cfd6e4","#d6453d","#e9bc57"][i];x.beginPath();x.arc(T.x,T.y,r,0,7);x.fill()});
+    x.font="26px serif";x.fillText("🏹",20,262);if(ar){x.fillStyle="#fff";x.fillRect(ar.x-8,ar.y-1,16,2)}if(dr){x.strokeStyle="#52e585";x.beginPath();x.moveTo(40,250);x.lineTo(dr[0],dr[1]);x.stroke()}
+    x.fillStyle="#fff";x.font="15px system-ui";x.fillText(`Punkte ${sc}  Pfeile ${n}  ${msg}`,8,20);x.fillText("Zieh zurück (links unten) und lass los",8,292)});
+  c.onpointerdown=e=>{if(!ar)dr=pos(e)};c.onpointermove=e=>{if(dr)dr=pos(e)};c.onpointerup=()=>{if(dr&&!ar){const vx=(40-dr[0])*4,vy=(250-dr[1])*4;if(vx>20)ar={x:40,y:250,vx,vy}}dr=null};return stop}
+function gFish(root,done){const{c,x}=cv(root,360,200);let z=100+Math.random()*160,zw=70,m=0,d=1,sc=0,n=8,msg="Tippe, wenn der Haken im grünen Bereich ist";
+  const stop=loop(dt=>{m+=d*(220+sc*12)*dt;if(m<0||m>340){d=-d;m=Math.max(0,Math.min(340,m))}x.fillStyle="#0d1424";x.fillRect(0,0,360,200);x.fillStyle="#1d3a5c";x.fillRect(10,80,340,40);x.fillStyle="#2fae5b";x.fillRect(10+z,80,zw,40);
+    x.font="28px serif";x.fillText("🪝",m+6,112);x.fillText("🐟",10+z+zw/2-14,70);x.fillStyle="#fff";x.font="15px system-ui";x.fillText(`Fische ${sc}  Würfe ${n}`,8,20);x.fillText(msg,8,180)});
+  c.onpointerdown=()=>{if(m>=z&&m<=z+zw){sc++;msg="Gefangen! 🎣"}else msg="Entwischt …";n--;zw=Math.max(24,zw-5);z=Math.random()*(340-zw);if(n<=0){stop();setTimeout(()=>done(sc),300)}};return stop}
+function gCart(root,done){const{c,x,pos}=cv(root,270,480);let ln=1,ob=[],sp=0,t=0,sc=0,v=200;
+  const stop=loop(dt=>{t+=dt;v=200+t*6;sc+=dt*v/100;sp-=dt;if(sp<=0){sp=Math.max(.35,.9-t/60);ob.push({l:Math.random()*3|0,y:-40,c:Math.random()<.3})}ob.forEach(o=>o.y+=v*dt);let hit=0;
+    ob=ob.filter(o=>{if(o.y>400&&o.y<450&&o.l===ln){if(o.c){sc+=20;return false}hit=1}return o.y<520});x.fillStyle="#0d1424";x.fillRect(0,0,270,480);x.fillStyle="#3a3f55";for(let i=0;i<3;i++)x.fillRect(i*90+43,0,4,480);
+    x.font="34px serif";x.textAlign="center";ob.forEach(o=>x.fillText(o.c?"🪙":"🪨",o.l*90+45,o.y));x.fillText("🛒",ln*90+45,440);x.textAlign="left";x.font="16px system-ui";x.fillStyle="#fff";x.fillText("Punkte "+Math.floor(sc),8,22);if(hit){stop();done(Math.floor(sc))}});
+  c.onpointerdown=e=>{ln=Math.max(0,Math.min(2,ln+(pos(e)[0]<135?-1:1)))};const kd=e=>{if(e.key==="ArrowLeft")ln=Math.max(0,ln-1);if(e.key==="ArrowRight")ln=Math.min(2,ln+1)};addEventListener("keydown",kd);return()=>{stop();removeEventListener("keydown",kd)}}
+function gMem(root,done){const E=["💎","⛏️","🍎","🪓","🧱","🔥","🐷","🌲"],g=el("div","",root);g.style.cssText="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:340px;margin:auto";const info=el("p","Züge: 0",root,"ex");info.style.textAlign="center";
+  let open=[],mv=0,found=0,lock=0;[...E,...E].sort(()=>Math.random()-.5).forEach(e=>{const b=el("button","❓",g);b.style.cssText="aspect-ratio:1;font-size:30px;border-radius:10px;border:1px solid var(--ln);background:var(--pn);cursor:pointer";
+    b.onclick=()=>{if(lock||b.dataset.o)return;b.textContent=e;b.dataset.o=1;open.push([b,e]);if(open.length===2){mv++;info.textContent="Züge: "+mv;const[[b1,e1],[b2,e2]]=open;open=[];
+      if(e1===e2){if(++found===8)setTimeout(()=>done(mv),500)}else{lock=1;setTimeout(()=>{[b1,b2].forEach(q=>{q.textContent="❓";delete q.dataset.o});lock=0},700)}}}});return()=>{}}
+function gNote(root,done){const C=["#d6453d","#45b0f5","#52e585","#e9bc57"],F=[262,330,392,523];let seq=[],i=0,lock=1,ac,T=[];const g=el("div","",root);g.style.cssText="display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:320px;margin:auto";const st=el("p","Merke dir die Folge …",root,"ex");st.style.textAlign="center";
+  const beep=k=>{try{ac=ac||new AudioContext();const o=ac.createOscillator(),gn=ac.createGain();o.frequency.value=F[k];o.connect(gn);gn.connect(ac.destination);gn.gain.value=.15;o.start();o.stop(ac.currentTime+.25)}catch{}};
+  const B=C.map((col,k)=>{const b=el("button","🎵",g);b.style.cssText=`height:110px;border-radius:12px;border:0;background:${col};opacity:.55;font-size:28px;cursor:pointer`;b.onclick=()=>press(k);return b});
+  const fl=k=>{B[k].style.opacity=1;beep(k);setTimeout(()=>B[k].style.opacity=.55,280)};
+  const play=()=>{lock=1;i=0;seq.push(Math.random()*4|0);st.textContent="Runde "+seq.length+" – schau zu …";seq.forEach((k,j)=>T.push(setTimeout(()=>fl(k),600+j*500)));T.push(setTimeout(()=>{lock=0;st.textContent="Du bist dran!"},600+seq.length*500))};
+  const press=k=>{if(lock)return;fl(k);if(k!==seq[i]){lock=1;done(seq.length-1);return}if(++i===seq.length){lock=1;T.push(setTimeout(play,700))}};play();return()=>T.forEach(clearTimeout)}
+function g2048(root,done){const E=["","🪵","🪨","⚙️","🥇","💎","🟫","🔮","🐉","🌟","👑","🏆"];let g=Array(16).fill(0),sc=0;const info=el("p","Punkte 0",root,"ex");info.style.textAlign="center";
+  const box=el("div","",root);box.style.cssText="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:340px;margin:auto;touch-action:none";
+  const add=()=>{const e=g.map((v,i)=>v?-1:i).filter(i=>i>=0);if(e.length)g[rnd(e)]=Math.random()<.9?1:2};
+  const draw=()=>{box.replaceChildren();g.forEach(v=>{const d=el("div",v?E[v]||"★":"",box);d.style.cssText=`aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:34px;border-radius:8px;background:${v?`hsl(${v*30} 45% 35%)`:"#141c2e"}`});info.textContent="Punkte "+sc};
+  const line=a=>{const r=a.filter(v=>v);for(let i=0;i<r.length-1;i++)if(r[i]===r[i+1]){r[i]++;sc+=2**r[i];r.splice(i+1,1)}while(r.length<4)r.push(0);return r};
+  const idx=(d,k)=>[0,1,2,3].map(j=>d===0?k*4+j:d===1?k*4+3-j:d===2?j*4+k:(3-j)*4+k);
+  const mv=(d,real)=>{let ch=0;const s0=sc,h=g.slice();for(let k=0;k<4;k++){const ix=idx(d,k),nl=line(ix.map(i=>h[i]));ix.forEach((i,j)=>{if(h[i]!==nl[j])ch=1;h[i]=nl[j]})}
+    if(!real){sc=s0;return ch}if(ch){g=h;add();draw();if(![0,1,2,3].some(q=>mv(q,0)))setTimeout(()=>done(sc),600)}};
+  add();add();draw();const kd=e=>{const d=["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].indexOf(e.key);if(d>=0){e.preventDefault();mv(d,1)}};addEventListener("keydown",kd);
+  let p0=null;box.onpointerdown=e=>p0=[e.clientX,e.clientY];box.onpointerup=e=>{if(!p0)return;const dx=e.clientX-p0[0],dy=e.clientY-p0[1];p0=null;if(Math.max(Math.abs(dx),Math.abs(dy))<20)return;mv(Math.abs(dx)>Math.abs(dy)?(dx<0?0:1):(dy<0?2:3),1)};return()=>removeEventListener("keydown",kd)}
+function gMine(root,done){const o=el("div","",root);o.style.cssText="display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:center;margin-bottom:12px";const box=el("div","",root);let tm;
+  const sz=document.createElement("select");[6,8,10,12,16].forEach(v=>el("option",`Feld ${v}×${v}`,sz).value=v);sz.value=8;el("span","",o).append(sz);el("span","Minen:",o);const mi=document.createElement("input");mi.type="number";mi.min=1;mi.value=10;mi.style.cssText="width:80px;padding:8px;border-radius:8px;border:1px solid var(--ln);background:var(--pn);color:var(--fg)";o.append(mi);
+  sz.onchange=()=>mi.value=Math.round(sz.value**2*.15);
+  const start=(n,m)=>{clearInterval(tm);box.replaceChildren();let M=null,C=[],O=Array(n*n).fill(0),F=O.slice(),t=0,flag=0,over=0,left=n*n-m;
+    const bar=el("div","",box);bar.style.cssText="display:flex;justify-content:space-between;align-items:center;max-width:420px;margin:0 auto 8px";const ti=el("span","⏱ 0 s",bar),fb=el("button","⛏️ Aufdecken",bar,"fnb");el("span","💣 "+m,bar);fb.onclick=()=>{flag=!flag;fb.textContent=flag?"🚩 Flaggen":"⛏️ Aufdecken"};
+    const g=el("div","",box);g.style.cssText=`display:grid;grid-template-columns:repeat(${n},1fr);gap:2px;max-width:420px;margin:auto`;
+    const nb=i=>{const r=i/n|0,c=i%n,a=[];for(let y=-1;y<2;y++)for(let q=-1;q<2;q++){const rr=r+y,cc=c+q;if((y||q)&&rr>=0&&rr<n&&cc>=0&&cc<n)a.push(rr*n+cc)}return a};
+    const B=[...Array(n*n)].map(()=>{const b=el("button","",g);b.style.cssText=`aspect-ratio:1;border:0;border-radius:3px;background:#2a3550;color:#fff;font-weight:700;font-size:${n>12?11:15}px;padding:0;cursor:pointer`;return b});
+    const gen=f=>{const bad=new Set([f,...nb(f)]);M=Array(n*n).fill(0);let k=0;while(k<m){const i=Math.random()*n*n|0;if(!M[i]&&!bad.has(i)){M[i]=1;k++}}C=M.map((_,i)=>nb(i).filter(j=>M[j]).length)};
+    const flood=i=>{const st=[i];while(st.length){const j=st.pop();if(O[j]||F[j])continue;O[j]=1;left--;const b=B[j];b.style.background="#141c2e";if(C[j]){b.textContent=C[j];b.style.color=["","#45b0f5","#52e585","#d6453d","#bb92f2","#e9bc57","#2ec4b6","#fff","#aaa"][C[j]]}else nb(j).forEach(q=>st.push(q))}};
+    B.forEach((b,i)=>{b.onclick=()=>{if(over||O[i])return;if(flag){F[i]=!F[i];b.textContent=F[i]?"🚩":"";return}if(F[i])return;if(!M){gen(i);tm=setInterval(()=>ti.textContent="⏱ "+ ++t+" s",1000)}
+      if(M[i]){over=1;clearInterval(tm);M.forEach((q,j)=>{if(q)B[j].textContent="💣"});b.style.background="#b3413f";setTimeout(()=>done(null),1200);return}flood(i);if(left<=0){over=1;clearInterval(tm);setTimeout(()=>done(t,`_${n}_${m}`),400)}};
+      b.oncontextmenu=e=>{e.preventDefault();if(!over&&!O[i]){F[i]=!F[i];b.textContent=F[i]?"🚩":""}}})};
+  el("button","Neu starten",o,"fnb").onclick=()=>start(+sz.value,Math.max(1,Math.min(+mi.value||1,sz.value*sz.value-9)));start(8,10);return()=>clearInterval(tm)}
+function gSlide(root,done){const o=el("div","",root);o.style.cssText="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:12px";const ps=document.createElement("select"),sz=document.createElement("select"),box=el("div","Lade …",root);[3,4].forEach(v=>el("option",`${v}×${v}`,sz).value=v);let alive=1;
+  const start=()=>{box.replaceChildren();const n=+sz.value,url=`https://mc-heads.net/avatar/${ps.value}/240`;let a=[...Array(n*n).keys()],e=n*n-1,mv=0;
+    for(let i=0;i<200*n;i++){const r=e/n|0,c=e%n,m=[];if(r>0)m.push(e-n);if(r<n-1)m.push(e+n);if(c>0)m.push(e-1);if(c<n-1)m.push(e+1);const j=rnd(m);[a[e],a[j]]=[a[j],a[e]];e=j}
+    const info=el("p","Züge: 0",box,"ex");info.style.textAlign="center";const g=el("div","",box);g.style.cssText=`display:grid;grid-template-columns:repeat(${n},1fr);gap:2px;width:min(100%,320px);margin:auto`;
+    const draw=()=>{g.replaceChildren();a.forEach((v,i)=>{const t=el("button","",g);t.style.cssText="aspect-ratio:1;border:0;padding:0;border-radius:4px;image-rendering:pixelated;cursor:pointer;"+(v===n*n-1?"background:#141c2e":`background:url(${url}) ${(v%n)*100/(n-1)}% ${(v/n|0)*100/(n-1)}%/${n*100}% ${n*100}%`);
+      t.onclick=()=>{const r=e/n|0,c=e%n,ri=i/n|0,ci=i%n;if(Math.abs(r-ri)+Math.abs(c-ci)===1){[a[e],a[i]]=[a[i],a[e]];e=i;mv++;info.textContent="Züge: "+mv;draw();if(a.every((q,k)=>q===k))setTimeout(()=>done(mv,"_"+n),500)}}})};draw()};
+  gPlayers().then(P=>{if(!alive)return;P.forEach(p=>el("option",p.display_name,ps).value=p.uuid);if(!P.length)el("option","Steve",ps).value="MHF_Steve";o.append(ps,sz);el("button","Neu mischen",o,"fnb").onclick=start;start()});return()=>alive=0}
+function gHiLo(root,done){const box=el("div","Lade …",root);let alive=1;gPlayers().then(P=>{if(!alive)return;if(P.length<2){box.textContent="Dafür braucht es mindestens 2 Spieler auf dem Server.";return}let sc=0,L=rnd(P);
+  const next=()=>{let R,c;for(let i=0;i<30;i++){R=rnd(P);c=rnd(GST);if(R!==L&&c[1](R)!==c[1](L))break}box.replaceChildren();el("p",`Serie: ${sc}`,box,"ex");const row=el("div","",box);row.style.cssText="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;text-align:center";
+    [[L,1],[R,0]].forEach(([p,s])=>{const d=el("div","",row);d.append(head(p,64));el("div",p.display_name,d).style.fontWeight="700";el("div",s?n(c[1](p)):"?",d).style.cssText="font-size:26px;margin:6px 0"});
+    el("p",`Hat ${R.display_name} mehr oder weniger ${c[0]} als ${L.display_name}?`,box,"ex");const bt=el("div","",box);bt.style.textAlign="center";
+    [["Mehr",1],["Weniger",0]].forEach(([t,m])=>el("button",t,bt,"fnb").onclick=()=>{const ok=(c[1](R)>c[1](L))===!!m;bt.remove();row.lastChild.lastChild.textContent=n(c[1](R));if(ok){sc++;L=R;setTimeout(next,900)}else setTimeout(()=>done(sc),1200)})};next()});return()=>alive=0}
+function gSkin(root,done){const box=el("div","Lade …",root);let alive=1;gPlayers().then(P=>{if(!alive)return;if(P.length<2){box.textContent="Dafür braucht es mindestens 2 Spieler auf dem Server.";return}let r=0,sc=0;
+  const next=()=>{if(r++>=10)return done(sc);const a=rnd(P),opts=[a,...P.filter(p=>p!==a).sort(()=>Math.random()-.5).slice(0,3)].sort(()=>Math.random()-.5);box.replaceChildren();el("p",`Runde ${r}/10 · Richtig: ${sc}`,box,"ex");
+    const im=head(a,128);im.style.cssText="display:block;margin:10px auto;border-radius:8px";box.append(im);const g=el("div","",box);g.style.cssText="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:360px;margin:auto";
+    opts.forEach(o=>el("button",o.display_name,g,"fnb").onclick=e=>{const ok=o===a;if(ok)sc++;g.querySelectorAll("button").forEach(b=>{b.disabled=true;if(b.textContent===a.display_name)b.style.borderColor="#52e585"});e.target.style.background=ok?"#2fae5b55":"#b3413f55";setTimeout(next,800)})};next()});return()=>alive=0}
+function gGuess(root,done){const box=el("div","Lade …",root);let alive=1;gPlayers().then(P=>{if(!alive)return;if(!P.length){box.textContent="Keine Spielerdaten vorhanden.";return}let r=0,sc=0;
+  const next=()=>{if(r++>=5)return done(sc);const a=rnd(P),c=rnd(GST),real=Math.round(c[1](a)*10)/10;box.replaceChildren();el("p",`Runde ${r}/5 · Punkte ${sc}`,box,"ex");const h=el("div","",box);h.style.textAlign="center";h.append(head(a,64));el("p",`Schätze: ${c[0]} von ${a.display_name}`,h).style.fontWeight="700";
+    const i=document.createElement("input");i.type="number";i.min=0;i.step="any";i.placeholder="Dein Tipp";i.style.cssText="padding:10px;border-radius:8px;border:1px solid var(--ln);background:var(--pn);color:var(--fg);font:inherit;width:160px";h.append(i);const b=el("button","Tippen",h,"fnb");b.style.marginLeft="8px";const out=el("p","",h);
+    b.onclick=()=>{if(b.dataset.n)return next();const g=Math.max(+i.value||0,0),pts=Math.max(0,100-Math.round(Math.abs(Math.log((g+1)/(real+1)))*100));sc+=pts;out.textContent=`Richtig: ${n(real)} · dein Tipp: ${n(g)} → +${pts} Punkte`;b.textContent="Weiter";b.dataset.n=1}};next()});return()=>alive=0}
+function gClick(root,done){let S={b:0,t:0,p:1,h:0,m:0,ts:Date.now()};try{Object.assign(S,JSON.parse(localStorage.getItem("lbclk")||"{}"))}catch{}const rate=()=>S.h+S.m*8,sv=()=>{S.ts=Date.now();try{localStorage.setItem("lbclk",JSON.stringify(S))}catch{}};
+  const off=Math.min((Date.now()-S.ts)/1e3,28800)*rate();if(off>0){S.b+=off;S.t+=off}
+  const info=el("p","",root);info.style.cssText="text-align:center;font-size:20px;font-weight:700";const bt=el("button","⛏️",root);bt.style.cssText="display:block;margin:10px auto;width:150px;height:150px;font-size:70px;border-radius:16px;border:1px solid var(--ln);background:var(--pn);cursor:pointer;user-select:none";
+  const sh=el("div","",root);sh.style.cssText="display:grid;gap:8px;max-width:380px;margin:12px auto";const cost={p:()=>Math.ceil(15*1.18**(S.p-1)),h:()=>Math.ceil(50*1.18**S.h),m:()=>Math.ceil(400*1.2**S.m)};
+  const txt=()=>info.textContent=`🧱 ${n(Math.floor(S.b))} Blöcke (${n(rate())}/s)`;
+  const upd=()=>{txt();sh.replaceChildren();[["p","⛏️ Bessere Spitzhacke","+1 pro Klick",S.p-1],["h","🧟 Zombie-Helfer","+1 pro Sekunde",S.h],["m","🏭 Mine","+8 pro Sekunde",S.m]].forEach(([k,t,d,c])=>{const b=el("button",`${t} (${c}) – ${n(cost[k]())} 🧱 · ${d}`,sh,"fnb");b.disabled=S.b<cost[k]();b.onclick=()=>{S.b-=cost[k]();S[k]++;upd()}})};
+  bt.onclick=()=>{S.b+=S.p;S.t+=S.p;txt()};const iv=setInterval(()=>{S.b+=rate();S.t+=rate();upd();sv()},1000);upd();
+  const fin=el("button","Beenden & Ergebnis speichern",root,"fnb");fin.style.cssText+=";display:block;margin:14px auto";fin.onclick=()=>{clearInterval(iv);sv();done(Math.floor(S.t))};return()=>{clearInterval(iv);sv()}}
+GAMES.push(["stack","🧱 Block-Stapeln","Tippe im richtigen Moment, damit der Block auf dem Turm landet. Was übersteht, fällt weg.",gStack,0,""],
+["bow","🏹 Bogenschießen","Zieh den Bogen mit dem Finger nach links unten zurück und lass los. 5 Pfeile, Treffer in der Mitte zählen mehr.",gBow,0,""],
+["fish","🎣 Angeln","Tippe, wenn der Haken im grünen Bereich ist. Mit jedem Wurf wird der Bereich kleiner.",gFish,0,""],
+["cart","🛒 Loren-Fahrt","Tippe links oder rechts, um die Spur zu wechseln. Münzen sammeln, Steinen ausweichen.",gCart,0,""],
+["mem","🧠 Memory","Finde alle acht Paare mit möglichst wenigen Zügen.",gMem,1," Züge"],
+["note","🎵 Notenblock-Memory","Merk dir die Folge aus Farben und Tönen und spiel sie nach. Sie wird jede Runde länger.",gNote,0,""],
+["g2048","🔮 2048 mit Items","Wische oder nutze die Pfeiltasten. Gleiche Items verschmelzen: Holz, Stein, Eisen, Gold, Diamant …",g2048,0,""],
+["mine","💣 Minensucher","Decke alle Felder ohne Mine auf. Feldgröße und Minenzahl stellst du selbst ein. Rechtsklick oder Flaggen-Modus setzt Flaggen.",gMine,1," s"],
+["slide","🧩 Schiebepuzzle","Setz den Skin-Kopf eines Spielers aus deinem Server wieder zusammen, in 3×3 oder 4×4.",gSlide,1," Züge"],
+["hilo","📈 Höher oder niedriger","Hat der nächste Spieler mehr oder weniger? Wie lang ist deine Serie?",gHiLo,0,""],
+["skin","🕵️ Skin-Raten","Welcher Spieler gehört zu diesem Kopf? 10 Runden.",gSkin,0,""],
+["guess","🎲 Schätzspiel","Schätze Werte echter Spieler wie Diamanten oder Tode. Je näher, desto mehr Punkte (max. 500).",gGuess,0,""],
+["clicker","⛏️ Block-Clicker","Klick Blöcke ab, kauf Helfer und Minen. Der Fortschritt bleibt gespeichert und läuft bis zu 8 Stunden offline weiter.",gClick,0,""]);
 function games(){$("lb").hidden=true;$("ev").hidden=true;const box=$("gm");box.hidden=false;document.title="Minispiele";gMenu()}
 function gMenu(){const box=$("gm");if(GSTOP){GSTOP();GSTOP=null}box.replaceChildren();el("h1","Minispiele",box);el("p","Kleine Geschicklichkeitsspiele für zwischendurch. Highscores werden nur auf diesem Gerät gespeichert.",box,"ex");
-  const g=el("div","",box,"gg");GAMES.forEach(([k,t,d,,,u])=>{const c=el("div","",g,"gcard");el("h3",t,c);el("p",d,c,"ex");el("div",HS[k]!=null?`Beste: ${HS[k]}${u}`:"Noch kein Ergebnis",c,"ex");el("button","Spielen",c,"fnb").onclick=()=>gPlay(k)})}
+  const g=el("div","",box,"gg");GAMES.forEach(([k,t,d,,low,u])=>{const c=el("div","",g,"gcard");el("h3",t,c);el("p",d,c,"ex");el("div",hsBest(k,low)!=null?`Beste: ${hsBest(k,low)}${u}`:"Noch kein Ergebnis",c,"ex");el("button","Spielen",c,"fnb").onclick=()=>gPlay(k)})}
 function gPlay(k){const box=$("gm"),[,t,d,fn,low,u]=GAMES.find(x=>x[0]===k);if(GSTOP){GSTOP();GSTOP=null}box.replaceChildren();
   const h=el("div","",box);h.style.cssText="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap";el("h1",t,h).style.fontSize="26px";el("button","← Alle Spiele",h,"fnb").onclick=gMenu;
   el("p",d,box,"ex");const root=el("div","",box),res=el("div","",box,"gres");root.style.margin="14px 0";
-  GSTOP=fn(root,score=>{if(GSTOP){GSTOP();GSTOP=null}const nb=hsSave(k,score,low);res.replaceChildren();el("h2",`Ergebnis: ${score}${u}${nb?" 🏆 Neuer Highscore!":""}`,res);el("button","Nochmal",res,"fnb").onclick=()=>gPlay(k)})}
+  GSTOP=fn(root,(score,sfx)=>{if(GSTOP){GSTOP();GSTOP=null}const nb=score==null?0:hsSave(k+(sfx||""),score,low);res.replaceChildren();el("h2",score==null?"💥 Verloren – nochmal versuchen!":`Ergebnis: ${score}${u}${nb?" 🏆 Neuer Highscore!":""}`,res);el("button","Nochmal",res,"fnb").onclick=()=>gPlay(k)})}
 function show(){if(GSTOP){GSTOP();GSTOP=null}const k=location.hash.slice(1)||SERVERS[0].key,b=$("nav");b.replaceChildren();
   [...SERVERS.map(s=>[s.key,s.name,"#"+s.key]),["events","📅 Events"+(NEXT?" ●":""),"#events"],...(OV.showGames!==false?[["games","🎮 Spiele","#games"]]:[]),...(OV.showAdmin!==false?[["admin","⚙️ Admin","admin.html"]]:[])]
     .forEach(([id,l,h])=>{const a=el("a",l,b,id===k?"on":"");a.href=h});
