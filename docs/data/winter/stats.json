@@ -1,42 +1,42 @@
 {
- "updated": "2026-11-13T17:28+00:00",
+ "updated": "2026-11-13T19:17+00:00",
  "players": [
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
    "name": "Trosser",
-   "minutes": 5951,
-   "hours": 99.2,
+   "minutes": 5981,
+   "hours": 99.7,
    "deaths": 52,
-   "mob_kills": 4045,
+   "mob_kills": 4056,
    "player_kills": 8,
-   "entities_killed": 3841,
-   "items_used": 119771,
-   "damage": 10690,
-   "blocks_mined": 89546,
+   "entities_killed": 3849,
+   "items_used": 119941,
+   "damage": 11038,
+   "blocks_mined": 89559,
    "diamonds": 37,
-   "km_travelled": 1554.3,
-   "jumps": 177565,
+   "km_travelled": 1558.8,
+   "jumps": 179025,
    "travel": {
     "boat": 39.1,
     "crouch": 6.0,
     "climb": 1.3,
     "minecart": 851.7,
-    "walk": 65.7,
+    "walk": 66.0,
     "walk_under_water": 3.0,
     "horse": 17.8,
-    "sprint": 176.5,
-    "fly": 382.0,
+    "sprint": 177.4,
+    "fly": 385.2,
     "walk_on_water": 3.7,
-    "swim": 7.5
+    "swim": 7.6
    },
    "top_mobs": [
     [
      "pillager",
-     1854
+     1858
     ],
     [
      "vindicator",
-     982
+     983
     ],
     [
      "zombie",
@@ -78,7 +78,7 @@
     ],
     [
      "dirt",
-     674
+     675
     ],
     [
      "packed_ice",
@@ -100,7 +100,7 @@
    "top_used": [
     [
      "diamond_pickaxe",
-     66290
+     66300
     ],
     [
      "iron_pickaxe",
@@ -120,7 +120,7 @@
     ],
     [
      "diamond_sword",
-     2116
+     2172
     ],
     [
      "bread",
@@ -155,9 +155,9 @@
    ],
    "death_other": 17,
    "f": {
-    "eaten": 2363,
-    "fall_m": 82715,
-    "trades": 87,
+    "eaten": 2385,
+    "fall_m": 83323,
+    "trades": 95,
     "fish": 16,
     "bred": 214,
     "sleeps": 99
@@ -169,7 +169,7 @@
     "deepslate": 105,
     "aviate_km": 0.0
    },
-   "week_hours": 8.1
+   "week_hours": 8.6
   },
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -337,29 +337,29 @@
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
    "name": "CapyDreamXD",
-   "minutes": 5403,
-   "hours": 90.0,
+   "minutes": 5424,
+   "hours": 90.4,
    "deaths": 36,
-   "mob_kills": 1211,
+   "mob_kills": 1244,
    "player_kills": 0,
-   "entities_killed": 1166,
-   "items_used": 125514,
-   "damage": 20291,
-   "blocks_mined": 74490,
+   "entities_killed": 1190,
+   "items_used": 125735,
+   "damage": 20942,
+   "blocks_mined": 74505,
    "diamonds": 148,
-   "km_travelled": 999.0,
-   "jumps": 148373,
+   "km_travelled": 1001.7,
+   "jumps": 149068,
    "travel": {
     "boat": 56.6,
-    "crouch": 28.3,
+    "crouch": 28.4,
     "climb": 0.4,
     "minecart": 41.2,
-    "walk": 84.3,
+    "walk": 84.7,
     "walk_under_water": 5.9,
     "horse": 259.6,
-    "sprint": 144.6,
-    "fly": 357.5,
-    "walk_on_water": 5.7,
+    "sprint": 145.2,
+    "fly": 359.0,
+    "walk_on_water": 5.8,
     "swim": 13.9,
     "nautilus": 1.0
    },
@@ -386,21 +386,21 @@
     ],
     [
      "pillager",
-     42
+     53
     ],
     [
      "drowned",
      31
     ],
     [
-     "chicken",
-     21
+     "vindicator",
+     23
     ]
    ],
    "top_blocks": [
     [
      "stone",
-     13511
+     13513
     ],
     [
      "sculk",
@@ -434,7 +434,7 @@
    "top_used": [
     [
      "diamond_pickaxe",
-     25746
+     25752
     ],
     [
      "diamond_hoe",
@@ -462,7 +462,7 @@
     ],
     [
      "diamond_axe",
-     6171
+     6178
     ]
    ],
    "death_causes": [
@@ -489,9 +489,9 @@
    ],
    "death_other": 10,
    "f": {
-    "eaten": 1710,
-    "fall_m": 70354,
-    "trades": 3532,
+    "eaten": 1727,
+    "fall_m": 70812,
+    "trades": 3543,
     "fish": 15,
     "bred": 118,
     "sleeps": 252
@@ -503,7 +503,7 @@
     "deepslate": 963,
     "aviate_km": 0.0
    },
-   "week_hours": 11.2
+   "week_hours": 11.6
   },
   {
    "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
@@ -990,14 +990,11 @@
   }
  ],
  "status": {
-  "state": "online",
-  "count": 2,
+  "state": "offline",
+  "count": 0,
   "max": 20,
-  "list": [
-   "CapyDreamXD",
-   "Trosser"
-  ],
+  "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-13T17:28+00:00"
+  "checked": "2026-11-13T19:17+00:00"
  }
 }
