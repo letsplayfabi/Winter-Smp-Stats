@@ -379,7 +379,7 @@ const GAMES=[["react","⚡ Reaktionstest","Klick, sobald das Feld grün wird. F�
   ["aim","🎯 Creeper-Jagd","30 Sekunden Zeit: Triff so viele Creeper wie möglich, bevor sie verschwinden.",gAim,0,""],
   ["catch","💎 Diamantenfang","Fang Diamanten mit dem Korb, weiche dem TNT aus. Verpasste Diamanten und TNT kosten Leben.",gCatch,0,""],
   ["flap","🪂 Elytra-Flug","Tippen oder Leertaste: flieg durch die Lücken der Obsidiansäulen.",gFlap,0,""]];
-async function gPlayers(){const out=new Map();for(const s of SERVERS){const d=await fetch(`data/${s.key}/stats.json`,{cache:"no-cache"}).then(r=>r.json()).catch(()=>({players:[]})),o=((OV.servers||{})[s.key]||{}).players||{};(d.players||[]).forEach(p=>{const x=o[p.uuid]||{};if(!x.hidden&&!out.has(p.uuid))out.set(p.uuid,{...p,display_name:x.display_name||p.name})})}return[...out.values()]}
+async function gPlayers(){const out=new Map();for(const s of [SERVERS.find(q=>q.key==="winter")||SERVERS[0]]){const d=await fetch(`data/${s.key}/stats.json`,{cache:"no-cache"}).then(r=>r.json()).catch(()=>({players:[]})),o=((OV.servers||{})[s.key]||{}).players||{};(d.players||[]).forEach(p=>{const x=o[p.uuid]||{};if(!x.hidden&&!out.has(p.uuid))out.set(p.uuid,{...p,display_name:x.display_name||p.name})})}return[...out.values()]}
 const GST=[["Spielzeit (Stunden)",p=>p.minutes/60],["Diamanten",p=>p.diamonds],["Tode",p=>p.deaths],["abgebauten Blöcke",p=>p.blocks_mined],["Kilometer gereist",p=>p.km_travelled],["getöteten Kreaturen",p=>p.entities_killed],["Sprünge",p=>p.jumps]];
 const hsBest=(k,low)=>{const v=Object.entries(HS).filter(([a])=>a===k||a.startsWith(k+"_")).map(x=>x[1]);return v.length?(low?Math.min(...v):Math.max(...v)):null};
 const rnd=a=>a[Math.random()*a.length|0];
@@ -439,11 +439,11 @@ function gMine(root,done){const o=el("div","",root);o.style.cssText="display:fle
       b.oncontextmenu=e=>{e.preventDefault();if(!over&&!O[i]){F[i]=!F[i];b.textContent=F[i]?"🚩":""}}})};
   el("button","Neu starten",o,"fnb").onclick=()=>start(+sz.value,Math.max(1,Math.min(+mi.value||1,sz.value*sz.value-9)));start(8,10);return()=>clearInterval(tm)}
 function gSlide(root,done){const o=el("div","",root);o.style.cssText="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:12px";const ps=document.createElement("select"),sz=document.createElement("select"),box=el("div","Lade …",root);[3,4].forEach(v=>el("option",`${v}×${v}`,sz).value=v);let alive=1;
-  const start=()=>{box.replaceChildren();const n=+sz.value,url=`https://mc-heads.net/avatar/${ps.value}/240`;let a=[...Array(n*n).keys()],e=n*n-1,mv=0;
+  const start=()=>{box.replaceChildren();const n=+sz.value,url=`https://mc-heads.net/avatar/${ps.value}/240`;let a=[...Array(n*n).keys()],e=n*n-1,mv=0,won=0;
     for(let i=0;i<200*n;i++){const r=e/n|0,c=e%n,m=[];if(r>0)m.push(e-n);if(r<n-1)m.push(e+n);if(c>0)m.push(e-1);if(c<n-1)m.push(e+1);const j=rnd(m);[a[e],a[j]]=[a[j],a[e]];e=j}
-    const info=el("p","Züge: 0",box,"ex");info.style.textAlign="center";const g=el("div","",box);g.style.cssText=`display:grid;grid-template-columns:repeat(${n},1fr);gap:2px;width:min(100%,320px);margin:auto`;
-    const draw=()=>{g.replaceChildren();a.forEach((v,i)=>{const t=el("button","",g);t.style.cssText="aspect-ratio:1;border:0;padding:0;border-radius:4px;image-rendering:pixelated;cursor:pointer;"+(v===n*n-1?"background:#141c2e":`background:url(${url}) ${(v%n)*100/(n-1)}% ${(v/n|0)*100/(n-1)}%/${n*100}% ${n*100}%`);
-      t.onclick=()=>{const r=e/n|0,c=e%n,ri=i/n|0,ci=i%n;if(Math.abs(r-ri)+Math.abs(c-ci)===1){[a[e],a[i]]=[a[i],a[e]];e=i;mv++;info.textContent="Züge: "+mv;draw();if(a.every((q,k)=>q===k))setTimeout(()=>done(mv,"_"+n),500)}}})};draw()};
+    const info=el("p","Züge: 0",box,"ex");info.style.textAlign="center";const rf=el("img","",box);rf.src=url;rf.style.cssText="display:block;margin:0 auto 8px;width:72px;border-radius:6px;image-rendering:pixelated";const g=el("div","",box);g.style.cssText=`display:grid;grid-template-columns:repeat(${n},1fr);gap:2px;width:min(100%,320px);margin:auto`;
+    const draw=()=>{g.replaceChildren();a.forEach((v,i)=>{const t=el("button","",g);t.style.cssText="aspect-ratio:1;border:0;padding:0;border-radius:4px;image-rendering:pixelated;cursor:pointer;"+(v===n*n-1&&!won?"background:#141c2e":`background:url(${url}) ${(v%n)*100/(n-1)}% ${(v/n|0)*100/(n-1)}%/${n*100}% ${n*100}%`);
+      t.onclick=()=>{if(won)return;const r=e/n|0,c=e%n,ri=i/n|0,ci=i%n;if(Math.abs(r-ri)+Math.abs(c-ci)===1){[a[e],a[i]]=[a[i],a[e]];e=i;mv++;info.textContent="Züge: "+mv;draw();if(a.every((q,k)=>q===k)){won=1;draw();info.textContent=`🎉 Geschafft in ${mv} Zügen!`;setTimeout(()=>done(mv,"_"+n),1200)}}}})};draw()};
   gPlayers().then(P=>{if(!alive)return;P.forEach(p=>el("option",p.display_name,ps).value=p.uuid);if(!P.length)el("option","Steve",ps).value="MHF_Steve";o.append(ps,sz);el("button","Neu mischen",o,"fnb").onclick=start;start()});return()=>alive=0}
 function gHiLo(root,done){const box=el("div","Lade …",root);let alive=1;gPlayers().then(P=>{if(!alive)return;if(P.length<2){box.textContent="Dafür braucht es mindestens 2 Spieler auf dem Server.";return}let sc=0,L=rnd(P);
   const next=()=>{let R,c;for(let i=0;i<30;i++){R=rnd(P);c=rnd(GST);if(R!==L&&c[1](R)!==c[1](L))break}box.replaceChildren();el("p",`Serie: ${sc}`,box,"ex");const row=el("div","",box);row.style.cssText="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;text-align:center";
@@ -474,7 +474,7 @@ GAMES.push(["stack","🧱 Block-Stapeln","Tippe im richtigen Moment, damit der B
 ["note","🎵 Notenblock-Memory","Merk dir die Folge aus Farben und Tönen und spiel sie nach. Sie wird jede Runde länger.",gNote,0,""],
 ["g2048","🔮 2048 mit Items","Wische oder nutze die Pfeiltasten. Gleiche Items verschmelzen: Holz, Stein, Eisen, Gold, Diamant …",g2048,0,""],
 ["mine","💣 Minensucher","Decke alle Felder ohne Mine auf. Feldgröße und Minenzahl stellst du selbst ein. Rechtsklick oder Flaggen-Modus setzt Flaggen.",gMine,1," s"],
-["slide","🧩 Schiebepuzzle","Setz den Skin-Kopf eines Spielers aus deinem Server wieder zusammen, in 3×3 oder 4×4.",gSlide,1," Züge"],
+["slide","🧩 Schiebepuzzle","Setz den Skin-Kopf eines Spielers vom Winter SMP wieder zusammen, in 3×3 oder 4×4.",gSlide,1," Züge"],
 ["hilo","📈 Höher oder niedriger","Hat der nächste Spieler mehr oder weniger? Wie lang ist deine Serie?",gHiLo,0,""],
 ["skin","🕵️ Skin-Raten","Welcher Spieler gehört zu diesem Kopf? 10 Runden.",gSkin,0,""],
 ["guess","🎲 Schätzspiel","Schätze Werte echter Spieler wie Diamanten oder Tode. Je näher, desto mehr Punkte (max. 500).",gGuess,0,""],
@@ -485,7 +485,7 @@ function gMenu(){const box=$("gm");if(GSTOP){GSTOP();GSTOP=null}box.replaceChild
 function gPlay(k){const box=$("gm"),[,t,d,fn,low,u]=GAMES.find(x=>x[0]===k);if(GSTOP){GSTOP();GSTOP=null}box.replaceChildren();
   const h=el("div","",box);h.style.cssText="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap";el("h1",t,h).style.fontSize="26px";el("button","← Alle Spiele",h,"fnb").onclick=gMenu;
   el("p",d,box,"ex");const root=el("div","",box),res=el("div","",box,"gres");root.style.margin="14px 0";
-  GSTOP=fn(root,(score,sfx)=>{if(GSTOP){GSTOP();GSTOP=null}const nb=score==null?0:hsSave(k+(sfx||""),score,low);res.replaceChildren();el("h2",score==null?"💥 Verloren – nochmal versuchen!":`Ergebnis: ${score}${u}${nb?" 🏆 Neuer Highscore!":""}`,res);el("button","Nochmal",res,"fnb").onclick=()=>gPlay(k)})}
+  GSTOP=fn(root,(score,sfx)=>{if(GSTOP){GSTOP();GSTOP=null}const nb=score==null?0:hsSave(k+(sfx||""),score,low);res.replaceChildren();el("h2",score==null?"💥 Verloren – nochmal versuchen!":`Ergebnis: ${score}${u}${nb?" 🏆 Neuer Highscore!":""}`,res);el("button","Nochmal",res,"fnb").onclick=()=>gPlay(k);res.scrollIntoView({behavior:"smooth",block:"center"})})}
 function show(){if(GSTOP){GSTOP();GSTOP=null}const k=location.hash.slice(1)||SERVERS[0].key,b=$("nav");b.replaceChildren();
   [...SERVERS.map(s=>[s.key,s.name,"#"+s.key]),["events","📅 Events"+(NEXT?" ●":""),"#events"],...(OV.showGames!==false?[["games","🎮 Spiele","#games"]]:[]),...(OV.showAdmin!==false?[["admin","⚙️ Admin","admin.html"]]:[])]
     .forEach(([id,l,h])=>{const a=el("a",l,b,id===k?"on":"");a.href=h});
