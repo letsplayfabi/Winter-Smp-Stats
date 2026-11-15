@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-15T12:50+00:00",
+ "updated": "2026-11-15T13:37+00:00",
  "players": [
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -174,28 +174,28 @@
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 5798,
-   "hours": 96.6,
+   "minutes": 5830,
+   "hours": 97.2,
    "deaths": 14,
-   "mob_kills": 8831,
+   "mob_kills": 8924,
    "player_kills": 8,
-   "entities_killed": 8426,
-   "items_used": 80143,
-   "damage": 30310,
-   "blocks_mined": 41349,
+   "entities_killed": 8503,
+   "items_used": 81947,
+   "damage": 30373,
+   "blocks_mined": 43107,
    "diamonds": 97,
-   "km_travelled": 819.1,
-   "jumps": 71406,
+   "km_travelled": 821.1,
+   "jumps": 71472,
    "travel": {
     "boat": 28.9,
-    "crouch": 13.9,
+    "crouch": 14.3,
     "climb": 0.4,
     "minecart": 35.7,
-    "walk": 53.1,
-    "walk_under_water": 24.4,
+    "walk": 53.2,
+    "walk_under_water": 24.5,
     "horse": 140.2,
-    "sprint": 89.1,
-    "fly": 379.6,
+    "sprint": 89.4,
+    "fly": 380.7,
     "walk_on_water": 8.3,
     "swim": 44.4,
     "nautilus": 1.1
@@ -203,15 +203,15 @@
    "top_mobs": [
     [
      "pillager",
-     3842
+     3880
     ],
     [
      "vindicator",
-     2015
+     2038
     ],
     [
      "witch",
-     507
+     517
     ],
     [
      "zombie",
@@ -219,7 +219,7 @@
     ],
     [
      "evoker",
-     283
+     287
     ],
     [
      "cow",
@@ -245,7 +245,7 @@
     ],
     [
      "netherrack",
-     3230
+     4975
     ],
     [
      "snow",
@@ -271,7 +271,7 @@
    "top_used": [
     [
      "diamond_pickaxe",
-     12567
+     14325
     ],
     [
      "diamond_shovel",
@@ -283,7 +283,7 @@
     ],
     [
      "diamond_sword",
-     5159
+     5194
     ],
     [
      "trident",
@@ -318,21 +318,21 @@
    ],
    "death_other": 6,
    "f": {
-    "eaten": 996,
-    "fall_m": 28115,
+    "eaten": 1000,
+    "fall_m": 28146,
     "trades": 136,
     "fish": 134,
     "bred": 585,
     "sleeps": 128
    },
    "x": {
-    "debris": 2,
+    "debris": 10,
     "creepers": 50,
-    "netherrack": 3230,
+    "netherrack": 4975,
     "deepslate": 210,
     "aviate_km": 0.0
    },
-   "week_hours": 1.1
+   "week_hours": 1.7
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -991,13 +991,11 @@
   }
  ],
  "status": {
-  "state": "online",
-  "count": 1,
+  "state": "offline",
+  "count": 0,
   "max": 20,
-  "list": [
-   "letsplayfabi"
-  ],
+  "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-15T12:50+00:00"
+  "checked": "2026-11-15T13:37+00:00"
  }
 }
