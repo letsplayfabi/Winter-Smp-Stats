@@ -1,33 +1,33 @@
 {
- "updated": "2026-11-15T17:37+00:00",
+ "updated": "2026-11-15T20:07+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 6013,
-   "hours": 100.2,
+   "minutes": 6059,
+   "hours": 101.0,
    "deaths": 14,
-   "mob_kills": 9219,
+   "mob_kills": 9223,
    "player_kills": 8,
-   "entities_killed": 8786,
-   "items_used": 91360,
-   "damage": 30650,
-   "blocks_mined": 51580,
+   "entities_killed": 8790,
+   "items_used": 95073,
+   "damage": 30719,
+   "blocks_mined": 53360,
    "diamonds": 201,
-   "km_travelled": 835.4,
-   "jumps": 72345,
+   "km_travelled": 839.3,
+   "jumps": 72650,
    "travel": {
     "boat": 28.9,
-    "crouch": 15.8,
+    "crouch": 16.8,
     "climb": 0.4,
     "minecart": 37.4,
-    "walk": 54.6,
-    "walk_under_water": 24.9,
+    "walk": 55.2,
+    "walk_under_water": 25.0,
     "horse": 141.9,
-    "sprint": 91.9,
-    "fly": 384.8,
-    "walk_on_water": 8.3,
-    "swim": 45.4,
+    "sprint": 93.2,
+    "fly": 385.4,
+    "walk_on_water": 8.5,
+    "swim": 45.5,
     "nautilus": 1.1
    },
    "top_mobs": [
@@ -45,7 +45,7 @@
     ],
     [
      "zombie",
-     300
+     303
     ],
     [
      "evoker",
@@ -71,41 +71,41 @@
     ],
     [
      "stone",
-     6796
+     7502
     ],
     [
      "wheat",
      5837
     ],
     [
-     "snow",
-     2778
+     "grass_block",
+     3092
     ],
     [
      "dirt",
-     2742
+     3028
     ],
     [
-     "grass_block",
-     2636
+     "snow",
+     2778
     ],
     [
      "sand",
      2187
     ],
     [
-     "iron_ore",
-     2108
+     "short_grass",
+     2162
     ]
    ],
    "top_used": [
     [
      "diamond_pickaxe",
-     21433
+     22262
     ],
     [
      "diamond_shovel",
-     9421
+     10214
     ],
     [
      "wheat_seeds",
@@ -113,7 +113,7 @@
     ],
     [
      "diamond_sword",
-     5339
+     5348
     ],
     [
      "trident",
@@ -148,8 +148,8 @@
    ],
    "death_other": 6,
    "f": {
-    "eaten": 1016,
-    "fall_m": 28485,
+    "eaten": 1021,
+    "fall_m": 28531,
     "trades": 136,
     "fish": 134,
     "bred": 590,
@@ -157,12 +157,12 @@
    },
    "x": {
     "debris": 21,
-    "creepers": 51,
+    "creepers": 52,
     "netherrack": 11698,
     "deepslate": 230,
     "aviate_km": 0.0
    },
-   "week_hours": 4.7
+   "week_hours": 5.5
   },
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -991,13 +991,11 @@
   }
  ],
  "status": {
-  "state": "online",
-  "count": 1,
+  "state": "offline",
+  "count": 0,
   "max": 20,
-  "list": [
-   "letsplayfabi"
-  ],
+  "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-15T17:37+00:00"
+  "checked": "2026-11-15T20:07+00:00"
  }
 }
