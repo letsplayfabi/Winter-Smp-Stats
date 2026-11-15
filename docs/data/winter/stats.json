@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-15T16:23+00:00",
+ "updated": "2026-11-15T16:36+00:00",
  "players": [
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -174,18 +174,18 @@
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 5940,
-   "hours": 99.0,
+   "minutes": 5950,
+   "hours": 99.2,
    "deaths": 14,
-   "mob_kills": 9218,
+   "mob_kills": 9219,
    "player_kills": 8,
-   "entities_killed": 8785,
-   "items_used": 89274,
-   "damage": 30623,
-   "blocks_mined": 49967,
-   "diamonds": 97,
-   "km_travelled": 827.7,
-   "jumps": 71736,
+   "entities_killed": 8786,
+   "items_used": 89355,
+   "damage": 30650,
+   "blocks_mined": 50012,
+   "diamonds": 120,
+   "km_travelled": 829.4,
+   "jumps": 71928,
    "travel": {
     "boat": 28.9,
     "crouch": 15.6,
@@ -194,8 +194,8 @@
     "walk": 53.8,
     "walk_under_water": 24.9,
     "horse": 140.2,
-    "sprint": 90.5,
-    "fly": 381.2,
+    "sprint": 90.7,
+    "fly": 382.7,
     "walk_on_water": 8.3,
     "swim": 45.4,
     "nautilus": 1.1
@@ -271,7 +271,7 @@
    "top_used": [
     [
      "diamond_pickaxe",
-     21184
+     21230
     ],
     [
      "diamond_shovel",
@@ -283,11 +283,11 @@
     ],
     [
      "diamond_sword",
-     5337
+     5339
     ],
     [
      "trident",
-     3563
+     3565
     ],
     [
      "iron_pickaxe",
@@ -318,21 +318,21 @@
    ],
    "death_other": 6,
    "f": {
-    "eaten": 1010,
-    "fall_m": 28205,
+    "eaten": 1012,
+    "fall_m": 28329,
     "trades": 136,
     "fish": 134,
     "bred": 590,
-    "sleeps": 128
+    "sleeps": 129
    },
    "x": {
     "debris": 21,
     "creepers": 51,
     "netherrack": 11698,
-    "deepslate": 210,
+    "deepslate": 230,
     "aviate_km": 0.0
    },
-   "week_hours": 3.5
+   "week_hours": 3.7
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -998,6 +998,6 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-15T16:23+00:00"
+  "checked": "2026-11-15T16:36+00:00"
  }
 }
