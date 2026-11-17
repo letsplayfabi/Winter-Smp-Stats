@@ -17,6 +17,15 @@
       "date": "2026-11-08",
       "time": "21:10",
       "server": "winter"
+    },
+    {
+      "id": "e1794909271243",
+      "image": "",
+      "name": "Krisensitzung",
+      "desc": "Wegen Feueralarm ",
+      "date": "2026-11-17",
+      "time": "19:00",
+      "server": "winter"
     }
   ]
 }
