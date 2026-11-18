@@ -1,10 +1,10 @@
 {
- "updated": "2026-11-18T18:51+00:00",
+ "updated": "2026-11-18T18:56+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 6718,
+   "minutes": 6723,
    "hours": 112.0,
    "deaths": 14,
    "mob_kills": 9865,
@@ -14,13 +14,13 @@
    "damage": 31992,
    "blocks_mined": 78576,
    "diamonds": 201,
-   "km_travelled": 1009.0,
+   "km_travelled": 1018.3,
    "jumps": 79278,
    "travel": {
     "boat": 28.9,
     "crouch": 23.0,
     "climb": 0.5,
-    "minecart": 154.0,
+    "minecart": 163.3,
     "walk": 60.8,
     "walk_under_water": 27.0,
     "horse": 146.6,
@@ -998,6 +998,6 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-18T18:51+00:00"
+  "checked": "2026-11-18T18:56+00:00"
  }
 }
