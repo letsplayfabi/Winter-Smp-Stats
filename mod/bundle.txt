@@ -1,0 +1,468 @@
+# LiveStats-Mod: alle Quelldateien in einer Datei. Der Workflow „Mod bauen“ packt sie automatisch aus.
+# Nichts ändern, außer du weißt, was du tust.
+=== FILE: common/LiveStats.java ===
+package at.livestats;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.message.v1.ServerMessageEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.server.MinecraftServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+
+/**
+ * LiveStats: schickt Server-Ereignisse live an Discord und stößt bei Bedarf die Aktualisierung
+ * der Statistikseite (GitHub Actions) an. Alles wird in config/livestats.json eingestellt.
+ */
+public class LiveStats implements ModInitializer {
+    static final Logger LOG = LoggerFactory.getLogger("livestats");
+    static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    static final HttpClient HTTP = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build();
+    static final ScheduledExecutorService EX = Executors.newSingleThreadScheduledExecutor(r -> {
+        Thread t = new Thread(r, "livestats");
+        t.setDaemon(true);
+        return t;
+    });
+    static final Object LOCK = new Object();
+    static final Queue<String> OUT = new ConcurrentLinkedQueue<>();
+    static final Map<String, Integer> DIAMONDS = new HashMap<>();
+    static final AtomicInteger ONLINE = new AtomicInteger();
+
+    static Config cfg = new Config();
+    static volatile MinecraftServer server;
+    static volatile long lastRefresh = 0;
+    static boolean refreshPending = false;
+    static boolean diamondFlushPending = false;
+
+    static class Config {
+        String serverName = "Minecraft-Server";
+        String discordWebhook = "";
+        boolean join = true;
+        boolean leave = true;
+        boolean death = true;
+        boolean advancement = true;
+        boolean startStop = true;
+        boolean diamonds = true;
+        int diamondBatchSeconds = 15;
+        String githubToken = "";
+        String githubRepo = "";
+        String githubWorkflow = "update-stats.yml";
+        String githubRef = "main";
+        List<String> refreshOn = List.of("leave", "death", "advancement");
+        int refreshMinSeconds = 120;
+        int refreshEverySeconds = 300;
+    }
+
+    @Override
+    public void onInitialize() {
+        loadConfig();
+
+        ServerLifecycleEvents.SERVER_STARTED.register(s -> {
+            server = s;
+            if (cfg.startStop) say("✅ **" + esc(cfg.serverName) + "** ist online.");
+        });
+        ServerLifecycleEvents.SERVER_STOPPING.register(s -> {
+            if (cfg.startStop) say("⛔ **" + esc(cfg.serverName) + "** wird gestoppt.");
+            flushDiamonds();
+            tick();
+        });
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, s) -> {
+            int n = ONLINE.incrementAndGet();
+            if (cfg.join) say("🟢 **" + esc(Compat.playerName(handler)) + "** ist beigetreten (" + n + " online)");
+            if (wants("join")) requestRefresh();
+        });
+        ServerPlayConnectionEvents.DISCONNECT.register((handler, s) -> {
+            int n = ONLINE.updateAndGet(v -> Math.max(0, v - 1));
+            if (cfg.leave) say("🔴 **" + esc(Compat.playerName(handler)) + "** hat den Server verlassen (" + n + " online)");
+            if (wants("leave")) requestRefresh();
+        });
+        ServerMessageEvents.GAME_MESSAGE.register((s, message, overlay) -> {
+            if (overlay) return;
+            String key = Compat.key(message);
+            if (key.startsWith("death.")) {
+                if (cfg.death) say("💀 " + esc(message.getString()));
+                if (wants("death")) requestRefresh();
+            } else if (key.startsWith("chat.type.advancement.")) {
+                if (cfg.advancement) say("🏆 " + esc(message.getString()));
+                if (wants("advancement")) requestRefresh();
+            }
+        });
+        PlayerBlockBreakEvents.AFTER.register((world, player, pos, state, be) -> {
+            if (cfg.diamonds && Compat.isDiamond(state)) countDiamond(player.getName().getString());
+        });
+
+        EX.scheduleWithFixedDelay(LiveStats::tick, 2, 2, TimeUnit.SECONDS);
+        EX.scheduleWithFixedDelay(LiveStats::periodic, 60, 60, TimeUnit.SECONDS);
+        LOG.info("LiveStats geladen (Discord: {}, Seiten-Aktualisierung: {})",
+                cfg.discordWebhook.isBlank() ? "aus" : "an", cfg.githubToken.isBlank() ? "aus" : "an");
+    }
+
+    // ---------- Konfiguration ----------
+    static void loadConfig() {
+        Path p = FabricLoader.getInstance().getConfigDir().resolve("livestats.json");
+        try {
+            if (Files.exists(p)) {
+                Config c = GSON.fromJson(Files.readString(p), Config.class);
+                if (c != null) cfg = c;
+            }
+            Files.writeString(p, GSON.toJson(cfg)); // ergänzt fehlende Felder mit Standardwerten
+        } catch (Exception e) {
+            LOG.warn("livestats.json konnte nicht gelesen werden, Standardwerte werden genutzt: {}", e.toString());
+        }
+    }
+
+    static boolean wants(String event) {
+        return cfg.refreshOn != null && cfg.refreshOn.contains(event);
+    }
+
+    // ---------- Discord ----------
+    static void say(String text) {
+        if (cfg.discordWebhook == null || cfg.discordWebhook.isBlank()) return;
+        OUT.add(text.length() > 1800 ? text.substring(0, 1800) : text);
+    }
+
+    /** Fasst Meldungen der letzten Sekunden zu einer Nachricht zusammen (schont das Discord-Limit). */
+    static void tick() {
+        try {
+            if (OUT.isEmpty() || cfg.discordWebhook == null || cfg.discordWebhook.isBlank()) return;
+            StringBuilder sb = new StringBuilder();
+            String m;
+            while ((m = OUT.peek()) != null && sb.length() + m.length() + 1 < 1900) {
+                sb.append(OUT.poll()).append('\n');
+            }
+            if (sb.length() == 0) return;
+            JsonObject body = new JsonObject();
+            body.addProperty("content", sb.toString().trim());
+            JsonObject allowed = new JsonObject();
+            allowed.add("parse", new JsonArray());
+            body.add("allowed_mentions", allowed);
+            send(cfg.discordWebhook, body.toString(), null, "Discord");
+        } catch (Throwable t) {
+            LOG.warn("Discord-Versand: {}", t.toString());
+        }
+    }
+
+    static String esc(String s) {
+        StringBuilder b = new StringBuilder();
+        for (char c : s.toCharArray()) {
+            if ("\\_*~`|>".indexOf(c) >= 0) b.append('\\');
+            b.append(c);
+        }
+        return b.toString();
+    }
+
+    // ---------- Diamanten (gebündelt) ----------
+    static void countDiamond(String name) {
+        synchronized (LOCK) {
+            DIAMONDS.merge(name, 1, Integer::sum);
+            if (!diamondFlushPending) {
+                diamondFlushPending = true;
+                EX.schedule(LiveStats::flushDiamonds, Math.max(5, cfg.diamondBatchSeconds), TimeUnit.SECONDS);
+            }
+        }
+    }
+
+    static void flushDiamonds() {
+        Map<String, Integer> snap;
+        synchronized (LOCK) {
+            snap = new HashMap<>(DIAMONDS);
+            DIAMONDS.clear();
+            diamondFlushPending = false;
+        }
+        snap.forEach((n, c) -> say("💎 **" + esc(n) + "** hat " + c + (c == 1 ? " Diamanterz" : " Diamanterze") + " abgebaut."));
+    }
+
+    // ---------- Statistikseite aktualisieren ----------
+    static void requestRefresh() {
+        if (cfg.githubToken == null || cfg.githubToken.isBlank() || cfg.githubRepo == null || cfg.githubRepo.isBlank()) return;
+        synchronized (LOCK) {
+            if (refreshPending) return;
+            refreshPending = true;
+            long wait = Math.max(0, lastRefresh + cfg.refreshMinSeconds * 1000L - System.currentTimeMillis());
+            EX.schedule(LiveStats::doRefresh, wait, TimeUnit.MILLISECONDS);
+        }
+    }
+
+    static void doRefresh() {
+        synchronized (LOCK) {
+            refreshPending = false;
+            lastRefresh = System.currentTimeMillis();
+        }
+        MinecraftServer s = server;
+        if (s == null) {
+            dispatch();
+            return;
+        }
+        // Statistik-Dateien erst speichern lassen (Server-Thread), dann den Workflow starten
+        s.execute(() -> {
+            try {
+                Compat.saveAll(s);
+            } catch (Throwable t) {
+                LOG.warn("Spielerdaten konnten nicht gespeichert werden: {}", t.toString());
+            }
+            EX.schedule(LiveStats::dispatch, 4, TimeUnit.SECONDS);
+        });
+    }
+
+    static void dispatch() {
+        try {
+            String url = "https://api.github.com/repos/" + cfg.githubRepo + "/actions/workflows/" + cfg.githubWorkflow + "/dispatches";
+            Map<String, String> h = new HashMap<>();
+            h.put("Authorization", "Bearer " + cfg.githubToken.trim());
+            h.put("Accept", "application/vnd.github+json");
+            h.put("X-GitHub-Api-Version", "2022-11-28");
+            send(url, "{\"ref\":\"" + cfg.githubRef + "\"}", h, "GitHub");
+        } catch (Throwable t) {
+            LOG.warn("GitHub-Aufruf: {}", t.toString());
+        }
+    }
+
+    static void periodic() {
+        try {
+            if (ONLINE.get() > 0 && System.currentTimeMillis() - lastRefresh >= cfg.refreshEverySeconds * 1000L) requestRefresh();
+        } catch (Throwable t) {
+            LOG.warn("livestats periodic: {}", t.toString());
+        }
+    }
+
+    // ---------- HTTP ----------
+    static void send(String url, String body, Map<String, String> headers, String label) {
+        HttpRequest.Builder b = HttpRequest.newBuilder(URI.create(url))
+                .timeout(Duration.ofSeconds(15))
+                .header("Content-Type", "application/json")
+                .header("User-Agent", "livestats-mod");
+        if (headers != null) headers.forEach(b::header);
+        HTTP.sendAsync(b.POST(HttpRequest.BodyPublishers.ofString(body)).build(), HttpResponse.BodyHandlers.ofString())
+                .thenAccept(r -> {
+                    if (r.statusCode() >= 300) LOG.warn("{}: HTTP {} {}", label, r.statusCode(), r.body());
+                })
+                .exceptionally(e -> {
+                    LOG.warn("{}: {}", label, e.toString());
+                    return null;
+                });
+    }
+}
+=== FILE: mojang/build.gradle ===
+plugins {
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+}
+
+processResources {
+    inputs.property "version", project.version
+    filesMatching("fabric.mod.json") {
+        expand "version": inputs.properties.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 25
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+=== FILE: mojang/gradle.properties ===
+org.gradle.jvmargs=-Xmx1G
+minecraft_version=26.3
+loader_version=0.19.5
+loom_version=auto
+fabric_version=auto
+mod_version=1.0.0
+maven_group=at.livestats
+archives_base_name=livestats-26.3
+=== FILE: mojang/settings.gradle ===
+pluginManagement {
+    repositories {
+        maven {
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/'
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+rootProject.name = 'livestats'
+=== FILE: mojang/src/main/java/at/livestats/Compat.java ===
+package at.livestats;
+
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+
+/** Alles, was sich zwischen den Minecraft-Versionen (Mojang-Namen, 26.x) unterscheidet. */
+final class Compat {
+    private Compat() {}
+
+    static void saveAll(MinecraftServer s) {
+        s.getPlayerList().saveAll();
+    }
+
+    static String key(Object text) {
+        return ((Component) text).getContents() instanceof TranslatableContents c ? c.getKey() : "";
+    }
+
+    static boolean isDiamond(Object state) {
+        Object b = ((BlockState) state).getBlock();
+        return b == Blocks.DIAMOND_ORE || b == Blocks.DEEPSLATE_DIAMOND_ORE;
+    }
+
+    static String playerName(Object handler) {
+        return ((ServerGamePacketListenerImpl) handler).getPlayer().getName().getString();
+    }
+}
+=== FILE: mojang/src/main/resources/fabric.mod.json ===
+{
+  "schemaVersion": 1,
+  "id": "livestats",
+  "version": "${version}",
+  "name": "LiveStats",
+  "description": "Schickt Server-Ereignisse live an Discord und startet die Aktualisierung der Statistikseite.",
+  "authors": ["Winter SMP"],
+  "license": "MIT",
+  "environment": "server",
+  "entrypoints": { "main": ["at.livestats.LiveStats"] },
+  "depends": { "fabricloader": ">=0.16.0", "minecraft": ">=26.1", "java": ">=25", "fabric-api": "*" }
+}
+=== FILE: yarn/build.gradle ===
+plugins {
+    id 'fabric-loom' version "${loom_version}"
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+}
+
+processResources {
+    inputs.property "version", project.version
+    filesMatching("fabric.mod.json") {
+        expand "version": inputs.properties.version
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    it.options.release = 21
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+}
+=== FILE: yarn/gradle.properties ===
+org.gradle.jvmargs=-Xmx1G
+minecraft_version=1.21.10
+yarn_mappings=1.21.10+build.3
+loader_version=0.18.1
+loom_version=1.11-SNAPSHOT
+fabric_version=auto
+mod_version=1.0.0
+maven_group=at.livestats
+archives_base_name=livestats-1.21.10
+=== FILE: yarn/settings.gradle ===
+pluginManagement {
+    repositories {
+        maven {
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/'
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+rootProject.name = 'livestats'
+=== FILE: yarn/src/main/java/at/livestats/Compat.java ===
+package at.livestats;
+
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableTextContent;
+
+/** Alles, was sich zwischen den Minecraft-Versionen (Yarn-Namen, 1.21.x) unterscheidet. */
+final class Compat {
+    private Compat() {}
+
+    static void saveAll(MinecraftServer s) {
+        s.getPlayerManager().saveAllPlayerData();
+    }
+
+    static String key(Object text) {
+        return ((Text) text).getContent() instanceof TranslatableTextContent c ? c.getKey() : "";
+    }
+
+    static boolean isDiamond(Object state) {
+        Object b = ((BlockState) state).getBlock();
+        return b == Blocks.DIAMOND_ORE || b == Blocks.DEEPSLATE_DIAMOND_ORE;
+    }
+
+    static String playerName(Object handler) {
+        return ((ServerPlayNetworkHandler) handler).player.getName().getString();
+    }
+}
+=== FILE: yarn/src/main/resources/fabric.mod.json ===
+{
+  "schemaVersion": 1,
+  "id": "livestats",
+  "version": "${version}",
+  "name": "LiveStats",
+  "description": "Schickt Server-Ereignisse live an Discord und startet die Aktualisierung der Statistikseite.",
+  "authors": ["Winter SMP"],
+  "license": "MIT",
+  "environment": "server",
+  "entrypoints": { "main": ["at.livestats.LiveStats"] },
+  "depends": { "fabricloader": ">=0.16.0", "minecraft": "~1.21.10", "java": ">=21", "fabric-api": "*" }
+}
