@@ -1,30 +1,30 @@
 {
- "updated": "2026-11-18T19:11+00:00",
+ "updated": "2026-11-18T19:16+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 6738,
-   "hours": 112.3,
+   "minutes": 6743,
+   "hours": 112.4,
    "deaths": 14,
    "mob_kills": 9865,
    "player_kills": 8,
    "entities_killed": 9398,
-   "items_used": 132132,
+   "items_used": 132149,
    "damage": 31992,
-   "blocks_mined": 78576,
+   "blocks_mined": 78592,
    "diamonds": 201,
-   "km_travelled": 1046.5,
-   "jumps": 79278,
+   "km_travelled": 1053.8,
+   "jumps": 79301,
    "travel": {
     "boat": 28.9,
     "crouch": 23.0,
     "climb": 0.5,
-    "minecart": 191.5,
-    "walk": 60.8,
+    "minecart": 198.6,
+    "walk": 60.9,
     "walk_under_water": 27.0,
     "horse": 146.6,
-    "sprint": 101.6,
+    "sprint": 101.7,
     "fly": 403.1,
     "walk_on_water": 9.7,
     "swim": 52.7,
@@ -71,7 +71,7 @@
     ],
     [
      "stone",
-     17227
+     17231
     ],
     [
      "wheat",
@@ -79,11 +79,11 @@
     ],
     [
      "grass_block",
-     3374
+     3377
     ],
     [
      "dirt",
-     3310
+     3319
     ],
     [
      "snow",
@@ -101,11 +101,11 @@
    "top_used": [
     [
      "diamond_pickaxe",
-     46367
+     46375
     ],
     [
      "diamond_shovel",
-     10866
+     10873
     ],
     [
      "smooth_stone",
@@ -149,7 +149,7 @@
    "death_other": 6,
    "f": {
     "eaten": 1088,
-    "fall_m": 30612,
+    "fall_m": 30616,
     "trades": 136,
     "fish": 134,
     "bred": 590,
@@ -162,7 +162,7 @@
     "deepslate": 230,
     "aviate_km": 0.0
    },
-   "week_hours": 16.6
+   "week_hours": 16.7
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -998,6 +998,6 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-18T19:11+00:00"
+  "checked": "2026-11-18T19:16+00:00"
  }
 }
