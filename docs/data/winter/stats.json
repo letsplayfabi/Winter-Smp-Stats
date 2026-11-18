@@ -1,10 +1,10 @@
 {
- "updated": "2026-11-18T17:45+00:00",
+ "updated": "2026-11-18T17:46+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 6652,
+   "minutes": 6653,
    "hours": 110.9,
    "deaths": 14,
    "mob_kills": 9865,
@@ -992,10 +992,12 @@
  ],
  "status": {
   "state": "online",
-  "count": 0,
+  "count": 1,
   "max": 20,
-  "list": [],
+  "list": [
+   "letsplayfabi"
+  ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-18T17:45+00:00"
+  "checked": "2026-11-18T17:46+00:00"
  }
 }
