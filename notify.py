@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Discord-Meldungen: neue Events, Wochen-Top-3 (montags), Meilensteine. Braucht das GitHub-Secret DISCORD_WEBHOOK."""
-import json, os, sys, urllib.request
+import json, os, re, sys, urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -71,6 +71,11 @@ def climber(sv, players, ov, today):
     return (names[u], a[u], b[u]) if gain > 0 else None
 
 
+def fmt_date(s):
+    m = re.match(r"(\d{4})-(\d{2})-(\d{2})", str(s or ""))
+    return f"{m[3]}.{m[2]}.{m[1]}" if m else str(s or "")
+
+
 def post(payload):
     payload["allowed_mentions"] = {"parse": []}
     req = urllib.request.Request(HOOK, json.dumps(payload).encode(),
@@ -117,21 +122,24 @@ def main():
 
     # 1) neue Events
     for e in events:
-        if e["id"] in st["events"]:
+        eid = e.get("id")
+        if not eid or eid in st["events"]:
             continue
-        st["events"].append(e["id"])
+        st["events"].append(eid)
         if first or not cfg["events"]:
             continue
-        when = e["date"].split("-")
-        emb = {"title": f"📅 Neues Event: {e['name']}", "url": site + "#events", "color": 0x5865F2,
-               "description": (e.get("desc") or "")[:500],
-               "fields": [{"name": "Wann", "value": f"{when[2]}.{when[1]}.{when[0]} {e.get('time') or ''}".strip() + (" Uhr" if e.get("time") else "")}]}
-        sv = next((s["name"] for s in servers if s["key"] == e.get("server")), None)
-        if sv:
-            emb["fields"].append({"name": "Server", "value": sv})
-        if e.get("image"):
-            emb["image"] = {"url": site + e["image"]}
-        embeds.append(emb)
+        try:
+            wann = (fmt_date(e.get("date")) + (" " + str(e["time"]) + " Uhr" if e.get("time") else "")).strip() or "–"
+            emb = {"title": f"📅 Neues Event: {e.get('name') or 'Event'}", "url": site + "#events", "color": 0x5865F2,
+                   "description": (e.get("desc") or "")[:500], "fields": [{"name": "Wann", "value": wann}]}
+            sv = next((s["name"] for s in servers if s["key"] == e.get("server")), None)
+            if sv:
+                emb["fields"].append({"name": "Server", "value": sv})
+            if e.get("image"):
+                emb["image"] = {"url": site + e["image"]}
+            embeds.append(emb)
+        except Exception as ex:
+            print("Event konnte nicht gemeldet werden:", eid, ex)
 
     # 2) Meilensteine + 3) Wochen-Top-3
     today = now.date().isoformat()
