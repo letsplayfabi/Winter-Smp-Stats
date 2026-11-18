@@ -1,0 +1,81 @@
+name: Mod bauen
+on:
+  workflow_dispatch: {}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { variant: yarn,   mc: "1.21.10", java: "21", gradle: "8.14.3", fallback: "0.138.0+1.21.10" }
+          - { variant: mojang, mc: "26.3",    java: "25", gradle: "current", fallback: "" }
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+      - name: Projekt aus mod/bundle.txt zusammenbauen
+        run: |
+          python3 - ${{ matrix.variant }} <<'PY'
+          import pathlib, re, sys
+          variant = sys.argv[1]
+          text = pathlib.Path("mod/bundle.txt").read_text(encoding="utf-8")
+          parts = re.split(r"^=== FILE: (.+?) ===\n", text, flags=re.M)
+          for path, content in zip(parts[1::2], parts[2::2]):
+              if path.startswith("common/"):
+                  dest = pathlib.Path("work", variant, "src/main/java/at/livestats", path.split("/", 1)[1])
+              elif path.startswith(variant + "/"):
+                  dest = pathlib.Path("work", path)
+              else:
+                  continue
+              dest.parent.mkdir(parents=True, exist_ok=True)
+              dest.write_text(content, encoding="utf-8")
+              print("geschrieben:", dest)
+          PY
+      - name: Versionen ermitteln
+        run: |
+          python3 - ${{ matrix.variant }} ${{ matrix.mc }} "${{ matrix.fallback }}" <<'PY'
+          import json, pathlib, re, sys, urllib.parse, urllib.request
+          variant, mc, fallback = sys.argv[1], sys.argv[2], sys.argv[3]
+          p = pathlib.Path("work", variant, "gradle.properties")
+          t = p.read_text()
+          def get(url):
+              req = urllib.request.Request(url, headers={"User-Agent": "mc-stats-site"})
+              return urllib.request.urlopen(req, timeout=30).read().decode()
+          if "fabric_version=auto" in t:
+              ver = fallback
+              try:
+                  q = urllib.parse.urlencode({"game_versions": json.dumps([mc]), "loaders": json.dumps(["fabric"])})
+                  vers = json.loads(get("https://api.modrinth.com/v2/project/fabric-api/version?" + q))
+                  if vers:
+                      ver = vers[0]["version_number"]
+              except Exception as e:
+                  print("Modrinth nicht erreichbar:", e)
+              if not ver:
+                  sys.exit("Keine Fabric-API-Version für Minecraft " + mc + " gefunden. Trage fabric_version in mod/bundle.txt ein (siehe fabricmc.net/develop).")
+              t = t.replace("fabric_version=auto", "fabric_version=" + ver)
+          if "loom_version=auto" in t:
+              meta = get("https://maven.fabricmc.net/net/fabricmc/fabric-loom/maven-metadata.xml")
+              rel = re.search(r"<release>([^<]+)</release>", meta)
+              if not rel:
+                  sys.exit("Keine Loom-Version gefunden. Trage loom_version in mod/bundle.txt ein (siehe fabricmc.net/develop).")
+              t = t.replace("loom_version=auto", "loom_version=" + rel.group(1))
+          p.write_text(t)
+          print(t)
+          PY
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: ${{ matrix.gradle }}
+      - name: Bauen
+        working-directory: work/${{ matrix.variant }}
+        run: gradle build --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: livestats-${{ matrix.variant }}
+          path: |
+            work/${{ matrix.variant }}/build/libs/*.jar
+            !work/${{ matrix.variant }}/build/libs/*-sources.jar
