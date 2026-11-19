@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-19T19:42+00:00",
+ "updated": "2026-11-19T19:45+00:00",
  "players": [
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -915,7 +915,7 @@
     "picked": 110246,
     "broken": 65
    },
-   "skin": "",
+   "skin": "d2d53c1d5af2a65189b0793b373fd5d442a4eca7ecd788adb1e8bda37faf4513",
    "slim": false,
    "week_hours": 0.0
   },
@@ -1145,7 +1145,7 @@
     "picked": 75835,
     "broken": 66
    },
-   "skin": "",
+   "skin": "54d8d3929e9afdf30230f7150232d0308a5c0efe8e76c34c325414f89c2a24d6",
    "slim": false,
    "week_hours": 0.0
   },
@@ -1597,7 +1597,7 @@
     "picked": 36909,
     "broken": 60
    },
-   "skin": "",
+   "skin": "17f3546d00d9f66384830154ce062c67853057f6eff58d69573ef5a5dda507f0",
    "slim": false,
    "week_hours": 0.0
   },
@@ -1829,7 +1829,7 @@
   "max": 8,
   "list": [],
   "address": "chillsmp187.exaroton.me",
-  "checked": "2026-11-19T19:42+00:00"
+  "checked": "2026-11-19T19:45+00:00"
  },
  "challenge": {
   "stat": "picked",
