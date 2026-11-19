@@ -1,27 +1,27 @@
 {
- "updated": "2026-11-19T19:26+00:00",
+ "updated": "2026-11-19T19:32+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7046,
-   "hours": 117.4,
+   "minutes": 7051,
+   "hours": 117.5,
    "deaths": 14,
    "mob_kills": 9880,
    "player_kills": 8,
    "entities_killed": 9413,
-   "items_used": 144821,
+   "items_used": 145287,
    "damage": 32266,
    "blocks_mined": 78817,
    "diamonds": 201,
-   "km_travelled": 1115.4,
-   "jumps": 81128,
+   "km_travelled": 1115.5,
+   "jumps": 81134,
    "travel": {
     "boat": 28.9,
     "crouch": 24.3,
     "climb": 0.5,
     "minecart": 245.6,
-    "walk": 62.3,
+    "walk": 62.4,
     "walk_under_water": 27.1,
     "horse": 146.6,
     "sprint": 104.0,
@@ -117,7 +117,7 @@
     ],
     [
      "bone_meal",
-     7389
+     7768
     ],
     [
      "diamond_sword",
@@ -162,7 +162,7 @@
     "deepslate": 230,
     "aviate_km": 0.0
    },
-   "week_hours": 21.0
+   "week_hours": 21.1
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -998,6 +998,6 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-19T19:26+00:00"
+  "checked": "2026-11-19T19:32+00:00"
  }
 }
