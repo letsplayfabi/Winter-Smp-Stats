@@ -1,31 +1,31 @@
 {
- "updated": "2026-11-19T18:04+00:00",
+ "updated": "2026-11-19T18:08+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 6946,
+   "minutes": 6951,
    "hours": 115.8,
    "deaths": 14,
    "mob_kills": 9873,
    "player_kills": 8,
    "entities_killed": 9406,
-   "items_used": 141094,
+   "items_used": 141119,
    "damage": 32137,
-   "blocks_mined": 78697,
+   "blocks_mined": 78722,
    "diamonds": 201,
-   "km_travelled": 1107.0,
-   "jumps": 80526,
+   "km_travelled": 1110.0,
+   "jumps": 80573,
    "travel": {
     "boat": 28.9,
     "crouch": 23.8,
     "climb": 0.5,
-    "minecart": 243.7,
-    "walk": 62.0,
+    "minecart": 245.6,
+    "walk": 62.1,
     "walk_under_water": 27.1,
     "horse": 146.6,
     "sprint": 102.8,
-    "fly": 408.0,
+    "fly": 409.0,
     "walk_on_water": 9.7,
     "swim": 52.8,
     "nautilus": 1.1
@@ -91,7 +91,7 @@
     ],
     [
      "short_grass",
-     2450
+     2452
     ],
     [
      "iron_ore",
@@ -148,8 +148,8 @@
    ],
    "death_other": 6,
    "f": {
-    "eaten": 1239,
-    "fall_m": 30819,
+    "eaten": 1240,
+    "fall_m": 30830,
     "trades": 136,
     "fish": 134,
     "bred": 611,
@@ -998,6 +998,6 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-19T18:04+00:00"
+  "checked": "2026-11-19T18:08+00:00"
  }
 }
