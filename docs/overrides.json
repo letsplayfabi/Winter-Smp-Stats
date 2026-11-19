@@ -160,7 +160,8 @@
     "weekly": true,
     "milestones": true,
     "achievements": true,
-    "goals": true
+    "goals": false,
+    "recap": true
   },
   "badges": {
     "names": false,
@@ -193,5 +194,12 @@
   "facts": {
     "show": true,
     "custom": []
+  },
+  "showGames": true,
+  "showGallery": true,
+  "challenge": {
+    "enabled": true,
+    "stat": "",
+    "week": null
   }
 }
