@@ -1,33 +1,33 @@
 {
- "updated": "2026-11-19T15:36+00:00",
+ "updated": "2026-11-19T15:41+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 6804,
-   "hours": 113.4,
+   "minutes": 6809,
+   "hours": 113.5,
    "deaths": 14,
-   "mob_kills": 9869,
+   "mob_kills": 9873,
    "player_kills": 8,
-   "entities_killed": 9402,
-   "items_used": 132897,
-   "damage": 32061,
-   "blocks_mined": 78670,
+   "entities_killed": 9406,
+   "items_used": 133359,
+   "damage": 32137,
+   "blocks_mined": 78685,
    "diamonds": 201,
-   "km_travelled": 1096.2,
-   "jumps": 79985,
+   "km_travelled": 1098.6,
+   "jumps": 80144,
    "travel": {
     "boat": 28.9,
-    "crouch": 23.3,
+    "crouch": 23.4,
     "climb": 0.5,
-    "minecart": 238.7,
-    "walk": 61.3,
-    "walk_under_water": 27.0,
+    "minecart": 240.0,
+    "walk": 61.4,
+    "walk_under_water": 27.1,
     "horse": 146.6,
-    "sprint": 102.1,
-    "fly": 404.3,
+    "sprint": 102.3,
+    "fly": 404.8,
     "walk_on_water": 9.7,
-    "swim": 52.7,
+    "swim": 52.8,
     "nautilus": 1.1
    },
    "top_mobs": [
@@ -45,7 +45,7 @@
     ],
     [
      "zombie",
-     335
+     337
     ],
     [
      "evoker",
@@ -91,7 +91,7 @@
     ],
     [
      "short_grass",
-     2435
+     2439
     ],
     [
      "iron_ore",
@@ -109,7 +109,7 @@
     ],
     [
      "smooth_stone",
-     8714
+     9165
     ],
     [
      "wheat_seeds",
@@ -117,7 +117,7 @@
     ],
     [
      "diamond_sword",
-     5717
+     5726
     ],
     [
      "trident",
@@ -148,21 +148,21 @@
    ],
    "death_other": 6,
    "f": {
-    "eaten": 1091,
-    "fall_m": 30671,
+    "eaten": 1093,
+    "fall_m": 30708,
     "trades": 136,
     "fish": 134,
     "bred": 600,
-    "sleeps": 136
+    "sleeps": 137
    },
    "x": {
     "debris": 43,
-    "creepers": 57,
+    "creepers": 58,
     "netherrack": 25139,
     "deepslate": 230,
     "aviate_km": 0.0
    },
-   "week_hours": 17.0
+   "week_hours": 17.1
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -998,6 +998,6 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-19T15:36+00:00"
+  "checked": "2026-11-19T15:41+00:00"
  }
 }
