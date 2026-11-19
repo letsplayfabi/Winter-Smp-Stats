@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """Holt Spielerstatistiken von exaroton und schreibt docs/stats.json + docs/history.json.
 Test ohne API: python fetch_stats.py --local ./testdaten"""
-import json, os, sys, urllib.error, urllib.parse, urllib.request
+import base64, json, os, random, re, sys, urllib.error, urllib.parse, urllib.request
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
+import challenges as CH
+
 API = "https://api.exaroton.com/v1"
 D = Path("docs")
+SKINS = D / "skins"
 
 
 FOOD = set("""apple golden_apple enchanted_golden_apple bread carrot golden_carrot potato baked_potato poisonous_potato beetroot beetroot_soup
@@ -87,6 +90,90 @@ def mojang(uuid):
         return None
 
 
+def jl(p, default):
+    try:
+        return json.loads(Path(p).read_text())
+    except Exception:
+        return default
+
+
+def skin(uuid, prev):
+    """Holt den aktuellen Skin direkt von Mojang und legt ihn unter docs/skins/<hash>.png ab.
+    Neuer Skin = neuer Dateiname, deshalb gibt es keine Cache-Probleme auf der Seite."""
+    try:
+        j = json.loads(get("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.replace("-", "")))
+        tex = next(p["value"] for p in j.get("properties", []) if p.get("name") == "textures")
+        sk = (json.loads(base64.b64decode(tex)).get("textures") or {}).get("SKIN")
+        if not sk:
+            return {"skin": "", "slim": False}
+        h = sk["url"].rstrip("/").split("/")[-1]
+        if not re.fullmatch(r"[0-9a-f]{16,80}", h):
+            raise ValueError("unerwartete Skin-Adresse")
+        f = SKINS / f"{h}.png"
+        if not f.exists():
+            data = get(sk["url"].replace("http://", "https://"), {"User-Agent": "mc-stats-site/1.0"})
+            if not data.startswith(b"\x89PNG"):
+                raise ValueError("kein PNG")
+            SKINS.mkdir(parents=True, exist_ok=True)
+            f.write_bytes(data)
+            print(f"  neuer Skin für {j.get('name', uuid)}")
+        return {"skin": h, "slim": (sk.get("metadata") or {}).get("model") == "slim"}
+    except Exception as e:
+        print(f"  Skin für {uuid[:8]} nicht lesbar ({e}) – behalte den alten")
+        return prev
+
+
+def vienna_now():
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.now(ZoneInfo("Europe/Vienna"))
+    except Exception:
+        return datetime.now(timezone(timedelta(hours=1)))
+
+
+def week_id(d):
+    y, w, _ = d.isocalendar()
+    return f"{y}-W{w:02d}"
+
+
+def challenge(out, players, ov):
+    """Wochen-Challenge: zählt pro Spieler, wie viel seit Montag 0:00 (Wiener Zeit) dazugekommen ist."""
+    cfg = ov.get("challenge") or {}
+    if cfg.get("enabled") is False:
+        return None
+    today = vienna_now().date()
+    wk, start = week_id(today), today - timedelta(days=today.weekday())
+    cp = out / "challenge.json"
+    st = jl(cp, {})
+    cur = {p["uuid"]: p.get("ch", {}) for p in players}
+    names = {p["uuid"]: p["name"] for p in players}
+    forced = cfg.get("stat") if cfg.get("stat") in CH.BY_KEY and cfg.get("week") in (None, "", wk) else None
+    hist = st.get("history") or []
+    if st.get("week") != wk:
+        if st.get("week") and st.get("stat") in CH.BY_KEY:
+            hist = (hist + [{**CH.info(st["stat"]), "week": st["week"], "start": st.get("start"), "ranking": st.get("ranking") or []}])[-12:]
+        recent = [h.get("stat") for h in hist[-4:]]
+        if forced:
+            stat = forced
+        else:
+            cand = sorted(k for k in CH.BY_KEY if k not in recent and sum(v.get(k, 0) for v in cur.values()) > 0) \
+                or sorted(k for k in CH.BY_KEY if k not in recent)
+            stat = random.Random(wk).choice(cand)
+        st = {"week": wk, "start": start.isoformat(), "stat": stat, "base": cur, "history": hist}
+        print(f"  Neue Wochen-Challenge {wk}: {CH.info(stat)['label']}")
+    elif forced and forced != st.get("stat"):
+        st["stat"] = forced
+    stat, base = st["stat"], st.setdefault("base", {})
+    dec = CH.info(stat)["dec"]
+    for u in cur:
+        base.setdefault(u, {})  # neuer Spieler: zählt ab 0
+    vals = {u: round(cur[u].get(stat, 0) - base[u].get(stat, 0), dec) for u in cur}
+    st["ranking"] = sorted(([u, names[u], v] for u, v in vals.items() if v > 0), key=lambda r: -r[2])
+    cp.write_text(json.dumps(st, ensure_ascii=False, separators=(",", ":")))
+    return {**CH.info(stat), "week": wk, "start": st["start"], "end": (start + timedelta(days=6)).isoformat(),
+            "ranking": st["ranking"], "last": hist[-1] if hist else None}
+
+
 def summarize(uuid, raw, name):
     s = raw.get("stats", {})
     c, m, k, u, kb = (s.get(x, {}) for x in ("minecraft:custom", "minecraft:mined", "minecraft:killed", "minecraft:used", "minecraft:killed_by"))
@@ -130,9 +217,14 @@ def process(sv, local, first):
     print(f"{sv['name']}: suche Statistiken in Welt-Ordner {worlds}")
     files, names = load(base, sid, worlds)
     players = [summarize(u, raw, names.get(u.lower()) or mojang(u) or u[:8]) for u, raw in files.items()]
+    for p in players:
+        p["ch"] = CH.compute(files[p["uuid"]])
     print(f"{sv['name']}: {len(players)} Spieler, Namen: {[p['name'] for p in players]}")
     out = D / "data" / sv["key"]
     out.mkdir(parents=True, exist_ok=True)
+    prev = {p["uuid"]: {"skin": p.get("skin", ""), "slim": p.get("slim", False)} for p in jl(out / "stats.json", {}).get("players", [])}
+    for p in players:
+        p.update(prev.get(p["uuid"], {"skin": "", "slim": False}) if local else skin(p["uuid"], prev.get(p["uuid"], {"skin": "", "slim": False})))
     hp = out / "history.json"
     if first and not hp.exists() and (D / "history.json").exists():
         hp.write_text((D / "history.json").read_text())
@@ -164,8 +256,13 @@ def process(sv, local, first):
                       "checked": datetime.now(timezone.utc).isoformat(timespec="minutes")}
         except Exception as e:
             print("Status nicht lesbar:", e)
+    try:
+        chal = challenge(out, players, jl(D / "overrides.json", {}))
+    except Exception as e:
+        print("Wochen-Challenge nicht berechnet:", e)
+        chal = None
     (out / "stats.json").write_text(json.dumps(
-        {"updated": datetime.now(timezone.utc).isoformat(timespec="minutes"), "players": players, "status": status},
+        {"updated": datetime.now(timezone.utc).isoformat(timespec="minutes"), "players": players, "status": status, "challenge": chal},
         ensure_ascii=False, indent=1))
 
 
@@ -183,6 +280,15 @@ def main():
             failed.append(sv["name"])
     ok = [{"key": s["key"], "name": s["name"], "extra": s.get("extra", []), "hide": s.get("hide", [])} for s in servers if (D / "data" / s["key"] / "stats.json").exists()]
     (D / "servers.json").write_text(json.dumps(ok, ensure_ascii=False))
+    # Liste der Challenge-Statistiken fürs Admin-Panel
+    (D / "data" / "challenges.json").write_text(json.dumps([{"key": k, "label": l, "unit": u} for k, l, u, _, _ in CH.POOL], ensure_ascii=False))
+    # alte Skins aufräumen, die kein Spieler mehr trägt
+    SKINS.mkdir(parents=True, exist_ok=True)
+    (SKINS / ".gitkeep").touch()
+    used = {p.get("skin") for s in servers for p in jl(D / "data" / s["key"] / "stats.json", {}).get("players", [])}
+    for f in SKINS.glob("*.png"):
+        if f.stem not in used:
+            f.unlink()
     if failed:
         sys.exit(1)
 
