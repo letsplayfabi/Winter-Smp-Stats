@@ -183,11 +183,11 @@
   ],
   "goals": [
     {
-      "id": "g1794337462948",
-      "name": "1 Million Blöcke abbauen",
-      "metric": "mined",
-      "target": 1000000,
-      "server": "all",
+      "id": "g1795118248810",
+      "name": "Full Diamond Beacon",
+      "metric": "diamonds",
+      "target": 1476,
+      "server": "winter",
       "announce": true
     }
   ],
