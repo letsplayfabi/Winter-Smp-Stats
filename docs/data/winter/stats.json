@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-18T23:49+00:00",
+ "updated": "2026-11-19T05:39+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -162,7 +162,7 @@
     "deepslate": 230,
     "aviate_km": 0.0
    },
-   "week_hours": 17.0
+   "week_hours": 16.3
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -333,7 +333,7 @@
     "deepslate": 1230,
     "aviate_km": 0.0
    },
-   "week_hours": 22.2
+   "week_hours": 17.8
   },
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -503,7 +503,7 @@
     "deepslate": 105,
     "aviate_km": 0.0
    },
-   "week_hours": 6.1
+   "week_hours": 3.9
   },
   {
    "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
@@ -987,7 +987,7 @@
     "deepslate": 0,
     "aviate_km": 0.0
    },
-   "week_hours": 0.4
+   "week_hours": 0.0
   }
  ],
  "status": {
@@ -996,6 +996,6 @@
   "max": 20,
   "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-18T23:49+00:00"
+  "checked": "2026-11-19T05:39+00:00"
  }
 }
