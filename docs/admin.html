@@ -33,17 +33,31 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 <label style="display:block;margin:8px 0;color:var(--mu);font-size:13px"><input type="checkbox" id="rem"> Token mit diesem Passwort auf diesem Gerät merken</label>
 <button id="unl" class="s" hidden>🔓 Mit Passwort entsperren</button> <button id="fg" class="s" hidden>Gespeicherten Zugang löschen</button></div></section>
 <div id="ed" hidden>
-<div class="tabs"><button data-t="a" class="on">⚙️ Allgemein</button><button data-t="e">📅 Events</button><button data-t="x">🏆 Erfolge</button><button data-t="c">📊 Eigene Stats</button><button data-t="g">🎯 Ziele</button></div>
-<section class="card" data-tab="a"><h2>🌍 Server</h2><p class="mu">Alles unten (Seite, Kategorien, Spieler) gilt für den gewählten Server. Farben und Events gelten für alle.</p><select id="sel"></select><label style="display:block;margin-top:12px"><input type="checkbox" id="sa"> Admin-Reiter auf der Seite anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="sg"> Reiter „Spiele“ (Minispiele) anzeigen</label></section>
+<div class="tabs"><button data-t="a" class="on">⚙️ Allgemein</button><button data-t="e">📅 Events</button><button data-t="x">🏆 Erfolge</button><button data-t="c">📊 Eigene Stats</button><button data-t="g">🎯 Ziele</button><button data-t="w">🎲 Challenge</button><button data-t="p">🖼️ Galerie</button></div>
+<section class="card" data-tab="w" hidden><h2>🎲 Wochen-Challenge</h2>
+<p class="mu">Jede Woche (Montag bis Sonntag) gibt es eine Rangliste für eine Statistik. Gezählt wird nur, was in dieser Woche dazukommt. Am Montag wird der Gewinner auf Discord verkündet.</p>
+<label style="display:block;margin-bottom:12px"><input type="checkbox" id="chen"> Wochen-Challenge auf der Seite anzeigen</label>
+<div class="g"><label>Statistik<select id="chs"></select></label><label style="color:var(--fg);align-self:end"><input type="checkbox" id="chw"> Nur diese Woche – danach wieder zufällig</label></div>
+<div style="margin:12px 0;display:flex;gap:8px;flex-wrap:wrap"><button id="chrn" class="s">🎲 Zufällige auswählen</button><button id="chap">💾 Speichern und sofort anwenden</button></div>
+<p class="mu">Bei „Zufällig“ wählt die Seite jeden Montag eine Statistik aus, bei der auf dem Server schon jemand etwas geschafft hat, und wiederholt keine der letzten 4 Wochen.</p>
+<div id="chnow"></div></section>
+<section class="card" data-tab="p" hidden><h2>🖼️ Galerie</h2>
+<p class="mu">Bilder werden sofort gespeichert, ohne „Speichern“ unten. Wählst du mehrere Bilder auf einmal aus, bekommen alle denselben Titel.</p>
+<div class="g"><label>Titel<input id="gtn" type="text" placeholder="Unsere Basis"></label><label>Von (Erbauer)<input id="gby" type="text" placeholder="optional"></label><label>Datum<input id="gdt" type="date"></label>
+<label>Server<select id="gsv"></select></label><label>Bild(er)<input id="gim" type="file" accept="image/*" multiple></label></div>
+<label style="display:block;margin:12px 0;color:var(--mu);font-size:13px">Beschreibung<textarea id="gds"></textarea></label>
+<p class="mu" id="gph"></p><button id="gad">➕ Hochladen</button> <button id="gcn" class="s" hidden>Abbrechen</button><div id="gll" style="margin-top:14px"></div></section>
+<section class="card" data-tab="a"><h2>🌍 Server</h2><p class="mu">Alles unten (Seite, Kategorien, Spieler) gilt für den gewählten Server. Farben und Events gelten für alle.</p><select id="sel"></select><label style="display:block;margin-top:12px"><input type="checkbox" id="sa"> Admin-Reiter auf der Seite anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="sg"> Reiter „Spiele“ (Minispiele) anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="sgl"> Reiter „Galerie“ anzeigen</label></section>
 <section class="card" data-tab="a"><h2>💬 Discord-Button (alle Server)</h2><div class="g"><label>Link<input id="dl" type="text"></label><label>Button-Text<input id="dt" type="text"></label></div><p class="mu" style="margin-top:8px">Link leer lassen = Button ausblenden.</p>
 <h3 style="margin:14px 0 6px;font-size:15px">Discord-Meldungen (Webhook)</h3>
 <p class="mu">Der Webhook-Link kommt als GitHub-Secret <b>DISCORD_WEBHOOK</b> (siehe Anleitung), nicht hierher. Hier wählst du nur, was gemeldet wird.</p>
-<label style="display:block"><input type="checkbox" id="nev"> Neue Events</label><label style="display:block"><input type="checkbox" id="nwk"> Wochen-Top-3 (montags)</label><label style="display:block"><input type="checkbox" id="nms"> Meilensteine (z. B. 100 Diamanten)</label><label style="display:block"><input type="checkbox" id="nac"> Erfolge (neue Erfolge und Wechsel beim Platz 1)</label><label style="display:block"><input type="checkbox" id="ngl"> Server-Ziele (wenn erreicht)</label>
+<label style="display:block"><input type="checkbox" id="nev"> Neue Events</label><label style="display:block"><input type="checkbox" id="nwk"> Wochenrückblick (montags: Top 3, Challenge-Gewinner)</label><label style="display:block"><input type="checkbox" id="nrc"> Wochenrückblick als Bild</label><label style="display:block"><input type="checkbox" id="nms"> Meilensteine (z. B. 100 Diamanten)</label><label style="display:block"><input type="checkbox" id="nac"> Erfolge (neue Erfolge und Wechsel beim Platz 1)</label><label style="display:block"><input type="checkbox" id="ngl"> Server-Ziele (wenn erreicht)</label>
 <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button id="dtest" class="s">📨 Testnachricht senden</button></div></section>
 <section class="card" data-tab="a"><h2>🏷️ Seite</h2><div class="g">
 <label>Titel<input id="st" type="text"></label><label>Einleitung<input id="si" type="text"></label></div></section>
 <section class="card" data-tab="a"><h2>🗂️ Kategorien dieses Servers</h2><p class="mu">Häkchen = wird auf diesem Server angezeigt (so schaltest du eine Kategorie bei einem Server mit einem Klick zu oder ab). Namensfeld leer lassen = Standardname.</p><div class="g" id="cats"></div></section>
-<section class="card" data-tab="a"><h2>👥 Spieler</h2><p class="mu">Anzeigename, Titel, Zitat/Motto (erscheint im Profil), eigene Farbe (↺ = Standardfarbe nach Platz) und Ausblenden.</p><div id="rows"></div></section>
+<section class="card" data-tab="a"><h2>👥 Spieler</h2><p class="mu">Anzeigename, Titel, Zitat/Motto (erscheint im Profil), eigene Farbe (↺ = Standardfarbe nach Platz) und Ausblenden.</p>
+<p class="mu">Skins werden bei jeder Aktualisierung direkt von Minecraft geholt. Hat jemand gerade seinen Skin geändert: <button id="skr" class="s">🔄 Skins jetzt neu laden</button></p><div id="rows"></div></section>
 <section class="card" data-tab="a"><h2>💡 „Wusstest du?“ (alle Server)</h2>
 <p class="mu">Lustige Fakten aus den Statistiken, z. B. „… stirbt im Schnitt alle 20 Minuten“. Mit „Noch einer“ blättern Besucher weiter.</p>
 <label style="display:block"><input type="checkbox" id="fs"> Box anzeigen</label>
@@ -88,6 +102,8 @@ Ozean:{bg:"#06141f",panel:"#0c2233",text:"#eaf6ff",muted:"#86a5bd",accent:"#2ec4
 Hell:{bg:"#f1f4f9",panel:"#ffffff",text:"#1b2433",muted:"#5b6b82",accent:"#1f9d55",players:["#1f9d55","#2b7de9","#d99a1c","#8a5cd6","#e57a3c","#d6455d"]}};
 const DEFDC="https://discord.gg/87mqfdznp4";
 const $=id=>document.getElementById(id);
+function setFace(im,p,z){const web=()=>{im.onerror=()=>im.remove();im.src=`https://mc-heads.net/avatar/${p.uuid}/${z}`};if(!p.skin)return web();
+  const s=new Image();s.onerror=web;s.onload=()=>{const c=document.createElement("canvas");c.width=c.height=8;const x=c.getContext("2d");x.drawImage(s,8,8,8,8,0,0,8,8);x.drawImage(s,40,8,8,8,0,0,8,8);im.src=c.toDataURL()};s.src="skins/"+p.skin+".png"}
 function el(tag,text,parent,cls){const e=document.createElement(tag);e.textContent=text;if(cls)e.className=cls;parent&&parent.append(e);return e}
 const H=()=>({Authorization:"Bearer "+tk.value.trim(),Accept:"application/vnd.github+json"});
 const say=t=>msg.textContent=t;
@@ -109,7 +125,7 @@ async function buildServer(key){
   cats.replaceChildren();catEls=[];const sv0=SERVERS.find(x=>x.key===key)||{},defOn=[...CK.map(c=>c[0]),...(sv0.extra||[])].filter(k=>!(sv0.hide||[]).includes(k)),on=sv.enabled||defOn;
   ALLK.forEach(([k,d])=>{const l=el("label","",cats),c=document.createElement("input"),i=document.createElement("input");c.type="checkbox";c.checked=on.includes(k);i.type="text";i.placeholder=d;i.value=(sv.categories||{})[k]||"";l.append(c,document.createTextNode(" "+d),i);catEls.push([k,i,c])});
   rows.replaceChildren();rowEls=[];
-  players.forEach(p=>{const o=(sv.players||{})[p.uuid]||{},r=el("div","",rows,"pl"),im=document.createElement("img");im.src=`https://mc-heads.net/avatar/${p.uuid}/36`;im.width=im.height=36;im.onerror=()=>im.remove();r.append(im);
+  players.forEach(p=>{const o=(sv.players||{})[p.uuid]||{},r=el("div","",rows,"pl"),im=document.createElement("img");im.width=im.height=36;im.style.imageRendering="pixelated";setFace(im,p,36);r.append(im);
     el("b",p.name,r);const a=document.createElement("input"),t=document.createElement("input"),c=document.createElement("input"),h=document.createElement("input"),q=document.createElement("input");
     a.type=t.type="text";a.placeholder="Anzeigename";t.placeholder="Titel";a.value=o.display_name||"";t.value=o.title||"";
     c.type="color";c.value=o.color||"#888888";if(o.color)c.dataset.s=1;c.oninput=()=>c.dataset.s=1;
@@ -120,7 +136,7 @@ function collect(){
   const sv={site:{title:st.value,intro:si.value},categories:{},players:{}};
   catEls.forEach(([k,i])=>{if(i.value)sv.categories[k]=i.value});sv.enabled=catEls.filter(x=>x[2].checked).map(x=>x[0]);
   rowEls.forEach(([u,a,t,c,h,q])=>{if(a.value||t.value||q.value||h.checked||c.dataset.s)sv.players[u]={display_name:a.value,title:t.value,quote:q.value,hidden:h.checked,...(c.dataset.s?{color:c.value}:{})}});
-  OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;OV.showGames=sg.checked;OV.achievements=ACH;OV.goals=GOALS;OV.facts={show:fs.checked,custom:ft.value.split("\n").map(x=>x.trim()).filter(Boolean)};OV.custom=CUS;OV.badges={names:bnm.checked,profile:bpr.checked};OV.notify={events:nev.checked,weekly:nwk.checked,milestones:nms.checked,achievements:nac.checked,goals:ngl.checked};
+  OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;OV.showGames=sg.checked;OV.showGallery=sgl.checked;OV.challenge={enabled:chen.checked,stat:chs.value,week:chs.value&&chw.checked?vWeek():null};OV.achievements=ACH;OV.goals=GOALS;OV.facts={show:fs.checked,custom:ft.value.split("\n").map(x=>x.trim()).filter(Boolean)};OV.custom=CUS;OV.badges={names:bnm.checked,profile:bpr.checked};OV.notify={events:nev.checked,weekly:nwk.checked,milestones:nms.checked,achievements:nac.checked,goals:ngl.checked,recap:nrc.checked};
 }
 let EDIT=null;
 function renderEvents(){const b=$("evl");b.replaceChildren();if(!EVS.length)el("p","Noch keine Events.",b,"mu");
@@ -221,11 +237,12 @@ ld.onclick=async()=>{
     plEls=PRE.Standard.players.map((c,i)=>picker(cl,"Standardfarbe Platz "+(i+1),c));
     setTheme({...PRE.Standard,...(OV.theme||{}),players:(OV.theme||{}).players||PRE.Standard.players});
     sel.value=SERVERS[0].key;await buildServer(SERVERS[0].key);EVS=(await evList()).list;renderEvents();
-    dl.value=(OV.discord||{}).url??DEFDC;dt.value=(OV.discord||{}).text||"Discord";sa.checked=OV.showAdmin!==false;sg.checked=OV.showGames!==false;
+    dl.value=(OV.discord||{}).url??DEFDC;dt.value=(OV.discord||{}).text||"Discord";sa.checked=OV.showAdmin!==false;sg.checked=OV.showGames!==false;sgl.checked=OV.showGallery!==false;nrc.checked=(OV.notify||{}).recap!==false;
     ACH=OV.achievements||[];fs.checked=(OV.facts||{}).show!==false;ft.value=((OV.facts||{}).custom||[]).join("\n");bnm.checked=(OV.badges||{}).names!==false;bpr.checked=(OV.badges||{}).profile!==false;const nf=OV.notify||{};nev.checked=nf.events!==false;nwk.checked=nf.weekly!==false;nms.checked=nf.milestones!==false;nac.checked=nf.achievements!==false;
     am.replaceChildren();ACHM.forEach(([k,l])=>el("option",l,am).value=k);asv.replaceChildren();el("option","Alle Server",asv).value="all";SERVERS.forEach(x=>el("option",x.name,asv).value=x.key);resetAch();renderAch();
     CUS=OV.custom||[];cs.replaceChildren();el("option","Alle Server",cs).value="all";SERVERS.forEach(x=>el("option",x.name,cs).value=x.key);renderCus();
     GOALS=OV.goals||[];gs.replaceChildren();el("option","Alle Server",gs).value="all";SERVERS.forEach(x=>el("option",x.name,gs).value=x.key);fillGm();renderGoals();ngl.checked=(OV.notify||{}).goals!==false;
+    gsv.replaceChildren();el("option","Alle Server",gsv).value="all";SERVERS.forEach(x=>el("option",x.name,gsv).value=x.key);GAL=(await galList()).list;renderGal();resetGal();await chalLoad();
     ed.hidden=false;ab.hidden=false;tab("a");say("Geladen.");
     if(rem.checked&&pw.value){await lockTok(pw.value,tk.value.trim());fg.hidden=false;say("Geladen. 🔒 Zugang auf diesem Gerät gespeichert.")}
   }catch(e){say("Fehler: "+e.message)}
@@ -246,5 +263,39 @@ async function run(wf,label){
     if(j&&new Date(j.created_at)>t0){if(j.status==="completed")return say(j.conclusion==="success"?`✅ ${label} fertig.`:`❌ ${label} fehlgeschlagen (${j.conclusion}) – Details im Reiter Actions.`);say(`⏳ ${label} läuft …`)}}
   say("Der Lauf dauert länger – siehe Reiter Actions.")}
 rc.onclick=()=>run("update-stats.yml","Aktualisierung");
+skr.onclick=()=>run("update-stats.yml","Skin-Aktualisierung");
+// ---------- Wochen-Challenge ----------
+function vWeek(){const s=new Intl.DateTimeFormat("en-CA",{timeZone:"Europe/Vienna",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date()),d=new Date(s+"T00:00:00Z");
+  d.setUTCDate(d.getUTCDate()+3-(d.getUTCDay()+6)%7);const y=d.getUTCFullYear(),f=new Date(Date.UTC(y,0,4));return y+"-W"+String(1+Math.round(((d-f)/864e5-3+(f.getUTCDay()+6)%7)/7)).padStart(2,"0")}
+async function chalLoad(){let L=[];try{L=await (await fetch("data/challenges.json",{cache:"no-cache"})).json()}catch{}
+  chs.replaceChildren();el("option","🎲 Zufällig (jede Woche automatisch)",chs).value="";L.forEach(c=>el("option",c.label,chs).value=c.key);
+  const c=OV.challenge||{};chen.checked=c.enabled!==false;chs.value=c.stat&&(!c.week||c.week===vWeek())?c.stat:"";if(chs.value!==(c.stat&&(!c.week||c.week===vWeek())?c.stat:""))chs.value="";chw.checked=!c.stat||!!c.week;
+  const b=$("chnow");b.replaceChildren();if(!L.length)el("p","Die Liste der Statistiken erscheint nach der ersten Aktualisierung mit dem neuen Skript.",b,"mu");
+  for(const s of SERVERS){let d={};try{d=await (await fetch(`data/${s.key}/stats.json`,{cache:"no-cache"})).json()}catch{}const x=d.challenge;
+    el("p",`${s.name}: `+(x&&x.label?`diese Woche „${x.label}“ (bis ${x.end.split("-").reverse().join(".")})`:"noch keine Challenge – kommt mit der nächsten Aktualisierung"),b,"mu")}}
+chrn.onclick=()=>{const o=[...chs.options].slice(1);if(!o.length)return say("Noch keine Statistik-Liste vorhanden.");chs.value=o[Math.floor(Math.random()*o.length)].value;say(`🎲 „${chs.selectedOptions[0].textContent}“ – jetzt speichern, damit es gilt.`)};
+chap.onclick=async()=>{await sv.onclick();if(!/^❌/.test(msg.textContent)){await run("update-stats.yml","Challenge-Aktualisierung");chalLoad()}};
+// ---------- Galerie ----------
+let GAL=[],GEDT=null;
+async function galList(){const f=await getFile("docs/gallery.json");return{sha:f&&f.sha,list:f?JSON.parse(f.text).items||[]:[]}}
+function renderGal(){const b=$("gll");b.replaceChildren();if(!GAL.length)el("p","Noch keine Bilder.",b,"mu");
+  [...GAL].sort((a,z)=>(z.date||"").localeCompare(a.date||"")).forEach(g=>{const r=el("div","",b,"ev"),i=document.createElement("img");i.src=g.image;i.alt="";r.append(i);const d=el("div","",r);el("b",g.title||"(ohne Titel)",d);
+    el("div",[g.by&&"von "+g.by,g.date,!g.server||g.server==="all"?"Alle Server":(SERVERS.find(s=>s.key===g.server)||{}).name].filter(Boolean).join(" · "),d,"mu");
+    el("button","✏️",r,"s").onclick=()=>editGal(g);el("button","🗑",r,"s").onclick=()=>delGal(g)})}
+function editGal(g){GEDT=g.id;gtn.value=g.title||"";gby.value=g.by||"";gdt.value=g.date||"";gsv.value=g.server||"all";gds.value=g.desc||"";gim.value="";gim.multiple=false;
+  gph.textContent=`Bearbeite „${g.title||"Bild"}“ – ein Bild nur auswählen, wenn es ersetzt werden soll.`;gad.textContent="💾 Änderung speichern";gcn.hidden=false;gtn.scrollIntoView({behavior:"smooth",block:"center"})}
+function resetGal(){GEDT=null;gtn.value=gby.value=gds.value=gim.value="";gdt.value=new Date().toISOString().slice(0,10);gsv.value="all";gim.multiple=true;gph.textContent="";gad.textContent="➕ Hochladen";gcn.hidden=true}
+gcn.onclick=resetGal;
+gad.onclick=async()=>{try{const files=[...gim.files];if(!GEDT&&!files.length)throw new Error("Bitte mindestens ein Bild auswählen");
+    const meta={title:gtn.value.trim(),by:gby.value.trim(),date:gdt.value,server:gsv.value,desc:gds.value},up=[];
+    for(let k=0;k<files.length;k++){say(`Lade Bild ${k+1} von ${files.length} hoch …`);const path=`gallery/g${Date.now()}-${k}.jpg`;await putFile("docs/"+path,await shrink(files[k],1600),"Galerie-Bild");up.push(path)}
+    say("Speichere Galerie …");const f=await galList();
+    if(GEDT){const g=f.list.find(x=>x.id===GEDT);if(!g)throw new Error("Das Bild gibt es nicht mehr");Object.assign(g,meta);if(up[0]){if(g.image)delImg(g.image);g.image=up[0]}}
+    else up.forEach((path,k)=>f.list.push({id:"p"+Date.now()+k,image:path,...meta}));
+    await putFile("docs/gallery.json",b64s(JSON.stringify({items:f.list},null,2)),GEDT?"Galerie geändert":"Galerie: Bilder hinzugefügt",f.sha);
+    GAL=f.list;renderGal();resetGal();say("✅ Gespeichert – in ca. 1 Minute auf der Seite sichtbar.")}catch(e){say("❌ "+e.message)}};
+async function delGal(g){try{if(!confirm(`„${g.title||"Bild"}“ löschen?`))return;const f=await galList();
+  await putFile("docs/gallery.json",b64s(JSON.stringify({items:f.list.filter(x=>x.id!==g.id)},null,2)),"Galerie: Bild gelöscht",f.sha);
+  if(g.image)delImg(g.image);GAL=f.list.filter(x=>x.id!==g.id);renderGal();if(GEDT===g.id)resetGal();say("✅ Bild gelöscht.")}catch(e){say("❌ "+e.message)}}
 dtest.onclick=()=>run("discord-test.yml","Testnachricht");
 </script></body></html>
