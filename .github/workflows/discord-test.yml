@@ -6,6 +6,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: python notify.py --test
+      - run: python -m pip install --quiet pillow || python -m pip install --quiet --break-system-packages pillow
+        continue-on-error: true
+      - run: python notify.py --test   # Testnachricht + Vorschau des Wochenrückblicks
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
