@@ -1,30 +1,30 @@
 {
- "updated": "2026-11-19T18:08+00:00",
+ "updated": "2026-11-19T18:14+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 6951,
-   "hours": 115.8,
+   "minutes": 6974,
+   "hours": 116.2,
    "deaths": 14,
-   "mob_kills": 9873,
+   "mob_kills": 9879,
    "player_kills": 8,
-   "entities_killed": 9406,
-   "items_used": 141119,
-   "damage": 32137,
-   "blocks_mined": 78722,
+   "entities_killed": 9412,
+   "items_used": 141290,
+   "damage": 32246,
+   "blocks_mined": 78804,
    "diamonds": 201,
-   "km_travelled": 1110.0,
-   "jumps": 80573,
+   "km_travelled": 1110.2,
+   "jumps": 80634,
    "travel": {
     "boat": 28.9,
-    "crouch": 23.8,
+    "crouch": 23.9,
     "climb": 0.5,
     "minecart": 245.6,
     "walk": 62.1,
     "walk_under_water": 27.1,
     "horse": 146.6,
-    "sprint": 102.8,
+    "sprint": 102.9,
     "fly": 409.0,
     "walk_on_water": 9.7,
     "swim": 52.8,
@@ -45,7 +45,7 @@
     ],
     [
      "zombie",
-     337
+     341
     ],
     [
      "evoker",
@@ -101,7 +101,7 @@
    "top_used": [
     [
      "diamond_pickaxe",
-     46452
+     46453
     ],
     [
      "diamond_shovel",
@@ -117,11 +117,11 @@
     ],
     [
      "diamond_sword",
-     5726
+     5737
     ],
     [
      "bone_meal",
-     5268
+     5277
     ],
     [
      "trident",
@@ -148,8 +148,8 @@
    ],
    "death_other": 6,
    "f": {
-    "eaten": 1240,
-    "fall_m": 30830,
+    "eaten": 1241,
+    "fall_m": 30842,
     "trades": 136,
     "fish": 134,
     "bred": 611,
@@ -162,7 +162,7 @@
     "deepslate": 230,
     "aviate_km": 0.0
    },
-   "week_hours": 19.4
+   "week_hours": 19.8
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -998,6 +998,6 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-19T18:08+00:00"
+  "checked": "2026-11-19T18:14+00:00"
  }
 }
