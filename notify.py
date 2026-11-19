@@ -83,6 +83,66 @@ def post(payload):
     urllib.request.urlopen(req, timeout=20).read()
 
 
+def post_png(payload, filename, png):
+    """Discord-Nachricht mit Bild-Anhang (multipart)."""
+    payload["allowed_mentions"] = {"parse": []}
+    payload["attachments"] = [{"id": 0, "filename": filename}]
+    b = "----mcstats" + os.urandom(8).hex()
+    body = (f'--{b}\r\nContent-Disposition: form-data; name="payload_json"\r\nContent-Type: application/json\r\n\r\n'.encode()
+            + json.dumps(payload).encode()
+            + f'\r\n--{b}\r\nContent-Disposition: form-data; name="files[0]"; filename="{filename}"\r\nContent-Type: image/png\r\n\r\n'.encode()
+            + png + f"\r\n--{b}--\r\n".encode())
+    req = urllib.request.Request(HOOK, body, {"Content-Type": f"multipart/form-data; boundary={b}", "User-Agent": "mc-stats-site/1.0"})
+    urllib.request.urlopen(req, timeout=30).read()
+
+
+def pname_ov(ov, key, p):
+    o = (((ov.get("servers") or {}).get(key) or {}).get("players") or {}).get(p["uuid"], {})
+    return None if o.get("hidden") else (o.get("display_name") or p["name"])
+
+
+def fmtv(v, unit="", dec=0):
+    t = f"{v:,.{dec}f}".replace(",", "X").replace(".", ",").replace("X", ".")
+    return t + (" " + unit if unit and unit != "×" else "×" if unit == "×" else "")
+
+
+def weekly_post(sv, ov, site, today, chal_seen=None, preview=False):
+    """Wochen-Top-3 + Wochen-Challenge + Rückblick-Bild. Gibt (Embed, PNG oder None) zurück, oder (None, None)."""
+    d = jl(D / "data" / sv["key"] / "stats.json", {})
+    players = [(pname_ov(ov, sv["key"], p), p) for p in d.get("players", [])]
+    players = [(n, p) for n, p in players if n]
+    byid = {p["uuid"]: (n, p) for n, p in players}
+    top = sorted([(p.get("week_hours", 0), n, p) for n, p in players if p.get("week_hours", 0) > 0], key=lambda t: -t[0])[:3]
+    medals = ["🥇", "🥈", "🥉"]
+    desc = "\n".join(f"{medals[i]} **{n}** – {fmtv(h, 'h', 1)}" for i, (h, n, _) in enumerate(top))
+    c = climber(sv, players, ov, today)
+    if c:
+        desc += f"\n\n📈 **Aufsteiger der Woche:** **{c[0]}** (Platz {c[1]} → {c[2]})"
+    chal, ch = d.get("challenge") or {}, None
+    last = chal.get("last") or {}
+    if last.get("week") and (preview or (chal_seen is not None and chal_seen.get(sv["key"]) != last["week"])):
+        if chal_seen is not None:
+            chal_seen[sv["key"]] = last["week"]
+        rk = [(byid[u][0], byid[u][1], v) for u, _n, v in last.get("ranking") or [] if u in byid][:3]
+        if rk:
+            desc += f"\n\n🎯 **Wochen-Challenge: {last['label']}**\n" + "\n".join(
+                f"{medals[i]} **{n}** – {fmtv(v, last.get('unit', ''), last.get('dec', 0))}" for i, (n, _p, v) in enumerate(rk))
+            ch = (last["label"], rk[0][0], rk[0][1], fmtv(rk[0][2], last.get("unit", ""), last.get("dec", 0)))
+    if chal.get("label"):
+        desc += f"\n\n🎲 **Neue Challenge diese Woche:** {chal['label']} – [zur Rangliste]({site}#{sv['key']})"
+    if not top and not ch:
+        return None, None
+    emb = {"title": f"🏆 Wochenrückblick – {sv['name']}" + (" (Vorschau)" if preview else ""), "url": site, "color": 0x52E585, "description": desc.strip()}
+    png = None
+    if (ov.get("notify") or {}).get("recap", True):
+        try:
+            import recap
+            png = recap.render(sv, players, ov.get("theme") or {}, top, ch, c)
+        except Exception as e:
+            print("Rückblick-Bild nicht erstellt:", e)
+    return emb, png
+
+
 def main():
     if "--test" in sys.argv:
         if not HOOK:
@@ -94,6 +154,16 @@ def main():
                               "url": os.environ.get("SITE_URL") or f"https://{owner.lower()}.github.io/{repo}/",
                               "description": "Dein Server-Leaderboard ist mit Discord verbunden. Neue Events, Wochen-Top-3 und Meilensteine landen ab jetzt hier."}]})
             print("Testnachricht gesendet.")
+            ov = jl(D / "overrides.json", {})
+            site = os.environ.get("SITE_URL") or f"https://{owner.lower()}.github.io/{repo}/"
+            for sv in jl(D / "servers.json", []):
+                emb, png = weekly_post(sv, ov, site, datetime.now(timezone.utc).date().isoformat(), preview=True)
+                if emb and png:
+                    emb["image"] = {"url": f"attachment://rueckblick-{sv['key']}.png"}
+                    post_png({"embeds": [emb]}, f"rueckblick-{sv['key']}.png", png)
+                elif emb:
+                    post({"embeds": [emb]})
+                print("Vorschau Wochenrückblick gesendet:", sv["name"])
         except Exception as e:
             print("FEHLER beim Senden:", e)
             sys.exit(1)
@@ -114,7 +184,7 @@ def main():
     owner, _, repo = os.environ.get("GITHUB_REPOSITORY", "/").partition("/")
     site = os.environ.get("SITE_URL") or f"https://{owner.lower()}.github.io/{repo}/"
     now = datetime.now(timezone.utc)
-    embeds, lines = [], []
+    embeds, lines, files = [], [], []
 
     def pname(key, p):
         o = (((ov.get("servers") or {}).get(key) or {}).get("players") or {}).get(p["uuid"], {})
@@ -181,14 +251,12 @@ def main():
                 else:
                     lines.append(f"🏆 {who} hat den Erfolg {title} erhalten ({sv['name']})")
         if weekly:
-            top = sorted([(p.get("week_hours", 0), n) for n, p in players if p.get("week_hours", 0) > 0], reverse=True)[:3]
-            if top:
-                medals = ["🥇", "🥈", "🥉"]
-                desc = "\n".join(f"{medals[i]} **{n}** – {h:.1f} h".replace(".", ",") for i, (h, n) in enumerate(top))
-                c = climber(sv, players, ov, today)
-                if c:
-                    desc += f"\n\n📈 **Aufsteiger der Woche:** **{c[0]}** (Platz {c[1]} → {c[2]})"
-                embeds.append({"title": f"🏆 Top 3 der Woche – {sv['name']}", "url": site, "color": 0x52E585, "description": desc})
+            emb, png = weekly_post(sv, ov, site, today, st.setdefault("chal", {}))
+            if emb and png:
+                emb["image"] = {"url": f"attachment://rueckblick-{sv['key']}.png"}
+                files.append(({"embeds": [emb]}, f"rueckblick-{sv['key']}.png", png))
+            elif emb:
+                embeds.append(emb)
     goals = st.setdefault("goals", {})
     for g in ov.get("goals") or []:
         m = g.get("metric", "")
@@ -232,6 +300,8 @@ def main():
     try:
         for p in posts:
             post(p)
+        for payload, name, png in files:
+            post_png(payload, name, png)
     except Exception as e:
         print("Discord-Meldung fehlgeschlagen:", e)
         return  # Stand nicht speichern, nächster Lauf versucht es erneut
