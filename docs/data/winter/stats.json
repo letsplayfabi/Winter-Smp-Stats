@@ -1,16 +1,16 @@
 {
- "updated": "2026-11-19T19:32+00:00",
+ "updated": "2026-11-19T19:37+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7051,
-   "hours": 117.5,
+   "minutes": 7056,
+   "hours": 117.6,
    "deaths": 14,
    "mob_kills": 9880,
    "player_kills": 8,
    "entities_killed": 9413,
-   "items_used": 145287,
+   "items_used": 145772,
    "damage": 32266,
    "blocks_mined": 78817,
    "diamonds": 201,
@@ -117,7 +117,7 @@
     ],
     [
      "bone_meal",
-     7768
+     8154
     ],
     [
      "diamond_sword",
@@ -162,7 +162,7 @@
     "deepslate": 230,
     "aviate_km": 0.0
    },
-   "week_hours": 21.1
+   "week_hours": 21.2
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -998,6 +998,6 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-19T19:32+00:00"
+  "checked": "2026-11-19T19:37+00:00"
  }
 }
