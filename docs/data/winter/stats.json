@@ -1,11 +1,11 @@
 {
- "updated": "2026-11-19T16:44+00:00",
+ "updated": "2026-11-19T16:49+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 6866,
-   "hours": 114.4,
+   "minutes": 6871,
+   "hours": 114.5,
    "deaths": 14,
    "mob_kills": 9873,
    "player_kills": 8,
@@ -162,7 +162,7 @@
     "deepslate": 230,
     "aviate_km": 0.0
    },
-   "week_hours": 18.0
+   "week_hours": 18.1
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -998,6 +998,6 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-19T16:44+00:00"
+  "checked": "2026-11-19T16:49+00:00"
  }
 }
