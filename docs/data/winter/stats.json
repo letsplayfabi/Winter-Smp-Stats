@@ -1,10 +1,10 @@
 {
- "updated": "2026-11-20T15:50+00:00",
+ "updated": "2026-11-20T20:06+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7125,
+   "minutes": 7126,
    "hours": 118.8,
    "deaths": 14,
    "mob_kills": 9885,
@@ -15,7 +15,7 @@
    "blocks_mined": 83217,
    "diamonds": 201,
    "km_travelled": 1118.8,
-   "jumps": 81535,
+   "jumps": 81540,
    "travel": {
     "boat": 28.9,
     "crouch": 25.2,
@@ -149,7 +149,7 @@
    "death_other": 6,
    "f": {
     "eaten": 1250,
-    "fall_m": 31102,
+    "fall_m": 31110,
     "trades": 136,
     "fish": 134,
     "bred": 619,
@@ -168,7 +168,7 @@
     "trades": 136,
     "villager_talk": 578,
     "sleeps": 141,
-    "jumps": 81535,
+    "jumps": 81540,
     "deaths": 14,
     "mobs": 9885,
     "dmg_dealt": 32372,
@@ -181,7 +181,7 @@
     "minecart": 245.6,
     "crouch": 25220,
     "climb": 477,
-    "fall": 31102,
+    "fall": 31109,
     "chests": 3616,
     "enchant": 55,
     "drops": 5278,
@@ -1296,11 +1296,13 @@
  ],
  "status": {
   "state": "online",
-  "count": 0,
+  "count": 1,
   "max": 20,
-  "list": [],
+  "list": [
+   "letsplayfabi"
+  ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-20T15:50+00:00"
+  "checked": "2026-11-20T20:06+00:00"
  },
  "challenge": {
   "stat": "sleeps",
