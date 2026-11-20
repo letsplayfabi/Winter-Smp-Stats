@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-20T20:06+00:00",
+ "updated": "2026-11-20T20:11+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7126,
-   "hours": 118.8,
+   "minutes": 7131,
+   "hours": 118.9,
    "deaths": 14,
    "mob_kills": 9885,
    "player_kills": 8,
    "entities_killed": 9418,
-   "items_used": 151455,
+   "items_used": 151457,
    "damage": 32372,
    "blocks_mined": 83217,
    "diamonds": 201,
    "km_travelled": 1118.8,
-   "jumps": 81540,
+   "jumps": 81562,
    "travel": {
     "boat": 28.9,
     "crouch": 25.2,
@@ -149,7 +149,7 @@
    "death_other": 6,
    "f": {
     "eaten": 1250,
-    "fall_m": 31110,
+    "fall_m": 31114,
     "trades": 136,
     "fish": 134,
     "bred": 619,
@@ -168,7 +168,7 @@
     "trades": 136,
     "villager_talk": 578,
     "sleeps": 141,
-    "jumps": 81540,
+    "jumps": 81562,
     "deaths": 14,
     "mobs": 9885,
     "dmg_dealt": 32372,
@@ -181,7 +181,7 @@
     "minecart": 245.6,
     "crouch": 25220,
     "climb": 477,
-    "fall": 31109,
+    "fall": 31114,
     "chests": 3616,
     "enchant": 55,
     "drops": 5278,
@@ -218,7 +218,7 @@
    },
    "skin": "476152c3602dba5de40229f58018ac664b706a7d08048cbc127c7d38d5b31f58",
    "slim": false,
-   "week_hours": 22.4
+   "week_hours": 22.5
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -676,7 +676,7 @@
   {
    "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
    "name": "SirMemo",
-   "minutes": 539,
+   "minutes": 541,
    "hours": 9.0,
    "deaths": 21,
    "mob_kills": 233,
@@ -1296,13 +1296,14 @@
  ],
  "status": {
   "state": "online",
-  "count": 1,
+  "count": 2,
   "max": 20,
   "list": [
-   "letsplayfabi"
+   "letsplayfabi",
+   "SirMemo"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-20T20:06+00:00"
+  "checked": "2026-11-20T20:11+00:00"
  },
  "challenge": {
   "stat": "sleeps",
