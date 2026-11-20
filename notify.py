@@ -172,7 +172,7 @@ def main():
         print("Kein DISCORD_WEBHOOK gesetzt – keine Discord-Meldungen.")
         return
     ov = jl(D / "overrides.json", {})
-    cfg = {"events": True, "weekly": True, "milestones": True, "achievements": True, "goals": True, **(ov.get("notify") or {})}
+    cfg = {"events": True, "weekly": True, "milestones": True, "achievements": True, "goals": True, "birthdays": True, **(ov.get("notify") or {})}
     servers = jl(D / "servers.json", [])
     events = (jl(D / "events.json", {}) or {}).get("events", [])
     first = not STATE.exists()
@@ -210,6 +210,22 @@ def main():
             embeds.append(emb)
         except Exception as ex:
             print("Event konnte nicht gemeldet werden:", eid, ex)
+
+    # Geburtstage (ab 8 Uhr Wiener Zeit, einmal pro Jahr und Person)
+    try:
+        from zoneinfo import ZoneInfo
+        vnow = now.astimezone(ZoneInfo("Europe/Vienna"))
+    except Exception:
+        vnow = now + timedelta(hours=1)
+    md, leap = vnow.strftime("%m-%d"), vnow.year % 4 == 0 and (vnow.year % 100 != 0 or vnow.year % 400 == 0)
+    bd = st.setdefault("bday", {})
+    for u, pp in (ov.get("people") or {}).items():
+        b = (pp or {}).get("bday") or ""
+        if not (b == md or (b == "02-29" and md == "02-28" and not leap)) or bd.get(u) == vnow.date().isoformat() or vnow.hour < 8:
+            continue
+        bd[u] = vnow.date().isoformat()
+        if not first and cfg["birthdays"]:
+            lines.append(f"🎂 Heute hat **{pp.get('name') or 'jemand'}** Geburtstag – alles Gute! 🎉")
 
     # 2) Meilensteine + 3) Wochen-Top-3
     today = now.date().isoformat()
