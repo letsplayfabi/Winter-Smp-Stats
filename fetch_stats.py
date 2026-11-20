@@ -123,6 +123,57 @@ def skin(uuid, prev):
         return prev
 
 
+def vtz():
+    try:
+        from zoneinfo import ZoneInfo
+        return ZoneInfo("Europe/Vienna")
+    except Exception:
+        return timezone(timedelta(hours=1))
+
+
+def hour_slots(t0, t1):
+    """Zerlegt den Zeitraum t0..t1 in Stunden (Wiener Zeit): Liste von (Wochentag 0=Mo, Stunde, Minuten)."""
+    out, t, tz = [], t0.astimezone(vtz()), vtz()
+    end = t1.astimezone(tz)
+    while t < end:
+        nxt = min((t.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1)), end)
+        out.append((t.weekday(), t.hour, (nxt - t).total_seconds() / 60))
+        t = nxt
+    return out
+
+
+def activity(out, players):
+    """Spielzeit-Heatmap: verteilt die seit der letzten Aktualisierung dazugekommene Spielzeit auf die Stunden dazwischen.
+    grid = Spieler-Minuten pro Wochentag/Stunde, cov = beobachtete Minuten pro Wochentag/Stunde (für den Durchschnitt)."""
+    ap = out / "activity.json"
+    a = jl(ap, {})
+    now = datetime.now(timezone.utc)
+    cur = {p["uuid"]: p.get("minutes", 0) for p in players}
+    empty = lambda: [[0] * 24 for _ in range(7)]
+    g, cov, per = a.get("grid") or empty(), a.get("cov") or empty(), a.get("players") or {}
+    last = a.get("last") or {}
+    try:
+        t0 = datetime.fromisoformat(last["t"])
+        span = (now - t0).total_seconds() / 60
+    except Exception:
+        span = 0
+    if 0 < span <= 360:  # längere Lücken (Ausfall) nicht raten
+        slots = hour_slots(t0, now)
+        for wd, h, m in slots:
+            cov[wd][h] = round(cov[wd][h] + m, 1)
+        for u, mins in cur.items():
+            d = min(mins - (last.get("m") or {}).get(u, mins), span)
+            if d <= 0:
+                continue
+            pg = per.setdefault(u, empty())
+            for wd, h, m in slots:
+                share = d * m / span
+                g[wd][h] = round(g[wd][h] + share, 1)
+                pg[wd][h] = round(pg[wd][h] + share, 1)
+    ap.write_text(json.dumps({"since": a.get("since") or now.astimezone(vtz()).date().isoformat(), "last": {"t": now.isoformat(), "m": cur},
+                              "grid": g, "cov": cov, "players": per}, separators=(",", ":")))
+
+
 def vienna_now():
     try:
         from zoneinfo import ZoneInfo
@@ -256,6 +307,10 @@ def process(sv, local, first):
                       "checked": datetime.now(timezone.utc).isoformat(timespec="minutes")}
         except Exception as e:
             print("Status nicht lesbar:", e)
+    try:
+        activity(out, players)
+    except Exception as e:
+        print("Heatmap nicht aktualisiert:", e)
     try:
         chal = challenge(out, players, jl(D / "overrides.json", {}))
     except Exception as e:
