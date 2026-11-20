@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-19T22:43+00:00",
+ "updated": "2026-11-20T03:50+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -445,7 +445,7 @@
    },
    "skin": "baf4f63b06fe40b9911f77749d44c3722536afe011db2129003511212ca5dfc5",
    "slim": false,
-   "week_hours": 17.8
+   "week_hours": 13.7
   },
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -671,7 +671,7 @@
    },
    "skin": "d2d53c1d5af2a65189b0793b373fd5d442a4eca7ecd788adb1e8bda37faf4513",
    "slim": false,
-   "week_hours": 3.9
+   "week_hours": 0.0
   },
   {
    "uuid": "67968945-1afd-4ee6-989a-8c4889f73f9d",
@@ -1300,7 +1300,7 @@
   "max": 20,
   "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-19T22:43+00:00"
+  "checked": "2026-11-20T03:50+00:00"
  },
  "challenge": {
   "stat": "sleeps",
