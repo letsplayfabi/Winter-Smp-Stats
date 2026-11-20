@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-20T15:06+00:00",
+ "updated": "2026-11-20T15:11+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7081,
-   "hours": 118.0,
+   "minutes": 7087,
+   "hours": 118.1,
    "deaths": 14,
-   "mob_kills": 9880,
+   "mob_kills": 9882,
    "player_kills": 8,
-   "entities_killed": 9413,
-   "items_used": 147020,
-   "damage": 32266,
-   "blocks_mined": 78817,
+   "entities_killed": 9415,
+   "items_used": 147056,
+   "damage": 32300,
+   "blocks_mined": 78848,
    "diamonds": 201,
-   "km_travelled": 1115.8,
-   "jumps": 81147,
+   "km_travelled": 1116.1,
+   "jumps": 81309,
    "travel": {
     "boat": 28.9,
     "crouch": 24.3,
@@ -25,7 +25,7 @@
     "walk_under_water": 27.1,
     "horse": 146.6,
     "sprint": 104.1,
-    "fly": 412.7,
+    "fly": 413.0,
     "walk_on_water": 9.7,
     "swim": 52.8,
     "nautilus": 1.1
@@ -45,7 +45,7 @@
     ],
     [
      "zombie",
-     342
+     343
     ],
     [
      "evoker",
@@ -101,7 +101,7 @@
    "top_used": [
     [
      "diamond_pickaxe",
-     46453
+     46484
     ],
     [
      "diamond_shovel",
@@ -121,7 +121,7 @@
     ],
     [
      "diamond_sword",
-     5739
+     5742
     ],
     [
      "trident",
@@ -149,7 +149,7 @@
    "death_other": 6,
    "f": {
     "eaten": 1245,
-    "fall_m": 30970,
+    "fall_m": 31005,
     "trades": 136,
     "fish": 134,
     "bred": 619,
@@ -168,10 +168,10 @@
     "trades": 136,
     "villager_talk": 578,
     "sleeps": 141,
-    "jumps": 81147,
+    "jumps": 81309,
     "deaths": 14,
-    "mobs": 9880,
-    "dmg_dealt": 32266,
+    "mobs": 9882,
+    "dmg_dealt": 32300,
     "dmg_taken": 5854,
     "walk": 62.4,
     "sprint": 104.1,
@@ -179,17 +179,17 @@
     "boat": 28.9,
     "horse": 146.6,
     "minecart": 245.6,
-    "crouch": 24329,
+    "crouch": 24333,
     "climb": 477,
-    "fall": 30969,
-    "chests": 3614,
+    "fall": 31004,
+    "chests": 3616,
     "enchant": 55,
     "drops": 5263,
     "crafting_table": 466,
     "furnace": 881,
     "flowers_potted": 2,
     "noteblock": 32,
-    "mined": 78817,
+    "mined": 78848,
     "logs": 1043,
     "ores": 4665,
     "diamonds": 201,
@@ -202,10 +202,10 @@
     "sand": 4288,
     "crops": 6494,
     "leaves": 822,
-    "zombies": 594,
+    "zombies": 595,
     "skeletons": 432,
     "creepers": 58,
-    "spiders": 52,
+    "spiders": 53,
     "endermen": 3,
     "farm_animals": 323,
     "crafted": 35716,
@@ -213,12 +213,12 @@
     "food": 1243,
     "pearls": 2,
     "bonemeal": 9177,
-    "picked": 298760,
+    "picked": 298768,
     "broken": 74
    },
    "skin": "476152c3602dba5de40229f58018ac664b706a7d08048cbc127c7d38d5b31f58",
    "slim": false,
-   "week_hours": 21.6
+   "week_hours": 21.7
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -1302,7 +1302,7 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-20T15:06+00:00"
+  "checked": "2026-11-20T15:11+00:00"
  },
  "challenge": {
   "stat": "sleeps",
