@@ -162,7 +162,9 @@
     "achievements": true,
     "goals": false,
     "recap": true,
-    "birthdays": true
+    "birthdays": true,
+    "bingo": true,
+    "streaks": true
   },
   "badges": {
     "names": false,
@@ -180,6 +182,22 @@
         "0c95a02f-d9c7-4467-a71c-310e2b070c08": 15.05,
         "67968945-1afd-4ee6-989a-8c4889f73f9d": 5
       }
+    },
+    {
+      "id": "c1795288605413",
+      "name": "Bingo (Sieg=5 Fertig=3 Reihe=1)",
+      "unit": "",
+      "server": "winter",
+      "points": false,
+      "values": {}
+    },
+    {
+      "id": "c1795288641605",
+      "name": "Wochen Challenge Siege",
+      "unit": "",
+      "server": "winter",
+      "points": false,
+      "values": {}
     }
   ],
   "goals": [
@@ -334,5 +352,9 @@
       "desc": "",
       "gallery": "p17952572529030"
     }
-  ]
+  ],
+  "showBingo": true,
+  "showStreaks": true,
+  "showBestiary": true,
+  "streakSeed": {}
 }
