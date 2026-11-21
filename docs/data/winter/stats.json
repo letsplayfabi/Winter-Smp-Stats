@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-21T09:15+00:00",
+ "updated": "2026-11-21T10:13+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7207,
+   "minutes": 7208,
    "hours": 120.1,
    "deaths": 14,
    "mob_kills": 9897,
    "player_kills": 8,
    "entities_killed": 9430,
-   "items_used": 154722,
+   "items_used": 154724,
    "damage": 32560,
    "blocks_mined": 83298,
    "diamonds": 201,
    "km_travelled": 1133.9,
-   "jumps": 82814,
+   "jumps": 82822,
    "travel": {
     "boat": 28.9,
     "crouch": 26.3,
@@ -168,11 +168,11 @@
     "trades": 136,
     "villager_talk": 578,
     "sleeps": 142,
-    "jumps": 82814,
+    "jumps": 82822,
     "deaths": 14,
     "mobs": 9897,
     "dmg_dealt": 32560,
-    "dmg_taken": 5976,
+    "dmg_taken": 5980,
     "walk": 63.9,
     "sprint": 106.9,
     "swim": 53.7,
@@ -184,7 +184,7 @@
     "fall": 32125,
     "chests": 3644,
     "enchant": 55,
-    "drops": 5309,
+    "drops": 5311,
     "crafting_table": 466,
     "furnace": 881,
     "flowers_potted": 2,
@@ -213,7 +213,7 @@
     "food": 1268,
     "pearls": 2,
     "bonemeal": 9177,
-    "picked": 303786,
+    "picked": 303790,
     "broken": 74
    },
    "skin": "476152c3602dba5de40229f58018ac664b706a7d08048cbc127c7d38d5b31f58",
@@ -1297,12 +1297,14 @@
   }
  ],
  "status": {
-  "state": "offline",
-  "count": 0,
+  "state": "online",
+  "count": 1,
   "max": 20,
-  "list": [],
+  "list": [
+   "letsplayfabi"
+  ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-21T09:15+00:00"
+  "checked": "2026-11-21T10:13+00:00"
  },
  "challenge": {
   "stat": "sleeps",
