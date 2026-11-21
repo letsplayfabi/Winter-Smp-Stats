@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-21T16:53+00:00",
+ "updated": "2026-11-21T19:08+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -16,6 +16,62 @@
    "diamonds": 201,
    "km_travelled": 1137.9,
    "jumps": 82950,
+   "mobs": {
+    "stray": 20,
+    "pig": 29,
+    "mooshroom": 23,
+    "glow_squid": 5,
+    "zombie_villager": 4,
+    "cow": 189,
+    "squid": 18,
+    "drowned": 65,
+    "wolf": 2,
+    "pufferfish": 3,
+    "slime": 24,
+    "skeleton": 172,
+    "zombie_nautilus": 1,
+    "iron_golem": 8,
+    "llama": 9,
+    "horse": 1,
+    "bogged": 153,
+    "zombie_horse": 2,
+    "turtle": 2,
+    "enderman": 3,
+    "sheep": 75,
+    "evoker": 322,
+    "magma_cube": 11,
+    "ghast": 2,
+    "breeze": 46,
+    "blaze": 31,
+    "zombified_piglin": 1,
+    "parched": 3,
+    "piglin_brute": 3,
+    "piglin": 16,
+    "vindicator": 2286,
+    "wandering_trader": 4,
+    "silverfish": 182,
+    "salmon": 1,
+    "zombie": 348,
+    "nautilus": 2,
+    "chicken": 10,
+    "creaking": 2,
+    "armadillo": 3,
+    "pillager": 4346,
+    "phantom": 11,
+    "witch": 581,
+    "villager": 3,
+    "player": 8,
+    "spider": 52,
+    "wither": 1,
+    "husk": 183,
+    "cave_spider": 2,
+    "wither_skeleton": 87,
+    "trader_llama": 6,
+    "copper_golem": 1,
+    "creeper": 58,
+    "hoglin": 5,
+    "vex": 5
+   },
    "travel": {
     "boat": 28.9,
     "crouch": 26.3,
@@ -214,7 +270,30 @@
     "pearls": 2,
     "bonemeal": 21455,
     "picked": 322077,
-    "broken": 74
+    "broken": 74,
+    "blazes": 31,
+    "ghasts": 2,
+    "witches": 581,
+    "phantoms": 11,
+    "slimes": 24,
+    "debris": 43,
+    "emerald": 81,
+    "lapis": 3,
+    "redstone": 106,
+    "gold": 188,
+    "copper": 29,
+    "quartz": 547,
+    "obsidian": 22,
+    "snowballs": 71,
+    "eggs": 12,
+    "arrows": 171,
+    "fishing_casts": 243,
+    "bread": 388,
+    "enderchest": 159,
+    "barrel": 782,
+    "anvil": 26,
+    "shield": 709,
+    "raids": 173
    },
    "skin": "476152c3602dba5de40229f58018ac664b706a7d08048cbc127c7d38d5b31f58",
    "slim": false,
@@ -235,6 +314,46 @@
    "diamonds": 182,
    "km_travelled": 1136.0,
    "jumps": 172947,
+   "mobs": {
+    "stray": 2,
+    "parched": 1,
+    "pig": 7,
+    "piglin": 6,
+    "vindicator": 26,
+    "bat": 2,
+    "wandering_trader": 1,
+    "silverfish": 7,
+    "zombie": 257,
+    "chicken": 21,
+    "zombie_villager": 3,
+    "cow": 170,
+    "squid": 7,
+    "drowned": 31,
+    "pufferfish": 6,
+    "armadillo": 2,
+    "pillager": 63,
+    "skeleton": 144,
+    "phantom": 1,
+    "witch": 8,
+    "villager": 1,
+    "spider": 104,
+    "llama": 5,
+    "horse": 9,
+    "husk": 8,
+    "zombie_horse": 1,
+    "cave_spider": 2,
+    "wither_skeleton": 4,
+    "trader_llama": 2,
+    "creeper": 329,
+    "enderman": 5,
+    "sheep": 17,
+    "evoker": 4,
+    "magma_cube": 2,
+    "vex": 1,
+    "ghast": 4,
+    "breeze": 2,
+    "blaze": 1
+   },
    "travel": {
     "boat": 56.6,
     "crouch": 31.9,
@@ -441,7 +560,30 @@
     "pearls": 18,
     "bonemeal": 142,
     "picked": 94938,
-    "broken": 82
+    "broken": 82,
+    "blazes": 1,
+    "ghasts": 4,
+    "witches": 8,
+    "phantoms": 1,
+    "debris": 9,
+    "emerald": 38,
+    "lapis": 42,
+    "redstone": 202,
+    "gold": 312,
+    "copper": 33,
+    "quartz": 792,
+    "obsidian": 39,
+    "snowballs": 203,
+    "eggs": 55,
+    "arrows": 3,
+    "fishing_casts": 34,
+    "bread": 1472,
+    "cookies": 344,
+    "enderchest": 9,
+    "barrel": 213,
+    "anvil": 40,
+    "shield": 594,
+    "raids": 2
    },
    "skin": "baf4f63b06fe40b9911f77749d44c3722536afe011db2129003511212ca5dfc5",
    "slim": false,
@@ -462,6 +604,40 @@
    "diamonds": 37,
    "km_travelled": 1558.8,
    "jumps": 179025,
+   "mobs": {
+    "stray": 8,
+    "pig": 4,
+    "skeleton_horse": 2,
+    "piglin": 13,
+    "vindicator": 983,
+    "ravager": 3,
+    "wandering_trader": 1,
+    "zombie": 300,
+    "zombie_villager": 5,
+    "rabbit": 1,
+    "chicken": 7,
+    "goat": 1,
+    "squid": 1,
+    "drowned": 4,
+    "cow": 17,
+    "armadillo": 1,
+    "pillager": 1858,
+    "skeleton": 99,
+    "phantom": 1,
+    "iron_golem": 2,
+    "witch": 297,
+    "player": 8,
+    "spider": 35,
+    "husk": 4,
+    "trader_llama": 3,
+    "copper_golem": 1,
+    "creeper": 20,
+    "hoglin": 5,
+    "sheep": 15,
+    "enderman": 3,
+    "evoker": 130,
+    "vex": 17
+   },
    "travel": {
     "boat": 39.1,
     "crouch": 6.0,
@@ -667,7 +843,28 @@
     "pearls": 1,
     "bonemeal": 66,
     "picked": 81546,
-    "broken": 111
+    "broken": 111,
+    "witches": 297,
+    "phantoms": 1,
+    "debris": 98,
+    "emerald": 27,
+    "lapis": 14,
+    "redstone": 10,
+    "gold": 56,
+    "copper": 174,
+    "quartz": 46,
+    "obsidian": 10,
+    "snowballs": 459,
+    "eggs": 25,
+    "arrows": 27,
+    "fishing_casts": 30,
+    "bread": 1890,
+    "cookies": 162,
+    "enderchest": 3,
+    "barrel": 190,
+    "anvil": 16,
+    "shield": 453,
+    "raids": 79
    },
    "skin": "d2d53c1d5af2a65189b0793b373fd5d442a4eca7ecd788adb1e8bda37faf4513",
    "slim": false,
@@ -688,6 +885,23 @@
    "diamonds": 0,
    "km_travelled": 99.5,
    "jumps": 23324,
+   "mobs": {
+    "pillager": 339,
+    "skeleton": 30,
+    "pig": 30,
+    "mooshroom": 1,
+    "witch": 55,
+    "vindicator": 193,
+    "spider": 13,
+    "llama": 3,
+    "zombie": 60,
+    "creeper": 5,
+    "chicken": 9,
+    "enderman": 1,
+    "evoker": 28,
+    "sheep": 25,
+    "cow": 50
+   },
    "travel": {
     "boat": 10.8,
     "swim": 1.3,
@@ -886,7 +1100,16 @@
     "food": 387,
     "bonemeal": 15,
     "picked": 6943,
-    "broken": 16
+    "broken": 16,
+    "witches": 55,
+    "emerald": 5,
+    "lapis": 14,
+    "snowballs": 24,
+    "bread": 45,
+    "enderchest": 1,
+    "barrel": 370,
+    "shield": 172,
+    "raids": 16
    },
    "skin": "46ab266103dc5b7bd6cd5fb3d63219a2d6212720d061fe3d447358465af5f874",
    "slim": true,
@@ -907,6 +1130,20 @@
    "diamonds": 0,
    "km_travelled": 21.8,
    "jumps": 4937,
+   "mobs": {
+    "zombie": 20,
+    "skeleton": 5,
+    "rabbit": 1,
+    "chicken": 3,
+    "enderman": 1,
+    "sheep": 14,
+    "pig": 5,
+    "polar_bear": 1,
+    "cow": 9,
+    "player": 2,
+    "endermite": 1,
+    "spider": 4
+   },
    "travel": {
     "boat": 1.3,
     "swim": 0.3,
@@ -1100,7 +1337,12 @@
     "pearls": 1,
     "bonemeal": 14,
     "picked": 4698,
-    "broken": 7
+    "broken": 7,
+    "copper": 84,
+    "snowballs": 148,
+    "fishing_casts": 35,
+    "bread": 13,
+    "barrel": 13
    },
    "skin": "54d8d3929e9afdf30230f7150232d0308a5c0efe8e76c34c325414f89c2a24d6",
    "slim": false,
@@ -1121,6 +1363,18 @@
    "diamonds": 0,
    "km_travelled": 25.5,
    "jumps": 5321,
+   "mobs": {
+    "zombie": 4,
+    "horse": 3,
+    "stray": 1,
+    "skeleton": 2,
+    "chicken": 1,
+    "goat": 1,
+    "sheep": 9,
+    "pig": 10,
+    "cow": 18,
+    "spider": 3
+   },
    "travel": {
     "boat": 3.6,
     "swim": 0.3,
@@ -1289,7 +1543,10 @@
     "food": 76,
     "bonemeal": 11,
     "picked": 1239,
-    "broken": 5
+    "broken": 5,
+    "fishing_casts": 52,
+    "bread": 5,
+    "barrel": 4
    },
    "skin": "8f1bbffab674ee341fb9f22d1a2a75df9c2f481e01b31d3511c233bc528b396d",
    "slim": false,
@@ -1302,7 +1559,7 @@
   "max": 20,
   "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-21T16:53+00:00"
+  "checked": "2026-11-21T19:08+00:00"
  },
  "challenge": {
   "stat": "sleeps",
@@ -1320,5 +1577,177 @@
    ]
   ],
   "last": null
+ },
+ "bingo": {
+  "week": "2026-W47",
+  "start": "2026-11-16",
+  "end": "2026-11-22",
+  "tasks": [
+   {
+    "key": "villager_talk",
+    "target": 100,
+    "text": "100× mit Dorfbewohnern reden"
+   },
+   {
+    "key": "fish",
+    "target": 100,
+    "text": "100 Fische angeln"
+   },
+   {
+    "key": "sand",
+    "target": 320,
+    "text": "320 Sand oder Kies abbauen"
+   },
+   {
+    "key": "bred",
+    "target": 500,
+    "text": "500 Tiere züchten"
+   },
+   {
+    "key": "diamonds",
+    "target": 15,
+    "text": "15 Diamanterze abbauen"
+   },
+   {
+    "key": "pig",
+    "target": 1,
+    "text": "1 km auf einem Schwein reiten"
+   },
+   {
+    "key": "noteblock",
+    "target": 10,
+    "text": "10× einen Notenblock spielen"
+   },
+   {
+    "key": "lapis",
+    "target": 20,
+    "text": "20 Lapislazulierze abbauen"
+   },
+   {
+    "key": "phantoms",
+    "target": 10,
+    "text": "10 Phantome besiegen"
+   },
+   {
+    "key": "creepers",
+    "target": 10,
+    "text": "10 Creeper besiegen"
+   },
+   {
+    "key": "minecart",
+    "target": 25,
+    "text": "25 km Lore fahren"
+   },
+   {
+    "key": "crouch",
+    "target": 100,
+    "text": "100 m schleichen"
+   },
+   {
+    "key": "free",
+    "target": 0,
+    "text": "Freies Feld"
+   },
+   {
+    "key": "fall",
+    "target": 2000,
+    "text": "2000 m tief fallen"
+   },
+   {
+    "key": "blazes",
+    "target": 20,
+    "text": "20 Lohen besiegen"
+   },
+   {
+    "key": "stone",
+    "target": 1000,
+    "text": "1000 Stein abbauen"
+   },
+   {
+    "key": "netherrack",
+    "target": 2000,
+    "text": "2000 Netherrack abbauen"
+   },
+   {
+    "key": "fishing_casts",
+    "target": 100,
+    "text": "100× die Angel auswerfen"
+   },
+   {
+    "key": "climb",
+    "target": 50,
+    "text": "50 m klettern"
+   },
+   {
+    "key": "spiders",
+    "target": 20,
+    "text": "20 Spinnen besiegen"
+   },
+   {
+    "key": "coal",
+    "target": 64,
+    "text": "64 Kohleerze abbauen"
+   },
+   {
+    "key": "food",
+    "target": 200,
+    "text": "200× etwas essen"
+   },
+   {
+    "key": "picked",
+    "target": 5000,
+    "text": "5000 Items aufsammeln"
+   },
+   {
+    "key": "raids",
+    "target": 5,
+    "text": "5 Überfälle gewinnen"
+   },
+   {
+    "key": "skeletons",
+    "target": 50,
+    "text": "50 Skelette besiegen"
+   }
+  ],
+  "progress": {},
+  "winners": []
+ },
+ "streaks": {
+  "0c95a02f-d9c7-4467-a71c-310e2b070c08": {
+   "cur": 7,
+   "best": 7,
+   "last": "2026-11-18",
+   "today": 0
+  },
+  "5b1dde8a-1b76-4202-b3be-862467454795": {
+   "cur": 2,
+   "best": 2,
+   "last": "2026-11-13",
+   "today": 0
+  },
+  "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f": {
+   "cur": 7,
+   "best": 7,
+   "last": "2026-11-21",
+   "today": 5
+  },
+  "67968945-1afd-4ee6-989a-8c4889f73f9d": {
+   "cur": 1,
+   "best": 2,
+   "last": "2026-11-20",
+   "today": 0
+  },
+  "ec853876-a510-49e7-a792-f08fa3e3b89d": {
+   "cur": 1,
+   "best": 1,
+   "last": "2026-11-12",
+   "today": 0
+  },
+  "61a0350a-3e08-4c83-9d5a-559dd7ec3f00": {
+   "cur": 0,
+   "best": 0,
+   "last": null,
+   "today": 0
+  }
  }
 }
