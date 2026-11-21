@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-21T11:13+00:00",
+ "updated": "2026-11-21T11:18+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7268,
-   "hours": 121.1,
+   "minutes": 7273,
+   "hours": 121.2,
    "deaths": 14,
    "mob_kills": 9897,
    "player_kills": 8,
    "entities_killed": 9430,
-   "items_used": 155040,
+   "items_used": 155433,
    "damage": 32560,
    "blocks_mined": 83298,
    "diamonds": 201,
    "km_travelled": 1137.6,
-   "jumps": 82901,
+   "jumps": 82903,
    "travel": {
     "boat": 28.9,
     "crouch": 26.3,
@@ -109,7 +109,7 @@
     ],
     [
      "bone_meal",
-     9320
+     9636
     ],
     [
      "smooth_stone",
@@ -148,7 +148,7 @@
    ],
    "death_other": 6,
    "f": {
-    "eaten": 1271,
+    "eaten": 1272,
     "fall_m": 32148,
     "trades": 136,
     "fish": 134,
@@ -168,7 +168,7 @@
     "trades": 136,
     "villager_talk": 578,
     "sleeps": 146,
-    "jumps": 82901,
+    "jumps": 82903,
     "deaths": 14,
     "mobs": 9897,
     "dmg_dealt": 32560,
@@ -179,12 +179,12 @@
     "boat": 28.9,
     "horse": 146.6,
     "minecart": 247.4,
-    "crouch": 26262,
+    "crouch": 26263,
     "climb": 512,
     "fall": 32148,
-    "chests": 3666,
+    "chests": 3674,
     "enchant": 55,
-    "drops": 5327,
+    "drops": 5329,
     "crafting_table": 466,
     "furnace": 881,
     "flowers_potted": 2,
@@ -210,15 +210,15 @@
     "farm_animals": 326,
     "crafted": 35716,
     "torches": 88,
-    "food": 1269,
+    "food": 1270,
     "pearls": 2,
-    "bonemeal": 9320,
-    "picked": 304165,
+    "bonemeal": 9636,
+    "picked": 304573,
     "broken": 74
    },
    "skin": "476152c3602dba5de40229f58018ac664b706a7d08048cbc127c7d38d5b31f58",
    "slim": false,
-   "week_hours": 24.7
+   "week_hours": 24.8
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -1304,7 +1304,7 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-21T11:13+00:00"
+  "checked": "2026-11-21T11:18+00:00"
  },
  "challenge": {
   "stat": "sleeps",
