@@ -143,6 +143,14 @@ def weekly_post(sv, ov, site, today, chal_seen=None, preview=False):
     return emb, png
 
 
+def today_v():
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.now(ZoneInfo("Europe/Vienna")).date().isoformat()
+    except Exception:
+        return (datetime.now(timezone.utc) + timedelta(hours=1)).date().isoformat()
+
+
 def main():
     if "--test" in sys.argv:
         if not HOOK:
@@ -172,7 +180,7 @@ def main():
         print("Kein DISCORD_WEBHOOK gesetzt – keine Discord-Meldungen.")
         return
     ov = jl(D / "overrides.json", {})
-    cfg = {"events": True, "weekly": True, "milestones": True, "achievements": True, "goals": True, "birthdays": True, **(ov.get("notify") or {})}
+    cfg = {"events": True, "weekly": True, "milestones": True, "achievements": True, "goals": True, "birthdays": True, "bingo": True, "streaks": True, **(ov.get("notify") or {})}
     servers = jl(D / "servers.json", [])
     events = (jl(D / "events.json", {}) or {}).get("events", [])
     first = not STATE.exists()
@@ -226,6 +234,31 @@ def main():
         bd[u] = vnow.date().isoformat()
         if not first and cfg["birthdays"]:
             lines.append(f"🎂 Heute hat **{pp.get('name') or 'jemand'}** Geburtstag – alles Gute! 🎉")
+
+    # Bingo-Gewinner und Serien-Meilensteine
+    bs, ss = st.setdefault("bingo", {}), st.setdefault("streak", {})
+    for sv in jl(D / "servers.json", []):
+        d = jl(D / "data" / sv["key"] / "stats.json", {})
+        names = {p["uuid"]: pname_ov(ov, sv["key"], p) for p in d.get("players", [])}
+        b = d.get("bingo") or {}
+        for w in b.get("winners") or []:
+            k = f"{sv['key']}:{b.get('week')}:{w['uuid']}:{w['type']}"
+            if k in bs or not names.get(w["uuid"]):
+                continue
+            bs[k] = 1
+            if not first and cfg["bingo"]:
+                lines.append(f"🎱 **BINGO!** **{names[w['uuid']]}** hat " + ("die **ganze Karte** voll" if w["type"] == "full" else "eine Reihe") + f" auf {sv['name']} geschafft!")
+        for u, q in (d.get("streaks") or {}).items():
+            k, c = f"{sv['key']}:{u}", q.get("cur", 0)
+            hit = max([m for m in (7, 14, 21, 30, 50, 75, 100, 150, 200, 365) if m <= c], default=0)
+            if hit and ss.get(k, 0) < hit and names.get(u) and q.get("last") == today_v():
+                if not first and cfg["streaks"]:
+                    lines.append(f"🔥 **{names[u]}** ist jetzt **{c} Tage in Folge** auf {sv['name']} online!")
+            if c < ss.get(k, 0):
+                ss[k] = 0
+            ss[k] = max(ss.get(k, 0), hit) if c >= hit else ss.get(k, 0)
+    if len(bs) > 400:
+        st["bingo"] = dict(list(bs.items())[-200:])
 
     # 2) Meilensteine + 3) Wochen-Top-3
     today = now.date().isoformat()
