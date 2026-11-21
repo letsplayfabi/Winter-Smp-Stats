@@ -44,7 +44,7 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 <label style="display:block;margin-bottom:12px"><input type="checkbox" id="smp"> Reiter „Karte“ anzeigen</label>
 <div class="g"><label>Name<input id="onm" type="text" placeholder="Capys Basis"></label><label>Art<select id="oty"></select></label><label>Server<select id="osv"></select></label>
 <label>Dimension<select id="odm"><option value="overworld">Oberwelt</option><option value="nether">Nether</option><option value="end">End</option></select></label>
-<label>X<input id="ox" type="number"></label><label>Y (Höhe, optional)<input id="oy" type="number"></label><label>Z<input id="oz" type="number"></label><label>Besitzer<select id="oow"></select></label></div>
+<label>X<input id="ox" type="number"></label><label>Y (Höhe, optional)<input id="oy" type="number"></label><label>Z<input id="oz" type="number"></label><label>Besitzer<select id="oow"></select></label><label>Bild aus der Galerie<select id="ogl"></select></label></div><img id="oglp" alt="" hidden style="max-width:220px;border-radius:8px;margin-top:10px;display:block">
 <label style="display:block;margin:12px 0;color:var(--mu);font-size:13px">Beschreibung<textarea id="ods"></textarea></label>
 <div style="margin:12px 0;display:flex;gap:8px;flex-wrap:wrap"><button id="oa">➕ Ort hinzufügen</button><button id="oc" class="s" hidden>Abbrechen</button></div><div id="ol"></div></section>
 <section class="card" data-tab="w" hidden><h2>🎲 Wochen-Challenge</h2>
@@ -311,21 +311,25 @@ let PLACES=[],OEDIT=null;
 const OT=[["base","🏠 Basis"],["farm","🌾 Farm"],["portal","🌀 Portal"],["village","🏘️ Dorf"],["sight","⭐ Sehenswürdigkeit"],["other","📍 Sonstiges"]];
 function placesLoad(){PLACES=JSON.parse(JSON.stringify(OV.places||[]));oty.replaceChildren();OT.forEach(([k,l])=>el("option",l,oty).value=k);
   osv.replaceChildren();el("option","Alle Server",osv).value="all";SERVERS.forEach(x=>el("option",x.name,osv).value=x.key);
-  oow.replaceChildren();el("option","– niemand –",oow).value="";ALLP.forEach(([u])=>el("option",dispName(u),oow).value=u);resetPlace();renderPlaces()}
-function resetPlace(){OEDIT=null;onm.value=ox.value=oy.value=oz.value=ods.value="";oty.value="base";osv.value=SERVERS.length===1?SERVERS[0].key:"all";odm.value="overworld";oow.value="";oa.textContent="➕ Ort hinzufügen";oc.hidden=true}
+  oow.replaceChildren();el("option","– niemand –",oow).value="";ALLP.forEach(([u])=>el("option",dispName(u),oow).value=u);galSel();resetPlace();renderPlaces()}
+function galSel(){if(typeof ogl==="undefined")return;const v=ogl.value;ogl.replaceChildren();el("option","– kein Bild –",ogl).value="";
+  [...GAL].sort((a,z)=>(z.date||"").localeCompare(a.date||"")).forEach(g=>el("option",(g.title||"(ohne Titel)")+(g.date?" · "+g.date.split("-").reverse().join("."):""),ogl).value=g.id);ogl.value=[...ogl.options].some(o=>o.value===v)?v:"";galPrev()}
+function galPrev(){const g=GAL.find(x=>x.id===ogl.value);oglp.hidden=!g;if(g)oglp.src=g.image}
+ogl.onchange=galPrev;
+function resetPlace(){OEDIT=null;onm.value=ox.value=oy.value=oz.value=ods.value="";oty.value="base";osv.value=SERVERS.length===1?SERVERS[0].key:"all";odm.value="overworld";oow.value="";ogl.value="";galPrev();oa.textContent="➕ Ort hinzufügen";oc.hidden=true}
 oc.onclick=resetPlace;
 oa.onclick=()=>{if(!onm.value.trim()||ox.value===""||oz.value==="")return say("❌ Name, X und Z sind nötig.");
-  const o={name:onm.value.trim(),type:oty.value,server:osv.value,dim:odm.value,x:Math.round(+ox.value),y:oy.value===""?"":Math.round(+oy.value),z:Math.round(+oz.value),owner:oow.value,desc:ods.value.trim()};
+  const o={name:onm.value.trim(),type:oty.value,server:osv.value,dim:odm.value,x:Math.round(+ox.value),y:oy.value===""?"":Math.round(+oy.value),z:Math.round(+oz.value),owner:oow.value,gallery:ogl.value,desc:ods.value.trim()};
   if(OEDIT)Object.assign(OEDIT,o);else PLACES.push({id:"o"+Date.now(),...o});resetPlace();renderPlaces();say("Ort übernommen – unten auf „Speichern“ klicken.")};
 function renderPlaces(){const b=$("ol");b.replaceChildren();if(!PLACES.length)el("p","Noch keine Orte.",b,"mu");
   [...PLACES].sort((a,z)=>a.name.localeCompare(z.name,"de")).forEach(x=>{const r=el("div","",b,"ev"),d=el("div","",r);el("b",(OT.find(t=>t[0]===x.type)||OT[5])[1].split(" ")[0]+" "+x.name,d);
-    el("div",[{overworld:"Oberwelt",nether:"Nether",end:"End"}[x.dim||"overworld"]+` X ${x.x} · Z ${x.z}`,x.owner&&"von "+dispName(x.owner),x.server&&x.server!=="all"?(SERVERS.find(s=>s.key===x.server)||{}).name:"Alle Server"].filter(Boolean).join(" · "),d,"mu");
-    el("button","✏️",r,"s").onclick=()=>{OEDIT=x;onm.value=x.name;oty.value=x.type;osv.value=x.server||"all";odm.value=x.dim||"overworld";ox.value=x.x;oy.value=x.y??"";oz.value=x.z;oow.value=x.owner||"";ods.value=x.desc||"";oa.textContent="💾 Änderung übernehmen";oc.hidden=false;onm.scrollIntoView({behavior:"smooth",block:"center"})};
+    el("div",[{overworld:"Oberwelt",nether:"Nether",end:"End"}[x.dim||"overworld"]+` X ${x.x} · Z ${x.z}`,x.owner&&"von "+dispName(x.owner),x.gallery&&GAL.some(g=>g.id===x.gallery)&&"🖼️ mit Bild",x.server&&x.server!=="all"?(SERVERS.find(s=>s.key===x.server)||{}).name:"Alle Server"].filter(Boolean).join(" · "),d,"mu");
+    el("button","✏️",r,"s").onclick=()=>{OEDIT=x;onm.value=x.name;oty.value=x.type;osv.value=x.server||"all";odm.value=x.dim||"overworld";ox.value=x.x;oy.value=x.y??"";oz.value=x.z;oow.value=x.owner||"";ogl.value=x.gallery||"";galPrev();ods.value=x.desc||"";oa.textContent="💾 Änderung übernehmen";oc.hidden=false;onm.scrollIntoView({behavior:"smooth",block:"center"})};
     el("button","🗑",r,"s").onclick=()=>{if(confirm(`„${x.name}“ löschen?`)){PLACES=PLACES.filter(y=>y!==x);if(OEDIT===x)resetPlace();renderPlaces();say("Gelöscht – unten auf „Speichern“ klicken.")}}})}
 // ---------- Galerie ----------
 let GAL=[],GEDT=null;
 async function galList(){const f=await getFile("docs/gallery.json");return{sha:f&&f.sha,list:f?JSON.parse(f.text).items||[]:[]}}
-function renderGal(){const b=$("gll");b.replaceChildren();if(!GAL.length)el("p","Noch keine Bilder.",b,"mu");
+function renderGal(){galSel();const b=$("gll");b.replaceChildren();if(!GAL.length)el("p","Noch keine Bilder.",b,"mu");
   [...GAL].sort((a,z)=>(z.date||"").localeCompare(a.date||"")).forEach(g=>{const r=el("div","",b,"ev"),i=document.createElement("img");i.src=g.image;i.alt="";r.append(i);const d=el("div","",r);el("b",g.title||"(ohne Titel)",d);
     el("div",[g.by&&"von "+g.by,g.date,!g.server||g.server==="all"?"Alle Server":(SERVERS.find(s=>s.key===g.server)||{}).name].filter(Boolean).join(" · "),d,"mu");
     el("button","✏️",r,"s").onclick=()=>editGal(g);el("button","🗑",r,"s").onclick=()=>delGal(g)})}
