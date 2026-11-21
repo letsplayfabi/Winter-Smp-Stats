@@ -161,7 +161,8 @@
     "milestones": true,
     "achievements": true,
     "goals": false,
-    "recap": true
+    "recap": true,
+    "birthdays": true
   },
   "badges": {
     "names": false,
@@ -201,5 +202,131 @@
     "enabled": true,
     "stat": "",
     "week": null
-  }
+  },
+  "showHeat": true,
+  "deco": "auto",
+  "showMap": true,
+  "people": {},
+  "places": [
+    {
+      "id": "o1795256085095",
+      "name": "Konstis Arena",
+      "type": "base",
+      "server": "winter",
+      "dim": "overworld",
+      "x": 147,
+      "y": 182,
+      "z": 518,
+      "owner": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
+      "desc": ""
+    },
+    {
+      "id": "o1795256348768",
+      "name": "Gerichtssaal",
+      "type": "other",
+      "server": "winter",
+      "dim": "overworld",
+      "x": -65,
+      "y": 229,
+      "z": 690,
+      "owner": "5b1dde8a-1b76-4202-b3be-862467454795",
+      "desc": ""
+    },
+    {
+      "id": "o1795256414675",
+      "name": "Konsti's Hut",
+      "type": "base",
+      "server": "winter",
+      "dim": "overworld",
+      "x": 329,
+      "y": 178,
+      "z": 411,
+      "owner": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
+      "desc": ""
+    },
+    {
+      "id": "o1795256564019",
+      "name": "Michi's Zigarette",
+      "type": "base",
+      "server": "winter",
+      "dim": "overworld",
+      "x": 277,
+      "y": 198,
+      "z": 127,
+      "owner": "5b1dde8a-1b76-4202-b3be-862467454795",
+      "desc": ""
+    },
+    {
+      "id": "o1795256800756",
+      "name": "Leo's Haus",
+      "type": "base",
+      "server": "winter",
+      "dim": "overworld",
+      "x": -62,
+      "y": 122,
+      "z": 17,
+      "owner": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
+      "desc": ""
+    },
+    {
+      "id": "o1795256837450",
+      "name": "Nether Portal",
+      "type": "portal",
+      "server": "winter",
+      "dim": "overworld",
+      "x": -99,
+      "y": 122,
+      "z": 75,
+      "owner": "",
+      "desc": ""
+    },
+    {
+      "id": "o1795256940625",
+      "name": "Nether Portal",
+      "type": "portal",
+      "server": "winter",
+      "dim": "nether",
+      "x": -20,
+      "y": 93,
+      "z": 10,
+      "owner": "",
+      "desc": ""
+    },
+    {
+      "id": "o1795256995637",
+      "name": "Nether Portal",
+      "type": "portal",
+      "server": "winter",
+      "dim": "nether",
+      "x": 12,
+      "y": 78,
+      "z": 88,
+      "owner": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
+      "desc": ""
+    },
+    {
+      "id": "o1795257056989",
+      "name": "Nether Festung",
+      "type": "other",
+      "server": "winter",
+      "dim": "nether",
+      "x": 108,
+      "y": 62,
+      "z": 113,
+      "owner": "",
+      "desc": ""
+    },
+    {
+      "id": "o1795257203284",
+      "name": "Empire State Building",
+      "type": "base",
+      "server": "winter",
+      "dim": "overworld",
+      "x": 868,
+      "y": 171,
+      "z": -123,
+      "owner": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
+      "desc": ""
+    }
+  ]
 }
