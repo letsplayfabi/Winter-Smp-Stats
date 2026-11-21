@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-21T10:18+00:00",
+ "updated": "2026-11-21T10:23+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7213,
-   "hours": 120.2,
+   "minutes": 7218,
+   "hours": 120.3,
    "deaths": 14,
    "mob_kills": 9897,
    "player_kills": 8,
    "entities_killed": 9430,
-   "items_used": 154724,
+   "items_used": 154725,
    "damage": 32560,
    "blocks_mined": 83298,
    "diamonds": 201,
-   "km_travelled": 1134.2,
-   "jumps": 82826,
+   "km_travelled": 1135.3,
+   "jumps": 82834,
    "travel": {
     "boat": 28.9,
     "crouch": 26.3,
@@ -24,8 +24,8 @@
     "walk": 63.9,
     "walk_under_water": 27.4,
     "horse": 146.6,
-    "sprint": 106.9,
-    "fly": 421.7,
+    "sprint": 107.0,
+    "fly": 422.7,
     "walk_on_water": 9.8,
     "swim": 53.7,
     "nautilus": 1.1
@@ -153,7 +153,7 @@
     "trades": 136,
     "fish": 134,
     "bred": 619,
-    "sleeps": 142
+    "sleeps": 143
    },
    "x": {
     "debris": 43,
@@ -167,14 +167,14 @@
     "bred": 619,
     "trades": 136,
     "villager_talk": 578,
-    "sleeps": 142,
-    "jumps": 82826,
+    "sleeps": 143,
+    "jumps": 82834,
     "deaths": 14,
     "mobs": 9897,
     "dmg_dealt": 32560,
     "dmg_taken": 5980,
     "walk": 63.9,
-    "sprint": 106.9,
+    "sprint": 107.0,
     "swim": 53.7,
     "boat": 28.9,
     "horse": 146.6,
@@ -218,7 +218,7 @@
    },
    "skin": "476152c3602dba5de40229f58018ac664b706a7d08048cbc127c7d38d5b31f58",
    "slim": false,
-   "week_hours": 23.8
+   "week_hours": 23.9
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -1304,7 +1304,7 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-21T10:18+00:00"
+  "checked": "2026-11-21T10:23+00:00"
  },
  "challenge": {
   "stat": "sleeps",
@@ -1318,7 +1318,7 @@
    [
     "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
     "letsplayfabi",
-    2
+    3
    ]
   ],
   "last": null
