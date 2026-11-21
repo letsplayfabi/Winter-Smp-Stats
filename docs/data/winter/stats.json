@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-21T13:28+00:00",
+ "updated": "2026-11-21T13:33+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7403,
-   "hours": 123.4,
+   "minutes": 7408,
+   "hours": 123.5,
    "deaths": 14,
    "mob_kills": 9897,
    "player_kills": 8,
    "entities_killed": 9430,
-   "items_used": 167503,
+   "items_used": 167885,
    "damage": 32560,
-   "blocks_mined": 83300,
+   "blocks_mined": 83302,
    "diamonds": 201,
    "km_travelled": 1137.9,
-   "jumps": 82935,
+   "jumps": 82948,
    "travel": {
     "boat": 28.9,
     "crouch": 26.3,
@@ -105,7 +105,7 @@
     ],
     [
      "bone_meal",
-     19476
+     19784
     ],
     [
      "diamond_shovel",
@@ -125,7 +125,7 @@
     ],
     [
      "birch_sapling",
-     4361
+     4429
     ],
     [
      "trident",
@@ -168,7 +168,7 @@
     "trades": 136,
     "villager_talk": 579,
     "sleeps": 146,
-    "jumps": 82935,
+    "jumps": 82948,
     "deaths": 14,
     "mobs": 9897,
     "dmg_dealt": 32560,
@@ -179,18 +179,18 @@
     "boat": 28.9,
     "horse": 146.6,
     "minecart": 247.4,
-    "crouch": 26278,
-    "climb": 516,
+    "crouch": 26286,
+    "climb": 518,
     "fall": 32160,
-    "chests": 3724,
+    "chests": 3742,
     "enchant": 55,
-    "drops": 5370,
-    "crafting_table": 468,
+    "drops": 5392,
+    "crafting_table": 469,
     "furnace": 881,
     "flowers_potted": 2,
     "noteblock": 32,
-    "mined": 83300,
-    "logs": 1044,
+    "mined": 83302,
+    "logs": 1045,
     "ores": 4665,
     "diamonds": 201,
     "coal": 1181,
@@ -208,17 +208,17 @@
     "spiders": 54,
     "endermen": 3,
     "farm_animals": 326,
-    "crafted": 35734,
+    "crafted": 35770,
     "torches": 88,
     "food": 1270,
     "pearls": 2,
-    "bonemeal": 19476,
-    "picked": 319479,
+    "bonemeal": 19784,
+    "picked": 320114,
     "broken": 74
    },
    "skin": "476152c3602dba5de40229f58018ac664b706a7d08048cbc127c7d38d5b31f58",
    "slim": false,
-   "week_hours": 27.0
+   "week_hours": 27.1
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -1304,7 +1304,7 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-21T13:28+00:00"
+  "checked": "2026-11-21T13:33+00:00"
  },
  "challenge": {
   "stat": "sleeps",
