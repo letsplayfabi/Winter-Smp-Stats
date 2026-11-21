@@ -2,7 +2,7 @@
 """Holt Spielerstatistiken von exaroton und schreibt docs/stats.json + docs/history.json.
 Test ohne API: python fetch_stats.py --local ./testdaten"""
 import base64, json, os, random, re, sys, urllib.error, urllib.parse, urllib.request
-from datetime import datetime, timezone, timedelta
+from datetime import date, datetime, timezone, timedelta
 from pathlib import Path
 
 import challenges as CH
@@ -174,6 +174,96 @@ def activity(out, players):
                               "grid": g, "cov": cov, "players": per}, separators=(",", ":")))
 
 
+LINES = [[r * 5 + c for c in range(5)] for r in range(5)] + [[r * 5 + c for r in range(5)] for c in range(5)] + [[i * 6 for i in range(5)], [4 + i * 4 for i in range(5)]]
+
+
+def bingo(out, players, ov):
+    """Wochen-Bingo: 5×5-Karte (Mitte frei), gezählt wird ab Montag 0:00. Wer zuerst eine Reihe/alle Felder hat, landet in 'winners'."""
+    if (ov.get("bingo") or {}).get("enabled") is False:
+        return None
+    today = vienna_now().date()
+    wk, start = week_id(today), today - timedelta(days=today.weekday())
+    bp = out / "bingo.json"
+    st = jl(bp, {})
+    cur = {p["uuid"]: p.get("ch", {}) for p in players}
+    names = {p["uuid"]: p["name"] for p in players}
+    if st.get("week") != wk or not st.get("tasks"):
+        rng = random.Random(wk + out.name)
+        pick = rng.sample([t for t in CH.BINGO if t[0] in CH.BY_KEY], 24)
+        tasks = [{"key": k, "target": n, "text": CH.bingo_text(k, n)} for k, n, _ in pick]
+        tasks.insert(12, {"key": "free", "target": 0, "text": "Freies Feld"})
+        st = {"week": wk, "start": start.isoformat(), "tasks": tasks, "base": cur, "winners": []}
+        print(f"  Neue Bingo-Karte {wk}")
+    new = {k: n for k, n, _ in CH.BINGO}
+    for t in st["tasks"]:  # geänderte Zielwerte gelten sofort, auch für die laufende Woche
+        if t["key"] in new:
+            t["target"], t["text"] = new[t["key"]], CH.bingo_text(t["key"], new[t["key"]])
+    base = st.setdefault("base", {})
+    prog, now = {}, datetime.now(timezone.utc).isoformat(timespec="minutes")
+    have = {(w["uuid"], w["type"]) for w in st["winners"]}
+    for u in cur:
+        base.setdefault(u, {})
+        vals = [1 if t["key"] == "free" else round(max(cur[u].get(t["key"], 0) - base[u].get(t["key"], 0), 0), 1) for t in st["tasks"]]
+        if any(vals[i] for i in range(25) if i != 12):
+            prog[u] = vals
+        done = [t["key"] == "free" or vals[i] >= t["target"] for i, t in enumerate(st["tasks"])]
+        if any(all(done[i] for i in ln) for ln in LINES) and (u, "line") not in have:
+            st["winners"].append({"uuid": u, "name": names[u], "type": "line", "t": now})
+        if all(done) and (u, "full") not in have:
+            st["winners"].append({"uuid": u, "name": names[u], "type": "full", "t": now})
+    bp.write_text(json.dumps(st, ensure_ascii=False, separators=(",", ":")))
+    return {"week": wk, "start": st["start"], "end": (start + timedelta(days=6)).isoformat(), "tasks": st["tasks"], "progress": prog, "winners": st["winners"]}
+
+
+def streaks(out, players, ov):
+    """Serien: Tage in Folge, an denen jemand mindestens 5 Minuten gespielt hat (Wiener Zeit)."""
+    MIN = 5
+    today = vienna_now().date()
+    td, yd = today.isoformat(), (today - timedelta(days=1)).isoformat()
+    sp = out / "streaks.json"
+    st = jl(sp, None)
+    cur = {p["uuid"]: p.get("minutes", 0) for p in players}
+    if st is None:  # erster Lauf: Serien aus den gespeicherten Tagesdaten nachrechnen
+        st = {"day": td, "base": dict(cur), "lastm": dict(cur), "p": {}, "seeded": {}}
+        snaps = jl(out / "snapshots.json", {})
+        days = sorted(snaps)
+        active = {}
+        for a, b in zip(days, days[1:]):
+            if (date.fromisoformat(b) - date.fromisoformat(a)).days != 1:
+                continue
+            for u, v in snaps[b].items():
+                if v.get("minutes", 0) - (snaps[a].get(u) or {}).get("minutes", v.get("minutes", 0)) >= MIN:
+                    active.setdefault(u, set()).add(b)
+        for u, ds in active.items():
+            best = run = 0
+            prev = None
+            for d in sorted(ds):
+                run = run + 1 if prev and (date.fromisoformat(d) - date.fromisoformat(prev)).days == 1 else 1
+                best, prev = max(best, run), d
+            st["p"][u] = {"cur": run, "best": best, "last": prev}
+            if prev == td:  # heute schon gezählt
+                st["base"][u] = cur.get(u, 0) - MIN
+        print(f"  Serien aus {len(days)} Tagen nachgerechnet")
+    if st.get("day") != td:
+        st["day"], st["base"] = td, dict(st.get("lastm") or cur)
+    seeds = (ov.get("streakSeed") or {}).get(out.name) or {}
+    for u, sd in seeds.items():
+        if sd and sd.get("stamp") and st.setdefault("seeded", {}).get(u) != sd["stamp"]:
+            c = int(sd.get("cur") or 0)
+            st["p"][u] = {"cur": c, "best": max(int(sd.get("best") or 0), c), "last": sd.get("last") or yd}
+            st["seeded"][u] = sd["stamp"]
+    for u, m in cur.items():
+        b = st["base"].setdefault(u, 0 if u not in st.get("lastm", {}) else st["lastm"][u])
+        q = st["p"].setdefault(u, {"cur": 0, "best": 0, "last": None})
+        if m - b >= MIN and q.get("last") != td:
+            q["cur"] = q["cur"] + 1 if q.get("last") == yd else 1
+            q["last"], q["best"] = td, max(q.get("best", 0), q["cur"])
+    st["lastm"] = cur
+    sp.write_text(json.dumps(st, separators=(",", ":")))
+    return {u: {"cur": q["cur"], "best": q["best"], "last": q["last"], "today": cur.get(u, 0) - st["base"].get(u, 0)}
+            for u, q in st["p"].items() if u in cur}
+
+
 def vienna_now():
     try:
         from zoneinfo import ZoneInfo
@@ -246,6 +336,7 @@ def summarize(uuid, raw, name):
         "diamonds": m.get("minecraft:diamond_ore", 0) + m.get("minecraft:deepslate_diamond_ore", 0),
         "km_travelled": round(sum(travel.values()), 1),
         "jumps": c.get("minecraft:jump", 0),
+        "mobs": {a[10:]: b for a, b in k.items() if b},
         "travel": travel, "top_mobs": top(k), "top_blocks": top(m), "top_used": top(u),
         "death_causes": top(kb, 5), "death_other": max(deaths - sum(kb.values()), 0),
         "f": {"eaten": sum(v for k_, v in u.items() if k_[10:] in FOOD), "fall_m": round(c.get("minecraft:fall_one_cm", 0) / 100),
@@ -311,13 +402,21 @@ def process(sv, local, first):
         activity(out, players)
     except Exception as e:
         print("Heatmap nicht aktualisiert:", e)
+    ov = jl(D / "overrides.json", {})
+    extra = {}
+    for name, fn in (("bingo", bingo), ("streaks", streaks)):
+        try:
+            extra[name] = fn(out, players, ov)
+        except Exception as e:
+            print(f"{name} nicht berechnet:", e)
+            extra[name] = None
     try:
         chal = challenge(out, players, jl(D / "overrides.json", {}))
     except Exception as e:
         print("Wochen-Challenge nicht berechnet:", e)
         chal = None
     (out / "stats.json").write_text(json.dumps(
-        {"updated": datetime.now(timezone.utc).isoformat(timespec="minutes"), "players": players, "status": status, "challenge": chal},
+        {"updated": datetime.now(timezone.utc).isoformat(timespec="minutes"), "players": players, "status": status, "challenge": chal, **extra},
         ensure_ascii=False, indent=1))
 
 
