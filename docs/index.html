@@ -98,6 +98,7 @@ dialog#gl{max-width:min(1100px,96vw);width:96%}#glc img{width:100%;max-height:70
 #deco{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:5}
 .shr{margin-top:16px;padding:14px;border:1px solid var(--ln);border-radius:12px;background:var(--bg)}.shr img{display:block;width:100%;max-width:360px;margin:0 auto;border-radius:10px}
 .shr .shb{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}.pb .shb button{margin-top:12px}.pb button.alt{background:transparent;color:var(--fg);border:1px solid var(--ln)}
+.mpimg{display:block;margin-top:12px;padding:0;border:1px solid var(--ln);border-radius:10px;overflow:hidden;background:none;cursor:zoom-in;max-width:420px;width:100%}.mpimg img{display:block;width:100%}
 </style></head><body><main>
 <nav class="nav" id="nav"></nav>
 <div id="bday" hidden></div>
@@ -512,12 +513,14 @@ function mapView(){$("lb").hidden=true;$("ev").hidden=true;$("gm").hidden=true;$
       mk("circle",{cx:x.x,cy:x.z,r:(on?11:8)*k,fill:t[2],stroke:on?cFg:cBg,"stroke-width":(on?3:2)*k},g);
       const lb=mk("text",{x:+x.x+12*k,y:+x.z+4*k,"font-size":13*k,fill:cFg,stroke:cBg,"stroke-width":3*k,"paint-order":"stroke","font-weight":on?700:500},g);lb.textContent=t[0]+" "+x.name;
       const pick=()=>{sel=x.id;MAPF=x.id;draw();show(x)};g.onclick=e=>{if(!moved)pick()};g.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();pick()}}})};
-  const show=x=>{info.hidden=false;info.replaceChildren();const t=PT[x.type]||PT.other;el("h3",`${t[0]} ${x.name}`,info);
+  const show=x=>{info.hidden=false;info.replaceChildren();info.dataset.id=x.id;const t=PT[x.type]||PT.other;el("h3",`${t[0]} ${x.name}`,info);
     el("div",[t[1],ownerName(x.owner)&&"von "+ownerName(x.owner),(SERVERS.find(s=>s.key===x.server)||{}).name].filter(Boolean).join(" · "),info,"ex");
     const co=`${x.x} ${x.y!==""&&x.y!=null?x.y:"~"} ${x.z}`,r=el("p",`${DIM[x.dim||"overworld"]}: X ${x.x}`+(x.y!==""&&x.y!=null?` · Y ${x.y}`:"")+` · Z ${x.z} `,info);
     el("button","Koordinaten kopieren",r,"fnb").onclick=e=>{navigator.clipboard&&navigator.clipboard.writeText(co).then(()=>{e.target.textContent="Kopiert ✓"},()=>{})};
     if((x.dim||"overworld")!=="end"){const f=(x.dim||"overworld")==="nether"?8:1/8;el("p",`Entspricht ${(x.dim||"overworld")==="nether"?"in der Oberwelt":"im Nether"}: X ${Math.round(x.x*f)} · Z ${Math.round(x.z*f)}`,info,"ex")}
-    if(x.desc)el("p",x.desc,info)};
+    if(x.desc)el("p",x.desc,info);
+    if(x.gallery)galLoad().then(L=>{const i=L.findIndex(g=>g.id===x.gallery);if(i<0||info.dataset.id!==x.id)return;const b=document.createElement("button");b.className="mpimg";b.setAttribute("aria-label","Bild vergrößern");
+      const im=document.createElement("img");im.src=L[i].image;im.alt=L[i].title||x.name;b.append(im);b.onclick=()=>gOpen(L,i);info.append(b)})};
   // Verschieben und Zoomen
   const P=new Map();let moved=false,pinch=0;const toW=(cx,cy)=>{const r=svg.getBoundingClientRect();return[vb.x+(cx-r.left)/r.width*vb.w,vb.y+(cy-r.top)/r.height*vb.h]};
   const zoom=(f,cx,cy)=>{const r=svg.getBoundingClientRect();if(cx==null){cx=r.left+r.width/2;cy=r.top+r.height/2}const[wx,wy]=toW(cx,cy),nw=Math.min(Math.max(vb.w*f,40),200000);
@@ -545,10 +548,10 @@ function chalBox(d,data){const b=$("chal");b.replaceChildren();const c=d.challen
     const t=el("div","",r,"mt"),x=el("div","",t);x.style.cssText=`width:${v/mx*100}%;background:${CTX.col?CTX.col(p):"var(--ac)"}`;el("em",fmt(v,c),r)});
   const L=c.last,w=L&&(L.ranking||[]).find(r=>by.has(r[0]));
   if(w)el("p",`Letzte Woche (${L.label}): 🏆 ${by.get(w[0]).display_name} mit ${fmt(w[2],L)}`,b,"chlast")}
-let GAL=[],GF="all",GI=0;
+let GAL=[],GF="all",GI=0,GALP=null;
+const galLoad=()=>GALP||(GALP=fetch("gallery.json",{cache:"no-cache"}).then(r=>r.json()).then(j=>(j.items||[]).sort((a,b)=>(b.date||"").localeCompare(a.date||""))).catch(()=>[]));
 async function gallery(){$("lb").hidden=true;$("ev").hidden=true;$("gm").hidden=true;$("mp").hidden=true;const box=$("ga");box.hidden=false;document.title="Galerie";box.replaceChildren();el("h1","Galerie",box);
-  try{GAL=(await fetch("gallery.json",{cache:"no-cache"}).then(r=>r.json())).items||[]}catch{GAL=[]}
-  GAL.sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  GAL=await galLoad();
   if(!GAL.length){el("p","Noch keine Bilder. Im Admin-Panel unter „Galerie“ kannst du Screenshots hochladen.",box,"ex");return}
   const used=SERVERS.filter(s=>GAL.some(g=>g.server===s.key));if(!used.some(s=>s.key===GF))GF="all";
   if(used.length){const f=el("div","",box);f.id="gfl";[["all","Alle"],...used.map(s=>[s.key,s.name])].forEach(([k,l])=>{el("button",l,f,GF===k?"on":"").onclick=()=>{GF=k;gallery()}})}
@@ -559,6 +562,7 @@ function gOpen(list,i){const d=$("gl"),b=$("glc");GI=(i+list.length)%list.length
   const im=document.createElement("img");im.src=g.image;im.alt=g.title||"";b.append(im);const t=el("div","",b,"glt");if(g.title)el("h2",g.title,t);
   const meta=[g.by&&"von "+g.by,g.date&&new Date(g.date+"T12:00").toLocaleDateString("de-AT",{day:"numeric",month:"long",year:"numeric"}),(SERVERS.find(s=>s.key===g.server)||{}).name].filter(Boolean);
   if(meta.length)el("p",meta.join(" · "),t,"ex");if(g.desc)el("p",g.desc,t);
+  if(OV.showMap!==false)(OV.places||[]).filter(x=>x.gallery===g.id).forEach(x=>{const r=el("p","📍 "+x.name+" – ",t),a=el("a","auf der Karte zeigen",r);a.href="#map";a.style.color="var(--ac)";a.onclick=()=>{MAPF=x.id;d.close();if(location.hash==="#map")mapView()}});
   const nv=el("div","",t,"gln");if(list.length>1){el("button","← Vorheriges",nv,"fnb").onclick=()=>gOpen(list,GI-1);el("button","Nächstes →",nv,"fnb").onclick=()=>gOpen(list,GI+1)}el("button","Schließen",nv,"fnb").onclick=()=>d.close();
   d.onkeydown=e=>{if(list.length<2)return;if(e.key==="ArrowLeft")gOpen(list,GI-1);if(e.key==="ArrowRight")gOpen(list,GI+1)};if(!d.open)d.showModal()}
 $("gl").onclick=e=>{if(e.target===$("gl"))$("gl").close()};
