@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-22T22:45+00:00",
+ "updated": "2026-11-22T23:21+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -1555,124 +1555,67 @@
   }
  ],
  "status": {
-  "state": "online",
+  "state": "offline",
   "count": 0,
   "max": 20,
   "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-22T22:45+00:00"
+  "checked": "2026-11-22T23:21+00:00"
  },
  "challenge": {
-  "stat": "sleeps",
-  "label": "Im Bett geschlafen",
-  "unit": "×",
+  "stat": "redstone",
+  "label": "Redstoneerz abgebaut",
+  "unit": "",
   "dec": 0,
-  "week": "2026-W47",
-  "start": "2026-11-16",
-  "end": "2026-11-22",
-  "ranking": [
-   [
-    "0c95a02f-d9c7-4467-a71c-310e2b070c08",
-    "CapyDreamXD",
-    13
-   ],
-   [
-    "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
-    "letsplayfabi",
-    12
+  "week": "2026-W48",
+  "start": "2026-11-23",
+  "end": "2026-11-29",
+  "ranking": [],
+  "last": {
+   "stat": "sleeps",
+   "label": "Im Bett geschlafen",
+   "unit": "×",
+   "dec": 0,
+   "week": "2026-W47",
+   "start": "2026-11-16",
+   "ranking": [
+    [
+     "0c95a02f-d9c7-4467-a71c-310e2b070c08",
+     "CapyDreamXD",
+     13
+    ],
+    [
+     "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
+     "letsplayfabi",
+     12
+    ]
    ]
-  ],
-  "last": null
+  }
  },
  "bingo": {
-  "week": "2026-W47",
-  "start": "2026-11-16",
-  "end": "2026-11-22",
+  "week": "2026-W48",
+  "start": "2026-11-23",
+  "end": "2026-11-29",
   "tasks": [
-   {
-    "key": "villager_talk",
-    "target": 100,
-    "text": "100× mit Dorfbewohnern reden"
-   },
-   {
-    "key": "fish",
-    "target": 100,
-    "text": "100 Fische angeln"
-   },
    {
     "key": "sand",
     "target": 320,
     "text": "320 Sand oder Kies abbauen"
    },
    {
-    "key": "bred",
-    "target": 500,
-    "text": "500 Tiere züchten"
-   },
-   {
-    "key": "diamonds",
-    "target": 15,
-    "text": "15 Diamanterze abbauen"
-   },
-   {
-    "key": "pig",
-    "target": 1,
-    "text": "1 km auf einem Schwein reiten"
-   },
-   {
-    "key": "noteblock",
-    "target": 10,
-    "text": "10× einen Notenblock spielen"
-   },
-   {
-    "key": "lapis",
-    "target": 20,
-    "text": "20 Lapislazulierze abbauen"
-   },
-   {
-    "key": "phantoms",
-    "target": 10,
-    "text": "10 Phantome besiegen"
-   },
-   {
-    "key": "creepers",
-    "target": 10,
-    "text": "10 Creeper besiegen"
-   },
-   {
-    "key": "minecart",
-    "target": 25,
-    "text": "25 km Lore fahren"
-   },
-   {
-    "key": "crouch",
+    "key": "horse",
     "target": 100,
-    "text": "100 m schleichen"
+    "text": "100 km reiten"
    },
    {
-    "key": "free",
-    "target": 0,
-    "text": "Freies Feld"
+    "key": "flowers_potted",
+    "target": 1,
+    "text": "1 Blume eintopfen"
    },
    {
-    "key": "fall",
-    "target": 2000,
-    "text": "2000 m tief fallen"
-   },
-   {
-    "key": "blazes",
-    "target": 20,
-    "text": "20 Lohen besiegen"
-   },
-   {
-    "key": "stone",
-    "target": 1000,
-    "text": "1000 Stein abbauen"
-   },
-   {
-    "key": "netherrack",
-    "target": 2000,
-    "text": "2000 Netherrack abbauen"
+    "key": "crafted",
+    "target": 100,
+    "text": "100 Gegenstände herstellen"
    },
    {
     "key": "fishing_casts",
@@ -1680,19 +1623,84 @@
     "text": "100× die Angel auswerfen"
    },
    {
-    "key": "climb",
+    "key": "creepers",
+    "target": 10,
+    "text": "10 Creeper besiegen"
+   },
+   {
+    "key": "debris",
+    "target": 4,
+    "text": "4 Antiken Schrott abbauen"
+   },
+   {
+    "key": "shield",
+    "target": 1000,
+    "text": "1000 HP Schaden mit dem Schild blocken"
+   },
+   {
+    "key": "noteblock",
+    "target": 10,
+    "text": "10× einen Notenblock spielen"
+   },
+   {
+    "key": "villager_talk",
+    "target": 100,
+    "text": "100× mit Dorfbewohnern reden"
+   },
+   {
+    "key": "netherrack",
+    "target": 2000,
+    "text": "2000 Netherrack abbauen"
+   },
+   {
+    "key": "trades",
     "target": 50,
-    "text": "50 m klettern"
+    "text": "50× mit Dorfbewohnern handeln"
    },
    {
-    "key": "spiders",
-    "target": 20,
-    "text": "20 Spinnen besiegen"
+    "key": "free",
+    "target": 0,
+    "text": "Freies Feld"
    },
    {
-    "key": "coal",
+    "key": "ghasts",
+    "target": 3,
+    "text": "3 Ghasts besiegen"
+   },
+   {
+    "key": "diamonds",
+    "target": 15,
+    "text": "15 Diamanterze abbauen"
+   },
+   {
+    "key": "bell",
+    "target": 10,
+    "text": "10× eine Glocke läuten"
+   },
+   {
+    "key": "boat",
+    "target": 10,
+    "text": "10 km Boot fahren"
+   },
+   {
+    "key": "iron",
     "target": 64,
-    "text": "64 Kohleerze abbauen"
+    "text": "64 Eisenerze abbauen"
+   },
+   {
+    "key": "redstone",
+    "target": 30,
+    "text": "30 Redstoneerze abbauen"
+   },
+   {
+    "key": "sleeps",
+    "target": 30,
+    "text": "30× im Bett schlafen"
+   },
+   {
+    "key": "crouch",
+    "target": 100,
+    "text": "100 m schleichen"
    },
    {
     "key": "food",
@@ -1700,98 +1708,30 @@
     "text": "200× etwas essen"
    },
    {
-    "key": "picked",
-    "target": 5000,
-    "text": "5000 Items aufsammeln"
+    "key": "slimes",
+    "target": 10,
+    "text": "10 Schleime besiegen"
    },
    {
-    "key": "raids",
-    "target": 5,
-    "text": "5 Überfälle gewinnen"
+    "key": "bread",
+    "target": 32,
+    "text": "32 Brote backen"
    },
    {
-    "key": "skeletons",
-    "target": 50,
-    "text": "50 Skelette besiegen"
+    "key": "ores",
+    "target": 150,
+    "text": "150 Erze abbauen"
    }
   ],
-  "progress": {
-   "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f": [
-    125,
-    0,
-    0,
-    17,
-    0,
-    0,
-    80,
-    0,
-    4,
-    1,
-    29.1,
-    937,
-    1,
-    3269,
-    23,
-    0,
-    741,
-    0,
-    50,
-    4,
-    64,
-    216,
-    17982,
-    5,
-    51
-   ],
-   "0c95a02f-d9c7-4467-a71c-310e2b070c08": [
-    7,
-    0,
-    2,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    2,
-    28.4,
-    2687,
-    1,
-    4161,
-    20,
-    116,
-    6,
-    0,
-    18,
-    1,
-    24,
-    69,
-    1471,
-    0,
-    4
-   ]
-  },
-  "winners": [
-   {
-    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
-    "name": "CapyDreamXD",
-    "type": "line",
-    "t": "2026-11-22T14:51+00:00"
-   },
-   {
-    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
-    "name": "letsplayfabi",
-    "type": "line",
-    "t": "2026-11-22T16:41+00:00"
-   }
-  ]
+  "progress": {},
+  "winners": []
  },
  "streaks": {
   "0c95a02f-d9c7-4467-a71c-310e2b070c08": {
    "cur": 1,
    "best": 7,
    "last": "2026-11-22",
-   "today": 231
+   "today": 0
   },
   "5b1dde8a-1b76-4202-b3be-862467454795": {
    "cur": 2,
@@ -1803,7 +1743,7 @@
    "cur": 8,
    "best": 8,
    "last": "2026-11-22",
-   "today": 395
+   "today": 0
   },
   "67968945-1afd-4ee6-989a-8c4889f73f9d": {
    "cur": 1,
