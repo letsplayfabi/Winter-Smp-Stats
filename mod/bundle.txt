@@ -706,7 +706,7 @@ final class Compat {
                 IntList.of(0xE53935, 0x43A047, 0xFDD835), IntList.of(0xFFFFFF), true, true))));
         st.set(DataComponents.LORE, new ItemLore(lore.stream().map(l -> (Component) Component.literal(l)).toList()));
         ServerPlayer p = (ServerPlayer) player;
-        if (!p.getInventory().add(st)) p.drop(st, false);
+        p.getInventory().placeItemBackInInventory(st); // ins Inventar, bei vollem Inventar vor den Spieler
         return true;
     }
 }
