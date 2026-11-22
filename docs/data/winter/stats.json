@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-22T17:29+00:00",
+ "updated": "2026-11-22T17:31+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7823,
+   "minutes": 7824,
    "hours": 130.4,
    "deaths": 14,
    "mob_kills": 10239,
    "player_kills": 8,
    "entities_killed": 9756,
-   "items_used": 185077,
+   "items_used": 185078,
    "damage": 34532,
    "blocks_mined": 84341,
    "diamonds": 201,
-   "km_travelled": 1183.4,
-   "jumps": 85511,
+   "km_travelled": 1183.5,
+   "jumps": 85534,
    "mobs": {
     "stray": 20,
     "pig": 29,
@@ -81,7 +81,7 @@
     "walk_under_water": 27.9,
     "horse": 146.6,
     "sprint": 109.6,
-    "fly": 432.0,
+    "fly": 432.1,
     "walk_on_water": 10.1,
     "swim": 57.5,
     "nautilus": 1.1
@@ -205,7 +205,7 @@
    "death_other": 6,
    "f": {
     "eaten": 1487,
-    "fall_m": 35395,
+    "fall_m": 35406,
     "trades": 136,
     "fish": 134,
     "bred": 636,
@@ -224,20 +224,20 @@
     "trades": 136,
     "villager_talk": 704,
     "sleeps": 151,
-    "jumps": 85511,
+    "jumps": 85534,
     "deaths": 14,
     "mobs": 10239,
     "dmg_dealt": 34532,
-    "dmg_taken": 6374,
+    "dmg_taken": 6375,
     "walk": 65.4,
     "sprint": 109.6,
     "swim": 57.5,
     "boat": 28.9,
     "horse": 146.6,
     "minecart": 276.5,
-    "crouch": 27222,
+    "crouch": 27223,
     "climb": 568,
-    "fall": 35395,
+    "fall": 35405,
     "chests": 4021,
     "enchant": 55,
     "drops": 5680,
@@ -1556,13 +1556,11 @@
  ],
  "status": {
   "state": "online",
-  "count": 1,
+  "count": 0,
   "max": 20,
-  "list": [
-   "letsplayfabi"
-  ],
+  "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-22T17:29+00:00"
+  "checked": "2026-11-22T17:31+00:00"
  },
  "challenge": {
   "stat": "sleeps",
@@ -1730,9 +1728,9 @@
     4,
     1,
     29.1,
-    936,
+    937,
     1,
-    3232,
+    3242,
     23,
     0,
     741,
@@ -1805,7 +1803,7 @@
    "cur": 8,
    "best": 8,
    "last": "2026-11-22",
-   "today": 369
+   "today": 370
   },
   "67968945-1afd-4ee6-989a-8c4889f73f9d": {
    "cur": 1,
