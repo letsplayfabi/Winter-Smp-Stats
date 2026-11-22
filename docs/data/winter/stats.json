@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-22T22:26+00:00",
+ "updated": "2026-11-22T22:31+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -302,18 +302,18 @@
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
    "name": "CapyDreamXD",
-   "minutes": 6457,
-   "hours": 107.6,
+   "minutes": 6462,
+   "hours": 107.7,
    "deaths": 37,
    "mob_kills": 1377,
    "player_kills": 0,
    "entities_killed": 1304,
-   "items_used": 145235,
+   "items_used": 145358,
    "damage": 23412,
-   "blocks_mined": 81399,
+   "blocks_mined": 81415,
    "diamonds": 182,
-   "km_travelled": 1192.6,
-   "jumps": 179614,
+   "km_travelled": 1193.7,
+   "jumps": 179890,
    "mobs": {
     "zombified_piglin": 9,
     "stray": 2,
@@ -360,11 +360,11 @@
     "crouch": 34.6,
     "climb": 0.5,
     "minecart": 73.5,
-    "walk": 95.5,
+    "walk": 95.6,
     "walk_under_water": 7.9,
     "horse": 280.8,
-    "sprint": 172.0,
-    "fly": 448.7,
+    "sprint": 172.2,
+    "fly": 449.5,
     "walk_on_water": 7.0,
     "swim": 14.5,
     "nautilus": 1.0
@@ -418,7 +418,7 @@
     ],
     [
      "dirt",
-     7108
+     7113
     ],
     [
      "spruce_log",
@@ -448,7 +448,7 @@
     ],
     [
      "dirt",
-     12865
+     12934
     ],
     [
      "diamond_shovel",
@@ -495,12 +495,12 @@
    ],
    "death_other": 11,
    "f": {
-    "eaten": 2143,
-    "fall_m": 89965,
+    "eaten": 2146,
+    "fall_m": 90161,
     "trades": 3789,
     "fish": 15,
     "bred": 118,
-    "sleeps": 309
+    "sleeps": 310
    },
    "x": {
     "debris": 9,
@@ -514,29 +514,29 @@
     "bred": 118,
     "trades": 3789,
     "villager_talk": 792,
-    "sleeps": 309,
-    "jumps": 179614,
+    "sleeps": 310,
+    "jumps": 179890,
     "deaths": 37,
     "mobs": 1377,
     "dmg_dealt": 23411,
-    "dmg_taken": 9680,
-    "walk": 95.5,
-    "sprint": 172.0,
+    "dmg_taken": 9694,
+    "walk": 95.6,
+    "sprint": 172.2,
     "swim": 14.5,
     "boat": 56.6,
     "horse": 280.8,
     "minecart": 73.5,
     "crouch": 34600,
     "climb": 511,
-    "fall": 89964,
-    "chests": 6731,
+    "fall": 90161,
+    "chests": 6732,
     "enchant": 71,
     "drops": 1793,
     "crafting_table": 865,
     "furnace": 1376,
     "flowers_potted": 3,
     "noteblock": 57,
-    "mined": 81399,
+    "mined": 81415,
     "logs": 7509,
     "ores": 4996,
     "diamonds": 182,
@@ -545,8 +545,8 @@
     "stone": 14479,
     "deepslate": 1230,
     "netherrack": 2717,
-    "dirt": 16480,
-    "sand": 2179,
+    "dirt": 16485,
+    "sand": 2180,
     "crops": 1118,
     "leaves": 1068,
     "zombies": 299,
@@ -557,10 +557,10 @@
     "farm_animals": 215,
     "crafted": 102481,
     "torches": 300,
-    "food": 2142,
+    "food": 2145,
     "pearls": 18,
     "bonemeal": 142,
-    "picked": 96354,
+    "picked": 96371,
     "broken": 82,
     "blazes": 21,
     "ghasts": 4,
@@ -588,7 +588,7 @@
    },
    "skin": "baf4f63b06fe40b9911f77749d44c3722536afe011db2129003511212ca5dfc5",
    "slim": false,
-   "week_hours": 12.7
+   "week_hours": 12.8
   },
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -1562,7 +1562,7 @@
    "CapyDreamXD"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-22T22:26+00:00"
+  "checked": "2026-11-22T22:31+00:00"
  },
  "challenge": {
   "stat": "sleeps",
@@ -1574,13 +1574,13 @@
   "end": "2026-11-22",
   "ranking": [
    [
-    "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
-    "letsplayfabi",
-    12
-   ],
-   [
     "0c95a02f-d9c7-4467-a71c-310e2b070c08",
     "CapyDreamXD",
+    13
+   ],
+   [
+    "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
+    "letsplayfabi",
     12
    ]
   ],
@@ -1748,7 +1748,7 @@
    "0c95a02f-d9c7-4467-a71c-310e2b070c08": [
     7,
     0,
-    1,
+    2,
     0,
     0,
     0,
@@ -1759,7 +1759,7 @@
     28.4,
     2683,
     1,
-    3878,
+    4075,
     20,
     116,
     6,
@@ -1767,8 +1767,8 @@
     18,
     1,
     24,
-    65,
-    1416,
+    68,
+    1433,
     0,
     4
    ]
@@ -1793,7 +1793,7 @@
    "cur": 1,
    "best": 7,
    "last": "2026-11-22",
-   "today": 212
+   "today": 217
   },
   "5b1dde8a-1b76-4202-b3be-862467454795": {
    "cur": 2,
