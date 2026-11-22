@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-22T18:52+00:00",
+ "updated": "2026-11-22T21:56+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -312,8 +312,8 @@
    "damage": 23412,
    "blocks_mined": 81192,
    "diamonds": 182,
-   "km_travelled": 1185.2,
-   "jumps": 178214,
+   "km_travelled": 1185.3,
+   "jumps": 178222,
    "mobs": {
     "zombified_piglin": 9,
     "stray": 2,
@@ -363,7 +363,7 @@
     "walk": 95.0,
     "walk_under_water": 7.9,
     "horse": 280.8,
-    "sprint": 170.7,
+    "sprint": 170.8,
     "fly": 445.2,
     "walk_on_water": 7.0,
     "swim": 14.5,
@@ -496,7 +496,7 @@
    "death_other": 11,
    "f": {
     "eaten": 2132,
-    "fall_m": 89186,
+    "fall_m": 89209,
     "trades": 3789,
     "fish": 15,
     "bred": 118,
@@ -515,20 +515,20 @@
     "trades": 3789,
     "villager_talk": 792,
     "sleeps": 307,
-    "jumps": 178214,
+    "jumps": 178222,
     "deaths": 37,
     "mobs": 1377,
     "dmg_dealt": 23411,
-    "dmg_taken": 9649,
+    "dmg_taken": 9653,
     "walk": 95.0,
-    "sprint": 170.7,
+    "sprint": 170.8,
     "swim": 14.5,
     "boat": 56.6,
     "horse": 280.8,
     "minecart": 71.9,
-    "crouch": 34137,
+    "crouch": 34145,
     "climb": 511,
-    "fall": 89186,
+    "fall": 89209,
     "chests": 6694,
     "enchant": 71,
     "drops": 1789,
@@ -1556,11 +1556,13 @@
  ],
  "status": {
   "state": "online",
-  "count": 0,
+  "count": 1,
   "max": 20,
-  "list": [],
+  "list": [
+   "CapyDreamXD"
+  ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-22T18:52+00:00"
+  "checked": "2026-11-22T21:56+00:00"
  },
  "challenge": {
   "stat": "sleeps",
@@ -1755,9 +1757,9 @@
     0,
     2,
     26.8,
-    2220,
+    2228,
     1,
-    3100,
+    3123,
     20,
     116,
     6,
