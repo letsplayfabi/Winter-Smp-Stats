@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-22T12:26+00:00",
+ "updated": "2026-11-22T12:31+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7594,
+   "minutes": 7599,
    "hours": 126.6,
    "deaths": 14,
    "mob_kills": 9905,
    "player_kills": 8,
    "entities_killed": 9438,
-   "items_used": 179936,
+   "items_used": 180432,
    "damage": 32693,
    "blocks_mined": 83303,
    "diamonds": 201,
    "km_travelled": 1141.8,
-   "jumps": 83106,
+   "jumps": 83111,
    "mobs": {
     "stray": 20,
     "pig": 29,
@@ -161,7 +161,7 @@
     ],
     [
      "bone_meal",
-     28804
+     29209
     ],
     [
      "diamond_shovel",
@@ -177,7 +177,7 @@
     ],
     [
      "birch_sapling",
-     7078
+     7169
     ],
     [
      "diamond_sword",
@@ -205,7 +205,7 @@
    "death_other": 6,
    "f": {
     "eaten": 1276,
-    "fall_m": 32299,
+    "fall_m": 32302,
     "trades": 136,
     "fish": 134,
     "bred": 619,
@@ -224,7 +224,7 @@
     "trades": 136,
     "villager_talk": 579,
     "sleeps": 146,
-    "jumps": 83106,
+    "jumps": 83111,
     "deaths": 14,
     "mobs": 9905,
     "dmg_dealt": 32693,
@@ -235,10 +235,10 @@
     "boat": 28.9,
     "horse": 146.6,
     "minecart": 249.9,
-    "crouch": 26343,
-    "climb": 533,
-    "fall": 32298,
-    "chests": 3896,
+    "crouch": 26344,
+    "climb": 535,
+    "fall": 32301,
+    "chests": 3901,
     "enchant": 55,
     "drops": 5583,
     "crafting_table": 474,
@@ -268,8 +268,8 @@
     "torches": 88,
     "food": 1274,
     "pearls": 2,
-    "bonemeal": 28804,
-    "picked": 335260,
+    "bonemeal": 29209,
+    "picked": 335682,
     "broken": 74,
     "blazes": 31,
     "ghasts": 2,
@@ -1561,7 +1561,7 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-22T12:26+00:00"
+  "checked": "2026-11-22T12:31+00:00"
  },
  "challenge": {
   "stat": "sleeps",
@@ -1724,18 +1724,18 @@
     4,
     0,
     2.5,
-    57,
+    58,
     1,
-    135,
+    138,
     0,
     0,
     0,
     0,
-    15,
+    17,
     2,
     0,
     4,
-    13183,
+    13605,
     0,
     1
    ]
@@ -1759,7 +1759,7 @@
    "cur": 8,
    "best": 8,
    "last": "2026-11-22",
-   "today": 140
+   "today": 145
   },
   "67968945-1afd-4ee6-989a-8c4889f73f9d": {
    "cur": 1,
