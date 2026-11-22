@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-22T16:36+00:00",
+ "updated": "2026-11-22T16:41+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7770,
-   "hours": 129.5,
+   "minutes": 7775,
+   "hours": 129.6,
    "deaths": 14,
    "mob_kills": 10220,
    "player_kills": 8,
    "entities_killed": 9740,
-   "items_used": 184282,
+   "items_used": 184299,
    "damage": 34389,
    "blocks_mined": 83596,
    "diamonds": 201,
-   "km_travelled": 1172.1,
-   "jumps": 85321,
+   "km_travelled": 1172.2,
+   "jumps": 85332,
    "mobs": {
     "stray": 20,
     "pig": 29,
@@ -80,7 +80,7 @@
     "walk": 65.2,
     "walk_under_water": 27.9,
     "horse": 146.6,
-    "sprint": 109.3,
+    "sprint": 109.4,
     "fly": 430.6,
     "walk_on_water": 10.1,
     "swim": 57.4,
@@ -185,7 +185,7 @@
     ],
     [
      "trident",
-     4396
+     4397
     ]
    ],
    "death_causes": [
@@ -204,8 +204,8 @@
    ],
    "death_other": 6,
    "f": {
-    "eaten": 1468,
-    "fall_m": 33429,
+    "eaten": 1484,
+    "fall_m": 33461,
     "trades": 136,
     "fish": 134,
     "bred": 619,
@@ -224,21 +224,21 @@
     "trades": 136,
     "villager_talk": 583,
     "sleeps": 150,
-    "jumps": 85321,
+    "jumps": 85332,
     "deaths": 14,
     "mobs": 10220,
     "dmg_dealt": 34389,
-    "dmg_taken": 6341,
+    "dmg_taken": 6357,
     "walk": 65.2,
-    "sprint": 109.3,
+    "sprint": 109.4,
     "swim": 57.4,
     "boat": 28.9,
     "horse": 146.6,
     "minecart": 267.3,
-    "crouch": 27062,
+    "crouch": 27066,
     "climb": 568,
-    "fall": 33429,
-    "chests": 3988,
+    "fall": 33460,
+    "chests": 3991,
     "enchant": 55,
     "drops": 5672,
     "crafting_table": 474,
@@ -266,7 +266,7 @@
     "farm_animals": 326,
     "crafted": 36490,
     "torches": 88,
-    "food": 1466,
+    "food": 1482,
     "pearls": 2,
     "bonemeal": 31168,
     "picked": 339510,
@@ -290,14 +290,14 @@
     "fishing_casts": 243,
     "bread": 388,
     "enderchest": 163,
-    "barrel": 782,
+    "barrel": 786,
     "anvil": 27,
     "shield": 709,
     "raids": 178
    },
    "skin": "476152c3602dba5de40229f58018ac664b706a7d08048cbc127c7d38d5b31f58",
    "slim": false,
-   "week_hours": 28.5
+   "week_hours": 28.6
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -1562,7 +1562,7 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-22T16:36+00:00"
+  "checked": "2026-11-22T16:41+00:00"
  },
  "challenge": {
   "stat": "sleeps",
@@ -1730,9 +1730,9 @@
     4,
     1,
     19.9,
-    776,
+    780,
     1,
-    1266,
+    1297,
     23,
     0,
     0,
@@ -1740,7 +1740,7 @@
     50,
     4,
     64,
-    196,
+    212,
     17433,
     5,
     51
@@ -1779,6 +1779,12 @@
     "name": "CapyDreamXD",
     "type": "line",
     "t": "2026-11-22T14:51+00:00"
+   },
+   {
+    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
+    "name": "letsplayfabi",
+    "type": "line",
+    "t": "2026-11-22T16:41+00:00"
    }
   ]
  },
@@ -1799,7 +1805,7 @@
    "cur": 8,
    "best": 8,
    "last": "2026-11-22",
-   "today": 316
+   "today": 321
   },
   "67968945-1afd-4ee6-989a-8c4889f73f9d": {
    "cur": 1,
