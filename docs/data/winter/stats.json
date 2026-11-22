@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-22T10:12+00:00",
+ "updated": "2026-11-22T10:16+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7460,
-   "hours": 124.3,
+   "minutes": 7464,
+   "hours": 124.4,
    "deaths": 14,
    "mob_kills": 9901,
    "player_kills": 8,
    "entities_killed": 9434,
-   "items_used": 170319,
+   "items_used": 170372,
    "damage": 32636,
    "blocks_mined": 83302,
    "diamonds": 201,
-   "km_travelled": 1138.7,
-   "jumps": 82988,
+   "km_travelled": 1139.6,
+   "jumps": 83004,
    "mobs": {
     "stray": 20,
     "pig": 29,
@@ -76,13 +76,13 @@
     "boat": 28.9,
     "crouch": 26.3,
     "climb": 0.5,
-    "minecart": 247.9,
+    "minecart": 248.6,
     "walk": 64.1,
     "walk_under_water": 27.5,
     "horse": 146.6,
-    "sprint": 107.2,
+    "sprint": 107.3,
     "fly": 425.1,
-    "walk_on_water": 9.8,
+    "walk_on_water": 9.9,
     "swim": 53.7,
     "nautilus": 1.1
    },
@@ -185,7 +185,7 @@
     ],
     [
      "trident",
-     4143
+     4196
     ]
    ],
    "death_causes": [
@@ -224,21 +224,21 @@
     "trades": 136,
     "villager_talk": 579,
     "sleeps": 146,
-    "jumps": 82988,
+    "jumps": 83004,
     "deaths": 14,
     "mobs": 9901,
     "dmg_dealt": 32636,
     "dmg_taken": 5985,
     "walk": 64.1,
-    "sprint": 107.2,
+    "sprint": 107.3,
     "swim": 53.7,
     "boat": 28.9,
     "horse": 146.6,
-    "minecart": 247.9,
+    "minecart": 248.6,
     "crouch": 26296,
     "climb": 520,
     "fall": 32180,
-    "chests": 3794,
+    "chests": 3799,
     "enchant": 55,
     "drops": 5507,
     "crafting_table": 471,
@@ -297,7 +297,7 @@
    },
    "skin": "476152c3602dba5de40229f58018ac664b706a7d08048cbc127c7d38d5b31f58",
    "slim": false,
-   "week_hours": 23.3
+   "week_hours": 23.4
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -1561,7 +1561,7 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-22T10:12+00:00"
+  "checked": "2026-11-22T10:16+00:00"
  },
  "challenge": {
   "stat": "sleeps",
@@ -1723,7 +1723,7 @@
     0,
     3,
     0,
-    0.5,
+    1.2,
     10,
     1,
     17,
@@ -1759,7 +1759,7 @@
    "cur": 8,
    "best": 8,
    "last": "2026-11-22",
-   "today": 6
+   "today": 10
   },
   "67968945-1afd-4ee6-989a-8c4889f73f9d": {
    "cur": 1,
