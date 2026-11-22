@@ -1,16 +1,16 @@
 {
- "updated": "2026-11-22T12:06+00:00",
+ "updated": "2026-11-22T12:11+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7574,
-   "hours": 126.2,
+   "minutes": 7579,
+   "hours": 126.3,
    "deaths": 14,
    "mob_kills": 9905,
    "player_kills": 8,
    "entities_killed": 9438,
-   "items_used": 178091,
+   "items_used": 178634,
    "damage": 32693,
    "blocks_mined": 83302,
    "diamonds": 201,
@@ -161,7 +161,7 @@
     ],
     [
      "bone_meal",
-     27313
+     27758
     ],
     [
      "diamond_shovel",
@@ -177,7 +177,7 @@
     ],
     [
      "birch_sapling",
-     6728
+     6826
     ],
     [
      "diamond_sword",
@@ -268,8 +268,8 @@
     "torches": 88,
     "food": 1274,
     "pearls": 2,
-    "bonemeal": 27313,
-    "picked": 333515,
+    "bonemeal": 27758,
+    "picked": 333973,
     "broken": 74,
     "blazes": 31,
     "ghasts": 2,
@@ -297,7 +297,7 @@
    },
    "skin": "476152c3602dba5de40229f58018ac664b706a7d08048cbc127c7d38d5b31f58",
    "slim": false,
-   "week_hours": 25.2
+   "week_hours": 25.3
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -1561,7 +1561,7 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-22T12:06+00:00"
+  "checked": "2026-11-22T12:11+00:00"
  },
  "challenge": {
   "stat": "sleeps",
@@ -1735,7 +1735,7 @@
     2,
     0,
     4,
-    11438,
+    11896,
     0,
     1
    ]
@@ -1759,7 +1759,7 @@
    "cur": 8,
    "best": 8,
    "last": "2026-11-22",
-   "today": 120
+   "today": 125
   },
   "67968945-1afd-4ee6-989a-8c4889f73f9d": {
    "cur": 1,
