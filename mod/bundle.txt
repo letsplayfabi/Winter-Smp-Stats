@@ -618,6 +618,7 @@ import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -706,7 +707,11 @@ final class Compat {
                 IntList.of(0xE53935, 0x43A047, 0xFDD835), IntList.of(0xFFFFFF), true, true))));
         st.set(DataComponents.LORE, new ItemLore(lore.stream().map(l -> (Component) Component.literal(l)).toList()));
         ServerPlayer p = (ServerPlayer) player;
-        p.getInventory().placeItemBackInInventory(st); // ins Inventar, bei vollem Inventar vor den Spieler
+        if (!p.getInventory().add(st)) { // Inventar voll: als Gegenstand vor den Spieler legen
+            ItemEntity drop = new ItemEntity(p.level(), p.getX(), p.getY(), p.getZ(), st);
+            drop.setNoPickUpDelay();
+            p.level().addFreshEntity(drop);
+        }
         return true;
     }
 }
