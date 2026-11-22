@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-22T14:26+00:00",
+ "updated": "2026-11-22T14:31+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -302,18 +302,18 @@
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
    "name": "CapyDreamXD",
-   "minutes": 6345,
-   "hours": 105.7,
+   "minutes": 6350,
+   "hours": 105.8,
    "deaths": 37,
-   "mob_kills": 1375,
+   "mob_kills": 1376,
    "player_kills": 0,
-   "entities_killed": 1302,
-   "items_used": 141636,
-   "damage": 23370,
-   "blocks_mined": 81010,
+   "entities_killed": 1303,
+   "items_used": 141674,
+   "damage": 23390,
+   "blocks_mined": 81022,
    "diamonds": 182,
-   "km_travelled": 1152.5,
-   "jumps": 176210,
+   "km_travelled": 1152.9,
+   "jumps": 176332,
    "mobs": {
     "zombified_piglin": 9,
     "stray": 2,
@@ -353,18 +353,18 @@
     "vex": 1,
     "ghast": 4,
     "breeze": 2,
-    "blaze": 20
+    "blaze": 21
    },
    "travel": {
     "boat": 56.6,
-    "crouch": 33.3,
+    "crouch": 33.4,
     "climb": 0.5,
     "minecart": 47.1,
     "walk": 94.3,
     "walk_under_water": 7.9,
     "horse": 280.8,
-    "sprint": 169.4,
-    "fly": 440.1,
+    "sprint": 169.5,
+    "fly": 440.3,
     "walk_on_water": 7.0,
     "swim": 14.5,
     "nautilus": 1.0
@@ -434,7 +434,7 @@
     ],
     [
      "netherrack",
-     2714
+     2717
     ]
    ],
    "top_used": [
@@ -495,17 +495,17 @@
    ],
    "death_other": 11,
    "f": {
-    "eaten": 2117,
-    "fall_m": 87954,
+    "eaten": 2119,
+    "fall_m": 88025,
     "trades": 3789,
     "fish": 15,
     "bred": 118,
-    "sleeps": 304
+    "sleeps": 305
    },
    "x": {
     "debris": 9,
     "creepers": 330,
-    "netherrack": 2714,
+    "netherrack": 2717,
     "deepslate": 1230,
     "aviate_km": 0.0
    },
@@ -514,29 +514,29 @@
     "bred": 118,
     "trades": 3789,
     "villager_talk": 792,
-    "sleeps": 304,
-    "jumps": 176210,
+    "sleeps": 305,
+    "jumps": 176332,
     "deaths": 37,
-    "mobs": 1375,
-    "dmg_dealt": 23369,
-    "dmg_taken": 9575,
+    "mobs": 1376,
+    "dmg_dealt": 23389,
+    "dmg_taken": 9587,
     "walk": 94.3,
-    "sprint": 169.4,
+    "sprint": 169.5,
     "swim": 14.5,
     "boat": 56.6,
     "horse": 280.8,
     "minecart": 47.1,
-    "crouch": 33329,
+    "crouch": 33351,
     "climb": 505,
-    "fall": 87954,
+    "fall": 88025,
     "chests": 6646,
     "enchant": 71,
-    "drops": 1783,
+    "drops": 1785,
     "crafting_table": 864,
     "furnace": 1376,
     "flowers_potted": 3,
     "noteblock": 57,
-    "mined": 81010,
+    "mined": 81022,
     "logs": 7380,
     "ores": 4991,
     "diamonds": 182,
@@ -544,7 +544,7 @@
     "iron": 528,
     "stone": 14460,
     "deepslate": 1230,
-    "netherrack": 2714,
+    "netherrack": 2717,
     "dirt": 16355,
     "sand": 2178,
     "crops": 1118,
@@ -557,12 +557,12 @@
     "farm_animals": 215,
     "crafted": 102478,
     "torches": 300,
-    "food": 2116,
+    "food": 2118,
     "pearls": 18,
     "bonemeal": 142,
-    "picked": 95929,
+    "picked": 95944,
     "broken": 82,
-    "blazes": 20,
+    "blazes": 21,
     "ghasts": 4,
     "witches": 8,
     "phantoms": 1,
@@ -588,7 +588,7 @@
    },
    "skin": "baf4f63b06fe40b9911f77749d44c3722536afe011db2129003511212ca5dfc5",
    "slim": false,
-   "week_hours": 10.8
+   "week_hours": 10.9
   },
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -1562,7 +1562,7 @@
    "CapyDreamXD"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-22T14:26+00:00"
+  "checked": "2026-11-22T14:31+00:00"
  },
  "challenge": {
   "stat": "sleeps",
@@ -1574,13 +1574,13 @@
   "end": "2026-11-22",
   "ranking": [
    [
-    "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
-    "letsplayfabi",
-    7
-   ],
-   [
     "0c95a02f-d9c7-4467-a71c-310e2b070c08",
     "CapyDreamXD",
+    8
+   ],
+   [
+    "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
+    "letsplayfabi",
     7
    ]
   ],
@@ -1757,18 +1757,18 @@
     0,
     1,
     2.0,
-    1412,
+    1434,
     1,
-    1868,
-    19,
+    1939,
+    20,
     97,
-    3,
+    6,
     0,
     12,
     1,
     24,
-    39,
-    991,
+    41,
+    1006,
     0,
     4
    ]
@@ -1780,7 +1780,7 @@
    "cur": 1,
    "best": 7,
    "last": "2026-11-22",
-   "today": 100
+   "today": 105
   },
   "5b1dde8a-1b76-4202-b3be-862467454795": {
    "cur": 2,
