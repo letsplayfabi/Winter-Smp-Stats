@@ -356,5 +356,6 @@
   "showBingo": true,
   "showStreaks": true,
   "showBestiary": true,
-  "streakSeed": {}
+  "streakSeed": {},
+  "advent": "always"
 }
