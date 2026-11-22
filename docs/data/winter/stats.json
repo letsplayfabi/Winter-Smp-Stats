@@ -1,16 +1,16 @@
 {
- "updated": "2026-11-22T12:48+00:00",
+ "updated": "2026-11-22T12:53+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7616,
-   "hours": 126.9,
+   "minutes": 7621,
+   "hours": 127.0,
    "deaths": 14,
    "mob_kills": 9905,
    "player_kills": 8,
    "entities_killed": 9438,
-   "items_used": 182232,
+   "items_used": 182765,
    "damage": 32693,
    "blocks_mined": 83303,
    "diamonds": 201,
@@ -161,7 +161,7 @@
     ],
     [
      "bone_meal",
-     30676
+     31110
     ],
     [
      "diamond_shovel",
@@ -177,7 +177,7 @@
     ],
     [
      "birch_sapling",
-     7502
+     7601
     ],
     [
      "diamond_sword",
@@ -268,8 +268,8 @@
     "torches": 88,
     "food": 1274,
     "pearls": 2,
-    "bonemeal": 30676,
-    "picked": 337184,
+    "bonemeal": 31110,
+    "picked": 337637,
     "broken": 74,
     "blazes": 31,
     "ghasts": 2,
@@ -297,23 +297,23 @@
    },
    "skin": "476152c3602dba5de40229f58018ac664b706a7d08048cbc127c7d38d5b31f58",
    "slim": false,
-   "week_hours": 25.9
+   "week_hours": 26.0
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
    "name": "CapyDreamXD",
-   "minutes": 6252,
-   "hours": 104.2,
+   "minutes": 6257,
+   "hours": 104.3,
    "deaths": 37,
    "mob_kills": 1337,
    "player_kills": 0,
    "entities_killed": 1266,
-   "items_used": 137486,
+   "items_used": 137544,
    "damage": 22650,
    "blocks_mined": 80164,
    "diamonds": 182,
-   "km_travelled": 1138.0,
-   "jumps": 173183,
+   "km_travelled": 1141.1,
+   "jumps": 173397,
    "mobs": {
     "stray": 2,
     "parched": 1,
@@ -358,12 +358,12 @@
     "boat": 56.6,
     "crouch": 31.9,
     "climb": 0.5,
-    "minecart": 45.1,
+    "minecart": 46.7,
     "walk": 93.0,
-    "walk_under_water": 7.6,
+    "walk_under_water": 7.7,
     "horse": 280.8,
-    "sprint": 166.8,
-    "fly": 433.3,
+    "sprint": 166.9,
+    "fly": 434.6,
     "walk_on_water": 6.9,
     "swim": 14.5,
     "nautilus": 1.0
@@ -495,11 +495,11 @@
    "death_other": 11,
    "f": {
     "eaten": 2083,
-    "fall_m": 86319,
+    "fall_m": 86417,
     "trades": 3747,
     "fish": 15,
     "bred": 118,
-    "sleeps": 298
+    "sleeps": 299
    },
    "x": {
     "debris": 9,
@@ -513,22 +513,22 @@
     "bred": 118,
     "trades": 3747,
     "villager_talk": 785,
-    "sleeps": 298,
-    "jumps": 173183,
+    "sleeps": 299,
+    "jumps": 173397,
     "deaths": 37,
     "mobs": 1337,
     "dmg_dealt": 22650,
-    "dmg_taken": 9378,
+    "dmg_taken": 9386,
     "walk": 93.0,
-    "sprint": 166.8,
+    "sprint": 166.9,
     "swim": 14.5,
     "boat": 56.6,
     "horse": 280.8,
-    "minecart": 45.1,
-    "crouch": 31919,
+    "minecart": 46.7,
+    "crouch": 31924,
     "climb": 499,
-    "fall": 86319,
-    "chests": 6587,
+    "fall": 86416,
+    "chests": 6589,
     "enchant": 71,
     "drops": 1769,
     "crafting_table": 862,
@@ -587,7 +587,7 @@
    },
    "skin": "baf4f63b06fe40b9911f77749d44c3722536afe011db2129003511212ca5dfc5",
    "slim": false,
-   "week_hours": 9.3
+   "week_hours": 9.4
   },
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -1562,7 +1562,7 @@
    "CapyDreamXD"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-22T12:48+00:00"
+  "checked": "2026-11-22T12:53+00:00"
  },
  "challenge": {
   "stat": "sleeps",
@@ -1581,7 +1581,7 @@
    [
     "0c95a02f-d9c7-4467-a71c-310e2b070c08",
     "CapyDreamXD",
-    1
+    2
    ]
   ],
   "last": null
@@ -1741,7 +1741,7 @@
     2,
     0,
     4,
-    15107,
+    15560,
     0,
     1
    ],
@@ -1756,10 +1756,10 @@
     0,
     0,
     0,
-    0.0,
-    2,
+    1.6,
+    7,
     1,
-    233,
+    330,
     0,
     0,
     0,
@@ -1780,7 +1780,7 @@
    "cur": 1,
    "best": 7,
    "last": "2026-11-22",
-   "today": 7
+   "today": 12
   },
   "5b1dde8a-1b76-4202-b3be-862467454795": {
    "cur": 2,
@@ -1792,7 +1792,7 @@
    "cur": 8,
    "best": 8,
    "last": "2026-11-22",
-   "today": 162
+   "today": 167
   },
   "67968945-1afd-4ee6-989a-8c4889f73f9d": {
    "cur": 1,
