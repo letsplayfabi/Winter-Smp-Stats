@@ -357,5 +357,5 @@
   "showStreaks": true,
   "showBestiary": true,
   "streakSeed": {},
-  "advent": "always"
+  "advent": "auto"
 }
