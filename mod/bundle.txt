@@ -6,7 +6,9 @@ package at.livestats;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
@@ -24,6 +26,9 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +80,11 @@ public class LiveStats implements ModInitializer {
         List<String> refreshOn = List.of("leave", "death", "advancement");
         int refreshMinSeconds = 120;
         int refreshEverySeconds = 300;
+        // Befehle im Spiel (/bingo, /challenge, /serie, /advent, /seite)
+        boolean commands = true;
+        boolean advent = true;
+        String siteUrl = "";   // leer = automatisch aus githubRepo (https://name.github.io/Repo/)
+        String serverKey = ""; // leer = automatisch über serverName (z. B. "winter" oder "chill")
     }
 
     @Override
@@ -115,10 +125,286 @@ public class LiveStats implements ModInitializer {
             if (cfg.diamonds && Compat.isDiamond(state)) countDiamond(player.getName().getString());
         });
 
+        if (cfg.commands) {
+            Compat.registerCommands(LiveStats::command);
+            EX.scheduleWithFixedDelay(LiveStats::loadSite, 5, 120, TimeUnit.SECONDS);
+        }
         EX.scheduleWithFixedDelay(LiveStats::tick, 2, 2, TimeUnit.SECONDS);
         EX.scheduleWithFixedDelay(LiveStats::periodic, 60, 60, TimeUnit.SECONDS);
         LOG.info("LiveStats geladen (Discord: {}, Seiten-Aktualisierung: {})",
                 cfg.discordWebhook.isBlank() ? "aus" : "an", cfg.githubToken.isBlank() ? "aus" : "an");
+    }
+
+    // ---------- Befehle im Spiel ----------
+    static final String[] COMMANDS = {"bingo", "challenge", "serie", "advent", "seite"};
+    static volatile JsonObject siteStats, siteAdvent;
+    static volatile String siteKey;
+    static final Path CLAIMS = FabricLoader.getInstance().getConfigDir().resolve("livestats-advent.json");
+    static final ZoneId VIENNA = ZoneId.of("Europe/Vienna");
+
+    static String siteUrl() {
+        String u = cfg.siteUrl == null ? "" : cfg.siteUrl.trim();
+        if (u.isEmpty() && cfg.githubRepo != null && cfg.githubRepo.contains("/")) {
+            String[] p = cfg.githubRepo.trim().split("/");
+            u = "https://" + p[0].toLowerCase() + ".github.io/" + p[1] + "/";
+        }
+        return u.isEmpty() || u.endsWith("/") ? u : u + "/";
+    }
+
+    static String httpGet(String url) throws Exception {
+        HttpResponse<String> r = HTTP.send(HttpRequest.newBuilder(URI.create(url + "?t=" + System.currentTimeMillis()))
+                .timeout(Duration.ofSeconds(20)).header("User-Agent", "livestats").GET().build(), HttpResponse.BodyHandlers.ofString());
+        if (r.statusCode() != 200) throw new IllegalStateException("HTTP " + r.statusCode() + " für " + url);
+        return r.body();
+    }
+
+    static void loadSite() {
+        String base = siteUrl();
+        if (base.isEmpty()) return;
+        try {
+            if (siteKey == null) {
+                if (cfg.serverKey != null && !cfg.serverKey.isBlank()) siteKey = cfg.serverKey.trim();
+                else {
+                    JsonArray a = JsonParser.parseString(httpGet(base + "servers.json")).getAsJsonArray();
+                    for (JsonElement e : a) {
+                        JsonObject o = e.getAsJsonObject();
+                        if (o.get("name").getAsString().trim().equalsIgnoreCase(cfg.serverName.trim())) siteKey = o.get("key").getAsString();
+                    }
+                    if (siteKey == null && a.size() == 1) siteKey = a.get(0).getAsJsonObject().get("key").getAsString();
+                    if (siteKey == null) {
+                        LOG.warn("LiveStats: Server nicht gefunden – bitte \"serverKey\" in livestats.json eintragen (z. B. winter oder chill).");
+                        return;
+                    }
+                }
+            }
+            siteStats = JsonParser.parseString(httpGet(base + "data/" + siteKey + "/stats.json")).getAsJsonObject();
+            try {
+                siteAdvent = JsonParser.parseString(httpGet(base + "data/advent.json")).getAsJsonObject();
+            } catch (Exception ignored) {
+            }
+        } catch (Exception e) {
+            LOG.warn("LiveStats: Seitendaten nicht geladen: {}", e.toString());
+        }
+    }
+
+    static JsonObject obj(JsonObject o, String k) {
+        return o != null && o.has(k) && o.get(k).isJsonObject() ? o.getAsJsonObject(k) : null;
+    }
+
+    static String num(double v) {
+        if (v == Math.rint(v) && Math.abs(v) < 1e15) return String.format(java.util.Locale.GERMAN, "%,d", (long) v);
+        return String.format(java.util.Locale.GERMAN, "%,.1f", v);
+    }
+
+    static String date(String iso) {
+        String[] p = iso.split("-");
+        return p.length == 3 ? p[2] + "." + p[1] + "." : iso;
+    }
+
+    /** Wird von Compat im Server-Thread aufgerufen; gibt die Chat-Zeilen zurück. */
+    static List<String> command(String cmd, String uuid, Object player) {
+        List<String> out = new ArrayList<>();
+        String site = siteUrl();
+        if (cmd.equals("seite")) {
+            out.add("§b" + (site.isEmpty() ? "Keine Seite eingestellt." : site));
+            out.add("§7Befehle: §f/bingo /challenge /serie /advent");
+            return out;
+        }
+        if (cmd.equals("advent")) return advent(uuid, player);
+        JsonObject st = siteStats;
+        if (st == null) {
+            EX.execute(LiveStats::loadSite);
+            out.add("§7Die Daten werden gerade geladen – versuch es in ein paar Sekunden nochmal.");
+            return out;
+        }
+        try {
+            switch (cmd) {
+                case "bingo" -> bingo(st, uuid, out, site);
+                case "challenge" -> challenge(st, uuid, out);
+                case "serie" -> serie(st, uuid, out);
+                default -> out.add("?");
+            }
+        } catch (Exception e) {
+            LOG.warn("LiveStats: /{} fehlgeschlagen: {}", cmd, e.toString());
+            out.add("§cDa ist etwas schiefgelaufen.");
+        }
+        return out;
+    }
+
+    static final int[][] LINES = {{0,1,2,3,4},{5,6,7,8,9},{10,11,12,13,14},{15,16,17,18,19},{20,21,22,23,24},
+            {0,5,10,15,20},{1,6,11,16,21},{2,7,12,17,22},{3,8,13,18,23},{4,9,14,19,24},{0,6,12,18,24},{4,8,12,16,20}};
+
+    static void bingo(JsonObject st, String uuid, List<String> out, String site) {
+        JsonObject b = obj(st, "bingo");
+        if (b == null) { out.add("§7Gerade läuft kein Bingo."); return; }
+        JsonArray tasks = b.getAsJsonArray("tasks");
+        JsonObject prog = obj(b, "progress");
+        JsonArray v = prog != null && prog.has(uuid) ? prog.getAsJsonArray(uuid) : null;
+        boolean[] done = new boolean[25];
+        int cnt = 0;
+        List<double[]> open = new ArrayList<>();
+        for (int i = 0; i < 25; i++) {
+            if (i == 12) { done[i] = true; continue; }
+            double t = tasks.get(i).getAsJsonObject().get("target").getAsDouble(), x = v == null ? 0 : v.get(i).getAsDouble();
+            done[i] = x >= t;
+            if (done[i]) cnt++; else open.add(new double[]{Math.min(x / t, 0.999), i, x, t});
+        }
+        int lines = 0;
+        for (int[] l : LINES) { boolean ok = true; for (int i : l) ok &= done[i]; if (ok) lines++; }
+        out.add("§d§lBingo der Woche §r§7(bis " + date(b.get("end").getAsString()) + ")");
+        for (int r = 0; r < 5; r++) {
+            StringBuilder sb = new StringBuilder("  ");
+            for (int c = 0; c < 5; c++) { int i = r * 5 + c; sb.append(i == 12 ? "§e★ " : done[i] ? "§a■ " : "§8■ "); }
+            out.add(sb.toString());
+        }
+        out.add("§fErledigt: §a" + cnt + "/24 §7· Reihen: §e" + lines);
+        open.sort((a, z) -> Double.compare(z[0], a[0]));
+        if (!open.isEmpty()) out.add("§7Am nächsten dran:");
+        for (int k = 0; k < Math.min(3, open.size()); k++) {
+            double[] o = open.get(k);
+            out.add(" §8- §f" + tasks.get((int) o[1]).getAsJsonObject().get("text").getAsString() + " §7" + num(o[2]) + "/" + num(o[3]));
+        }
+        if (!site.isEmpty()) out.add("§7Ganze Karte: §b" + site + "#" + siteKey);
+    }
+
+    static void challenge(JsonObject st, String uuid, List<String> out) {
+        JsonObject c = obj(st, "challenge");
+        if (c == null) { out.add("§7Gerade läuft keine Wochen-Challenge."); return; }
+        String unit = c.has("unit") ? c.get("unit").getAsString() : "";
+        String u = unit.isEmpty() ? "" : unit.equals("×") ? "×" : " " + unit;
+        out.add("§6§lWochen-Challenge: §r§f" + c.get("label").getAsString() + " §7(bis " + date(c.get("end").getAsString()) + ")");
+        JsonArray rk = c.getAsJsonArray("ranking");
+        int me = -1;
+        for (int i = 0; i < rk.size(); i++) {
+            JsonArray r = rk.get(i).getAsJsonArray();
+            if (i < 3) out.add(" §e" + (i + 1) + ". §f" + r.get(1).getAsString() + " §7" + num(r.get(2).getAsDouble()) + u);
+            if (r.get(0).getAsString().equals(uuid)) me = i;
+        }
+        if (rk.isEmpty()) out.add(" §7Noch hat niemand gepunktet – leg los!");
+        if (me >= 0) out.add("§fDu: §ePlatz " + (me + 1) + " §7mit " + num(rk.get(me).getAsJsonArray().get(2).getAsDouble()) + u);
+        else out.add("§7Du hast diese Woche noch nichts dazu beigetragen.");
+    }
+
+    static void serie(JsonObject st, String uuid, List<String> out) {
+        JsonObject s = obj(obj(st, "streaks"), uuid);
+        if (s == null) { out.add("§7Für dich gibt es noch keine Serie."); return; }
+        String today = LocalDate.now(VIENNA).toString(), yest = LocalDate.now(VIENNA).minusDays(1).toString();
+        String last = s.has("last") && !s.get("last").isJsonNull() ? s.get("last").getAsString() : "";
+        int cur = last.equals(today) || last.equals(yest) ? s.get("cur").getAsInt() : 0;
+        out.add("§6§lDeine Serie: §r§f" + cur + (cur == 1 ? " Tag" : " Tage") + " §7(Rekord: " + s.get("best").getAsInt() + ")");
+        if (cur > 0 && !last.equals(today)) out.add("§7Heute zählt, sobald du 5 Minuten gespielt hast – die Seite merkt es bei der nächsten Aktualisierung.");
+    }
+
+    /** Liest die aktuellen Minecraft-Statistiken eines Spielers direkt aus dem Welt-Ordner (vorher speichern). */
+    static JsonObject liveStats(String uuid) {
+        try {
+            if (server != null) Compat.saveAll(server);
+            Path game = FabricLoader.getInstance().getGameDir();
+            String level = "world";
+            Path props = game.resolve("server.properties");
+            if (Files.exists(props)) {
+                for (String line : Files.readAllLines(props)) if (line.startsWith("level-name=")) level = line.substring(11).trim();
+            }
+            for (String sub : new String[]{"stats", "players/stats"}) {
+                Path f = game.resolve(level).resolve(sub).resolve(uuid + ".json");
+                if (Files.exists(f)) {
+                    JsonObject o = obj(JsonParser.parseString(Files.readString(f)).getAsJsonObject(), "stats");
+                    return o == null ? new JsonObject() : o;
+                }
+            }
+        } catch (Exception e) {
+            LOG.warn("LiveStats: Statistik von {} nicht lesbar: {}", uuid, e.toString());
+        }
+        return new JsonObject();
+    }
+
+    static double taskValue(JsonObject stats, JsonObject task) {
+        double sum = 0;
+        for (JsonElement pe : task.getAsJsonArray("parts")) {
+            JsonObject part = pe.getAsJsonObject();
+            JsonObject cat = obj(stats, "minecraft:" + part.get("t").getAsString());
+            if (cat == null) continue;
+            for (Map.Entry<String, JsonElement> e : cat.entrySet()) {
+                String id = e.getKey().startsWith("minecraft:") ? e.getKey().substring(10) : e.getKey();
+                boolean ok = false;
+                if (part.has("ids")) for (JsonElement x : part.getAsJsonArray("ids")) ok |= x.getAsString().equals(id);
+                if (part.has("suffix")) for (JsonElement x : part.getAsJsonArray("suffix")) ok |= id.endsWith(x.getAsString());
+                if (ok) sum += e.getValue().getAsDouble();
+            }
+        }
+        return sum / (task.has("div") ? task.get("div").getAsDouble() : 1);
+    }
+
+    static synchronized List<String> advent(String uuid, Object player) {
+        List<String> out = new ArrayList<>();
+        LocalDate d = LocalDate.now(VIENNA);
+        if (!cfg.advent) { out.add("§7Der Adventskalender ist auf diesem Server ausgeschaltet."); return out; }
+        if (d.getMonthValue() != 12) { out.add("§7Der Adventskalender öffnet am 1. Dezember."); return out; }
+        JsonObject a = siteAdvent;
+        if (a == null) { EX.execute(LiveStats::loadSite); out.add("§7Der Kalender wird gerade geladen – versuch es gleich nochmal."); return out; }
+        if (a.get("year").getAsInt() != d.getYear()) { out.add("§7Der Kalender für dieses Jahr ist noch nicht fertig."); return out; }
+        JsonObject players = obj(a, "players"), rewards = obj(a, "rewards");
+        JsonArray mine = players != null && players.has(uuid) ? players.getAsJsonArray(uuid) : null, tasks = a.getAsJsonArray("tasks");
+        if (mine == null || tasks == null) { out.add("§7Du bist noch nicht im Kalender – er wird bei der nächsten Aktualisierung der Seite ergänzt."); return out; }
+        double maxF = a.has("maxFactor") ? a.get("maxFactor").getAsDouble() : 64;
+        JsonObject claims;
+        try {
+            claims = Files.exists(CLAIMS) ? JsonParser.parseString(Files.readString(CLAIMS)).getAsJsonObject() : new JsonObject();
+        } catch (Exception e) {
+            claims = new JsonObject();
+        }
+        String ck = d.getYear() + ":" + uuid;
+        JsonObject me = claims.has(ck) && claims.get(ck).isJsonObject() ? claims.getAsJsonObject(ck) : new JsonObject();
+        if (!me.has("got")) me.add("got", new JsonArray());
+        if (!me.has("base")) me.add("base", new JsonObject());
+        JsonArray got = me.getAsJsonArray("got");
+        JsonObject base = me.getAsJsonObject("base");
+        java.util.Set<Integer> have = new java.util.HashSet<>();
+        got.forEach(x -> have.add(x.getAsInt()));
+        JsonObject stats = liveStats(uuid);
+        int today = Math.min(d.getDayOfMonth(), 24), gave = 0, opened = 0;
+        out.add("§6§l❄ Adventskalender ❄");
+        for (int day = 1; day <= today; day++) {
+            if (have.contains(day)) continue;
+            JsonObject task = tasks.get(day - 1).getAsJsonObject(), r = obj(rewards, mine.get(day - 1).getAsString());
+            if (r == null) continue;
+            int late = Math.max(0, d.getDayOfMonth() - day);
+            double factor = Math.min(Math.pow(2, late), maxF), need = task.get("target").getAsDouble() * factor;
+            String text = task.get("text").getAsString().replace("{n}", num(need)), extra = late > 0 ? " §8(nachgeholt: " + num(factor) + "×)" : "";
+            double now = taskValue(stats, task);
+            String bk = String.valueOf(day);
+            if (!base.has(bk)) {
+                base.addProperty(bk, now);
+                opened++;
+                out.add("§e☐ Türchen " + day + ": §f" + text + extra + " §7– ab jetzt zählt's!");
+                continue;
+            }
+            double prog = now - base.get(bk).getAsDouble();
+            if (prog + 1e-9 < need) {
+                out.add("§e☐ Türchen " + day + ": §f" + text + extra + " §7– " + num(Math.max(0, prog)) + "/" + num(need));
+                continue;
+            }
+            String tier = r.get("tier").getAsString(), col = tier.equals("final") ? "§6" : tier.equals("gut") ? "§d" : "§b";
+            List<String> lore = new ArrayList<>(List.of("§7" + r.get("lore").getAsString(), "§8Adventskalender " + d.getYear() + " · Türchen " + day));
+            boolean fw = r.has("firework") && r.get("firework").getAsBoolean();
+            if (!Compat.give(player, r.get("item").getAsString(), r.get("count").getAsInt(), "§r" + col + r.get("name").getAsString(), lore, fw)) {
+                LOG.warn("LiveStats: unbekanntes Item {} im Adventskalender", r.get("item").getAsString());
+                continue;
+            }
+            got.add(day);
+            gave++;
+            out.add("§a✔ Türchen " + day + " geschafft: " + col + r.get("count").getAsInt() + "× " + r.get("name").getAsString());
+        }
+        claims.add(ck, me);
+        try {
+            Files.writeString(CLAIMS, GSON.toJson(claims));
+        } catch (Exception e) {
+            LOG.warn("LiveStats: Adventskalender nicht gespeichert: {}", e.toString());
+        }
+        if (out.size() == 1) out.add(have.size() >= 24 ? "§7Du hast alle 24 Türchen geschafft – frohe Weihnachten!" : "§7Alles erledigt! Das nächste Türchen gibt es morgen.");
+        else if (gave == 0 && opened == 0) out.add("§7Erledige die Aufgaben und tippe dann wieder §f/advent§7.");
+        else if (opened > 0) out.add("§7Erledige die Aufgabe und tippe dann wieder §f/advent§7, um dein Geschenk zu holen.");
+        return out;
     }
 
     // ---------- Konfiguration ----------
@@ -324,10 +610,22 @@ rootProject.name = 'livestats'
 === FILE: mojang/src/main/java/at/livestats/Compat.java ===
 package at.livestats;
 
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.commands.Commands;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.FireworkExplosion;
+import net.minecraft.world.item.component.Fireworks;
+import net.minecraft.world.item.component.ItemLore;
+import it.unimi.dsi.fastutil.ints.IntList;
+import java.util.List;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -350,6 +648,66 @@ final class Compat {
 
     static String playerName(Object handler) {
         return ((ServerGamePacketListenerImpl) handler).getPlayer().getName().getString();
+    }
+
+    interface Cmd { List<String> run(String cmd, String uuid, Object player); }
+
+    static void registerCommands(Cmd handler) {
+        CommandRegistrationCallback.EVENT.register((d, reg, env) -> {
+            for (String name : LiveStats.COMMANDS) {
+                d.register(Commands.literal(name).executes(ctx -> {
+                    ServerPlayer p = ctx.getSource().getPlayer();
+                    if (p == null) return 0;
+                    for (String l : handler.run(name, p.getStringUUID(), p)) ctx.getSource().sendSuccess(() -> Component.literal(l), false);
+                    return 1;
+                }));
+            }
+        });
+    }
+
+    static Item item(String id) {
+        return switch (id) {
+            case "minecraft:diamond" -> Items.DIAMOND;
+            case "minecraft:netherite_ingot" -> Items.NETHERITE_INGOT;
+            case "minecraft:golden_apple" -> Items.GOLDEN_APPLE;
+            case "minecraft:enchanted_golden_apple" -> Items.ENCHANTED_GOLDEN_APPLE;
+            case "minecraft:emerald" -> Items.EMERALD;
+            case "minecraft:iron_ingot" -> Items.IRON_INGOT;
+            case "minecraft:gold_ingot" -> Items.GOLD_INGOT;
+            case "minecraft:cake" -> Items.CAKE;
+            case "minecraft:cookie" -> Items.COOKIE;
+            case "minecraft:golden_carrot" -> Items.GOLDEN_CARROT;
+            case "minecraft:experience_bottle" -> Items.EXPERIENCE_BOTTLE;
+            case "minecraft:lapis_lazuli" -> Items.LAPIS_LAZULI;
+            case "minecraft:name_tag" -> Items.NAME_TAG;
+            case "minecraft:saddle" -> Items.SADDLE;
+            case "minecraft:firework_rocket" -> Items.FIREWORK_ROCKET;
+            case "minecraft:snowball" -> Items.SNOWBALL;
+            case "minecraft:lantern" -> Items.LANTERN;
+            case "minecraft:pumpkin_pie" -> Items.PUMPKIN_PIE;
+            case "minecraft:bookshelf" -> Items.BOOKSHELF;
+            case "minecraft:honey_bottle" -> Items.HONEY_BOTTLE;
+            case "minecraft:bell" -> Items.BELL;
+            case "minecraft:spruce_sapling" -> Items.SPRUCE_SAPLING;
+            case "minecraft:copper_ingot" -> Items.COPPER_INGOT;
+            case "minecraft:amethyst_shard" -> Items.AMETHYST_SHARD;
+            case "minecraft:glow_berries" -> Items.GLOW_BERRIES;
+            case "minecraft:bread" -> Items.BREAD;
+            default -> null;
+        };
+    }
+
+    static boolean give(Object player, String id, int count, String name, List<String> lore, boolean firework) {
+        Item it = item(id);
+        if (it == null) return false;
+        ItemStack st = new ItemStack(it, count);
+        st.set(DataComponents.CUSTOM_NAME, Component.literal(name));
+        if (firework) st.set(DataComponents.FIREWORKS, new Fireworks(2, List.of(new FireworkExplosion(FireworkExplosion.Shape.STAR,
+                IntList.of(0xE53935, 0x43A047, 0xFDD835), IntList.of(0xFFFFFF), true, true))));
+        st.set(DataComponents.LORE, new ItemLore(lore.stream().map(l -> (Component) Component.literal(l)).toList()));
+        ServerPlayer p = (ServerPlayer) player;
+        if (!p.getInventory().add(st)) p.drop(st, false);
+        return true;
     }
 }
 === FILE: mojang/src/main/resources/fabric.mod.json ===
@@ -425,12 +783,24 @@ rootProject.name = 'livestats'
 === FILE: yarn/src/main/java/at/livestats/Compat.java ===
 package at.livestats;
 
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.FireworkExplosionComponent;
+import net.minecraft.component.type.FireworksComponent;
+import net.minecraft.component.type.LoreComponent;
+import it.unimi.dsi.fastutil.ints.IntList;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableTextContent;
+import java.util.List;
 
 /** Alles, was sich zwischen den Minecraft-Versionen (Yarn-Namen, 1.21.x) unterscheidet. */
 final class Compat {
@@ -451,6 +821,66 @@ final class Compat {
 
     static String playerName(Object handler) {
         return ((ServerPlayNetworkHandler) handler).player.getName().getString();
+    }
+
+    interface Cmd { List<String> run(String cmd, String uuid, Object player); }
+
+    static void registerCommands(Cmd handler) {
+        CommandRegistrationCallback.EVENT.register((d, reg, env) -> {
+            for (String name : LiveStats.COMMANDS) {
+                d.register(CommandManager.literal(name).executes(ctx -> {
+                    ServerPlayerEntity p = ctx.getSource().getPlayer();
+                    if (p == null) return 0;
+                    for (String l : handler.run(name, p.getUuidAsString(), p)) ctx.getSource().sendFeedback(() -> Text.literal(l), false);
+                    return 1;
+                }));
+            }
+        });
+    }
+
+    static Item item(String id) {
+        return switch (id) {
+            case "minecraft:diamond" -> Items.DIAMOND;
+            case "minecraft:netherite_ingot" -> Items.NETHERITE_INGOT;
+            case "minecraft:golden_apple" -> Items.GOLDEN_APPLE;
+            case "minecraft:enchanted_golden_apple" -> Items.ENCHANTED_GOLDEN_APPLE;
+            case "minecraft:emerald" -> Items.EMERALD;
+            case "minecraft:iron_ingot" -> Items.IRON_INGOT;
+            case "minecraft:gold_ingot" -> Items.GOLD_INGOT;
+            case "minecraft:cake" -> Items.CAKE;
+            case "minecraft:cookie" -> Items.COOKIE;
+            case "minecraft:golden_carrot" -> Items.GOLDEN_CARROT;
+            case "minecraft:experience_bottle" -> Items.EXPERIENCE_BOTTLE;
+            case "minecraft:lapis_lazuli" -> Items.LAPIS_LAZULI;
+            case "minecraft:name_tag" -> Items.NAME_TAG;
+            case "minecraft:saddle" -> Items.SADDLE;
+            case "minecraft:firework_rocket" -> Items.FIREWORK_ROCKET;
+            case "minecraft:snowball" -> Items.SNOWBALL;
+            case "minecraft:lantern" -> Items.LANTERN;
+            case "minecraft:pumpkin_pie" -> Items.PUMPKIN_PIE;
+            case "minecraft:bookshelf" -> Items.BOOKSHELF;
+            case "minecraft:honey_bottle" -> Items.HONEY_BOTTLE;
+            case "minecraft:bell" -> Items.BELL;
+            case "minecraft:spruce_sapling" -> Items.SPRUCE_SAPLING;
+            case "minecraft:copper_ingot" -> Items.COPPER_INGOT;
+            case "minecraft:amethyst_shard" -> Items.AMETHYST_SHARD;
+            case "minecraft:glow_berries" -> Items.GLOW_BERRIES;
+            case "minecraft:bread" -> Items.BREAD;
+            default -> null;
+        };
+    }
+
+    static boolean give(Object player, String id, int count, String name, List<String> lore, boolean firework) {
+        Item it = item(id);
+        if (it == null) return false;
+        ItemStack st = new ItemStack(it, count);
+        st.set(DataComponentTypes.CUSTOM_NAME, Text.literal(name));
+        if (firework) st.set(DataComponentTypes.FIREWORKS, new FireworksComponent(2, List.of(new FireworkExplosionComponent(FireworkExplosionComponent.Type.STAR,
+                IntList.of(0xE53935, 0x43A047, 0xFDD835), IntList.of(0xFFFFFF), true, true))));
+        st.set(DataComponentTypes.LORE, new LoreComponent(lore.stream().map(l -> (Text) Text.literal(l)).toList()));
+        ServerPlayerEntity p = (ServerPlayerEntity) player;
+        if (!p.getInventory().insertStack(st)) p.dropItem(st, false);
+        return true;
     }
 }
 === FILE: yarn/src/main/resources/fabric.mod.json ===
