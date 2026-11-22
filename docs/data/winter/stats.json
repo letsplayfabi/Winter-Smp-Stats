@@ -1,10 +1,10 @@
 {
- "updated": "2026-11-22T10:02+00:00",
+ "updated": "2026-11-22T10:07+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7454,
+   "minutes": 7455,
    "hours": 124.2,
    "deaths": 14,
    "mob_kills": 9897,
@@ -15,7 +15,7 @@
    "blocks_mined": 83302,
    "diamonds": 201,
    "km_travelled": 1137.9,
-   "jumps": 82950,
+   "jumps": 82951,
    "mobs": {
     "stray": 20,
     "pig": 29,
@@ -224,7 +224,7 @@
     "trades": 136,
     "villager_talk": 579,
     "sleeps": 146,
-    "jumps": 82950,
+    "jumps": 82951,
     "deaths": 14,
     "mobs": 9897,
     "dmg_dealt": 32560,
@@ -238,9 +238,9 @@
     "crouch": 26286,
     "climb": 518,
     "fall": 32163,
-    "chests": 3749,
+    "chests": 3753,
     "enchant": 55,
-    "drops": 5396,
+    "drops": 5420,
     "crafting_table": 469,
     "furnace": 881,
     "flowers_potted": 2,
@@ -1554,12 +1554,14 @@
   }
  ],
  "status": {
-  "state": "offline",
-  "count": 0,
+  "state": "online",
+  "count": 1,
   "max": 20,
-  "list": [],
+  "list": [
+   "letsplayfabi"
+  ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-22T10:02+00:00"
+  "checked": "2026-11-22T10:07+00:00"
  },
  "challenge": {
   "stat": "sleeps",
@@ -1729,7 +1731,7 @@
    "cur": 7,
    "best": 7,
    "last": "2026-11-21",
-   "today": 0
+   "today": 1
   },
   "67968945-1afd-4ee6-989a-8c4889f73f9d": {
    "cur": 1,
