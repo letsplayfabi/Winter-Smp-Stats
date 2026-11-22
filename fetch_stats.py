@@ -434,6 +434,13 @@ def main():
             failed.append(sv["name"])
     ok = [{"key": s["key"], "name": s["name"], "extra": s.get("extra", []), "hide": s.get("hide", [])} for s in servers if (D / "data" / s["key"] / "stats.json").exists()]
     (D / "servers.json").write_text(json.dumps(ok, ensure_ascii=False))
+    # Adventskalender: jeder bekannte Spieler bekommt seine 24 Geschenke (gleiche Geschenke, andere Reihenfolge)
+    try:
+        import advent
+        uu = [p["uuid"] for sv in servers for p in jl(D / "data" / sv["key"] / "stats.json", {}).get("players", [])]
+        (D / "data" / "advent.json").write_text(json.dumps(advent.build(uu, vienna_now().year), ensure_ascii=False, separators=(",", ":")))
+    except Exception as e:
+        print("Adventskalender nicht erstellt:", e)
     # Liste der Challenge-Statistiken fürs Admin-Panel
     (D / "data" / "challenges.json").write_text(json.dumps([{"key": k, "label": l, "unit": u} for k, l, u, _, _ in CH.POOL], ensure_ascii=False))
     # alte Skins aufräumen, die kein Spieler mehr trägt
