@@ -1,10 +1,10 @@
 {
- "updated": "2026-11-22T16:46+00:00",
+ "updated": "2026-11-22T16:51+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7780,
+   "minutes": 7785,
    "hours": 129.7,
    "deaths": 14,
    "mob_kills": 10220,
@@ -1562,7 +1562,7 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-22T16:46+00:00"
+  "checked": "2026-11-22T16:51+00:00"
  },
  "challenge": {
   "stat": "sleeps",
@@ -1805,7 +1805,7 @@
    "cur": 8,
    "best": 8,
    "last": "2026-11-22",
-   "today": 326
+   "today": 331
   },
   "67968945-1afd-4ee6-989a-8c4889f73f9d": {
    "cur": 1,
