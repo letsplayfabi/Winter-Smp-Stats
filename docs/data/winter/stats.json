@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-22T16:31+00:00",
+ "updated": "2026-11-22T16:36+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7765,
-   "hours": 129.4,
+   "minutes": 7770,
+   "hours": 129.5,
    "deaths": 14,
    "mob_kills": 10220,
    "player_kills": 8,
    "entities_killed": 9740,
-   "items_used": 184226,
+   "items_used": 184282,
    "damage": 34389,
-   "blocks_mined": 83595,
+   "blocks_mined": 83596,
    "diamonds": 201,
-   "km_travelled": 1171.4,
-   "jumps": 84988,
+   "km_travelled": 1172.1,
+   "jumps": 85321,
    "mobs": {
     "stray": 20,
     "pig": 29,
@@ -77,11 +77,11 @@
     "crouch": 27.1,
     "climb": 0.6,
     "minecart": 267.3,
-    "walk": 65.1,
+    "walk": 65.2,
     "walk_under_water": 27.9,
     "horse": 146.6,
-    "sprint": 109.2,
-    "fly": 430.1,
+    "sprint": 109.3,
+    "fly": 430.6,
     "walk_on_water": 10.1,
     "swim": 57.4,
     "nautilus": 1.1
@@ -185,7 +185,7 @@
     ],
     [
      "trident",
-     4394
+     4396
     ]
    ],
    "death_causes": [
@@ -204,12 +204,12 @@
    ],
    "death_other": 6,
    "f": {
-    "eaten": 1417,
-    "fall_m": 33254,
+    "eaten": 1468,
+    "fall_m": 33429,
     "trades": 136,
     "fish": 134,
     "bred": 619,
-    "sleeps": 149
+    "sleeps": 150
    },
    "x": {
     "debris": 43,
@@ -223,29 +223,29 @@
     "bred": 619,
     "trades": 136,
     "villager_talk": 583,
-    "sleeps": 149,
-    "jumps": 84988,
+    "sleeps": 150,
+    "jumps": 85321,
     "deaths": 14,
     "mobs": 10220,
     "dmg_dealt": 34389,
-    "dmg_taken": 6290,
-    "walk": 65.1,
-    "sprint": 109.2,
+    "dmg_taken": 6341,
+    "walk": 65.2,
+    "sprint": 109.3,
     "swim": 57.4,
     "boat": 28.9,
     "horse": 146.6,
     "minecart": 267.3,
     "crouch": 27062,
     "climb": 568,
-    "fall": 33253,
+    "fall": 33429,
     "chests": 3988,
     "enchant": 55,
     "drops": 5672,
     "crafting_table": 474,
-    "furnace": 929,
+    "furnace": 934,
     "flowers_potted": 2,
     "noteblock": 32,
-    "mined": 83595,
+    "mined": 83596,
     "logs": 1046,
     "ores": 4729,
     "diamonds": 201,
@@ -264,12 +264,12 @@
     "spiders": 58,
     "endermen": 3,
     "farm_animals": 326,
-    "crafted": 36472,
+    "crafted": 36490,
     "torches": 88,
-    "food": 1415,
+    "food": 1466,
     "pearls": 2,
     "bonemeal": 31168,
-    "picked": 339509,
+    "picked": 339510,
     "broken": 74,
     "blazes": 54,
     "ghasts": 2,
@@ -297,7 +297,7 @@
    },
    "skin": "476152c3602dba5de40229f58018ac664b706a7d08048cbc127c7d38d5b31f58",
    "slim": false,
-   "week_hours": 28.4
+   "week_hours": 28.5
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -1562,7 +1562,7 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-22T16:31+00:00"
+  "checked": "2026-11-22T16:36+00:00"
  },
  "challenge": {
   "stat": "sleeps",
@@ -1574,14 +1574,14 @@
   "end": "2026-11-22",
   "ranking": [
    [
-    "0c95a02f-d9c7-4467-a71c-310e2b070c08",
-    "CapyDreamXD",
+    "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
+    "letsplayfabi",
     10
    ],
    [
-    "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
-    "letsplayfabi",
-    9
+    "0c95a02f-d9c7-4467-a71c-310e2b070c08",
+    "CapyDreamXD",
+    10
    ]
   ],
   "last": null
@@ -1732,7 +1732,7 @@
     19.9,
     776,
     1,
-    1090,
+    1266,
     23,
     0,
     0,
@@ -1740,8 +1740,8 @@
     50,
     4,
     64,
-    145,
-    17432,
+    196,
+    17433,
     5,
     51
    ],
@@ -1799,7 +1799,7 @@
    "cur": 8,
    "best": 8,
    "last": "2026-11-22",
-   "today": 311
+   "today": 316
   },
   "67968945-1afd-4ee6-989a-8c4889f73f9d": {
    "cur": 1,
