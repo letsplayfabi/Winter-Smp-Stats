@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-22T14:21+00:00",
+ "updated": "2026-11-22T14:26+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -302,7 +302,7 @@
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
    "name": "CapyDreamXD",
-   "minutes": 6340,
+   "minutes": 6345,
    "hours": 105.7,
    "deaths": 37,
    "mob_kills": 1375,
@@ -313,7 +313,7 @@
    "blocks_mined": 81010,
    "diamonds": 182,
    "km_travelled": 1152.5,
-   "jumps": 176201,
+   "jumps": 176210,
    "mobs": {
     "zombified_piglin": 9,
     "stray": 2,
@@ -496,7 +496,7 @@
    "death_other": 11,
    "f": {
     "eaten": 2117,
-    "fall_m": 87951,
+    "fall_m": 87954,
     "trades": 3789,
     "fish": 15,
     "bred": 118,
@@ -515,7 +515,7 @@
     "trades": 3789,
     "villager_talk": 792,
     "sleeps": 304,
-    "jumps": 176201,
+    "jumps": 176210,
     "deaths": 37,
     "mobs": 1375,
     "dmg_dealt": 23369,
@@ -528,7 +528,7 @@
     "minecart": 47.1,
     "crouch": 33329,
     "climb": 505,
-    "fall": 87951,
+    "fall": 87954,
     "chests": 6646,
     "enchant": 71,
     "drops": 1783,
@@ -1562,7 +1562,7 @@
    "CapyDreamXD"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-22T14:21+00:00"
+  "checked": "2026-11-22T14:26+00:00"
  },
  "challenge": {
   "stat": "sleeps",
@@ -1759,7 +1759,7 @@
     2.0,
     1412,
     1,
-    1865,
+    1868,
     19,
     97,
     3,
@@ -1780,7 +1780,7 @@
    "cur": 1,
    "best": 7,
    "last": "2026-11-22",
-   "today": 95
+   "today": 100
   },
   "5b1dde8a-1b76-4202-b3be-862467454795": {
    "cur": 2,
