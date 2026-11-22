@@ -115,16 +115,28 @@ dialog#gl{max-width:min(1100px,96vw);width:96%}#glc img{width:100%;max-height:70
 .gp{margin-top:6px;font-size:13px;color:var(--mu)}.prg{margin:4px 0;font-size:14px}
 .gq{display:grid;gap:6px;max-width:420px;margin:10px 0}.gqr{display:flex;justify-content:space-between;gap:10px;padding:8px 12px;border:1px solid var(--ln);border-radius:8px;background:var(--pn)}
 .gqo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-width:420px}.gqo .fnb.ok{background:#52e585;color:#000;border-color:#52e585}.gqo .fnb.bad{background:#f2677a;color:#000;border-color:#f2677a}
+.hb-goals #goals,.hb-chal #chal,.hb-strk #strk,.hb-bingo #bingo,.hb-act #act{display:none!important}
+.adv{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:14px}@media(max-width:600px){.adv{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.adv button{aspect-ratio:1;border-radius:10px;border:1px solid var(--ln);background:var(--pn);color:var(--fg);font:inherit;font-weight:800;font-size:22px;cursor:pointer;position:relative}
+.adv button.lock{opacity:.45;cursor:default}.adv button.today{border:2px solid #e9bc57;box-shadow:0 0 14px color-mix(in srgb,#e9bc57 45%,transparent)}.adv button.sp{background:color-mix(in srgb,#f2677a 22%,var(--pn))}.adv button.x24{background:color-mix(in srgb,#e9bc57 30%,var(--pn))}
+.adv button small{position:absolute;right:6px;bottom:4px;font-size:12px;font-weight:400}.advd{padding:20px 22px}.advd h2{margin:0 0 10px}.advd .tag{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mu);margin:14px 0 2px}.advd p{margin:2px 0}
+.gift{margin-top:12px;padding:12px 14px;border-radius:10px;border:1px solid #e9bc57;background:color-mix(in srgb,#e9bc57 12%,var(--bg))}.gift b{display:block;font-size:17px}
+.wcht{margin-top:26px;padding:16px 18px;border:1px solid var(--ln);border-radius:12px;background:var(--pn)}.wcht input{padding:10px 12px;border-radius:8px;border:1px solid var(--ln);background:var(--bg);color:var(--fg);font:inherit;text-transform:uppercase;letter-spacing:2px;width:12em}
+.wres{margin-top:12px;font-size:18px;font-weight:700}
+.sty{display:grid;grid-template-columns:minmax(0,220px) 1fr;gap:16px;align-items:center}@media(max-width:520px){.sty{grid-template-columns:1fr}}.sty svg{width:100%;height:auto;max-width:240px}.sty .tp{font-size:20px;font-weight:800}
+#tot>*{margin-top:18px}
 </style></head><body><main>
 <nav class="nav" id="nav"></nav>
 <div id="bday" hidden></div>
 <section id="lb"><header><div><h1 id="t">Server Leaderboard</h1><p class="sub" id="s"></p><p class="ex" id="stt"></p><p class="ex" id="mine"></p><p class="ex" id="wk"></p></div><div class="hr"><button class="dc" id="setb">⚙️ Einstellungen</button><button class="dc" id="cmpb" hidden>⚖️ Vergleichen</button><a class="dc" id="dcl" target="_blank" rel="noopener" hidden></a></div></header>
-<p class="ex" id="i"></p><div id="ctl"></div><div id="goals" hidden></div><div id="chal" class="chal" hidden></div><div id="strk" class="chal sk" hidden></div><div id="bingo" class="chal bg" hidden></div><div id="fact" class="fact" hidden></div><div class="grid" id="g"></div><section id="act" class="act" hidden></section><footer id="f"></footer></section>
+<p class="ex" id="i"></p><div id="ctl"></div><div id="tot"></div><div id="goals" hidden></div><div id="chal" class="chal" hidden></div><div id="strk" class="chal sk" hidden></div><div id="bingo" class="chal bg" hidden></div><div id="fact" class="fact" hidden></div><div class="grid" id="g"></div><section id="act" class="act" hidden></section><footer id="f"></footer></section>
 <section id="ev" hidden></section>
 <section id="gm" hidden></section>
 <section id="ga" hidden></section>
 <section id="mp" hidden></section>
 <section id="bs" hidden></section>
+<section id="av" hidden></section>
+<dialog id="avd"><div id="avc"></div></dialog>
 <a id="pill" href="#events" hidden></a>
 <dialog id="d"><div id="dc"></div></dialog>
 <dialog id="cmp"><div id="cc"></div></dialog>
@@ -200,7 +212,7 @@ function profile(p){const w0=p;p=p._p||p;
   if(BADGE.profile&&p.badges&&p.badges.length){el("h3","🏆 Erfolge",pb);p.badges.forEach(a=>el("div",`${a.icon||"🏆"} ${a.title}`+(a.desc?" – "+a.desc:""),pb,"death"))}
   mini(pb,"Todesursachen",cs,null,c);mini(pb,"Meistgetötete Mobs",p.top_mobs,MOB,c);mini(pb,"Meistabgebaute Blöcke",p.top_blocks,null,c);
   mini(pb,"Gereist nach Art (km)",Object.entries(p.travel).sort((a,z)=>z[1]-a[1]),TRAV,c);
-  placesOf(pb,p);progOf(pb,p);heatOf(pb,p,c);
+  styleOf(pb,p,c);placesOf(pb,p);progOf(pb,p);heatOf(pb,p,c);
   if(OV.showBestiary!==false){const r=el("p","",pb),a=el("a",`📖 Bestiarium von ${p.display_name} ansehen`,r);a.href="#bestiary";a.style.color="var(--ac)";a.onclick=()=>{BST.srv=CUR;BST.u=p.uuid;$("d").close();if(location.hash==="#bestiary")bestiary()}}
   const pbar=el("div","",pb);pbar.style.cssText="display:flex;gap:8px;flex-wrap:wrap";
   const sb=el("button","📸 Als Bild teilen",pbar);sb.onclick=()=>shareCard(p,sb,pb);
@@ -397,11 +409,12 @@ function settings(){
   const pr=document.createElement("select");[["all","Gesamt"],["week","Diese Woche (letzte 7 Tage)"]].forEach(([v,t])=>el("option",t,pr).value=v);pr.value=PREF.period||"all";row("Zeitraum:",pr);
   const chk=(t,v)=>{const c=document.createElement("input");c.type="checkbox";c.checked=v;const l=el("label","",b,"k");l.append(c,document.createTextNode(" "+t));return c};
   const hd=chk("Skin-Köpfe anzeigen",PREF.heads!==false),cp=chk("Kompakte Balken",!!PREF.compact),qb=chk("Schnellauswahl für die Diagrammart über der Statistik anzeigen",PREF.bar!==false),dlt=chk("Platzänderungen (▲▼) in der Gesamtwertung anzeigen",PREF.delta!==false),fx=chk("„Wusstest du?“-Box mit lustigen Fakten anzeigen",PREF.facts!==false),dk=chk("Saison-Deko anzeigen (z. B. Schnee im Dezember)",PREF.deco!==false);
+  el("h3","Bereiche anzeigen",b);const BX=[["goals","Server-Ziele"],["chal","Wochen-Challenge"],["bingo","Bingo der Woche"],["strk","Serien"],["act","Heatmap „Wann ist am meisten los?“"]].map(([k,t])=>[k,chk(t,!(PREF.boxes||[]).includes(k))]);
   el("h3","Kategorien anzeigen",b);const cb=(CTX.cats||[]).map(c=>[c[0],chk(CTX.lab&&CTX.lab[c[0]]||c[1],!PREF.hide.includes(c[0]))]);
   el("h3","Als App auf dem Startbildschirm",b);el("p","iPhone: Teilen ▸ „Zum Home-Bildschirm“. Android: Browser-Menü ▸ „App installieren“ oder „Zum Startbildschirm hinzufügen“.",b,"ex");
   if(DEFER){const ib=el("button","📲 App installieren",b);ib.onclick=()=>{DEFER.prompt();DEFER=null;ib.remove()}}
   const bar=el("div","",b);bar.style.marginTop="12px";
-  el("button","Speichern",bar).onclick=()=>{if(me.value!==me0)PREF.me=me.value;PREF.cols=+cols.value;PREF.width=wd.value;PREF.chart=ch.value;PREF.period=pr.value;PREF.bar=qb.checked;PREF.delta=dlt.checked;PREF.facts=fx.checked;PREF.deco=dk.checked;deco();PREF.heads=hd.checked;PREF.compact=cp.checked;PREF.hide=cb.filter(x=>!x[1].checked).map(x=>x[0]);
+  el("button","Speichern",bar).onclick=()=>{if(me.value!==me0)PREF.me=me.value;PREF.cols=+cols.value;PREF.width=wd.value;PREF.chart=ch.value;PREF.period=pr.value;PREF.bar=qb.checked;PREF.delta=dlt.checked;PREF.facts=fx.checked;PREF.deco=dk.checked;deco();PREF.heads=hd.checked;PREF.compact=cp.checked;PREF.hide=cb.filter(x=>!x[1].checked).map(x=>x[0]);PREF.boxes=BX.filter(x=>!x[1].checked).map(x=>x[0]);hideBoxes();
     try{localStorage.setItem("lbp",JSON.stringify(PREF))}catch{}$("set").close();server(CUR)};
   const rs=el("button","Zurücksetzen",bar);rs.style.cssText="margin-left:8px;background:var(--bg);color:var(--fg);border:1px solid var(--ln)";
   rs.onclick=()=>{try{localStorage.removeItem("lbp")}catch{}Object.assign(PREF,{me:"",cols:0,heads:true,compact:false,hide:[],chart:"bars",bar:true,width:"wide",delta:true,facts:true,period:"all"});$("set").close();server(CUR)};
@@ -409,7 +422,7 @@ function settings(){
 }
 $("setb").onclick=settings;$("set").onclick=e=>{if(e.target===$("set"))$("set").close()};$("set").addEventListener("close",()=>document.body.style.overflow="");
 async function server(k){
-  CUR=k;applyPrefs();chartCtl();$("ev").hidden=true;$("gm").hidden=true;$("ga").hidden=true;$("mp").hidden=true;$("bs").hidden=true;$("lb").hidden=false;$("stt").textContent="";$("g").replaceChildren();$("f").replaceChildren();$("i").textContent="Lade …";
+  CUR=k;applyPrefs();hideBoxes();chartCtl();$("ev").hidden=true;$("gm").hidden=true;$("ga").hidden=true;$("mp").hidden=true;$("bs").hidden=true;$("av").hidden=true;$("lb").hidden=false;$("stt").textContent="";$("g").replaceChildren();$("f").replaceChildren();$("i").textContent="Lade …";
   const sv0=SERVERS.find(s=>s.key===k)||SERVERS[0];let d;
   try{d=await fetch(`data/${sv0.key}/stats.json`,{cache:"no-cache"}).then(r=>{if(!r.ok)throw 0;return r.json()})}catch{$("i").textContent="stats.json konnte nicht geladen werden.";return}
   const sv=(OV.servers&&OV.servers[sv0.key])||(!OV.servers&&sv0===SERVERS[0]?OV:{}),o=sv.players||{},s=sv.site||{},lab=sv.categories||{},CM=Object.fromEntries([...CATS,...Object.values(EXTRA)].map(c=>[c[0],c])),
@@ -424,7 +437,7 @@ async function server(k){
   const R=cats.map(c=>rank(c,data)),tot=new Map(data.map(p=>[p.uuid,0]));
   R.forEach((r,i)=>{if(!cats[i][6])r.pts.forEach((v,k)=>tot.set(k,tot.get(k)+v))});
   const order=[...data].sort((a,b)=>tot.get(b.uuid)-tot.get(a.uuid)),cm=new Map(order.map((p,i)=>[p.uuid,COLS[i%COLS.length]])),col=p=>p.color||cm.get(p.uuid),N=data.length;CTX={col,tot,order,data,cats,lab};$("mine").textContent=PREF.me&&order.some(p=>p.uuid===PREF.me)?`⭐ Du: Platz ${order.findIndex(p=>p.uuid===PREF.me)+1} von ${N} · ${n(tot.get(PREF.me))} Punkte`:"";
-  chart($("g"),`Gesamtwertung · ${N} Punkte für Platz 1 bis 1 Punkt für Platz ${N}`,"Bei Gleichstand: Punkte der belegten Plätze gemittelt",order,p=>tot.get(p.uuid),v=>n(v)+" P",col,"",1);
+  $("tot").replaceChildren();chart($("tot"),`Gesamtwertung · ${N} Punkte für Platz 1 bis 1 Punkt für Platz ${N}`,"Bei Gleichstand: Punkte der belegten Plätze gemittelt",order,p=>tot.get(p.uuid),v=>n(v)+" P",col,"",1);
   cats.forEach((c,i)=>{if(PREF.hide.includes(c[0]))return;const r=R[i],ex=c[5]?"Beispiele ("+r.s[0].display_name+"): "+c[5](r.s[0]).slice(0,3).map(([k,v])=>pretty(k)+" "+n(v)).join(" · "):"";
     chart($("g"),lab[c[0]]||c[1],c[2]?"Mehr ist besser":"Weniger ist besser",r.s,c[3],c[4]||n,col,ex)});
   chalBox(d,data);streakBox(d,data);bingoBox(d,data);SNAP=await snapFor(sv0.key);await actBox(sv0.key);
@@ -480,6 +493,7 @@ function deco(){if(DECO){DECO();DECO=null}const k=season();if(!k)return;const c=
       else{x.globalAlpha=.75;x.save();x.translate(p.x,p.y);x.rotate(p.rot);x.fillStyle=p.col;x.fillRect(-p.r*1.6,-p.r*.6,p.r*3.2,p.r*1.2);x.restore()}});
     x.globalAlpha=1;id=requestAnimationFrame(f)};id=requestAnimationFrame(f);
   DECO=()=>{dead=1;cancelAnimationFrame(id);removeEventListener("resize",rs);c.remove()}}
+const hideBoxes=()=>["goals","chal","bingo","strk","act"].forEach(k=>document.body.classList.toggle("hb-"+k,(PREF.boxes||[]).includes(k)));
 // ---------- Serien, Bingo, Prognosen ----------
 const vYMD=o=>new Intl.DateTimeFormat("en-CA",{timeZone:"Europe/Vienna"}).format(new Date(Date.now()+o*864e5));
 const sDays=q=>q&&(q.last===vYMD(0)||q.last===vYMD(-1))?q.cur:0;
@@ -489,11 +503,12 @@ function streakBox(d,data){const b=$("strk");b.replaceChildren();const S=d.strea
   const h=el("div","",b,"chh");el("span","Serien",h,"chk");el("b","🔥 Tage in Folge online",h,"chl");el("small","ab 5 Minuten pro Tag",h,"ex");
   L.slice(0,8).forEach(o=>{const r=el("div","",b,"skr"+(o.p.uuid===PREF.me?" me":""));r.append(nameEl(o.p,0));el("b",o.c?`🔥 ${o.c} ${o.c===1?"Tag":"Tage"}`:"–",r);
     el("small",`Rekord: ${o.q.best} ${o.q.best===1?"Tag":"Tage"}`+(o.c&&o.q.last!==vYMD(0)?" · ⚠️ heute noch nicht online – die Serie reißt um Mitternacht":""),r,"ex")})}
-let BGP=null;
+let BGP=null,BGME;
 function bingoBox(d,data){const b=$("bingo");b.replaceChildren();const B=d.bingo;if(!B||!B.tasks||OV.showBingo===false){b.hidden=true;return}b.hidden=false;
   const by=new Map(data.map(p=>[p.uuid,p])),left=Math.ceil((new Date(B.end+"T23:59:59")-Date.now())/864e5),P=B.progress||{};
   const h=el("div","",b,"chh");el("span","Bingo der Woche",h,"chk");el("b","🎱 Wer schafft zuerst eine Reihe?",h,"chl");el("small",left<=0?"endet heute um Mitternacht":left===1?"noch 1 Tag":`noch ${left} Tage`,h,"ex");
   const cnt=u=>(P[u]||[]).filter((v,i)=>i!==12&&v>=B.tasks[i].target).length,ps=data.filter(p=>by.has(p.uuid)).sort((a,z)=>cnt(z.uuid)-cnt(a.uuid));
+  if(PREF.me!==BGME){BGME=PREF.me;if(by.has(PREF.me))BGP=PREF.me}
   if(!BGP||!by.has(BGP))BGP=by.has(PREF.me)?PREF.me:(ps[0]||{}).uuid;
   const bar=el("div","",b,"bgh");el("span","Karte von",bar,"ex");const sel=el("select","",bar);ps.forEach(p=>{const o=el("option",`${p.display_name} (${cnt(p.uuid)}/24)`,sel);o.value=p.uuid});sel.value=BGP;
   const g=el("div","",b,"bgg"),LN=[...[0,1,2,3,4].map(r=>[0,1,2,3,4].map(c=>r*5+c)),...[0,1,2,3,4].map(c=>[0,1,2,3,4].map(r=>r*5+c)),[0,6,12,18,24],[4,8,12,16,20]];
@@ -512,6 +527,73 @@ function progOf(pb,p){const ds=Object.keys(SNAP).sort(),d0=ds.filter(d=>d<=vYMD(
   const M=[["⏱️","Stunden Spielzeit",q=>(q.minutes||0)/60],["⛏️","Blöcke abgebaut",q=>q.blocks_mined],["💎","Diamanterze",q=>q.diamonds],["🧭","km gereist",q=>q.km_travelled],["⚔️","Mobs besiegt",q=>q.entities_killed],["🦘","Sprünge",q=>q.jumps],["💀","Tode",q=>q.deaths]];
   const L=M.map(([e,l,f])=>{const now=+f(p)||0,r=(now-(+f(o)||0))/days,goal=STEP.find(x=>x>now);if(!goal||r<=0)return null;const dd=(goal-now)/r;return dd<=365?{t:`${e} ${n(goal)} ${l} – ${etaTxt(dd)}`,dd}:null}).filter(Boolean).sort((a,z)=>a.dd-z.dd).slice(0,4);
   if(!L.length)return;el("h3","Prognosen",pb);L.forEach(x=>el("p",x.t,pb,"prg"));el("p","Berechnet aus dem Tempo der letzten 7 Tage.",pb,"hmi")}
+// ---------- Spielstil + „Wer spielt wie du?“ ----------
+const AX=[["Bergbau","⛏️ Bergmann",p=>p.blocks_mined],["Erkunden","🧭 Entdecker",p=>p.km_travelled*40],["Kampf","⚔️ Kämpfer",p=>p.entities_killed*3],
+  ["Farmen","🌾 Farmer",p=>{const c=p.ch||{};return(c.crops||0)+(c.bred||0)*6+(c.fish||0)*8+(c.farm_animals||0)*4}],["Bauen","🧱 Baumeister",p=>p.items_used],
+  ["Handwerk","🔨 Handwerker",p=>{const c=p.ch||{};return(c.crafted||0)+(c.trades||0)*10+(c.enchant||0)*25}]];
+function styleVec(list){const R=list.filter(p=>p.minutes>=120).map(p=>[p,AX.map(a=>(+a[2](p)||0)/(p.minutes/60))]),mx=AX.map((_,i)=>Math.max(1e-9,...R.map(r=>r[1][i])));
+  return new Map(R.map(([p,v])=>[p.uuid,v.map((x,i)=>x/mx[i])]))}
+function radar(vs,cols){const N=AX.length,C=110,Rr=78,pt=(i,r)=>[C+Math.sin(i/N*2*Math.PI)*r,C-Math.cos(i/N*2*Math.PI)*r];
+  let g=[1,.66,.33].map(k=>`<polygon points="${AX.map((_,i)=>pt(i,Rr*k).join(",")).join(" ")}" fill="none" stroke="var(--ln)"/>`).join("");
+  g+=AX.map((a,i)=>{const[x,y]=pt(i,Rr),[tx,ty]=pt(i,Rr+18);return`<line x1="${C}" y1="${C}" x2="${x}" y2="${y}" stroke="var(--ln)"/><text x="${tx}" y="${ty}" font-size="11" fill="var(--mu)" text-anchor="middle" dominant-baseline="middle">${a[0]}</text>`}).join("");
+  vs.forEach((v,k)=>{g+=`<polygon points="${v.map((x,i)=>pt(i,Rr*Math.max(.04,x)).join(",")).join(" ")}" fill="${cols[k]}" fill-opacity="${k?0:.3}" stroke="${cols[k]}" stroke-width="2" ${k?'stroke-dasharray="5 4"':""}/>`});
+  return`<svg viewBox="0 0 220 220" role="img" aria-label="Spielstil-Diagramm">${g}</svg>`}
+function styleOf(pb,p,c){const V=styleVec(CTX.order||[]),v=V.get(p.uuid);if(!v||V.size<2)return;
+  const ord=v.map((x,i)=>[x,i]).sort((a,z)=>z[0]-a[0]),main=AX[ord[0][1]],sec=AX[ord[1][1]];
+  const cos=(a,b)=>{let d=0,x=0,y=0;a.forEach((q,i)=>{d+=q*b[i];x+=q*q;y+=b[i]*b[i]});return d/Math.sqrt(x*y||1)};
+  const sim=[...V].filter(([u])=>u!==p.uuid).map(([u,w])=>[u,cos(v,w)]).sort((a,z)=>z[1]-a[1])[0],o=sim&&(CTX.order||[]).find(q=>q.uuid===sim[0]);
+  el("h3","Spielstil",pb);const box=el("div","",pb,"sty");box.innerHTML=radar(o?[v,V.get(o.uuid)]:[v],[c,o?CTX.col(o):c]);
+  const t=el("div","",box);el("div",main[1],t,"tp");el("p",`mit einer Prise ${sec[1].replace(/^\S+\s/,"")}`,t,"ex");
+  if(o){const r=el("p","",t);r.append(document.createTextNode("Spielt am ähnlichsten wie "),nameEl(o,0),document.createTextNode(` (${Math.round(sim[1]*100)} %)`));el("p","Gestrichelt im Diagramm.",t,"hmi")}
+  el("p","Verglichen pro Spielstunde mit allen auf diesem Server.",t,"hmi")}
+// ---------- Adventskalender + Wichteln ----------
+const ADV_FACT=["Der Creeper ist durch einen Fehler entstanden: Notch hat beim Schweine-Modell Länge und Höhe vertauscht.","Ein Minecraft-Tag dauert genau 20 Minuten – 10 Minuten Tag, 7 Minuten Nacht und je 1,5 Minuten Dämmerung.",
+ "Endermen hassen Wasser. Wenn du einen geschnitzten Kürbis trägst, kannst du ihnen gefahrlos in die Augen schauen.","Die Geräusche des Ghasts stammen von der Katze von C418, dem Komponisten der Minecraft-Musik.",
+ "Schlägt ein Blitz neben einem Schwein ein, wird es zu einem Zombifizierten Piglin.","Schneegolems hinterlassen eine Schneespur – in warmen Biomen schmelzen sie aber.",
+ "Eine rote Pilzkuh wird braun, wenn ein Blitz neben ihr einschlägt – und umgekehrt.","Verletzte Axolotl stellen sich tot, um sich zu erholen.",
+ "Im Nether und im End explodieren Betten, wenn du darin schlafen willst.","Füchse können Gegenstände im Maul tragen – manchmal klauen sie dir sogar etwas.",
+ "Creeper haben Angst vor Katzen und Ozelots, und Phantome meiden Katzen.","Papageien tanzen, wenn in der Nähe eine Schallplatte läuft.",
+ "Ein Schaf mit dem Namen „jeb_“ wechselt ständig die Farbe.","Mobs mit dem Namen „Dinnerbone“ oder „Grumm“ stehen auf dem Kopf.",
+ "Ein Kaninchen mit dem Namen „Toast“ bekommt ein besonderes Fell – zur Erinnerung an ein echtes Haustier.","Witherskelette lassen manchmal ihren Kopf fallen.",
+ "Netherit verbrennt nicht in Lava – Netherit-Items schwimmen sogar obendrauf.","Trägst du mindestens ein goldenes Rüstungsteil, greifen dich Piglins nicht von selbst an.",
+ "Endermen können Blöcke aufheben und woanders wieder absetzen.","Mit Lederstiefeln kannst du über Pulverschnee laufen, ohne einzusinken.",
+ "Schneebälle machen Lohen Schaden – perfekt für eine Schneeballschlacht im Nether.","Ziegen können dich mit einem Kopfstoß von der Klippe schubsen.",
+ "Schwimmst du neben Delfinen, bekommst du „Gnade des Delfins“ und bist viel schneller.","Vom 24. bis 26. Dezember sehen Truhen in Minecraft aus wie Geschenke."];
+const ADV_TASK=["Bau einen Schneemann – oder gleich einen Schneegolem.","Fang 3 Fische für das Adventsessen.","Schenk jemandem auf dem Server eine Kleinigkeit.","Bau einen Weihnachtsbaum vor deiner Basis.","Iss ein Stück Kuchen zusammen mit Freunden.",
+ "Nikolaus: Stell ein Paar Stiefel in eine Truhe vor deine Tür.","Finde einen Fuchs in einem Schneebiom.","Bau eine Allee mit Laternen.","Zähme eine Katze.","Pflanze 10 Fichten.","Bau ein Iglu.","Füttere 5 Tiere.",
+ "Erkunde ein Biom, in dem du noch nie warst.","Läute eine Glocke in einem Dorf.","Mach ein Gruppenfoto für die Galerie.","Bau ein Lebkuchenhaus.","Fahr mit dem Boot über Eis.","Sammle 64 Schneebälle.",
+ "Bau eine Schlittenbahn mit Loren.","Handle mit einem Dorfbewohner.","Zünde ein Feuerwerk.","Schreib einen Weihnachtsgruß in ein Buch und verschenke es.","Schmück deine Basis mit Lichtern.","Treffpunkt am Spawn – frohe Weihnachten!"];
+const ADV_ORDER=[13,2,20,7,17,5,11,23,1,15,9,19,4,22,14,8,3,24,10,18,6,12,21,16];
+const advOn=()=>{const m=OV.advent||"auto";return m==="always"||(m!=="off"&&vYMD(0).slice(5,7)==="12")};
+let ADV=null;const advLoad=()=>ADV||(ADV=fetch("data/advent.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null).catch(()=>null));
+async function adventView(){["lb","ev","gm","ga","mp","bs"].forEach(k=>$(k).hidden=true);const box=$("av");box.hidden=false;document.title="Adventskalender";box.replaceChildren();
+  const A=await advLoad(),today=vYMD(0),Y=+today.slice(0,4),open=today.slice(5,7)==="12"?Math.min(24,+today.slice(8)):(OV.advent==="always"?0:0);
+  el("h1",`Adventskalender ${A?A.year:Y}`,box);el("p","Jeden Tag ein Türchen mit Fun Fact, Aufgabe und Geschenk. Im Spiel öffnest du das Türchen mit /advent – ab dann zählt deine Aufgabe. Ist sie geschafft, tippst du nochmal /advent und bekommst dein Geschenk. Verpasste Türchen kannst du bis 31. Dezember nachholen, aber pro Tag Verspätung wird die Aufgabe doppelt so groß.",box,"ex");
+  let me=PREF.me;const all=new Map();for(const sv of SERVERS){try{const d=await(STC[sv.key]||(STC[sv.key]=fetch(`data/${sv.key}/stats.json`,{cache:"no-cache"}).then(r=>r.json())));const o=((OV.servers||{})[sv.key]||{}).players||{};(d.players||[]).forEach(p=>{if(!(o[p.uuid]||{}).hidden&&!all.has(p.uuid))all.set(p.uuid,(o[p.uuid]||{}).display_name||p.name)})}catch{}}
+  const bar=el("div","",box,"bst");el("span","Geschenke anzeigen für",bar,"ex");const sel=el("select","",bar);el("option","– niemand –",sel).value="";[...all].sort((a,z)=>a[1].localeCompare(z[1],"de")).forEach(([u,n0])=>{el("option",n0,sel).value=u});
+  sel.value=all.has(me)?me:"";sel.onchange=()=>{me=sel.value};
+  const g=el("div","",box,"adv");ADV_ORDER.forEach(d=>{const ok=d<=open,b=el("button","",g,(ok?"":"lock")+(d===open?" today":"")+(d===6?" sp":"")+(d===24?" x24":""));b.append(document.createTextNode(ok?String(d):"🔒"));
+    if(d===6||d===24)el("small",d===6?"🎅":"🎄",b);b.setAttribute("aria-label",`Türchen ${d}`+(ok?"":" – noch zu"));
+    b.onclick=()=>{if(!ok)return;const c=$("avc");c.replaceChildren();const w=el("div","",c,"advd");el("h2",`${d===24?"🎄":d===6?"🎅":"🎁"} Türchen ${d}`,w);
+      el("div","Wusstest du?",w,"tag");el("p",ADV_FACT[d-1],w);const T=A&&A.tasks&&A.tasks[d-1];if(T){const late=Math.max(0,+today.slice(8)-d),f=Math.min(2**late,A.maxFactor||64),nd=T.target*f;el("div","Aufgabe für dein Geschenk",w,"tag");el("p",T.text.replace("{n}",n(nd)),w);
+        if(late)el("p",`Heute nachgeholt: ${n(f)}× so viel wie am ${d}. Dezember (${T.text.replace("{n}",n(T.target))}).`,w,"hmi")}
+      el("div","Kleine Idee",w,"tag");el("p",ADV_TASK[d-1],w);
+      const r=A&&me&&A.players[me]&&A.rewards[A.players[me][d-1]];if(r){const gf=el("div","",w,"gift");el("small",`Geschenk für ${all.get(me)}`,gf,"ex");el("b",`${r.count}× ${r.name}`,gf);el("span",`${r.de} · „${r.lore}“`,gf,"ex");el("p","Aufgabe schaffen, dann im Spiel /advent",gf,"hmi")}
+      else el("p",me?"Dein Geschenk erscheint nach der nächsten Aktualisierung.":"Wähle oben deinen Namen, um dein Geschenk zu sehen.",w,"hmi");
+      el("button","Schließen",w,"fnb").onclick=()=>$("avd").close();$("avd").showModal()}});
+  if(!open)el("p","Das erste Türchen öffnet sich am 1. Dezember.",box,"ex");
+  wichtelBox(box)}
+$("avd").onclick=e=>{if(e.target===$("avd"))$("avd").close()};
+const hex=b=>[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join(""),unhex=h=>new Uint8Array(h.match(/../g).map(x=>parseInt(x,16)));
+async function wichtelBox(box){let W=null;try{W=await fetch("wichteln.json",{cache:"no-cache"}).then(r=>r.ok?r.json():null)}catch{}if(!W||!W.entries)return;
+  const b=el("div","",box,"wcht");el("h2","🎁 Wichteln",b).style.margin="0";
+  if(W.revealed){el("p","Die Bescherung ist vorbei – hier ist die Auflösung:",b,"ex");W.revealed.forEach(([g,t])=>el("p",`🎁 ${g} → ${t}`,b));return}el("p",`Gib deinen persönlichen Code ein, um zu sehen, wen du beschenkst.`+(W.date?` Bescherung: ${new Date(W.date+"T12:00").toLocaleDateString("de-AT",{day:"numeric",month:"long"})}.`:"")+" Verrat es niemandem!",b,"ex");
+  const f=el("div","",b,"bst"),i=el("input","",f);i.placeholder="CODE";i.setAttribute("aria-label","Wichtel-Code");const go=el("button","Anzeigen",f,"fnb"),res=el("div","",b,"wres");
+  const run=async()=>{const code=i.value.toUpperCase().replace(/[^A-Z0-9]/g,"");if(!code)return;res.textContent="…";
+    try{const h=hex(await crypto.subtle.digest("SHA-256",new TextEncoder().encode("w:"+code))),e=W.entries.find(x=>x.h===h);if(!e)throw 0;
+      const km=await crypto.subtle.importKey("raw",new TextEncoder().encode(code),"PBKDF2",false,["deriveKey"]),key=await crypto.subtle.deriveKey({name:"PBKDF2",salt:new TextEncoder().encode("wichteln-"+W.salt),iterations:100000,hash:"SHA-256"},km,{name:"AES-GCM",length:256},false,["decrypt"]);
+      const pt=JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({name:"AES-GCM",iv:unhex(e.iv)},key,unhex(e.ct))));res.textContent=`🎁 Du beschenkst: ${pt.to}`}catch{res.textContent="Diesen Code gibt es nicht – bitte nochmal prüfen."}};
+  go.onclick=run;i.onkeydown=e=>{if(e.key==="Enter")run()}}
 // ---------- Bestiarium ----------
 const MOBS=[["ender_dragon","Enderdrache","boss","🐉",1],["wither","Wither","boss","☠️",1],["warden","Wärter","hostile","🔊",1],["elder_guardian","Großer Wächter","hostile","🔱",1],
  ["zombie","Zombie","hostile","🧟"],["husk","Wüstenzombie","hostile","🧟"],["drowned","Ertrunkener","hostile","🧟"],["zombie_villager","Zombiedorfbewohner","hostile","🧟"],["skeleton","Skelett","hostile","💀"],["stray","Eiswanderer","hostile","💀"],["bogged","Sumpfskelett","hostile","💀"],
@@ -529,7 +611,7 @@ const MOBS=[["ender_dragon","Enderdrache","boss","🐉",1],["wither","Wither","b
 const MOBN=Object.fromEntries(MOBS.map(m=>[m[0],m[1]])),MCAT=[["boss","Bosse"],["hostile","Feindlich"],["neutral","Neutral"],["passive","Friedlich"],["other","Weitere"]];
 const mobName=k=>MOBN[k]||k.replace(/_/g," ").replace(/^./,c=>c.toUpperCase());
 const BST={srv:null,u:"all"};const STC={};
-async function bestiary(){$("lb").hidden=true;$("ev").hidden=true;$("gm").hidden=true;$("ga").hidden=true;$("mp").hidden=true;const box=$("bs");box.hidden=false;document.title="Bestiarium";box.replaceChildren();el("h1","Bestiarium",box);
+async function bestiary(){$("lb").hidden=true;$("ev").hidden=true;$("gm").hidden=true;$("ga").hidden=true;$("mp").hidden=true;$("av").hidden=true;const box=$("bs");box.hidden=false;document.title="Bestiarium";box.replaceChildren();el("h1","Bestiarium",box);
   if(!SERVERS.some(s=>s.key===BST.srv))BST.srv=(SERVERS.find(s=>s.key===CUR)||SERVERS[0]||{}).key;if(!BST.srv)return;
   const d=await(STC[BST.srv]||(STC[BST.srv]=fetch(`data/${BST.srv}/stats.json`,{cache:"no-cache"}).then(r=>r.json()).catch(()=>({players:[]})))),o=((OV.servers||{})[BST.srv]||{}).players||{};
   const P=(d.players||[]).filter(p=>!(o[p.uuid]||{}).hidden).map(p=>({...p,display_name:(o[p.uuid]||{}).display_name||p.name}));if(!P.some(p=>p.uuid===BST.u))BST.u="all";
@@ -595,7 +677,7 @@ function heatOf(pb,p,c){const g=(ACT.players||{})[p.uuid];if(!g||!ACT.cov||OV.sh
 const PT={base:["🏠","Basis","#52e585"],farm:["🌾","Farm","#e9bc57"],portal:["🌀","Portal","#bb92f2"],village:["🏘️","Dorf","#f39a68"],sight:["⭐","Sehenswürdigkeit","#45b0f5"],other:["📍","Sonstiges","#8fa0b8"]};
 const DIM={overworld:"Oberwelt",nether:"Nether",end:"End"};let MAPF=null;const MS={srv:"all",dim:"overworld"};
 const ownerName=u=>((OV.people||{})[u]||{}).name||Object.values(OV.servers||{}).map(s=>((s.players||{})[u]||{}).display_name).find(Boolean)||"";
-function mapView(){$("lb").hidden=true;$("ev").hidden=true;$("gm").hidden=true;$("ga").hidden=true;$("bs").hidden=true;const box=$("mp");box.hidden=false;document.title="Karte";box.replaceChildren();el("h1","Karte",box);
+function mapView(){$("lb").hidden=true;$("ev").hidden=true;$("gm").hidden=true;$("ga").hidden=true;$("bs").hidden=true;$("av").hidden=true;const box=$("mp");box.hidden=false;document.title="Karte";box.replaceChildren();el("h1","Karte",box);
   const L=OV.places||[];if(MAPF){const f=L.find(x=>x.id===MAPF);if(f){MS.dim=f.dim||"overworld";MS.srv=f.server&&f.server!=="all"?f.server:"all"}}
   el("p","Basen, Farmen und Portale. Ziehen zum Verschieben, Mausrad, zwei Finger oder +/− zum Zoomen.",box,"ex");
   const chips=(opts,cur,set)=>{if(opts.length<2)return;const f=el("div","",box,"mpf");opts.forEach(([k,l])=>{el("button",l,f,cur===k?"on":"").onclick=()=>{set(k);MAPF=null;mapView()}})};
@@ -654,7 +736,7 @@ function chalBox(d,data){const b=$("chal");b.replaceChildren();const c=d.challen
   if(w)el("p",`Letzte Woche (${L.label}): 🏆 ${by.get(w[0]).display_name} mit ${fmt(w[2],L)}`,b,"chlast")}
 let GAL=[],GF="all",GI=0,GALP=null;
 const galLoad=()=>GALP||(GALP=fetch("gallery.json",{cache:"no-cache"}).then(r=>r.json()).then(j=>(j.items||[]).sort((a,b)=>(b.date||"").localeCompare(a.date||""))).catch(()=>[]));
-async function gallery(){$("lb").hidden=true;$("ev").hidden=true;$("gm").hidden=true;$("mp").hidden=true;$("bs").hidden=true;const box=$("ga");box.hidden=false;document.title="Galerie";box.replaceChildren();el("h1","Galerie",box);
+async function gallery(){$("lb").hidden=true;$("ev").hidden=true;$("gm").hidden=true;$("mp").hidden=true;$("bs").hidden=true;$("av").hidden=true;const box=$("ga");box.hidden=false;document.title="Galerie";box.replaceChildren();el("h1","Galerie",box);
   GAL=await galLoad();
   if(!GAL.length){el("p","Noch keine Bilder. Im Admin-Panel unter „Galerie“ kannst du Screenshots hochladen.",box,"ex");return}
   const used=SERVERS.filter(s=>GAL.some(g=>g.server===s.key));if(!used.some(s=>s.key===GF))GF="all";
@@ -671,7 +753,7 @@ function gOpen(list,i){const d=$("gl"),b=$("glc");GI=(i+list.length)%list.length
   d.onkeydown=e=>{if(list.length<2)return;if(e.key==="ArrowLeft")gOpen(list,GI-1);if(e.key==="ArrowRight")gOpen(list,GI+1)};if(!d.open)d.showModal()}
 $("gl").onclick=e=>{if(e.target===$("gl"))$("gl").close()};
 async function events(){
-  $("lb").hidden=true;$("gm").hidden=true;$("ga").hidden=true;$("mp").hidden=true;$("bs").hidden=true;const box=$("ev");box.hidden=false;box.replaceChildren();el("h1","Events",box);
+  $("lb").hidden=true;$("gm").hidden=true;$("ga").hidden=true;$("mp").hidden=true;$("bs").hidden=true;$("av").hidden=true;const box=$("ev");box.hidden=false;box.replaceChildren();el("h1","Events",box);
   let list=[];try{list=(await fetch("events.json",{cache:"no-cache"}).then(r=>r.json())).events||[]}catch{}
   const now=Date.now(),t=e=>new Date(e.date+"T"+(e.time||"00:00")).getTime();
   const up=list.filter(e=>t(e)>=now).sort((a,b)=>t(a)-t(b)),past=list.filter(e=>t(e)<now).sort((a,b)=>t(b)-t(a));
@@ -840,7 +922,7 @@ GAMES.push(["stack","🧱 Block-Stapeln","Tippe im richtigen Moment, damit der B
 ["skin","🕵️ Skin-Raten","Welcher Spieler gehört zu diesem Kopf? 10 Runden.",gSkin,0,""],
 ["guess","🎲 Schätzspiel","Schätze Werte echter Spieler wie Diamanten oder Tode. Je näher, desto mehr Punkte (max. 500).",gGuess,0,""],
 ["clicker","⛏️ Block-Clicker","Klick Blöcke ab, kauf Helfer und Minen. Der Fortschritt bleibt gespeichert und läuft bis zu 8 Stunden offline weiter.",gClick,0,""]);
-function games(){$("lb").hidden=true;$("ev").hidden=true;$("ga").hidden=true;$("mp").hidden=true;$("bs").hidden=true;const box=$("gm");box.hidden=false;document.title="Minispiele";gMenu()}
+function games(){$("lb").hidden=true;$("ev").hidden=true;$("ga").hidden=true;$("mp").hidden=true;$("bs").hidden=true;$("av").hidden=true;const box=$("gm");box.hidden=false;document.title="Minispiele";gMenu()}
 function bestBox(c,k,low,u){const d=el("div","",c,"ex");
   if(k==="slide"){let N={};try{N=JSON.parse(localStorage.getItem("lbhsn")||"{}")}catch{}
     const L=Object.entries(HS).filter(([a])=>a.startsWith("slide_")).map(([a,v])=>{const[,n,id]=a.split("_");return[`${N[id]||"Skin"} ${n}×${n}`,v]}).sort((a,b)=>a[1]-b[1]);
@@ -853,10 +935,10 @@ function gPlay(k){const box=$("gm"),[,t,d,fn,low,u]=GAMES.find(x=>x[0]===k);if(G
   el("p",d,box,"ex");const root=el("div","",box),res=el("div","",box,"gres");root.style.margin="14px 0";
   GSTOP=fn(root,(score,sfx)=>{if(GSTOP){GSTOP();GSTOP=null}const nb=score==null?0:hsSave(k+(sfx||""),score,low);res.replaceChildren();el("h2",score==null?"💥 Verloren – nochmal versuchen!":`Ergebnis: ${score}${u}${nb?" 🏆 Neuer Highscore!":""}`,res);el("button","Nochmal",res,"fnb").onclick=()=>gPlay(k);res.scrollIntoView({behavior:"smooth",block:"center"})})}
 function show(){if(GSTOP){GSTOP();GSTOP=null}const k=location.hash.slice(1)||SERVERS[0].key,b=$("nav");b.replaceChildren();
-  [...SERVERS.map(s=>[s.key,s.name,"#"+s.key]),["events","📅 Events"+(NEXT?" ●":""),"#events"],...((OV.places||[]).length&&OV.showMap!==false?[["map","🗺️ Karte","#map"]]:[]),...(OV.showGallery!==false?[["gallery","🖼️ Galerie","#gallery"]]:[]),...(OV.showBestiary!==false?[["bestiary","📖 Bestiarium","#bestiary"]]:[]),...(OV.showGames!==false?[["games","🎮 Spiele","#games"]]:[]),...(OV.showAdmin!==false?[["admin","⚙️ Admin","admin.html"]]:[])]
+  [...SERVERS.map(s=>[s.key,s.name,"#"+s.key]),["events","📅 Events"+(NEXT?" ●":""),"#events"],...((OV.places||[]).length&&OV.showMap!==false?[["map","🗺️ Karte","#map"]]:[]),...(OV.showGallery!==false?[["gallery","🖼️ Galerie","#gallery"]]:[]),...(advOn()?[["advent","🎄 Advent","#advent"]]:[]),...(OV.showBestiary!==false?[["bestiary","📖 Bestiarium","#bestiary"]]:[]),...(OV.showGames!==false?[["games","🎮 Spiele","#games"]]:[]),...(OV.showAdmin!==false?[["admin","⚙️ Admin","admin.html"]]:[])]
     .forEach(([id,l,h])=>{const a=el("a",l,b,id===k?"on":"");a.href=h});
   const dc=OV.discord||{},u=dc.url??DEFDC,d=$("dcl");d.hidden=!u;d.href=u||"#";d.textContent="💬 "+(dc.text||"Discord");
-  pill();bdayBanner();k==="events"?events():k==="games"?games():k==="gallery"?gallery():k==="map"?mapView():k==="bestiary"?bestiary():server(k)}
+  pill();bdayBanner();k==="events"?events():k==="games"?games():k==="gallery"?gallery():k==="map"?mapView():k==="bestiary"?bestiary():k==="advent"?adventView():server(k)}
 window.onhashchange=show;
 Promise.all([fetch("servers.json",{cache:"no-cache"}).then(r=>r.json()).catch(()=>[{key:"winter",name:"Server"}]),
   fetch("overrides.json",{cache:"no-cache"}).then(r=>r.ok?r.json():{}).catch(()=>({})),
