@@ -1,21 +1,21 @@
 {
- "updated": "2026-11-22T10:56+00:00",
+ "updated": "2026-11-22T11:01+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
    "name": "letsplayfabi",
-   "minutes": 7504,
+   "minutes": 7509,
    "hours": 125.1,
    "deaths": 14,
    "mob_kills": 9905,
    "player_kills": 8,
    "entities_killed": 9438,
-   "items_used": 171871,
+   "items_used": 172205,
    "damage": 32693,
    "blocks_mined": 83302,
    "diamonds": 201,
    "km_travelled": 1141.6,
-   "jumps": 83070,
+   "jumps": 83076,
    "mobs": {
     "stray": 20,
     "pig": 29,
@@ -161,7 +161,7 @@
     ],
     [
      "bone_meal",
-     22321
+     22563
     ],
     [
      "diamond_shovel",
@@ -181,7 +181,7 @@
     ],
     [
      "birch_sapling",
-     5613
+     5670
     ],
     [
      "trident",
@@ -224,7 +224,7 @@
     "trades": 136,
     "villager_talk": 579,
     "sleeps": 146,
-    "jumps": 83070,
+    "jumps": 83076,
     "deaths": 14,
     "mobs": 9905,
     "dmg_dealt": 32693,
@@ -236,9 +236,9 @@
     "horse": 146.6,
     "minecart": 249.9,
     "crouch": 26341,
-    "climb": 525,
+    "climb": 527,
     "fall": 32295,
-    "chests": 3836,
+    "chests": 3845,
     "enchant": 55,
     "drops": 5559,
     "crafting_table": 473,
@@ -268,8 +268,8 @@
     "torches": 88,
     "food": 1274,
     "pearls": 2,
-    "bonemeal": 22321,
-    "picked": 328055,
+    "bonemeal": 22563,
+    "picked": 328374,
     "broken": 74,
     "blazes": 31,
     "ghasts": 2,
@@ -1561,7 +1561,7 @@
    "letsplayfabi"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-22T10:56+00:00"
+  "checked": "2026-11-22T11:01+00:00"
  },
  "challenge": {
   "stat": "sleeps",
@@ -1731,11 +1731,11 @@
     0,
     0,
     0,
-    7,
+    9,
     2,
     0,
     4,
-    5978,
+    6297,
     0,
     1
    ]
@@ -1759,7 +1759,7 @@
    "cur": 8,
    "best": 8,
    "last": "2026-11-22",
-   "today": 50
+   "today": 55
   },
   "67968945-1afd-4ee6-989a-8c4889f73f9d": {
    "cur": 1,
