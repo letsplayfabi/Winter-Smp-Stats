@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-22T21:56+00:00",
+ "updated": "2026-11-22T22:01+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -302,18 +302,18 @@
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
    "name": "CapyDreamXD",
-   "minutes": 6427,
-   "hours": 107.1,
+   "minutes": 6432,
+   "hours": 107.2,
    "deaths": 37,
    "mob_kills": 1377,
    "player_kills": 0,
    "entities_killed": 1304,
-   "items_used": 143951,
+   "items_used": 144066,
    "damage": 23412,
-   "blocks_mined": 81192,
+   "blocks_mined": 81298,
    "diamonds": 182,
-   "km_travelled": 1185.3,
-   "jumps": 178222,
+   "km_travelled": 1186.4,
+   "jumps": 178524,
    "mobs": {
     "zombified_piglin": 9,
     "stray": 2,
@@ -357,14 +357,14 @@
    },
    "travel": {
     "boat": 56.6,
-    "crouch": 34.1,
+    "crouch": 34.2,
     "climb": 0.5,
     "minecart": 71.9,
     "walk": 95.0,
     "walk_under_water": 7.9,
     "horse": 280.8,
-    "sprint": 170.8,
-    "fly": 445.2,
+    "sprint": 171.1,
+    "fly": 445.9,
     "walk_on_water": 7.0,
     "swim": 14.5,
     "nautilus": 1.0
@@ -414,7 +414,7 @@
     ],
     [
      "grass_block",
-     9363
+     9364
     ],
     [
      "dirt",
@@ -456,7 +456,7 @@
     ],
     [
      "diamond_axe",
-     7555
+     7659
     ],
     [
      "iron_pickaxe",
@@ -495,8 +495,8 @@
    ],
    "death_other": 11,
    "f": {
-    "eaten": 2132,
-    "fall_m": 89209,
+    "eaten": 2135,
+    "fall_m": 89344,
     "trades": 3789,
     "fish": 15,
     "bred": 118,
@@ -515,40 +515,40 @@
     "trades": 3789,
     "villager_talk": 792,
     "sleeps": 307,
-    "jumps": 178222,
+    "jumps": 178524,
     "deaths": 37,
     "mobs": 1377,
     "dmg_dealt": 23411,
-    "dmg_taken": 9653,
+    "dmg_taken": 9655,
     "walk": 95.0,
-    "sprint": 170.8,
+    "sprint": 171.1,
     "swim": 14.5,
     "boat": 56.6,
     "horse": 280.8,
     "minecart": 71.9,
-    "crouch": 34145,
+    "crouch": 34154,
     "climb": 511,
-    "fall": 89209,
+    "fall": 89344,
     "chests": 6694,
     "enchant": 71,
-    "drops": 1789,
+    "drops": 1792,
     "crafting_table": 865,
     "furnace": 1376,
     "flowers_potted": 3,
     "noteblock": 57,
-    "mined": 81192,
-    "logs": 7386,
-    "ores": 4995,
+    "mined": 81298,
+    "logs": 7477,
+    "ores": 4996,
     "diamonds": 182,
     "coal": 2853,
     "iron": 532,
     "stone": 14479,
     "deepslate": 1230,
     "netherrack": 2717,
-    "dirt": 16470,
+    "dirt": 16471,
     "sand": 2178,
     "crops": 1118,
-    "leaves": 1026,
+    "leaves": 1038,
     "zombies": 299,
     "skeletons": 154,
     "creepers": 331,
@@ -557,17 +557,17 @@
     "farm_animals": 215,
     "crafted": 102481,
     "torches": 300,
-    "food": 2131,
+    "food": 2134,
     "pearls": 18,
     "bonemeal": 142,
-    "picked": 96131,
+    "picked": 96255,
     "broken": 82,
     "blazes": 21,
     "ghasts": 4,
     "witches": 8,
     "phantoms": 1,
     "debris": 9,
-    "emerald": 38,
+    "emerald": 39,
     "lapis": 42,
     "redstone": 202,
     "gold": 312,
@@ -575,7 +575,7 @@
     "quartz": 792,
     "obsidian": 39,
     "snowballs": 203,
-    "eggs": 57,
+    "eggs": 58,
     "arrows": 3,
     "fishing_casts": 34,
     "bread": 1472,
@@ -588,7 +588,7 @@
    },
    "skin": "baf4f63b06fe40b9911f77749d44c3722536afe011db2129003511212ca5dfc5",
    "slim": false,
-   "week_hours": 12.2
+   "week_hours": 12.3
   },
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -1562,7 +1562,7 @@
    "CapyDreamXD"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-22T21:56+00:00"
+  "checked": "2026-11-22T22:01+00:00"
  },
  "challenge": {
   "stat": "sleeps",
@@ -1757,9 +1757,9 @@
     0,
     2,
     26.8,
-    2228,
+    2237,
     1,
-    3123,
+    3258,
     20,
     116,
     6,
@@ -1767,8 +1767,8 @@
     18,
     1,
     24,
-    54,
-    1193,
+    57,
+    1317,
     0,
     4
    ]
@@ -1793,7 +1793,7 @@
    "cur": 1,
    "best": 7,
    "last": "2026-11-22",
-   "today": 182
+   "today": 187
   },
   "5b1dde8a-1b76-4202-b3be-862467454795": {
    "cur": 2,
