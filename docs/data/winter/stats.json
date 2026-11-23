@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23T22:51+00:00",
+ "updated": "2026-11-23T22:54+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -302,18 +302,18 @@
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
    "name": "CapyDreamXD",
-   "minutes": 6582,
+   "minutes": 6584,
    "hours": 109.7,
-   "deaths": 37,
+   "deaths": 38,
    "mob_kills": 1381,
    "player_kills": 0,
    "entities_killed": 1307,
-   "items_used": 147689,
+   "items_used": 147692,
    "damage": 23471,
    "blocks_mined": 83283,
    "diamonds": 182,
-   "km_travelled": 1234.1,
-   "jumps": 183559,
+   "km_travelled": 1234.2,
+   "jumps": 183589,
    "mobs": {
     "zombified_piglin": 9,
     "stray": 2,
@@ -364,7 +364,7 @@
     "walk_under_water": 8.1,
     "horse": 300.5,
     "sprint": 176.1,
-    "fly": 458.8,
+    "fly": 458.9,
     "walk_on_water": 7.2,
     "swim": 14.7,
     "nautilus": 1.0
@@ -493,10 +493,10 @@
      2
     ]
    ],
-   "death_other": 11,
+   "death_other": 12,
    "f": {
     "eaten": 2184,
-    "fall_m": 92774,
+    "fall_m": 92949,
     "trades": 3789,
     "fish": 15,
     "bred": 118,
@@ -515,23 +515,23 @@
     "trades": 3789,
     "villager_talk": 792,
     "sleeps": 315,
-    "jumps": 183559,
-    "deaths": 37,
+    "jumps": 183589,
+    "deaths": 38,
     "mobs": 1381,
     "dmg_dealt": 23470,
-    "dmg_taken": 9873,
+    "dmg_taken": 9914,
     "walk": 96.7,
     "sprint": 176.1,
     "swim": 14.7,
     "boat": 56.6,
     "horse": 300.5,
     "minecart": 79.1,
-    "crouch": 34815,
+    "crouch": 34819,
     "climb": 517,
-    "fall": 92773,
+    "fall": 92948,
     "chests": 6849,
     "enchant": 71,
-    "drops": 1797,
+    "drops": 1798,
     "crafting_table": 874,
     "furnace": 1377,
     "flowers_potted": 3,
@@ -1562,7 +1562,7 @@
    "CapyDreamXD"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-23T22:51+00:00"
+  "checked": "2026-11-23T22:54+00:00"
  },
  "challenge": {
   "stat": "redstone",
@@ -1774,7 +1774,7 @@
     0,
     0,
     5,
-    211,
+    215,
     37,
     0,
     0,
@@ -1788,7 +1788,7 @@
    "cur": 2,
    "best": 7,
    "last": "2026-11-23",
-   "today": 106
+   "today": 108
   },
   "5b1dde8a-1b76-4202-b3be-862467454795": {
    "cur": 2,
