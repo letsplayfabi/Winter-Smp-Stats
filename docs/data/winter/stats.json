@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23T21:30+00:00",
+ "updated": "2026-11-23T21:34+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -302,18 +302,18 @@
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
    "name": "CapyDreamXD",
-   "minutes": 6500,
-   "hours": 108.3,
+   "minutes": 6505,
+   "hours": 108.4,
    "deaths": 37,
    "mob_kills": 1377,
    "player_kills": 0,
    "entities_killed": 1304,
-   "items_used": 145453,
+   "items_used": 145492,
    "damage": 23412,
    "blocks_mined": 81454,
    "diamonds": 182,
-   "km_travelled": 1212.5,
-   "jumps": 180101,
+   "km_travelled": 1213.9,
+   "jumps": 180356,
    "mobs": {
     "zombified_piglin": 9,
     "stray": 2,
@@ -360,13 +360,13 @@
     "crouch": 34.6,
     "climb": 0.5,
     "minecart": 73.5,
-    "walk": 95.6,
+    "walk": 95.7,
     "walk_under_water": 7.9,
     "horse": 298.9,
-    "sprint": 172.4,
-    "fly": 449.9,
+    "sprint": 172.7,
+    "fly": 450.8,
     "walk_on_water": 7.1,
-    "swim": 14.5,
+    "swim": 14.6,
     "nautilus": 1.0
    },
    "top_mobs": [
@@ -495,8 +495,8 @@
    ],
    "death_other": 11,
    "f": {
-    "eaten": 2150,
-    "fall_m": 90284,
+    "eaten": 2153,
+    "fall_m": 90656,
     "trades": 3789,
     "fish": 15,
     "bred": 118,
@@ -515,20 +515,20 @@
     "trades": 3789,
     "villager_talk": 792,
     "sleeps": 310,
-    "jumps": 180101,
+    "jumps": 180356,
     "deaths": 37,
     "mobs": 1377,
     "dmg_dealt": 23411,
-    "dmg_taken": 9714,
-    "walk": 95.6,
-    "sprint": 172.4,
-    "swim": 14.5,
+    "dmg_taken": 9737,
+    "walk": 95.7,
+    "sprint": 172.7,
+    "swim": 14.6,
     "boat": 56.6,
     "horse": 298.9,
     "minecart": 73.5,
-    "crouch": 34608,
+    "crouch": 34624,
     "climb": 511,
-    "fall": 90284,
+    "fall": 90656,
     "chests": 6743,
     "enchant": 71,
     "drops": 1795,
@@ -557,7 +557,7 @@
     "farm_animals": 215,
     "crafted": 102501,
     "torches": 300,
-    "food": 2149,
+    "food": 2152,
     "pearls": 18,
     "bonemeal": 142,
     "picked": 96417,
@@ -588,7 +588,7 @@
    },
    "skin": "baf4f63b06fe40b9911f77749d44c3722536afe011db2129003511212ca5dfc5",
    "slim": false,
-   "week_hours": 11.8
+   "week_hours": 11.9
   },
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -1562,7 +1562,7 @@
    "CapyDreamXD"
   ],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-23T21:30+00:00"
+  "checked": "2026-11-23T21:34+00:00"
  },
  "challenge": {
   "stat": "redstone",
@@ -1774,8 +1774,8 @@
     0,
     0,
     0,
-    4,
-    3,
+    20,
+    6,
     0,
     0,
     0
@@ -1788,7 +1788,7 @@
    "cur": 2,
    "best": 7,
    "last": "2026-11-23",
-   "today": 24
+   "today": 29
   },
   "5b1dde8a-1b76-4202-b3be-862467454795": {
    "cur": 2,
