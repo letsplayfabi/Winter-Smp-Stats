@@ -160,7 +160,7 @@
     "weekly": true,
     "milestones": true,
     "achievements": true,
-    "goals": false,
+    "goals": true,
     "recap": true,
     "birthdays": true,
     "bingo": true,
@@ -224,7 +224,16 @@
   "showHeat": true,
   "deco": "winter",
   "showMap": true,
-  "people": {},
+  "people": {
+    "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f": {
+      "name": "letsplayfabi",
+      "role": "Farm Bauer",
+      "fav": "Stone Bricks",
+      "since": "2026-10-10",
+      "bday": "01-25",
+      "about": "Ich baue gerne Farms (grrr Redstone) Ziel Empire State Building"
+    }
+  },
   "places": [
     {
       "id": "o1795256085095",
@@ -355,7 +364,7 @@
   ],
   "showBingo": true,
   "showStreaks": true,
-  "showBestiary": true,
+  "showBestiary": false,
   "streakSeed": {},
   "advent": "always"
 }
