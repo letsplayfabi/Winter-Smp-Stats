@@ -1,7 +1,12 @@
 name: Statistiken aktualisieren
 on:
   schedule: [{ cron: "*/30 * * * *" }]   # alle 30 Minuten (Mindestabstand bei GitHub: 5 Minuten)
-  workflow_dispatch: {}                # auch manuell startbar
+  workflow_dispatch:                   # auch manuell startbar; die Mod schickt Rekorde/Stimmen als "moddata" mit
+    inputs:
+      moddata:
+        description: "Daten von der Mod (Rekorde, Umfragen) – leer lassen"
+        required: false
+        type: string
 concurrency: { group: stats, cancel-in-progress: false }
 permissions:
   contents: write
@@ -14,6 +19,7 @@ jobs:
           ref: main   # immer den neuesten Stand holen, nie den Stand vom Start-Zeitpunkt
       - run: python fetch_stats.py
         env:
+          MOD_DATA: ${{ inputs.moddata }}
           EXAROTON_TOKEN: ${{ secrets.EXAROTON_TOKEN }}
           EXAROTON_SERVER_ID: ${{ secrets.EXAROTON_SERVER_ID }}
           EXAROTON_SERVER_ID_2: ${{ secrets.EXAROTON_SERVER_ID_2 }}
