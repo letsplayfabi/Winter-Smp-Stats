@@ -125,11 +125,13 @@ dialog#gl{max-width:min(1100px,96vw);width:96%}#glc img{width:100%;max-height:70
 .wres{margin-top:12px;font-size:18px;font-weight:700}
 .sty{display:grid;grid-template-columns:minmax(0,220px) 1fr;gap:16px;align-items:center}@media(max-width:520px){.sty{grid-template-columns:1fr}}.sty svg{width:100%;height:auto;max-width:240px}.sty .tp{font-size:20px;font-weight:800}
 #tot>*{margin-top:18px}
+.chal.db{border-left-color:var(--ac)}.db .chk{color:var(--ac)}.db .tiles{margin-top:6px}.chal.pl{border-left-color:#45b0f5}.pl .chk{color:#45b0f5}.pl .chr{grid-template-columns:22px minmax(0,1fr) minmax(50px,1fr) auto}.pl .chr .mt{display:block}
+.grec{margin-top:6px;font-size:13px}.grec b{color:var(--fg)}
 </style></head><body><main>
 <nav class="nav" id="nav"></nav>
 <div id="bday" hidden></div>
 <section id="lb"><header><div><h1 id="t">Server Leaderboard</h1><p class="sub" id="s"></p><p class="ex" id="stt"></p><p class="ex" id="mine"></p><p class="ex" id="wk"></p></div><div class="hr"><button class="dc" id="setb">⚙️ Einstellungen</button><button class="dc" id="cmpb" hidden>⚖️ Vergleichen</button><a class="dc" id="dcl" target="_blank" rel="noopener" hidden></a></div></header>
-<p class="ex" id="i"></p><div id="ctl"></div><div id="tot"></div><div id="goals" hidden></div><div id="chal" class="chal" hidden></div><div id="strk" class="chal sk" hidden></div><div id="bingo" class="chal bg" hidden></div><div id="fact" class="fact" hidden></div><div class="grid" id="g"></div><section id="act" class="act" hidden></section><footer id="f"></footer></section>
+<p class="ex" id="i"></p><div id="ctl"></div><div id="dash" class="chal db" hidden></div><div id="tot"></div><div id="poll" class="chal pl" hidden></div><div id="goals" hidden></div><div id="chal" class="chal" hidden></div><div id="strk" class="chal sk" hidden></div><div id="bingo" class="chal bg" hidden></div><div id="fact" class="fact" hidden></div><div class="grid" id="g"></div><section id="act" class="act" hidden></section><footer id="f"></footer></section>
 <section id="ev" hidden></section>
 <section id="gm" hidden></section>
 <section id="ga" hidden></section>
@@ -231,7 +233,7 @@ async function status(d,k){const st=d.status||{},box=$("stt");box.textContent=""
   try{const c=new AbortController();setTimeout(()=>c.abort(),6000);
     const r=await fetch("https://api.mcsrvstat.us/3/"+encodeURIComponent(st.address),{signal:c.signal}).then(r=>r.json());
     if(CUR===k&&typeof r.online==="boolean"){const p=r.players||{};box.textContent=r.online?`🟢 ${p.online??0}/${p.max??"?"} online · Live`:"🔴 offline · Live";box.title=(p.list||[]).map(x=>x.name).join(", ")}}catch{}}
-const GET=()=>({...Object.fromEntries([...CATS,...Object.values(EXTRA)].map(c=>[c[0],c[3]])),jumps:p=>p.jumps});
+const GET=()=>({...Object.fromEntries([...CATS,...Object.values(EXTRA)].map(c=>[c[0],c[3]])),jumps:p=>p.jumps,...Object.fromEntries(REC_GAMES.map(k=>["rec_"+k,p=>(p.rec||{})[k]||0]))});
 function badges(data,key){const L=(OV.achievements||[]).filter(a=>!a.server||a.server==="all"||a.server===key),G=GET();data.forEach(p=>p.badges=[]);
   L.forEach(a=>{const g=G[a.metric];if(!g||!data.length)return;
     if(a.type==="top"){const vs=data.map(g),best=a.dir==="min"?Math.min(...vs):Math.max(...vs);if(a.dir!=="min"&&best<=0)return;data.forEach(p=>{if(g(p)===best)p.badges.push(a)})}
@@ -440,7 +442,7 @@ async function server(k){
   $("tot").replaceChildren();chart($("tot"),`Gesamtwertung · ${N} Punkte für Platz 1 bis 1 Punkt für Platz ${N}`,"Bei Gleichstand: Punkte der belegten Plätze gemittelt",order,p=>tot.get(p.uuid),v=>n(v)+" P",col,"",1);
   cats.forEach((c,i)=>{if(PREF.hide.includes(c[0]))return;const r=R[i],ex=c[5]?"Beispiele ("+r.s[0].display_name+"): "+c[5](r.s[0]).slice(0,3).map(([k,v])=>pretty(k)+" "+n(v)).join(" · "):"";
     chart($("g"),lab[c[0]]||c[1],c[2]?"Mehr ist besser":"Weniger ist besser",r.s,c[3],c[4]||n,col,ex)});
-  chalBox(d,data);streakBox(d,data);bingoBox(d,data);SNAP=await snapFor(sv0.key);await actBox(sv0.key);
+  dashBox(d,data);pollBox();chalBox(d,data);streakBox(d,data);bingoBox(d,data);SNAP=await snapFor(sv0.key);await actBox(sv0.key);
   el("b","MVP der Statistiken",$("f"));el("div",order[0].display_name+" führt die Gesamtwertung an.",$("f"));
 }
 // ---------- Spielerkarte als Bild ----------
@@ -527,6 +529,117 @@ function progOf(pb,p){const ds=Object.keys(SNAP).sort(),d0=ds.filter(d=>d<=vYMD(
   const M=[["⏱️","Stunden Spielzeit",q=>(q.minutes||0)/60],["⛏️","Blöcke abgebaut",q=>q.blocks_mined],["💎","Diamanterze",q=>q.diamonds],["🧭","km gereist",q=>q.km_travelled],["⚔️","Mobs besiegt",q=>q.entities_killed],["🦘","Sprünge",q=>q.jumps],["💀","Tode",q=>q.deaths]];
   const L=M.map(([e,l,f])=>{const now=+f(p)||0,r=(now-(+f(o)||0))/days,goal=STEP.find(x=>x>now);if(!goal||r<=0)return null;const dd=(goal-now)/r;return dd<=365?{t:`${e} ${n(goal)} ${l} – ${etaTxt(dd)}`,dd}:null}).filter(Boolean).sort((a,z)=>a.dd-z.dd).slice(0,4);
   if(!L.length)return;el("h3","Prognosen",pb);L.forEach(x=>el("p",x.t,pb,"prg"));el("p","Berechnet aus dem Tempo der letzten 7 Tage.",pb,"hmi")}
+// ---------- Globale Rekorde ----------
+const REC_GAMES=["redstone","snake","craftle","whobuilt","react","aim","catch","flap","statsguess","stack","bow","fish","cart","mem","note","g2048","hilo","skin","guess"];
+const REC_LOW={react:1,mem:1};const RA="ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const recDay=()=>{const t=vYMD(0);return Math.round((Date.UTC(+t.slice(0,4),+t.slice(5,7)-1,+t.slice(8))-Date.UTC(2026,0,1))/864e5)&4095};
+function recCode(k,score){const g=REC_GAMES.indexOf(k);if(g<0||score==null)return null;const sc=Math.max(0,Math.min(2**30-1,Math.round(score))),day=recDay();
+  let h=((g*131+day)*1000003+sc)|0;h=(h^0x5A5A5)|0;h=Math.imul(h,0x9E3779B1)>>>0;const chk=h&4095;
+  let v=(((BigInt(g)*4096n+BigInt(day))*(1n<<30n))+BigInt(sc))*4096n+BigInt(chk),s="";for(let i=0;i<12;i++){s=RA[Number(v%32n)]+s;v/=32n}return s.slice(0,4)+"-"+s.slice(4,8)+"-"+s.slice(8)}
+let RECP=null;
+const recLoad=()=>RECP||(RECP=Promise.all(SERVERS.map(s=>fetch(`data/${s.key}/moddata.json`,{cache:"no-cache"}).then(r=>r.ok?r.json():{}).catch(()=>({}))))
+  .then(L=>{const best={},names={},votes={};L.forEach(m=>{Object.assign(names,m.names||{});
+    for(const[u,G]of Object.entries(m.records||{}))for(const[gi,arr]of Object.entries(G)){const k=REC_GAMES[+gi];if(!k)continue;for(const[sc]of arr){const b=(best[k]=best[k]||{});if(b[u]==null||(REC_LOW[k]?sc<b[u]:sc>b[u]))b[u]=sc}}
+    for(const[pid,V]of Object.entries(m.votes||{}))Object.assign(votes[pid]=votes[pid]||{},V)});
+    const nm=u=>Object.values(OV.servers||{}).map(s=>((s.players||{})[u]||{}).display_name).find(Boolean)||names[u]||"?";
+    const top={};for(const[k,b]of Object.entries(best))top[k]=Object.entries(b).sort((a,z)=>REC_LOW[k]?a[1]-z[1]:z[1]-a[1]).map(([u,v])=>({u,n:nm(u),v}));return{top,votes}}));
+function recBox(res,k,score){const c=recCode(k,score);if(!c)return;const b=el("div","",res,"gq");b.style.maxWidth="460px";
+  el("p","🌍 Für die globale Bestenliste im Spiel eintippen (2 Tage gültig):",b,"ex");const code=el("p",`/rekord ${c}`,b);code.style.cssText="font:700 18px ui-monospace,monospace;user-select:all;margin:4px 0";
+  el("button","📋 Kopieren",b,"fnb").onclick=e=>navigator.clipboard&&navigator.clipboard.writeText(`/rekord ${c}`).then(()=>e.target.textContent="Kopiert ✓")}
+// ---------- Redstone-Rätsel ----------
+function gRedstone(root,done){let stop=0,lvl=0,solved=0;const T0=Date.now(),LIM=90;const rot=m=>((m<<1)|(m>>3))&15,DIR=[[-1,0,1,4],[0,1,2,8],[1,0,4,1],[0,-1,8,2]];
+  const info=el("p","",root,"ex"),wrap=el("div","",root);let tm=setInterval(()=>{if(stop)return;const left=LIM-Math.floor((Date.now()-T0)/1000);info.textContent=`⏱️ ${Math.max(0,left)} s · gelöst: ${solved}`;if(left<=0){clearInterval(tm);stop=1;done(solved)}},250);
+  const level=()=>{const N=Math.min(4+Math.floor(lvl/2),7),M=Array.from({length:N},()=>Array(N).fill(0));let path;
+    for(let t=0;t<200&&!path;t++){const r0=Math.floor(Math.random()*N),seen=new Set([r0+",0"]),P=[[r0,0]];
+      const dfs=()=>{const[r,c]=P[P.length-1];if(c===N-1&&P.length>=N+1)return true;for(const d of [...DIR].sort(()=>Math.random()-.5)){const R=r+d[0],C=c+d[1];if(R<0||C<0||R>=N||C>=N||seen.has(R+","+C))continue;seen.add(R+","+C);P.push([R,C]);if(dfs())return true;P.pop()}return false};
+      if(dfs())path=P}
+    const onP=new Set(path.map(p=>p+""));path.forEach(([r,c],i)=>{let m=0;const pr=i?path[i-1]:[r,c-1],nx=i<path.length-1?path[i+1]:[r,c+1];for(const q of [pr,nx])DIR.forEach(d=>{if(q[0]===r+d[0]&&q[1]===c+d[1])m|=d[2]});M[r][c]=m});
+    const P3=[5,10,3,6,12,9,7,11,13,14];for(let r=0;r<N;r++)for(let c=0;c<N;c++){if(!onP.has(r+","+c))M[r][c]=P3[Math.floor(Math.random()*P3.length)];for(let k=Math.floor(Math.random()*4);k--;)M[r][c]=rot(M[r][c])}
+    const src=path[0][0],lamp=path[path.length-1][0];
+    const draw=()=>{wrap.replaceChildren();const pw=new Set(),q=[];if(M[src][0]&8){pw.add(src+",0");q.push([src,0])}
+      while(q.length){const[r,c]=q.shift();DIR.forEach(d=>{if(!(M[r][c]&d[2]))return;const R=r+d[0],C=c+d[1];if(R<0||C<0||R>=N||C>=N||pw.has(R+","+C)||!(M[R][C]&d[3]))return;pw.add(R+","+C);q.push([R,C])})}
+      const win=pw.has(lamp+","+(N-1))&&(M[lamp][N-1]&2),g=el("div","",wrap);g.style.cssText=`display:grid;grid-template-columns:28px repeat(${N},minmax(0,1fr)) 28px;gap:3px;max-width:${N*58+60}px;margin:8px auto`;
+      for(let r=0;r<N;r++){el("div",r===src?"🔋":"",g).style.cssText="display:flex;align-items:center;justify-content:center;font-size:20px";
+        for(let c=0;c<N;c++){const m=M[r][c],on=pw.has(r+","+c),b=el("button","",g);b.style.cssText="aspect-ratio:1;padding:0;border:1px solid var(--ln);border-radius:6px;background:var(--pn);cursor:pointer";b.setAttribute("aria-label","Leitung drehen");
+          const col=on?"#ff3b30":"#5a2a2a",L=[["M50 50 L50 0",1],["M50 50 L100 50",2],["M50 50 L50 100",4],["M50 50 L0 50",8]].filter(x=>m&x[1]).map(x=>`<path d="${x[0]}" stroke="${col}" stroke-width="16" stroke-linecap="round"/>`).join("");
+          b.innerHTML=`<svg viewBox="0 0 100 100" width="100%" height="100%">${L}<circle cx="50" cy="50" r="10" fill="${col}"/></svg>`;b.onclick=()=>{if(stop||win)return;M[r][c]=rot(M[r][c]);draw()}}
+        el("div",r===lamp?(win?"💡":"⚫"):"",g).style.cssText="display:flex;align-items:center;justify-content:center;font-size:20px"}
+      if(win){solved++;lvl++;setTimeout(()=>{if(!stop)level()},500)}};draw()};
+  el("p","Drehe die Leitungen (antippen), bis der Strom von der Batterie 🔋 die Lampe erreicht. Löse so viele Rätsel wie möglich in 90 Sekunden!",root,"hmi");level();
+  return()=>{stop=1;clearInterval(tm)}}
+// ---------- Lore-Snake ----------
+function gSnake(root,done){let stop=0;const W=16,cv=el("canvas","",root),x=cv.getContext("2d"),info=el("p","Punkte: 0",root,"ex");cv.width=cv.height=480;cv.style.cssText="width:100%;max-width:420px;display:block;margin:8px auto;border-radius:10px;touch-action:none;background:#1b2a1b";
+  const ORE=[["🪨",1,"#444"],["⚙️",2,"#c9b29a"],["🟨",3,"#e8c547"],["💎",5,"#4ee2ec"]];let S=[[8,8],[7,8],[6,8]],dir=[1,0],nd=[1,0],pts=0,ore,spd=170,t;
+  const place=()=>{let p;do p=[Math.floor(Math.random()*W),Math.floor(Math.random()*W)];while(S.some(s=>s[0]===p[0]&&s[1]===p[1]));const r=Math.random();ore=[...p,ORE[r<.5?0:r<.8?1:r<.95?2:3]]};place();
+  const setD=d=>{if(d[0]===-dir[0]&&d[1]===-dir[1])return;nd=d};
+  const key=e=>{const m={ArrowUp:[0,-1],w:[0,-1],ArrowDown:[0,1],s:[0,1],ArrowLeft:[-1,0],a:[-1,0],ArrowRight:[1,0],d:[1,0]}[e.key];if(m){e.preventDefault();setD(m)}};addEventListener("keydown",key);
+  let sx,sy;cv.onpointerdown=e=>{sx=e.clientX;sy=e.clientY};cv.onpointerup=e=>{const dx=e.clientX-sx,dy=e.clientY-sy;if(Math.abs(dx)+Math.abs(dy)<20)return;setD(Math.abs(dx)>Math.abs(dy)?[Math.sign(dx),0]:[0,Math.sign(dy)])};
+  const pad=el("div","",root);pad.style.cssText="display:grid;grid-template-columns:repeat(3,56px);gap:6px;justify-content:center";[["",0],["▲",[0,-1]],["",0],["◀",[-1,0]],["▼",[0,1]],["▶",[1,0]]].forEach(([l,d])=>{const b=el("button",l,pad,"fnb");if(!d)b.style.visibility="hidden";else b.onclick=()=>setD(d)});
+  const c=cv.width/W,draw=()=>{x.fillStyle="#1b2a1b";x.fillRect(0,0,cv.width,cv.height);x.strokeStyle="rgba(255,255,255,.05)";for(let i=1;i<W;i++){x.beginPath();x.moveTo(i*c,0);x.lineTo(i*c,cv.height);x.moveTo(0,i*c);x.lineTo(cv.width,i*c);x.stroke()}
+    x.font=`${c*.8}px serif`;x.textAlign="center";x.textBaseline="middle";x.fillText(ore[2][0],ore[0]*c+c/2,ore[1]*c+c/2+2);
+    S.forEach(([a,b],i)=>{x.fillStyle=i?"#8a6a3f":"#b0b0b0";x.fillRect(a*c+3,b*c+3,c-6,c-6);if(!i){x.fillStyle="#555";x.fillRect(a*c+6,b*c+c-10,c-12,4)}else{x.fillStyle="#c9a227";x.fillRect(a*c+c/2-2,b*c+3,4,c-6)}})};
+  const step=()=>{if(stop)return;dir=nd;const h=[S[0][0]+dir[0],S[0][1]+dir[1]];if(h[0]<0||h[1]<0||h[0]>=W||h[1]>=W||S.some(s=>s[0]===h[0]&&s[1]===h[1])){stop=1;removeEventListener("keydown",key);return done(pts)}
+    S.unshift(h);if(h[0]===ore[0]&&h[1]===ore[1]){pts+=ore[2][1];info.textContent=`Punkte: ${pts}`;place();spd=Math.max(70,spd-4)}else S.pop();draw();t=setTimeout(step,spd)};
+  el("p","Steuere die Lore mit Pfeiltasten, Wischen oder den Knöpfen. Kohle 1, Eisen 2, Gold 3, Diamant 5 Punkte. Nicht gegen die Wand oder die eigenen Schienen fahren!",root,"hmi");draw();t=setTimeout(step,600);
+  return()=>{stop=1;clearTimeout(t);removeEventListener("keydown",key)}}
+// ---------- Craftle ----------
+const CI={P:["Brett","#b8945f"],S:["Stock","#8a6a3f"],C:["Bruchstein","#7d7d7d"],I:["Eisen","#d8d8d8"],G:["Gold","#f1c40f"],D:["Diamant","#4ee2ec"],K:["Kohle","#333333"],F:["Faden","#eeeeee"],R:["Redstone","#d62e2e"],
+  L:["Glas","#a9e4f5"],W:["Wolle","#f7f7f7"],B:["Buch","#8b3a2f"],T:["Stein","#9a9a9a"],A:["Papier","#f5f0dc"],Z:["Zuckerrohr","#7cc36b"],H:["Weizen","#d9b44a"],E:["Ei","#f3e5c9"],M:["Milch","#ffffff"],U:["Zucker","#fafafa"],N:["Feuerstein","#555555"],X:["Feder","#dddddd"],O:["Obsidian","#2b1d3d"]};
+const CR=[["Werkbank",["PP","PP"]],["Fackel",["K","S"]],["Truhe",["PPP","P.P","PPP"]],["Ofen",["CCC","C.C","CCC"]],["Holzspitzhacke",["PPP",".S.",".S."]],["Steinschwert",["C","C","S"]],["Eisenschwert",["I","I","S"]],
+  ["Diamantspitzhacke",["DDD",".S.",".S."]],["Eisenaxt",["II","IS",".S"],1],["Bogen",[".SF","S.F",".SF"],1],["Angel",["..S",".SF","S.F"],1],["Eimer",["I.I",".I."]],["Schere",[".I","I."],1],["Kompass",[".I.","IRI",".I."]],["Uhr",[".G.","GRG",".G."]],
+  ["Bett",["WWW","PPP"]],["Bücherregal",["PPP","BBB","PPP"]],["Papier",["ZZZ"]],["Brot",["HHH"]],["Kuchen",["MMM","UEU","HHH"]],["Pfeil",["N","S","X"]],["Kolben",["PPP","CIC","CRC"]],["Redstone-Fackel",["R","S"]],["Glasscheibe",["LLL","LLL"]],
+  ["Schild",["PIP","PPP",".P."]],["Leiter",["S.S","SSS","S.S"]],["Zaun",["PSP","PSP"]],["Holztür",["PP","PP","PP"]],["Eisenhelm",["III","I.I"]],["Eisenbrustpanzer",["I.I","III","III"]],["Steinziegel",["TT","TT"]],["Zaubertisch",[".B.","DOD","OOO"]],["Goldhelm",["GGG","G.G"]],["Stöcke",["P","P"]]];
+const cNorm=g=>{let r0=3,c0=3;g.forEach((v,i)=>{if(v){r0=Math.min(r0,Math.floor(i/3));c0=Math.min(c0,i%3)}});const o=Array(9).fill("");g.forEach((v,i)=>{if(v)o[(Math.floor(i/3)-r0)*3+(i%3-c0)]=v});return o};
+const cGrid=rows=>{const g=Array(9).fill("");rows.forEach((row,r)=>[...row].forEach((ch,c)=>{if(ch!==".")g[r*3+c]=ch}));return g};
+const cMirror=g=>cNorm([0,1,2].flatMap(r=>[g[r*3+2],g[r*3+1],g[r*3]]));
+function gCraftle(root,done){const today=vYMD(0),idx=[...today].reduce((a,ch)=>(a*31+ch.charCodeAt(0))>>>0,7)%CR.length,[name,rows,mir]=CR[idx],T=cNorm(cGrid(rows)),TM=mir?cMirror(T):null;
+  const KEY="craftle:"+today;let saved=null;try{saved=JSON.parse(localStorage.getItem(KEY)||"null")}catch{}
+  el("h2",`Heute gesucht: ${name}`,root).style.margin="0";el("p",`Lege das Rezept in die Werkbank. Das Rezept belegt ${T.filter(Boolean).length} Felder. 🟩 richtig · 🟨 gehört rein, aber woanders hin · ⬛ gehört nicht rein. 6 Versuche, jeden Tag ein neues Rezept.`,root,"hmi");
+  const hist=el("div","",root),cur=Array(9).fill("");let sel="P",guesses=saved?saved.g:[],over=!!saved;
+  const tile=(code,size)=>{const s=el("span",code?CI[code][0]:"");const[bgc]=[code?CI[code][1]:"transparent"],dark=code&&["K","O","N","R","B","S"].includes(code);s.style.cssText=`display:flex;align-items:center;justify-content:center;text-align:center;width:${size}px;height:${size}px;border-radius:6px;font-size:${size>50?11:9}px;line-height:1.1;background:${bgc};color:${dark?"#fff":"#111"};overflow:hidden;padding:2px`;return s};
+  const judge=g=>{const tryT=t=>{const res=Array(9).fill(""),left={};t.forEach((v,i)=>{if(v&&g[i]!==v)left[v]=(left[v]||0)+1});g.forEach((v,i)=>{if(!v)return;if(t[i]===v)res[i]="🟩"});g.forEach((v,i)=>{if(!v||res[i])return;if(left[v]){res[i]="🟨";left[v]--}else res[i]="⬛"});return res};
+    const a=tryT(T);if(!TM)return a;const b=tryT(TM);return b.filter(x=>x==="🟩").length>a.filter(x=>x==="🟩").length?b:a};
+  const same=(a,b)=>a.every((v,i)=>v===b[i]),win=g=>same(g,T)||(TM&&same(g,TM));
+  const drawHist=()=>{hist.replaceChildren();const H=el("div","",hist);H.style.cssText="display:flex;gap:10px;flex-wrap:wrap;margin:10px 0";guesses.forEach(g=>{const res=judge(g),b=el("div","",H);b.style.cssText="display:grid;grid-template-columns:repeat(3,34px);gap:2px";
+    g.forEach((v,i)=>{const c=el("span",res[i]||"",b);c.style.cssText=`width:34px;height:34px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:${v?16:10}px;background:${v?"var(--pn)":"var(--bg)"};border:1px solid var(--ln)`;c.title=v?CI[v][0]:"leer"})})};
+  const finish=ok=>{over=true;const score=ok?7-guesses.length:null;localStorage.setItem(KEY,JSON.stringify({g:guesses,ok}));
+    const txt=`Craftle ${today.slice(8)}.${today.slice(5,7)}. ${ok?guesses.length:"X"}/6\n`+guesses.map(g=>judge(g).map(x=>x||"⬜").join("").match(/.{3}/gu).join("\n")).join("\n\n");
+    const sh=el("div","",root);el("p",ok?`🎉 Geschafft in ${guesses.length} ${guesses.length===1?"Versuch":"Versuchen"}!`:`Leider nicht geschafft – gesucht war: ${name}.`,sh).style.fontWeight="700";
+    el("button","📋 Ergebnis teilen",sh,"fnb").onclick=e=>navigator.clipboard&&navigator.clipboard.writeText(txt).then(()=>e.target.textContent="Kopiert ✓");done(score)};
+  drawHist();if(over){el("p",saved.ok?`Heute schon geschafft (${guesses.length}/6). Morgen gibt es ein neues Rezept!`:"Heute schon gespielt. Morgen gibt es ein neues Rezept!",root,"ex");return()=>{}}
+  const g=el("div","",root);g.style.cssText="display:grid;grid-template-columns:repeat(3,64px);gap:4px;margin:8px 0";
+  const drawGrid=()=>{g.replaceChildren();cur.forEach((v,i)=>{const b=el("button","",g);b.style.cssText="width:64px;height:64px;padding:0;border:2px solid var(--ln);border-radius:8px;background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center";
+    if(v)b.append(tile(v,58));b.setAttribute("aria-label",v?CI[v][0]:"leeres Feld");b.onclick=()=>{cur[i]=cur[i]===sel?"":sel;drawGrid()}})};
+  const pal=el("div","",root);pal.style.cssText="display:flex;flex-wrap:wrap;gap:4px;margin:8px 0;max-width:520px";
+  const drawPal=()=>{pal.replaceChildren();Object.keys(CI).forEach(k=>{const b=el("button","",pal);b.style.cssText=`padding:0;border:2px solid ${k===sel?"var(--ac)":"transparent"};border-radius:8px;background:none;cursor:pointer`;b.append(tile(k,46));b.setAttribute("aria-label",CI[k][0]);b.onclick=()=>{sel=k;drawPal()}})};
+  const bar=el("div","",root);bar.style.cssText="display:flex;gap:8px";el("button","Prüfen",bar,"fnb").onclick=()=>{const n0=cNorm(cur);if(!n0.some(Boolean))return;guesses.push(n0);drawHist();
+    if(win(n0)){g.remove();pal.remove();bar.remove();finish(true)}else if(guesses.length>=6){g.remove();pal.remove();bar.remove();finish(false)}else{cur.fill("");drawGrid()}};
+  el("button","Leeren",bar,"fnb").onclick=()=>{cur.fill("");drawGrid()};drawGrid();drawPal();return()=>{}}
+// ---------- Wer hat's gebaut? ----------
+function gWhoBuilt(root,done){let stop=0;(async()=>{const L=(await galLoad()).filter(g=>g.by&&g.image),B=[...new Set(L.map(g=>g.by))];
+  if(L.length<3||B.length<2){el("p","Dafür braucht es mindestens 3 Galeriebilder mit Erbauer (Feld „Von“) von mindestens 2 verschiedenen Leuten. Im Admin unter „Galerie“ eintragen!",root,"ex");return}
+  const Q=shuf(L).slice(0,Math.min(10,L.length));let i=0,score=0;
+  const next=()=>{if(stop)return;if(i>=Q.length)return done(score);const q=Q[i++];root.replaceChildren();el("p",`Bild ${i} von ${Q.length} · ${score} richtig`,root,"ex");
+    const im=document.createElement("img");im.src=q.image;im.alt="Wer hat das gebaut?";im.style.cssText="width:100%;max-width:520px;border-radius:10px;display:block;margin:8px 0";root.append(im);
+    el("p","Wer hat das gebaut?",root).style.fontWeight="700";const opts=shuf([q.by,...shuf(B.filter(b=>b!==q.by)).slice(0,3)]),bx=el("div","",root,"gqo");
+    opts.forEach(o=>{const bt=el("button",o,bx,"fnb");bt.onclick=()=>{bx.querySelectorAll("button").forEach(z=>z.disabled=true);const ok=o===q.by;if(ok)score++;bt.classList.add(ok?"ok":"bad");bx.children[opts.indexOf(q.by)].classList.add("ok");
+      el("p",(ok?"Richtig! ":"Leider falsch – ")+`„${q.title||"Ohne Titel"}“ ist von ${q.by}.`,root);setTimeout(next,1800)}})};next()})();return()=>{stop=1}}
+// ---------- Umfragen ----------
+async function pollBox(){const b=$("poll");b.replaceChildren();const td=vYMD(0),P=(OV.polls||[]).filter(p=>p&&p.opts&&p.opts.length&&(!p.end||p.end>=vYMD(-7))).sort((a,z)=>(z.id||"").localeCompare(a.id||""))[0];
+  if(!P){b.hidden=true;return}b.hidden=false;const R=await recLoad(),V=Object.values(R.votes[P.id]||{}),cnt=P.opts.map((_,i)=>V.filter(v=>v===i+1).length),tot=V.length,open=!P.end||P.end>=td;
+  const h=el("div","",b,"chh");el("span",open?"Umfrage":"Ergebnis",h,"chk");el("b","🗳️ "+P.q,h,"chl");el("small",open?(P.end?`bis ${P.end.split("-").reverse().join(".")}`:""):"beendet",h,"ex");
+  P.opts.forEach((o,i)=>{const r=el("div","",b,"chr");el("span",String(i+1),r);el("span",o,r);const t=el("div","",r,"mt"),x=el("div","",t);x.style.cssText=`width:${tot?cnt[i]/tot*100:0}%;background:#45b0f5`;el("em",`${cnt[i]} (${tot?Math.round(cnt[i]/tot*100):0} %)`,r)});
+  el("p",open?`${tot} ${tot===1?"Stimme":"Stimmen"} · Abstimmen im Spiel mit /vote <Nummer>, z. B. /vote 1`:`${tot} ${tot===1?"Stimme":"Stimmen"} insgesamt`,b,"chlast")}
+// ---------- Mein Dashboard ----------
+function dashBox(d,data){const b=$("dash");b.replaceChildren();const p=data.find(q=>q.uuid===PREF.me);if(!p||OV.showDash===false){b.hidden=true;return}b.hidden=false;
+  const h=el("div","",b,"chh");el("span","Mein Dashboard",h,"chk");const nm=el("b","",h,"chl");nm.append(head(p,22),document.createTextNode(" "+p.display_name));
+  const g=el("div","",b,"tiles"),T=(l,v,s)=>{const t=el("div","",g,"tile");el("small",l,t);el("b",v,t);if(s)el("small",s,t)};
+  const rk=(CTX.order||[]).findIndex(q=>q.uuid===p.uuid)+1;T("🏆 Gesamtwertung",rk?`Platz ${rk} von ${CTX.order.length}`:"–",CTX.tot?n(CTX.tot.get(p.uuid))+" Punkte":"");
+  const B=d.bingo;if(B&&B.tasks){const v=(B.progress||{})[p.uuid]||[],dn=B.tasks.map((t,i)=>i===12||(v[i]||0)>=t.target);T("🎱 Bingo",`${dn.filter(Boolean).length-1}/24 Felder`,(B.winners||[]).some(w=>w.uuid===p.uuid)?"Bingo geschafft! 🎉":"")}
+  const q=(d.streaks||{})[p.uuid];if(q){const sd=sDays(q);T("🔥 Serie",sd?`${sd} ${sd===1?"Tag":"Tage"}`:"–",sd&&q.last!==vYMD(0)?"heute noch offen":`Rekord ${q.best}`)}
+  const C=d.challenge;if(C&&C.label){const i=(C.ranking||[]).findIndex(r=>r[0]===p.uuid);T("🎯 Challenge",i>=0?`Platz ${i+1}`:"noch nichts",C.label)}
+  if(advOn()&&vYMD(0).slice(5,7)==="12"){const day=Math.min(24,+vYMD(0).slice(8));T("🎄 Advent",`Türchen ${day}`,"Im Spiel: /advent")}
+  recLoad().then(R=>{const mine=Object.entries(R.top).filter(([k,L])=>L[0]&&L[0].u===p.uuid).length;if(mine)T("🌍 Weltrekorde",String(mine),"in Minispielen")})}
 // ---------- Spielstil + „Wer spielt wie du?“ ----------
 const AX=[["Bergbau","⛏️ Bergmann",p=>p.blocks_mined],["Erkunden","🧭 Entdecker",p=>p.km_travelled*40],["Kampf","⚔️ Kämpfer",p=>p.entities_killed*3],
   ["Farmen","🌾 Farmer",p=>{const c=p.ch||{};return(c.crops||0)+(c.bred||0)*6+(c.fish||0)*8+(c.farm_animals||0)*4}],["Bauen","🧱 Baumeister",p=>p.items_used],
@@ -908,6 +1021,10 @@ function gClick(root,done){let S={b:0,t:0,p:1,h:0,m:0,ts:Date.now()};try{Object.
   const upd=()=>{txt();sh.replaceChildren();[["p","⛏️ Bessere Spitzhacke","+1 pro Klick",S.p-1],["h","🧟 Zombie-Helfer","+1 pro Sekunde",S.h],["m","🏭 Mine","+8 pro Sekunde",S.m]].forEach(([k,t,d,c])=>{const b=el("button",`${t} (${c}) – ${n(cost[k]())} 🧱 · ${d}`,sh,"fnb");b.disabled=S.b<cost[k]();b.onclick=()=>{S.b-=cost[k]();S[k]++;upd()}})};
   bt.onclick=()=>{S.b+=S.p;S.t+=S.p;txt()};const iv=setInterval(()=>{S.b+=rate();S.t+=rate();upd();sv()},1000);upd();
   const fin=el("button","Beenden & Ergebnis speichern",root,"fnb");fin.style.cssText+=";display:block;margin:14px auto";fin.onclick=()=>{clearInterval(iv);sv();done(Math.floor(S.t))};return()=>{clearInterval(iv);sv()}}
+GAMES.push(["redstone","⚡ Redstone-Rätsel","Drehe die Leitungen, bis die Lampe leuchtet – so viele Rätsel wie möglich in 90 Sekunden.",gRedstone,0," Rätsel"]);
+GAMES.push(["snake","🛤️ Lore-Snake","Sammle Erze mit der Lore – jede Erzader macht deine Schienen länger.",gSnake,0," Punkte"]);
+GAMES.push(["craftle","🧩 Craftle","Das tägliche Crafting-Rätsel: Errate das Rezept in 6 Versuchen.",gCraftle,0," Punkte"]);
+GAMES.push(["whobuilt","🏗️ Wer hat's gebaut?","Ein Bild aus der Galerie – errate, wer es gebaut hat.",gWhoBuilt,0," / 10"]);
 GAMES.push(["statsguess","🔎 Stats-Raten","Du siehst nur Statistiken – errate, welcher Spieler das ist. 10 Runden.",gStatsGuess,0," / 10"]);
 GAMES.push(["stack","🧱 Block-Stapeln","Tippe im richtigen Moment, damit der Block auf dem Turm landet. Was übersteht, fällt weg.",gStack,0,""],
 ["bow","🏹 Bogenschießen","Zieh den Bogen mit dem Finger nach links unten zurück und lass los. 5 Pfeile, Treffer in der Mitte zählen mehr.",gBow,0,""],
@@ -928,12 +1045,13 @@ function bestBox(c,k,low,u){const d=el("div","",c,"ex");
     const L=Object.entries(HS).filter(([a])=>a.startsWith("slide_")).map(([a,v])=>{const[,n,id]=a.split("_");return[`${N[id]||"Skin"} ${n}×${n}`,v]}).sort((a,b)=>a[1]-b[1]);
     d.textContent=L.length?"Beste pro Skin: "+L.slice(0,3).map(x=>`${x[0]}: ${x[1]} Züge`).join(" · ")+(L.length>3?` · +${L.length-3} weitere`:""):"Noch kein Ergebnis";return}
   d.textContent=hsBest(k,low)!=null?`Beste: ${hsBest(k,low)}${u}`:"Noch kein Ergebnis"}
-function gMenu(){const box=$("gm");if(GSTOP){GSTOP();GSTOP=null}box.replaceChildren();el("h1","Minispiele",box);el("p","Kleine Geschicklichkeitsspiele für zwischendurch. Highscores werden nur auf diesem Gerät gespeichert.",box,"ex");
-  const g=el("div","",box,"gg");GAMES.forEach(([k,t,d,,low,u])=>{const c=el("div","",g,"gcard");el("h3",t,c);el("p",d,c,"ex");bestBox(c,k,low,u);el("button","Spielen",c,"fnb").onclick=()=>gPlay(k)})}
+function gMenu(){const box=$("gm");if(GSTOP){GSTOP();GSTOP=null}box.replaceChildren();el("h1","Minispiele",box);el("p","Kleine Spiele für zwischendurch. Dein Highscore wird auf diesem Gerät gespeichert – für die 🌍 globale Bestenliste bekommst du am Ende einen Code, den du im Spiel mit /rekord eintippst.",box,"ex");
+  const g=el("div","",box,"gg");const RP=OV.showRecords!==false?recLoad():null;GAMES.forEach(([k,t,d,,low,u])=>{const c=el("div","",g,"gcard");el("h3",t,c);el("p",d,c,"ex");bestBox(c,k,low,u);
+    if(RP&&REC_GAMES.includes(k)){const r=el("div","",c,"grec ex");RP.then(R=>{const L=(R.top[k]||[]).slice(0,3);r.textContent="";if(!L.length){r.textContent="🌍 Noch kein Weltrekord";return}r.append(document.createTextNode("🌍 "));L.forEach((x,i)=>{if(i)r.append(document.createTextNode(" · "));el("b",`${["🥇","🥈","🥉"][i]} ${x.n}`,r);r.append(document.createTextNode(` ${n(x.v)}${u}`))})})}el("button","Spielen",c,"fnb").onclick=()=>gPlay(k)})}
 function gPlay(k){const box=$("gm"),[,t,d,fn,low,u]=GAMES.find(x=>x[0]===k);if(GSTOP){GSTOP();GSTOP=null}box.replaceChildren();
   const h=el("div","",box);h.style.cssText="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap";el("h1",t,h).style.fontSize="26px";el("button","← Alle Spiele",h,"fnb").onclick=gMenu;
   el("p",d,box,"ex");const root=el("div","",box),res=el("div","",box,"gres");root.style.margin="14px 0";
-  GSTOP=fn(root,(score,sfx)=>{if(GSTOP){GSTOP();GSTOP=null}const nb=score==null?0:hsSave(k+(sfx||""),score,low);res.replaceChildren();el("h2",score==null?"💥 Verloren – nochmal versuchen!":`Ergebnis: ${score}${u}${nb?" 🏆 Neuer Highscore!":""}`,res);el("button","Nochmal",res,"fnb").onclick=()=>gPlay(k);res.scrollIntoView({behavior:"smooth",block:"center"})})}
+  GSTOP=fn(root,(score,sfx)=>{if(GSTOP){GSTOP();GSTOP=null}const nb=score==null?0:hsSave(k+(sfx||""),score,low);res.replaceChildren();el("h2",score==null?"💥 Verloren – nochmal versuchen!":`Ergebnis: ${score}${u}${nb?" 🏆 Neuer Highscore!":""}`,res);if(score!=null&&(REC_LOW[k]||score>0)&&OV.showRecords!==false)recBox(res,k,score);el("button","Nochmal",res,"fnb").onclick=()=>gPlay(k);res.scrollIntoView({behavior:"smooth",block:"center"})})}
 function show(){if(GSTOP){GSTOP();GSTOP=null}const k=location.hash.slice(1)||SERVERS[0].key,b=$("nav");b.replaceChildren();
   [...SERVERS.map(s=>[s.key,s.name,"#"+s.key]),["events","📅 Events"+(NEXT?" ●":""),"#events"],...((OV.places||[]).length&&OV.showMap!==false?[["map","🗺️ Karte","#map"]]:[]),...(OV.showGallery!==false?[["gallery","🖼️ Galerie","#gallery"]]:[]),...(advOn()?[["advent","🎄 Advent","#advent"]]:[]),...(OV.showBestiary!==false?[["bestiary","📖 Bestiarium","#bestiary"]]:[]),...(OV.showGames!==false?[["games","🎮 Spiele","#games"]]:[]),...(OV.showAdmin!==false?[["admin","⚙️ Admin","admin.html"]]:[])]
     .forEach(([id,l,h])=>{const a=el("a",l,b,id===k?"on":"");a.href=h});
