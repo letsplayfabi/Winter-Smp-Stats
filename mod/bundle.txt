@@ -136,8 +136,8 @@ public class LiveStats implements ModInitializer {
     }
 
     // ---------- Befehle im Spiel ----------
-    static final String[] COMMANDS = {"bingo", "challenge", "serie", "advent", "seite"};
-    static volatile JsonObject siteStats, siteAdvent;
+    static final String[] COMMANDS = {"bingo", "challenge", "serie", "advent", "seite", "rekord", "vote"};
+    static volatile JsonObject siteStats, siteAdvent, siteOv;
     static volatile String siteKey;
     static final Path CLAIMS = FabricLoader.getInstance().getConfigDir().resolve("livestats-advent.json");
     static final ZoneId VIENNA = ZoneId.of("Europe/Vienna");
@@ -182,6 +182,10 @@ public class LiveStats implements ModInitializer {
                 siteAdvent = JsonParser.parseString(httpGet(base + "data/advent.json")).getAsJsonObject();
             } catch (Exception ignored) {
             }
+            try {
+                siteOv = JsonParser.parseString(httpGet(base + "overrides.json")).getAsJsonObject();
+            } catch (Exception ignored) {
+            }
         } catch (Exception e) {
             LOG.warn("LiveStats: Seitendaten nicht geladen: {}", e.toString());
         }
@@ -202,12 +206,14 @@ public class LiveStats implements ModInitializer {
     }
 
     /** Wird von Compat im Server-Thread aufgerufen; gibt die Chat-Zeilen zurück. */
-    static List<String> command(String cmd, String uuid, Object player) {
+    static List<String> command(String cmd, String arg, String uuid, String name, Object player) {
+        if (cmd.equals("rekord")) return rekord(arg, uuid, name);
+        if (cmd.equals("vote")) return vote(arg, uuid, name);
         List<String> out = new ArrayList<>();
         String site = siteUrl();
         if (cmd.equals("seite")) {
             out.add("§b" + (site.isEmpty() ? "Keine Seite eingestellt." : site));
-            out.add("§7Befehle: §f/bingo /challenge /serie /advent");
+            out.add("§7Befehle: §f/bingo /challenge /serie /advent /vote /rekord");
             return out;
         }
         if (cmd.equals("advent")) return advent(uuid, player);
@@ -407,6 +413,126 @@ public class LiveStats implements ModInitializer {
         return out;
     }
 
+    // ---------- Minispiel-Rekorde und Umfragen ----------
+    static final Path MODDATA = FabricLoader.getInstance().getConfigDir().resolve("livestats-moddata.json");
+    static final String RA = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    static final String[] REC_NAMES = {"Redstone-Rätsel", "Lore-Snake", "Craftle", "Wer hat's gebaut?", "Reaktionstest", "Creeper-Jagd", "Diamantenfang",
+            "Elytra-Flug", "Stats-Raten", "Block-Stapeln", "Bogenschießen", "Angeln", "Loren-Fahrt", "Memory", "Notenblock-Memory", "2048 mit Items",
+            "Höher oder niedriger", "Skin-Raten", "Schätzspiel"};
+
+    static synchronized JsonObject modData() {
+        try {
+            if (Files.exists(MODDATA)) return JsonParser.parseString(Files.readString(MODDATA)).getAsJsonObject();
+        } catch (Exception e) {
+            LOG.warn("LiveStats: {} nicht lesbar: {}", MODDATA, e.toString());
+        }
+        return new JsonObject();
+    }
+
+    static synchronized void saveModData(JsonObject m) {
+        try {
+            Files.writeString(MODDATA, GSON.toJson(m));
+        } catch (Exception e) {
+            LOG.warn("LiveStats: Mod-Daten nicht gespeichert: {}", e.toString());
+        }
+    }
+
+    static JsonObject sub(JsonObject o, String k) {
+        if (!o.has(k) || !o.get(k).isJsonObject()) o.add(k, new JsonObject());
+        return o.getAsJsonObject(k);
+    }
+
+    static int recDay() {
+        return (int) (java.time.temporal.ChronoUnit.DAYS.between(LocalDate.of(2026, 1, 1), LocalDate.now(VIENNA)) & 4095);
+    }
+
+    static synchronized List<String> rekord(String arg, String uuid, String name) {
+        List<String> out = new ArrayList<>();
+        String c = arg == null ? "" : arg.toUpperCase().replaceAll("[^A-Z0-9]", "");
+        if (c.length() != 12) {
+            out.add("§7Spiel ein Minispiel auf der Seite – am Ende bekommst du einen Code. Den tippst du hier ein: §f/rekord ABCD-EFGH-JKLM");
+            return out;
+        }
+        long v = 0;
+        for (char ch : c.toCharArray()) {
+            int i = RA.indexOf(ch);
+            if (i < 0) { out.add("§cDieser Code ist ungültig."); return out; }
+            v = v * 32 + i;
+        }
+        int chk = (int) (v & 4095), score = (int) ((v >>> 12) & ((1L << 30) - 1)), day = (int) ((v >>> 42) & 4095), g = (int) ((v >>> 54) & 63);
+        int h = (int) ((long) (g * 131 + day) * 1000003L + score);
+        h = (h ^ 0x5A5A5) * 0x9E3779B1;
+        if ((h & 4095) != chk || g >= REC_NAMES.length) { out.add("§cDieser Code ist ungültig – bitte genau abtippen."); return out; }
+        int age = (recDay() - day + 4096) % 4096;
+        if (age > 2) { out.add("§cDieser Code ist abgelaufen – Codes gelten 2 Tage."); return out; }
+        JsonObject m = modData();
+        JsonObject mine = sub(sub(m, "records"), uuid);
+        String gk = String.valueOf(g);
+        JsonArray arr = mine.has(gk) ? mine.getAsJsonArray(gk) : new JsonArray();
+        for (JsonElement e : arr) {
+            JsonArray x = e.getAsJsonArray();
+            if (x.get(0).getAsInt() == score && x.get(1).getAsInt() == day) { out.add("§7Diesen Rekord hast du schon eingetragen."); return out; }
+        }
+        JsonArray entry = new JsonArray();
+        entry.add(score);
+        entry.add(day);
+        arr.add(entry);
+        while (arr.size() > 20) arr.remove(0);
+        mine.add(gk, arr);
+        sub(m, "names").addProperty(uuid, name);
+        saveModData(m);
+        requestRefresh();
+        out.add("§a✔ Rekord eingetragen: §f" + REC_NAMES[g] + " §7– §e" + num(score));
+        out.add(cfg.githubToken == null || cfg.githubToken.isBlank() ? "§7(Auf der Seite erscheint er, sobald in livestats.json ein githubToken eingetragen ist.)"
+                : "§7Er erscheint in ein paar Minuten auf der Seite.");
+        return out;
+    }
+
+    static JsonObject activePoll() {
+        JsonObject ov = siteOv;
+        if (ov == null || !ov.has("polls") || !ov.get("polls").isJsonArray()) return null;
+        String today = LocalDate.now(VIENNA).toString();
+        JsonObject best = null;
+        for (JsonElement e : ov.getAsJsonArray("polls")) {
+            JsonObject p = e.getAsJsonObject();
+            String end = p.has("end") && !p.get("end").isJsonNull() ? p.get("end").getAsString() : "";
+            if (!end.isEmpty() && end.compareTo(today) < 0) continue;
+            if (best == null || p.get("id").getAsString().compareTo(best.get("id").getAsString()) > 0) best = p;
+        }
+        return best;
+    }
+
+    static synchronized List<String> vote(String arg, String uuid, String name) {
+        List<String> out = new ArrayList<>();
+        JsonObject p = activePoll();
+        if (p == null) {
+            if (siteOv == null) EX.execute(LiveStats::loadSite);
+            out.add("§7Gerade läuft keine Umfrage.");
+            return out;
+        }
+        String pid = p.get("id").getAsString();
+        JsonArray opts = p.getAsJsonArray("opts");
+        JsonObject m = modData();
+        JsonObject votes = sub(sub(m, "votes"), pid);
+        int mine = votes.has(uuid) ? votes.get(uuid).getAsInt() : 0;
+        String a = arg == null ? "" : arg.trim();
+        if (a.matches("\\d+")) {
+            int n = Integer.parseInt(a);
+            if (n < 1 || n > opts.size()) { out.add("§cBitte eine Zahl von 1 bis " + opts.size() + "."); return out; }
+            votes.addProperty(uuid, n);
+            sub(m, "names").addProperty(uuid, name);
+            saveModData(m);
+            requestRefresh();
+            out.add("§a✔ Deine Stimme: §f" + opts.get(n - 1).getAsString() + (mine > 0 && mine != n ? " §7(geändert)" : ""));
+            out.add("§7Das Ergebnis siehst du auf der Seite.");
+            return out;
+        }
+        out.add("§b§lUmfrage: §r§f" + p.get("q").getAsString());
+        for (int i = 0; i < opts.size(); i++) out.add(" §e" + (i + 1) + " §f" + opts.get(i).getAsString() + (mine == i + 1 ? " §a← deine Stimme" : ""));
+        out.add("§7Abstimmen mit §f/vote <Nummer>§7, z. B. §f/vote 1");
+        return out;
+    }
+
     // ---------- Konfiguration ----------
     static void loadConfig() {
         Path p = FabricLoader.getInstance().getConfigDir().resolve("livestats.json");
@@ -521,7 +647,16 @@ public class LiveStats implements ModInitializer {
             h.put("Authorization", "Bearer " + cfg.githubToken.trim());
             h.put("Accept", "application/vnd.github+json");
             h.put("X-GitHub-Api-Version", "2022-11-28");
-            send(url, "{\"ref\":\"" + cfg.githubRef + "\"}", h, "GitHub");
+            JsonObject body = new JsonObject();
+            body.addProperty("ref", cfg.githubRef);
+            JsonObject md = modData();
+            if (siteKey != null && (md.has("records") || md.has("votes"))) {
+                md.addProperty("server", siteKey);
+                JsonObject in = new JsonObject();
+                in.addProperty("moddata", md.toString());
+                body.add("inputs", in);
+            }
+            send(url, body.toString(), h, "GitHub");
         } catch (Throwable t) {
             LOG.warn("GitHub-Aufruf: {}", t.toString());
         }
@@ -611,9 +746,14 @@ rootProject.name = 'livestats'
 package at.livestats;
 
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
+import java.net.URI;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -651,19 +791,30 @@ final class Compat {
         return ((ServerGamePacketListenerImpl) handler).getPlayer().getName().getString();
     }
 
-    interface Cmd { List<String> run(String cmd, String uuid, Object player); }
+    interface Cmd { List<String> run(String cmd, String arg, String uuid, String name, Object player); }
+
+    static int exec(CommandContext<CommandSourceStack> ctx, Cmd handler, String name, String arg) {
+        ServerPlayer p = ctx.getSource().getPlayer();
+        if (p == null) return 0;
+        for (String l : handler.run(name, arg, p.getStringUUID(), p.getName().getString(), p)) ctx.getSource().sendSuccess(() -> line(l), false);
+        return 1;
+    }
 
     static void registerCommands(Cmd handler) {
         CommandRegistrationCallback.EVENT.register((d, reg, env) -> {
             for (String name : LiveStats.COMMANDS) {
-                d.register(Commands.literal(name).executes(ctx -> {
-                    ServerPlayer p = ctx.getSource().getPlayer();
-                    if (p == null) return 0;
-                    for (String l : handler.run(name, p.getStringUUID(), p)) ctx.getSource().sendSuccess(() -> Component.literal(l), false);
-                    return 1;
-                }));
+                d.register(Commands.literal(name).executes(ctx -> exec(ctx, handler, name, ""))
+                        .then(Commands.argument("text", StringArgumentType.greedyString()).executes(ctx -> exec(ctx, handler, name, StringArgumentType.getString(ctx, "text")))));
             }
         });
+    }
+
+    /** Chatzeile; enthält sie einen Link, wird die Zeile anklickbar. */
+    static Component line(String l) {
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("https?://\\S+").matcher(l);
+        if (!m.find()) return Component.literal(l);
+        URI uri = URI.create(m.group());
+        return Component.literal(l).withStyle(s -> s.withClickEvent(new ClickEvent.OpenUrl(uri)).withUnderlined(true));
     }
 
     static Item item(String id) {
@@ -800,10 +951,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
+import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.ClickEvent;
 import net.minecraft.text.Text;
+import java.net.URI;
 import net.minecraft.text.TranslatableTextContent;
 import java.util.List;
 
@@ -828,19 +984,30 @@ final class Compat {
         return ((ServerPlayNetworkHandler) handler).player.getName().getString();
     }
 
-    interface Cmd { List<String> run(String cmd, String uuid, Object player); }
+    interface Cmd { List<String> run(String cmd, String arg, String uuid, String name, Object player); }
+
+    static int exec(CommandContext<ServerCommandSource> ctx, Cmd handler, String name, String arg) {
+        ServerPlayerEntity p = ctx.getSource().getPlayer();
+        if (p == null) return 0;
+        for (String l : handler.run(name, arg, p.getUuidAsString(), p.getName().getString(), p)) ctx.getSource().sendFeedback(() -> line(l), false);
+        return 1;
+    }
 
     static void registerCommands(Cmd handler) {
         CommandRegistrationCallback.EVENT.register((d, reg, env) -> {
             for (String name : LiveStats.COMMANDS) {
-                d.register(CommandManager.literal(name).executes(ctx -> {
-                    ServerPlayerEntity p = ctx.getSource().getPlayer();
-                    if (p == null) return 0;
-                    for (String l : handler.run(name, p.getUuidAsString(), p)) ctx.getSource().sendFeedback(() -> Text.literal(l), false);
-                    return 1;
-                }));
+                d.register(CommandManager.literal(name).executes(ctx -> exec(ctx, handler, name, ""))
+                        .then(CommandManager.argument("text", StringArgumentType.greedyString()).executes(ctx -> exec(ctx, handler, name, StringArgumentType.getString(ctx, "text")))));
             }
         });
+    }
+
+    /** Chatzeile; enthält sie einen Link, wird die Zeile anklickbar. */
+    static Text line(String l) {
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("https?://\\S+").matcher(l);
+        if (!m.find()) return Text.literal(l);
+        URI uri = URI.create(m.group());
+        return Text.literal(l).styled(s -> s.withClickEvent(new ClickEvent.OpenUrl(uri)).withUnderline(true));
     }
 
     static Item item(String id) {
