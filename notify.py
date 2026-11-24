@@ -21,6 +21,8 @@ def jl(p, default):
 
 
 def mval(p, m):
+    if m and m.startswith("rec_"):
+        return (p.get("rec") or {}).get(m[4:], 0)
     x = p.get("x") or {}
     return {"playtime": p.get("minutes", 0), "player_kills": p.get("player_kills", 0), "deaths": p.get("deaths", 0),
             "travel": p.get("km_travelled", 0), "mined": p.get("blocks_mined", 0), "used": p.get("items_used", 0),

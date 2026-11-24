@@ -90,6 +90,40 @@ def mojang(uuid):
         return None
 
 
+REC_GAMES = ["redstone", "snake", "craftle", "whobuilt", "react", "aim", "catch", "flap", "statsguess", "stack", "bow", "fish",
+             "cart", "mem", "note", "g2048", "hilo", "skin", "guess"]  # Reihenfolge NIE ändern (steckt in den Rekord-Codes)
+REC_LOW = {"react", "mem"}
+
+
+def save_moddata():
+    """Rekorde und Umfrage-Stimmen, die die Mod beim Auslösen der Aktualisierung mitschickt (Eingabe 'moddata')."""
+    raw = os.environ.get("MOD_DATA", "").strip()
+    if not raw:
+        return
+    try:
+        m = json.loads(raw)
+        key = str(m.get("server", ""))
+        if not re.fullmatch(r"[a-z0-9_-]{1,32}", key):
+            raise ValueError("ungültiger Server-Schlüssel")
+        uu = re.compile(r"^[0-9a-f-]{32,36}$")
+        out = {"server": key, "names": {}, "records": {}, "votes": {}}
+        for u, nm in (m.get("names") or {}).items():
+            if uu.match(u):
+                out["names"][u] = re.sub(r"[^A-Za-z0-9_]", "", str(nm))[:16]
+        for u, G in (m.get("records") or {}).items():
+            if uu.match(u) and isinstance(G, dict):
+                out["records"][u] = {str(int(g)): [[int(x[0]), int(x[1])] for x in arr][-20:] for g, arr in G.items() if str(g).isdigit()}
+        for pid, V in (m.get("votes") or {}).items():
+            if re.fullmatch(r"[A-Za-z0-9_-]{1,40}", pid) and isinstance(V, dict):
+                out["votes"][pid] = {u: int(v) for u, v in V.items() if uu.match(u) and 1 <= int(v) <= 9}
+        d = D / "data" / key
+        d.mkdir(parents=True, exist_ok=True)
+        (d / "moddata.json").write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")))
+        print(f"Mod-Daten von {key} gespeichert ({len(out['records'])} Spieler mit Rekorden, {len(out['votes'])} Umfragen)")
+    except Exception as e:
+        print("Mod-Daten ignoriert:", e)
+
+
 def jl(p, default):
     try:
         return json.loads(Path(p).read_text())
@@ -425,6 +459,7 @@ def main():
     sp = Path("servers.json")
     servers = json.loads(sp.read_text()) if sp.exists() else [{"key": "winter", "name": "Winter SMP", "env": "EXAROTON_SERVER_ID"}]
     D.mkdir(exist_ok=True)
+    save_moddata()
     failed = []
     for i, sv in enumerate(servers):
         try:
@@ -434,6 +469,31 @@ def main():
             failed.append(sv["name"])
     ok = [{"key": s["key"], "name": s["name"], "extra": s.get("extra", []), "hide": s.get("hide", [])} for s in servers if (D / "data" / s["key"] / "stats.json").exists()]
     (D / "servers.json").write_text(json.dumps(ok, ensure_ascii=False))
+    # Minispiel-Rekorde: bester Wert pro Spieler (über alle Server) ins Profil, für Erfolge
+    try:
+        best = {}
+        for sv in servers:
+            md = jl(D / "data" / sv["key"] / "moddata.json", {})
+            for u, G in (md.get("records") or {}).items():
+                for gi, arr in G.items():
+                    try:
+                        k = REC_GAMES[int(gi)]
+                    except (ValueError, IndexError):
+                        continue
+                    for sc, *_ in arr:
+                        b = best.setdefault(u, {})
+                        if k not in b or (sc < b[k] if k in REC_LOW else sc > b[k]):
+                            b[k] = sc
+        if best:
+            for sv in servers:
+                sp = D / "data" / sv["key"] / "stats.json"
+                st = jl(sp, None)
+                if st:
+                    for p in st.get("players", []):
+                        p["rec"] = best.get(p["uuid"], {})
+                    sp.write_text(json.dumps(st, ensure_ascii=False, separators=(",", ":")))
+    except Exception as e:
+        print("Rekorde nicht übernommen:", e)
     # Adventskalender: jeder bekannte Spieler bekommt seine 24 Geschenke (gleiche Geschenke, andere Reihenfolge)
     try:
         import advent
