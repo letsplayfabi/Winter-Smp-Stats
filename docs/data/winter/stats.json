@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23T23:00+00:00",
+ "updated": "2026-11-24T01:30+00:00",
  "players": [
   {
    "uuid": "f7aa0c49-9af4-4f7c-901e-334ef4cf4c5f",
@@ -297,7 +297,7 @@
    },
    "skin": "476152c3602dba5de40229f58018ac664b706a7d08048cbc127c7d38d5b31f58",
    "slim": false,
-   "week_hours": 28.1
+   "week_hours": 26.3
   },
   {
    "uuid": "0c95a02f-d9c7-4467-a71c-310e2b070c08",
@@ -588,7 +588,7 @@
    },
    "skin": "baf4f63b06fe40b9911f77749d44c3722536afe011db2129003511212ca5dfc5",
    "slim": false,
-   "week_hours": 13.3
+   "week_hours": 10.6
   },
   {
    "uuid": "5b1dde8a-1b76-4202-b3be-862467454795",
@@ -1555,12 +1555,12 @@
   }
  ],
  "status": {
-  "state": "online",
+  "state": "offline",
   "count": 0,
   "max": 20,
   "list": [],
   "address": "wintersmpc.exaroton.me",
-  "checked": "2026-11-23T23:00+00:00"
+  "checked": "2026-11-24T01:30+00:00"
  },
  "challenge": {
   "stat": "redstone",
