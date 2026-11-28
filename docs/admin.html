@@ -33,7 +33,13 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 <label style="display:block;margin:8px 0;color:var(--mu);font-size:13px"><input type="checkbox" id="rem"> Token mit diesem Passwort auf diesem Gerät merken</label>
 <button id="unl" class="s" hidden>🔓 Mit Passwort entsperren</button> <button id="fg" class="s" hidden>Gespeicherten Zugang löschen</button></div></section>
 <div id="ed" hidden>
-<div class="tabs"><button data-t="a" class="on">⚙️ Allgemein</button><button data-t="e">📅 Events</button><button data-t="x">🏆 Erfolge</button><button data-t="c">📊 Eigene Stats</button><button data-t="g">🎯 Ziele</button><button data-t="w">🎲 Challenge</button><button data-t="p">🖼️ Galerie</button><button data-t="b">📝 Steckbriefe</button><button data-t="o">🗺️ Orte</button><button data-t="k">🔥 Serien</button><button data-t="x">🎁 Wichteln</button><button data-t="v">🗳️ Umfragen</button></div>
+<div class="tabs"><button data-t="a" class="on">⚙️ Allgemein</button><button data-t="e">📅 Events</button><button data-t="x">🏆 Erfolge</button><button data-t="c">📊 Eigene Stats</button><button data-t="g">🎯 Ziele</button><button data-t="w">🎲 Challenge</button><button data-t="p">🖼️ Galerie</button><button data-t="b">📝 Steckbriefe</button><button data-t="o">🗺️ Orte</button><button data-t="k">🔥 Serien</button><button data-t="x">🎁 Wichteln</button><button data-t="v">🗳️ Umfragen</button><button data-t="n">📣 Neuigkeiten</button></div>
+<section class="card" data-tab="n" hidden><h2>📣 Neuigkeiten („Was ist neu?“)</h2>
+<p class="mu">Die neueste Meldung erscheint jedem Besucher einmal als Fenster, sobald er die Seite öffnet. Solange du hier nichts einträgst, zeigt die Seite automatisch die Liste der letzten Neuerungen. Änderungen gelten nach „Speichern“ in der unteren Leiste.</p>
+<label style="display:block;margin-bottom:12px"><input type="checkbox" id="snw"> „Was ist neu?“-Fenster anzeigen</label>
+<div class="g"><label>Titel<input id="nt" type="text" placeholder="Neu auf dem Server"></label><label>Datum<input id="nd" type="date"></label></div>
+<label style="display:block;margin:12px 0;color:var(--mu);font-size:13px">Punkte (einer pro Zeile)<textarea id="ni" placeholder="🎮 Neues Minispiel&#10;🗺️ Neue Orte auf der Karte"></textarea></label>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><button id="na">➕ Meldung hinzufügen</button><button id="nc" class="s" hidden>Abbrechen</button></div><div id="nl" style="margin-top:14px"></div></section>
 <section class="card" data-tab="v" hidden><h2>🗳️ Umfragen</h2>
 <p class="mu">Die Spieler stimmen im Spiel mit <b>/vote 1</b>, <b>/vote 2</b> … ab (jeder hat eine Stimme und kann sie ändern). Das Ergebnis erscheint oben auf der Seite und bleibt nach dem Ende noch 7 Tage sichtbar. Es läuft immer die neueste Umfrage. Änderungen gelten nach „Speichern“ in der unteren Leiste.</p>
 <div class="g"><label>Frage<input id="vq" type="text" placeholder="Welches Event wollt ihr als Nächstes?"></label><label>Endet am<input id="ve" type="date"></label></div>
@@ -51,7 +57,8 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 <section class="card" data-tab="b" hidden><h2>📝 Steckbriefe</h2>
 <p class="mu">Erscheinen im Spielerprofil auf allen Servern. Alle Felder sind freiwillig. Beim Geburtstag werden nur Tag und Monat gespeichert: Am Tag selbst gratuliert die Seite, und auf Discord kommt ein Glückwunsch. Änderungen gelten nach „Speichern“ in der unteren Leiste.</p>
 <div class="g"><label>Spieler<select id="bpl"></select></label><label>Rolle<input id="brl" type="text" placeholder="Baumeister, Farmer, Abenteurer …"></label><label>Lieblingsblock<input id="bfv" type="text" placeholder="Kirschholz"></label>
-<label>Dabei seit<input id="bsn" type="date"></label><label>Geburtstag – Tag<select id="bdd"></select></label><label>Geburtstag – Monat<select id="bdm"></select></label></div>
+<label>Dabei seit<input id="bsn" type="date"></label><label>Geburtstag – Tag<select id="bdd"></select></label><label>Geburtstag – Monat<select id="bdm"></select></label><label>Profil-Banner<select id="bbn"></select></label></div>
+<p class="mu">Spieler können sich den Banner auch selbst im Spiel mit <b>/banner</b> aussuchen – das hat dann Vorrang.</p>
 <label style="display:block;margin:12px 0;color:var(--mu);font-size:13px">Über mich<textarea id="bab"></textarea></label><div id="bls"></div></section>
 <section class="card" data-tab="o" hidden><h2>🗺️ Orte</h2>
 <p class="mu">Basen, Farmen, Portale und mehr – sie erscheinen im Reiter „Karte“ und im Profil des Besitzers. Die Koordinaten siehst du im Spiel mit F3. Änderungen gelten nach „Speichern“ in der unteren Leiste.</p>
@@ -60,7 +67,7 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 <label>Dimension<select id="odm"><option value="overworld">Oberwelt</option><option value="nether">Nether</option><option value="end">End</option></select></label>
 <label>X<input id="ox" type="number"></label><label>Y (Höhe, optional)<input id="oy" type="number"></label><label>Z<input id="oz" type="number"></label><label>Besitzer<select id="oow"></select></label><label>Bild aus der Galerie<select id="ogl"></select></label></div><img id="oglp" alt="" hidden style="max-width:220px;border-radius:8px;margin-top:10px;display:block">
 <label style="display:block;margin:12px 0;color:var(--mu);font-size:13px">Beschreibung<textarea id="ods"></textarea></label>
-<div style="margin:12px 0;display:flex;gap:8px;flex-wrap:wrap"><button id="oa">➕ Ort hinzufügen</button><button id="oc" class="s" hidden>Abbrechen</button></div><div id="ol"></div></section>
+<div style="margin:12px 0;display:flex;gap:8px;flex-wrap:wrap"><button id="oa">➕ Ort hinzufügen</button><button id="oc" class="s" hidden>Abbrechen</button></div><div id="ol"></div><h3 style="margin-top:22px">Im Spiel gespeicherte Orte (/ort)</h3><p class="mu">Spieler speichern Orte selbst mit <b>/ort Name</b>. Hier kannst du einzelne auf der Karte ausblenden (unten „Speichern“).</p><div id="ogl2"></div></section>
 <section class="card" data-tab="w" hidden><h2>🎲 Wochen-Challenge</h2>
 <p class="mu">Jede Woche (Montag bis Sonntag) gibt es eine Rangliste für eine Statistik. Gezählt wird nur, was in dieser Woche dazukommt. Am Montag wird der Gewinner auf Discord verkündet.</p>
 <label style="display:block;margin-bottom:12px"><input type="checkbox" id="chen"> Wochen-Challenge auf der Seite anzeigen</label>
@@ -74,7 +81,7 @@ button.s{background:#26324a;color:var(--fg)}button:hover{filter:brightness(1.1)}
 <label>Server<select id="gsv"></select></label><label>Bild(er)<input id="gim" type="file" accept="image/*" multiple></label></div>
 <label style="display:block;margin:12px 0;color:var(--mu);font-size:13px">Beschreibung<textarea id="gds"></textarea></label>
 <p class="mu" id="gph"></p><button id="gad">➕ Hochladen</button> <button id="gcn" class="s" hidden>Abbrechen</button><div id="gll" style="margin-top:14px"></div></section>
-<section class="card" data-tab="a"><h2>🌍 Server</h2><p class="mu">Alles unten (Seite, Kategorien, Spieler) gilt für den gewählten Server. Farben und Events gelten für alle.</p><select id="sel"></select><label style="display:block;margin-top:12px"><input type="checkbox" id="sa"> Admin-Reiter auf der Seite anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="sg"> Reiter „Spiele“ (Minispiele) anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="sgl"> Reiter „Galerie“ anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="sht"> Heatmap „Wann ist am meisten los?“ anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="sbg"> Bingo der Woche anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="ssk"> Serien anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="sbs"> Reiter „Bestiarium“ anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="sdb"> „Mein Dashboard“ für markierte Spieler anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="srec"> Globale Minispiel-Rekorde (Code + /rekord im Spiel)</label><label style="display:block;margin-top:12px;font-size:13px;color:var(--mu)">Adventskalender<select id="sad"><option value="auto">Automatisch – Reiter im Dezember</option><option value="always">Immer zeigen (Vorschau)</option><option value="off">Aus</option></select></label><label style="display:block;margin-top:12px;font-size:13px;color:var(--mu)">Saison-Deko (Besucher können sie in den Einstellungen für sich ausschalten)<select id="sdc"><option value="auto">Automatisch – Schnee 1.12.–15.1., Konfetti zu Silvester, Fledermäuse 24.–31.10.</option><option value="winter">Immer Schnee</option><option value="halloween">Halloween</option><option value="newyear">Silvester-Konfetti</option><option value="off">Aus</option></select></label></section>
+<section class="card" data-tab="a"><h2>🌍 Server</h2><p class="mu">Alles unten (Seite, Kategorien, Spieler) gilt für den gewählten Server. Farben und Events gelten für alle.</p><select id="sel"></select><label style="display:block;margin-top:12px"><input type="checkbox" id="sa"> Admin-Reiter auf der Seite anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="sg"> Reiter „Spiele“ (Minispiele) anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="sgl"> Reiter „Galerie“ anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="sht"> Heatmap „Wann ist am meisten los?“ anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="sbg"> Bingo der Woche anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="ssk"> Serien anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="sbs"> Reiter „Bestiarium“ anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="sdb"> „Mein Dashboard“ für markierte Spieler anzeigen</label><label style="display:block;margin-top:8px"><input type="checkbox" id="srec"> Globale Minispiel-Rekorde (Code + /rekord im Spiel)</label><label style="display:block;margin-top:8px"><input type="checkbox" id="stour"> Turnier der Woche</label><label style="display:block;margin-top:12px;font-size:13px;color:var(--mu)">Adventskalender<select id="sad"><option value="auto">Automatisch – Reiter im Dezember</option><option value="always">Immer zeigen (Vorschau)</option><option value="off">Aus</option></select></label><label style="display:block;margin-top:12px;font-size:13px;color:var(--mu)">Saison-Deko (Besucher können sie in den Einstellungen für sich ausschalten)<select id="sdc"><option value="auto">Automatisch – Schnee 1.12.–15.1., Konfetti zu Silvester, Fledermäuse 24.–31.10.</option><option value="winter">Immer Schnee</option><option value="halloween">Halloween</option><option value="newyear">Silvester-Konfetti</option><option value="off">Aus</option></select></label></section>
 <section class="card" data-tab="a"><h2>💬 Discord-Button (alle Server)</h2><div class="g"><label>Link<input id="dl" type="text"></label><label>Button-Text<input id="dt" type="text"></label></div><p class="mu" style="margin-top:8px">Link leer lassen = Button ausblenden.</p>
 <h3 style="margin:14px 0 6px;font-size:15px">Discord-Meldungen (Webhook)</h3>
 <p class="mu">Der Webhook-Link kommt als GitHub-Secret <b>DISCORD_WEBHOOK</b> (siehe Anleitung), nicht hierher. Hier wählst du nur, was gemeldet wird.</p>
@@ -163,7 +170,7 @@ function collect(){
   const sv={site:{title:st.value,intro:si.value},categories:{},players:{}};
   catEls.forEach(([k,i])=>{if(i.value)sv.categories[k]=i.value});sv.enabled=catEls.filter(x=>x[2].checked).map(x=>x[0]);
   rowEls.forEach(([u,a,t,c,h,q])=>{if(a.value||t.value||q.value||h.checked||c.dataset.s)sv.players[u]={display_name:a.value,title:t.value,quote:q.value,hidden:h.checked,...(c.dataset.s?{color:c.value}:{})}});
-  OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;OV.showGames=sg.checked;OV.showGallery=sgl.checked;OV.showHeat=sht.checked;OV.showBingo=sbg.checked;OV.showStreaks=ssk.checked;OV.showBestiary=sbs.checked;OV.showDash=sdb.checked;OV.showRecords=srec.checked;OV.polls=POLLS;OV.advent=sad.value;OV.streakSeed=SEEDS;OV.deco=sdc.value;OV.showMap=smp.checked;OV.people=PEOPLE;OV.places=PLACES;OV.challenge={enabled:chen.checked,stat:chs.value,week:chs.value&&chw.checked?vWeek():null};OV.achievements=ACH;OV.goals=GOALS;OV.facts={show:fs.checked,custom:ft.value.split("\n").map(x=>x.trim()).filter(Boolean)};OV.custom=CUS;OV.badges={names:bnm.checked,profile:bpr.checked};OV.notify={events:nev.checked,weekly:nwk.checked,milestones:nms.checked,achievements:nac.checked,goals:ngl.checked,recap:nrc.checked,birthdays:nbd.checked,bingo:nbg.checked,streaks:nsk.checked};
+  OV.servers[cur]=sv;OV.theme=getTheme();OV.discord={url:dl.value.trim(),text:dt.value.trim()||"Discord"};OV.showAdmin=sa.checked;OV.showGames=sg.checked;OV.showGallery=sgl.checked;OV.showHeat=sht.checked;OV.showBingo=sbg.checked;OV.showStreaks=ssk.checked;OV.showBestiary=sbs.checked;OV.showDash=sdb.checked;OV.showRecords=srec.checked;OV.showTour=stour.checked;OV.showNews=snw.checked;OV.news=NEWS;OV.polls=POLLS;OV.advent=sad.value;OV.streakSeed=SEEDS;OV.deco=sdc.value;OV.showMap=smp.checked;OV.people=PEOPLE;OV.places=PLACES;OV.placesHidden=HIDP;OV.challenge={enabled:chen.checked,stat:chs.value,week:chs.value&&chw.checked?vWeek():null};OV.achievements=ACH;OV.goals=GOALS;OV.facts={show:fs.checked,custom:ft.value.split("\n").map(x=>x.trim()).filter(Boolean)};OV.custom=CUS;OV.badges={names:bnm.checked,profile:bpr.checked};OV.notify={events:nev.checked,weekly:nwk.checked,milestones:nms.checked,achievements:nac.checked,goals:ngl.checked,recap:nrc.checked,birthdays:nbd.checked,bingo:nbg.checked,streaks:nsk.checked};
 }
 let EDIT=null;
 function renderEvents(){const b=$("evl");b.replaceChildren();if(!EVS.length)el("p","Noch keine Events.",b,"mu");
@@ -266,12 +273,12 @@ ld.onclick=async()=>{
     plEls=PRE.Standard.players.map((c,i)=>picker(cl,"Standardfarbe Platz "+(i+1),c));
     setTheme({...PRE.Standard,...(OV.theme||{}),players:(OV.theme||{}).players||PRE.Standard.players});
     sel.value=SERVERS[0].key;await buildServer(SERVERS[0].key);EVS=(await evList()).list;renderEvents();
-    dl.value=(OV.discord||{}).url??DEFDC;dt.value=(OV.discord||{}).text||"Discord";sa.checked=OV.showAdmin!==false;sg.checked=OV.showGames!==false;sgl.checked=OV.showGallery!==false;sht.checked=OV.showHeat!==false;sbg.checked=OV.showBingo!==false;ssk.checked=OV.showStreaks!==false;sbs.checked=OV.showBestiary!==false;sdb.checked=OV.showDash!==false;srec.checked=OV.showRecords!==false;sad.value=OV.advent||"auto";nbg.checked=(OV.notify||{}).bingo!==false;nsk.checked=(OV.notify||{}).streaks!==false;sdc.value=OV.deco||"auto";smp.checked=OV.showMap!==false;nbd.checked=(OV.notify||{}).birthdays!==false;nrc.checked=(OV.notify||{}).recap!==false;
+    dl.value=(OV.discord||{}).url??DEFDC;dt.value=(OV.discord||{}).text||"Discord";sa.checked=OV.showAdmin!==false;sg.checked=OV.showGames!==false;sgl.checked=OV.showGallery!==false;sht.checked=OV.showHeat!==false;sbg.checked=OV.showBingo!==false;ssk.checked=OV.showStreaks!==false;sbs.checked=OV.showBestiary!==false;sdb.checked=OV.showDash!==false;srec.checked=OV.showRecords!==false;stour.checked=OV.showTour!==false;snw.checked=OV.showNews!==false;sad.value=OV.advent||"auto";nbg.checked=(OV.notify||{}).bingo!==false;nsk.checked=(OV.notify||{}).streaks!==false;sdc.value=OV.deco||"auto";smp.checked=OV.showMap!==false;nbd.checked=(OV.notify||{}).birthdays!==false;nrc.checked=(OV.notify||{}).recap!==false;
     ACH=OV.achievements||[];fs.checked=(OV.facts||{}).show!==false;ft.value=((OV.facts||{}).custom||[]).join("\n");bnm.checked=(OV.badges||{}).names!==false;bpr.checked=(OV.badges||{}).profile!==false;const nf=OV.notify||{};nev.checked=nf.events!==false;nwk.checked=nf.weekly!==false;nms.checked=nf.milestones!==false;nac.checked=nf.achievements!==false;
     am.replaceChildren();ACHM.forEach(([k,l])=>el("option",l,am).value=k);asv.replaceChildren();el("option","Alle Server",asv).value="all";SERVERS.forEach(x=>el("option",x.name,asv).value=x.key);resetAch();renderAch();
     CUS=OV.custom||[];cs.replaceChildren();el("option","Alle Server",cs).value="all";SERVERS.forEach(x=>el("option",x.name,cs).value=x.key);renderCus();
     GOALS=OV.goals||[];gs.replaceChildren();el("option","Alle Server",gs).value="all";SERVERS.forEach(x=>el("option",x.name,gs).value=x.key);fillGm();renderGoals();ngl.checked=(OV.notify||{}).goals!==false;
-    gsv.replaceChildren();el("option","Alle Server",gsv).value="all";SERVERS.forEach(x=>el("option",x.name,gsv).value=x.key);GAL=(await galList()).list;renderGal();resetGal();await chalLoad();await bioLoad();placesLoad();await seedLoad();wLoad();pollLoad();
+    gsv.replaceChildren();el("option","Alle Server",gsv).value="all";SERVERS.forEach(x=>el("option",x.name,gsv).value=x.key);GAL=(await galList()).list;renderGal();resetGal();await chalLoad();await bioLoad();placesLoad();await seedLoad();wLoad();pollLoad();newsLoad();
     ed.hidden=false;ab.hidden=false;tab("a");say("Geladen.");
     if(rem.checked&&pw.value){await lockTok(pw.value,tk.value.trim());fg.hidden=false;say("Geladen. 🔒 Zugang auf diesem Gerät gespeichert.")}
   }catch(e){say("Fehler: "+e.message)}
@@ -312,11 +319,13 @@ async function bioLoad(){PEOPLE=JSON.parse(JSON.stringify(OV.people||{}));ALLP=a
   bpl.replaceChildren();ALLP.forEach(([u])=>el("option",dispName(u),bpl).value=u);
   bdd.replaceChildren();el("option","–",bdd).value="";for(let d=1;d<=31;d++)el("option",d+".",bdd).value=String(d).padStart(2,"0");
   bdm.replaceChildren();el("option","–",bdm).value="";MONS.forEach((m,i)=>el("option",m,bdm).value=String(i+1).padStart(2,"0"));
+  bbn.replaceChildren();[["","– Standard (Spielerfarbe) –"],["wald","🌲 Wald"],["ozean","🌊 Ozean"],["nether","🔥 Nether"],["end","🌌 End"],["schnee","❄️ Schnee"],["wueste","🏜️ Wüste"],["kirsch","🌸 Kirschblüte"],["hoehle","🕳️ Höhle"],["gold","✨ Gold"],["nacht","🌙 Nacht"]].forEach(([v,l])=>el("option",l,bbn).value=v);
+  GAL.forEach(g=>el("option","🖼️ Galerie: "+(g.title||g.id),bbn).value="g:"+g.id);
   BCUR=null;if(ALLP.length){bpl.value=ALLP[0][0];bioShow()}renderBio()}
-function bioShow(){BCUR=bpl.value;const x=PEOPLE[BCUR]||{};brl.value=x.role||"";bfv.value=x.fav||"";bsn.value=x.since||"";bab.value=x.about||"";const[m,d]=(x.bday||"-").split("-");bdm.value=m||"";bdd.value=d||""}
-function bioSave(){if(!BCUR)return;const b=bdd.value&&bdm.value?bdm.value+"-"+bdd.value:"",x={name:dispName(BCUR),role:brl.value.trim(),fav:bfv.value.trim(),since:bsn.value,bday:b,about:bab.value.trim()};
-  if(x.role||x.fav||x.since||x.bday||x.about)PEOPLE[BCUR]=x;else delete PEOPLE[BCUR];renderBio()}
-[brl,bfv,bsn,bab].forEach(i=>i.oninput=bioSave);[bdd,bdm,bsn].forEach(i=>i.onchange=bioSave);bpl.onchange=bioShow;
+function bioShow(){BCUR=bpl.value;const x=PEOPLE[BCUR]||{};brl.value=x.role||"";bfv.value=x.fav||"";bsn.value=x.since||"";bab.value=x.about||"";bbn.value=x.banner||"";const[m,d]=(x.bday||"-").split("-");bdm.value=m||"";bdd.value=d||""}
+function bioSave(){if(!BCUR)return;const b=bdd.value&&bdm.value?bdm.value+"-"+bdd.value:"",x={name:dispName(BCUR),role:brl.value.trim(),fav:bfv.value.trim(),since:bsn.value,bday:b,about:bab.value.trim(),banner:bbn.value};
+  if(x.role||x.fav||x.since||x.bday||x.about||x.banner)PEOPLE[BCUR]=x;else delete PEOPLE[BCUR];renderBio()}
+[brl,bfv,bsn,bab].forEach(i=>i.oninput=bioSave);[bdd,bdm,bsn,bbn].forEach(i=>i.onchange=bioSave);bpl.onchange=bioShow;
 function renderBio(){const b=$("bls");b.replaceChildren();const L=Object.entries(PEOPLE);el("p",L.length?"Ausgefüllt:":"Noch keine Steckbriefe.",b,"mu");
   L.forEach(([u,x])=>{const r=el("div","",b,"ev"),d=el("div","",r);el("b",x.name||dispName(u),d);
     el("div",[x.role,x.fav&&"♥ "+x.fav,x.bday&&"🎂 "+(+x.bday.split("-")[1])+". "+MONS[+x.bday.split("-")[0]-1]].filter(Boolean).join(" · ")||"nur Text",d,"mu");
@@ -337,6 +346,17 @@ async function seedRender(){const k=ksv.value,b=$("kl");b.replaceChildren();if(!
     const c=inp("Serie (Tage)","number",sd?sd.cur:(q?q.cur:0),"80px"),bs=inp("Rekord","number",sd?sd.best:(q?q.best:0),"80px"),ld=inp("Zuletzt gezählter Tag","date",sd?sd.last:vDay(-1),"150px");c.min=bs.min=0;
     el("button","✔",f,"s").onclick=()=>{const cv=Math.max(0,+c.value||0);(SEEDS[k]=SEEDS[k]||{})[u]={cur:cv,best:Math.max(cv,+bs.value||0),last:ld.value||vDay(-1),stamp:Date.now()};seedRender();say("Serie vorgemerkt – unten auf „Speichern“ klicken.")};
     if(sd)el("button","↺",f,"s").onclick=()=>{delete SEEDS[k][u];seedRender()}})}
+// ---------- Neuigkeiten ----------
+let NEWS=[],NEDIT=null;
+function newsLoad(){NEWS=JSON.parse(JSON.stringify(OV.news||[]));nReset();nRender()}
+function nReset(){NEDIT=null;nt.value=ni.value="";nd.value=new Date().toISOString().slice(0,10);na.textContent="➕ Meldung hinzufügen";nc.hidden=true}
+nc.onclick=nReset;
+na.onclick=()=>{const items=ni.value.split("\n").map(x=>x.trim()).filter(Boolean);if(!nt.value.trim()||!items.length)return say("❌ Titel und mindestens ein Punkt nötig.");
+  const o={title:nt.value.trim(),items,id:nd.value+(NEDIT?"":"-"+Date.now().toString(36))};if(NEDIT)Object.assign(NEDIT,{title:o.title,items});else NEWS.push(o);nReset();nRender();say("Vorgemerkt – unten auf „Speichern“ klicken.")};
+function nRender(){const b=$("nl");b.replaceChildren();if(!NEWS.length){el("p","Noch keine eigenen Meldungen – die Seite zeigt die eingebaute Liste der letzten Neuerungen.",b,"mu");return}
+  [...NEWS].sort((a,z)=>z.id.localeCompare(a.id)).forEach(x=>{const r=el("div","",b,"ev"),d=el("div","",r);d.style.flex="1";el("b",x.title,d);el("div",`${x.id.slice(0,10).split("-").reverse().join(".")} · ${x.items.length} Punkte`,d,"mu");
+    el("button","✏️",r,"s").onclick=()=>{NEDIT=x;nt.value=x.title;ni.value=x.items.join("\n");nd.value=x.id.slice(0,10);na.textContent="💾 Änderung übernehmen";nc.hidden=false;nt.scrollIntoView({behavior:"smooth",block:"center"})};
+    el("button","🗑",r,"s").onclick=()=>{if(confirm("Meldung löschen?")){NEWS=NEWS.filter(y=>y!==x);nRender();say("Gelöscht – unten auf „Speichern“ klicken.")}}})}
 // ---------- Umfragen ----------
 let POLLS=[],PEDIT=null;
 function pollLoad(){POLLS=JSON.parse(JSON.stringify(OV.polls||[]));pReset();pRender()}
@@ -386,7 +406,7 @@ let PLACES=[],OEDIT=null;
 const OT=[["base","🏠 Basis"],["farm","🌾 Farm"],["portal","🌀 Portal"],["village","🏘️ Dorf"],["sight","⭐ Sehenswürdigkeit"],["other","📍 Sonstiges"]];
 function placesLoad(){PLACES=JSON.parse(JSON.stringify(OV.places||[]));oty.replaceChildren();OT.forEach(([k,l])=>el("option",l,oty).value=k);
   osv.replaceChildren();el("option","Alle Server",osv).value="all";SERVERS.forEach(x=>el("option",x.name,osv).value=x.key);
-  oow.replaceChildren();el("option","– niemand –",oow).value="";ALLP.forEach(([u])=>el("option",dispName(u),oow).value=u);galSel();resetPlace();renderPlaces()}
+  HIDP=[...(OV.placesHidden||[])];renderGamePlaces();oow.replaceChildren();el("option","– niemand –",oow).value="";ALLP.forEach(([u])=>el("option",dispName(u),oow).value=u);galSel();resetPlace();renderPlaces()}
 function galSel(){if(typeof ogl==="undefined")return;const v=ogl.value;ogl.replaceChildren();el("option","– kein Bild –",ogl).value="";
   [...GAL].sort((a,z)=>(z.date||"").localeCompare(a.date||"")).forEach(g=>el("option",(g.title||"(ohne Titel)")+(g.date?" · "+g.date.split("-").reverse().join("."):""),ogl).value=g.id);ogl.value=[...ogl.options].some(o=>o.value===v)?v:"";galPrev()}
 function galPrev(){const g=GAL.find(x=>x.id===ogl.value);oglp.hidden=!g;if(g)oglp.src=g.image}
@@ -396,6 +416,12 @@ oc.onclick=resetPlace;
 oa.onclick=()=>{if(!onm.value.trim()||ox.value===""||oz.value==="")return say("❌ Name, X und Z sind nötig.");
   const o={name:onm.value.trim(),type:oty.value,server:osv.value,dim:odm.value,x:Math.round(+ox.value),y:oy.value===""?"":Math.round(+oy.value),z:Math.round(+oz.value),owner:oow.value,gallery:ogl.value,desc:ods.value.trim()};
   if(OEDIT)Object.assign(OEDIT,o);else PLACES.push({id:"o"+Date.now(),...o});resetPlace();renderPlaces();say("Ort übernommen – unten auf „Speichern“ klicken.")};
+async function renderGamePlaces(){const b=$("ogl2");b.replaceChildren();let n=0;for(const sv of SERVERS){let m={};try{m=await (await fetch(`data/${sv.key}/moddata.json`,{cache:"no-cache"})).json()}catch{}
+    (m.places||[]).forEach(x=>{n++;const hid=HIDP.includes(x.id),r=el("div","",b,"ev"),d=el("div","",r);d.style.flex="1";el("b",(hid?"🚫 ":"📍 ")+x.name,d);
+      el("div",`${sv.name} · ${{overworld:"Oberwelt",nether:"Nether",end:"End"}[x.dim]} X ${x.x} · Z ${x.z} · von ${dispName(x.owner)||(m.names||{})[x.owner]||"?"}`,d,"mu");
+      el("button",hid?"Einblenden":"Ausblenden",r,"s").onclick=()=>{HIDP=hid?HIDP.filter(i=>i!==x.id):[...HIDP,x.id];renderGamePlaces();say("Unten auf „Speichern“ klicken.")}})}
+  if(!n)el("p","Noch keine.",b,"mu")}
+let HIDP=[];
 function renderPlaces(){const b=$("ol");b.replaceChildren();if(!PLACES.length)el("p","Noch keine Orte.",b,"mu");
   [...PLACES].sort((a,z)=>a.name.localeCompare(z.name,"de")).forEach(x=>{const r=el("div","",b,"ev"),d=el("div","",r);el("b",(OT.find(t=>t[0]===x.type)||OT[5])[1].split(" ")[0]+" "+x.name,d);
     el("div",[{overworld:"Oberwelt",nether:"Nether",end:"End"}[x.dim||"overworld"]+` X ${x.x} · Z ${x.z}`,x.owner&&"von "+dispName(x.owner),x.gallery&&GAL.some(g=>g.id===x.gallery)&&"🖼️ mit Bild",x.server&&x.server!=="all"?(SERVERS.find(s=>s.key===x.server)||{}).name:"Alle Server"].filter(Boolean).join(" · "),d,"mu");
@@ -405,7 +431,7 @@ function renderPlaces(){const b=$("ol");b.replaceChildren();if(!PLACES.length)el
 let GAL=[],GEDT=null;
 async function galList(){const f=await getFile("docs/gallery.json");return{sha:f&&f.sha,list:f?JSON.parse(f.text).items||[]:[]}}
 function renderGal(){galSel();const b=$("gll");b.replaceChildren();if(!GAL.length)el("p","Noch keine Bilder.",b,"mu");
-  [...GAL].sort((a,z)=>(z.date||"").localeCompare(a.date||"")).forEach(g=>{const r=el("div","",b,"ev"),i=document.createElement("img");i.src=g.image;i.alt="";r.append(i);const d=el("div","",r);el("b",g.title||"(ohne Titel)",d);
+  [...GAL].sort((a,z)=>(z.date||"").localeCompare(a.date||"")).forEach(g=>{const r=el("div","",b,"ev"),i=document.createElement("img");i.src=g.image;i.alt="";i.src=g.thumb||g.image;r.append(i);const d=el("div","",r);el("b",g.title||"(ohne Titel)",d);
     el("div",[g.by&&"von "+g.by,g.date,!g.server||g.server==="all"?"Alle Server":(SERVERS.find(s=>s.key===g.server)||{}).name].filter(Boolean).join(" · "),d,"mu");
     el("button","✏️",r,"s").onclick=()=>editGal(g);el("button","🗑",r,"s").onclick=()=>delGal(g)})}
 function editGal(g){GEDT=g.id;gtn.value=g.title||"";gby.value=g.by||"";gdt.value=g.date||"";gsv.value=g.server||"all";gds.value=g.desc||"";gim.value="";gim.multiple=false;
@@ -414,14 +440,14 @@ function resetGal(){GEDT=null;gtn.value=gby.value=gds.value=gim.value="";gdt.val
 gcn.onclick=resetGal;
 gad.onclick=async()=>{try{const files=[...gim.files];if(!GEDT&&!files.length)throw new Error("Bitte mindestens ein Bild auswählen");
     const meta={title:gtn.value.trim(),by:gby.value.trim(),date:gdt.value,server:gsv.value,desc:gds.value},up=[];
-    for(let k=0;k<files.length;k++){say(`Lade Bild ${k+1} von ${files.length} hoch …`);const path=`gallery/g${Date.now()}-${k}.jpg`;await putFile("docs/"+path,await shrink(files[k],1600),"Galerie-Bild");up.push(path)}
+    for(let k=0;k<files.length;k++){say(`Lade Bild ${k+1} von ${files.length} hoch …`);const st=Date.now(),path=`gallery/g${st}-${k}.jpg`,tp=`gallery/t${st}-${k}.jpg`;await putFile("docs/"+path,await shrink(files[k],1600),"Galerie-Bild");await putFile("docs/"+tp,await shrink(files[k],480),"Galerie-Vorschau");up.push([path,tp])}
     say("Speichere Galerie …");const f=await galList();
-    if(GEDT){const g=f.list.find(x=>x.id===GEDT);if(!g)throw new Error("Das Bild gibt es nicht mehr");Object.assign(g,meta);if(up[0]){if(g.image)delImg(g.image);g.image=up[0]}}
-    else up.forEach((path,k)=>f.list.push({id:"p"+Date.now()+k,image:path,...meta}));
+    if(GEDT){const g=f.list.find(x=>x.id===GEDT);if(!g)throw new Error("Das Bild gibt es nicht mehr");Object.assign(g,meta);if(up[0]){if(g.image)delImg(g.image);if(g.thumb)delImg(g.thumb);g.image=up[0][0];g.thumb=up[0][1]}}
+    else up.forEach(([path,tp],k)=>f.list.push({id:"p"+Date.now()+k,image:path,thumb:tp,...meta}));
     await putFile("docs/gallery.json",b64s(JSON.stringify({items:f.list},null,2)),GEDT?"Galerie geändert":"Galerie: Bilder hinzugefügt",f.sha);
     GAL=f.list;renderGal();resetGal();say("✅ Gespeichert – in ca. 1 Minute auf der Seite sichtbar.")}catch(e){say("❌ "+e.message)}};
 async function delGal(g){try{if(!confirm(`„${g.title||"Bild"}“ löschen?`))return;const f=await galList();
   await putFile("docs/gallery.json",b64s(JSON.stringify({items:f.list.filter(x=>x.id!==g.id)},null,2)),"Galerie: Bild gelöscht",f.sha);
-  if(g.image)delImg(g.image);GAL=f.list.filter(x=>x.id!==g.id);renderGal();if(GEDT===g.id)resetGal();say("✅ Bild gelöscht.")}catch(e){say("❌ "+e.message)}}
+  if(g.image)delImg(g.image);if(g.thumb)delImg(g.thumb);GAL=f.list.filter(x=>x.id!==g.id);renderGal();if(GEDT===g.id)resetGal();say("✅ Bild gelöscht.")}catch(e){say("❌ "+e.message)}}
 dtest.onclick=()=>run("discord-test.yml","Testnachricht");
 </script></body></html>

@@ -102,11 +102,13 @@ public class LiveStats implements ModInitializer {
         });
         ServerPlayConnectionEvents.JOIN.register((handler, sender, s) -> {
             int n = ONLINE.incrementAndGet();
+            seenMark(Compat.playerName(handler), true);
             if (cfg.join) say("🟢 **" + esc(Compat.playerName(handler)) + "** ist beigetreten (" + n + " online)");
             if (wants("join")) requestRefresh();
         });
         ServerPlayConnectionEvents.DISCONNECT.register((handler, s) -> {
             int n = ONLINE.updateAndGet(v -> Math.max(0, v - 1));
+            seenMark(Compat.playerName(handler), false);
             if (cfg.leave) say("🔴 **" + esc(Compat.playerName(handler)) + "** hat den Server verlassen (" + n + " online)");
             if (wants("leave")) requestRefresh();
         });
@@ -136,7 +138,7 @@ public class LiveStats implements ModInitializer {
     }
 
     // ---------- Befehle im Spiel ----------
-    static final String[] COMMANDS = {"bingo", "challenge", "serie", "advent", "seite", "rekord", "vote"};
+    static final String[] COMMANDS = {"bingo", "challenge", "serie", "advent", "seite", "rekord", "vote", "ort", "seen", "banner"};
     static volatile JsonObject siteStats, siteAdvent, siteOv;
     static volatile String siteKey;
     static final Path CLAIMS = FabricLoader.getInstance().getConfigDir().resolve("livestats-advent.json");
@@ -206,14 +208,17 @@ public class LiveStats implements ModInitializer {
     }
 
     /** Wird von Compat im Server-Thread aufgerufen; gibt die Chat-Zeilen zurück. */
-    static List<String> command(String cmd, String arg, String uuid, String name, Object player) {
+    static List<String> command(String cmd, String arg, String uuid, String name, Object player, double[] pos, String dim) {
+        if (cmd.equals("ort")) return ort(arg, uuid, name, pos, dim);
+        if (cmd.equals("seen")) return seen(arg);
+        if (cmd.equals("banner")) return banner(arg, uuid, name);
         if (cmd.equals("rekord")) return rekord(arg, uuid, name);
         if (cmd.equals("vote")) return vote(arg, uuid, name);
         List<String> out = new ArrayList<>();
         String site = siteUrl();
         if (cmd.equals("seite")) {
             out.add("§b" + (site.isEmpty() ? "Keine Seite eingestellt." : site));
-            out.add("§7Befehle: §f/bingo /challenge /serie /advent /vote /rekord");
+            out.add("§7Befehle: §f/bingo /challenge /serie /advent /vote /rekord /ort /seen /banner");
             return out;
         }
         if (cmd.equals("advent")) return advent(uuid, player);
@@ -488,6 +493,108 @@ public class LiveStats implements ModInitializer {
         return out;
     }
 
+    // ---------- /ort, /seen, /banner ----------
+    static synchronized List<String> ort(String arg, String uuid, String name, double[] pos, String dim) {
+        List<String> out = new ArrayList<>();
+        String a = arg == null ? "" : arg.trim();
+        JsonObject m = modData();
+        JsonArray places = m.has("places") && m.get("places").isJsonArray() ? m.getAsJsonArray("places") : new JsonArray();
+        if (a.isEmpty()) {
+            out.add("§b§lOrte auf der Karte");
+            out.add("§f/ort <Name> §7– speichert deinen Standort (z. B. §f/ort Meine Basis§7)");
+            out.add("§f/ort löschen <Name> §7– löscht einen deiner Orte");
+            int k = 0;
+            for (JsonElement e : places) {
+                JsonObject o = e.getAsJsonObject();
+                if (o.get("owner").getAsString().equals(uuid)) { out.add(" §8- §f" + o.get("name").getAsString() + " §7(" + o.get("x").getAsInt() + " / " + o.get("z").getAsInt() + ")"); k++; }
+            }
+            if (k == 0) out.add("§7Du hast noch keine Orte gespeichert.");
+            return out;
+        }
+        if (a.toLowerCase().startsWith("löschen ") || a.toLowerCase().startsWith("loeschen ")) {
+            String n = a.substring(a.indexOf(' ') + 1).trim();
+            for (int i = 0; i < places.size(); i++) {
+                JsonObject o = places.get(i).getAsJsonObject();
+                if (o.get("owner").getAsString().equals(uuid) && o.get("name").getAsString().equalsIgnoreCase(n)) {
+                    places.remove(i);
+                    m.add("places", places);
+                    saveModData(m);
+                    requestRefresh();
+                    out.add("§a✔ „" + n + "“ gelöscht.");
+                    return out;
+                }
+            }
+            out.add("§cDu hast keinen Ort mit dem Namen „" + n + "“.");
+            return out;
+        }
+        String n = a.length() > 40 ? a.substring(0, 40) : a;
+        int mine = 0;
+        for (JsonElement e : places) if (e.getAsJsonObject().get("owner").getAsString().equals(uuid)) mine++;
+        if (mine >= 15) { out.add("§cDu hast schon 15 Orte – lösch zuerst einen mit §f/ort löschen <Name>§c."); return out; }
+        String d = dim.contains("the_nether") ? "nether" : dim.contains("the_end") ? "end" : "overworld";
+        JsonObject o = new JsonObject();
+        o.addProperty("id", "g" + System.currentTimeMillis());
+        o.addProperty("name", n);
+        o.addProperty("x", (int) Math.floor(pos[0]));
+        o.addProperty("y", (int) Math.floor(pos[1]));
+        o.addProperty("z", (int) Math.floor(pos[2]));
+        o.addProperty("dim", d);
+        o.addProperty("owner", uuid);
+        places.add(o);
+        m.add("places", places);
+        sub(m, "names").addProperty(uuid, name);
+        saveModData(m);
+        requestRefresh();
+        out.add("§a✔ „" + n + "“ gespeichert: §f" + (int) Math.floor(pos[0]) + " " + (int) Math.floor(pos[1]) + " " + (int) Math.floor(pos[2]) + " §7(" + (d.equals("nether") ? "Nether" : d.equals("end") ? "End" : "Oberwelt") + ")");
+        out.add("§7Er erscheint in ein paar Minuten auf der Karte der Seite.");
+        return out;
+    }
+
+    static synchronized void seenMark(String name, boolean online) {
+        JsonObject m = modData();
+        JsonObject o = new JsonObject();
+        o.addProperty("name", name);
+        o.addProperty("t", System.currentTimeMillis());
+        o.addProperty("on", online);
+        sub(m, "seen").add(name.toLowerCase(), o);
+        saveModData(m);
+    }
+
+    static List<String> seen(String arg) {
+        List<String> out = new ArrayList<>();
+        String a = arg == null ? "" : arg.trim().toLowerCase();
+        if (a.isEmpty()) { out.add("§7So geht's: §f/seen <Spielername>"); return out; }
+        JsonObject s = obj(modData(), "seen");
+        JsonObject o = obj(s, a);
+        if (o == null) { out.add("§7" + arg.trim() + " war seit dem Einbau dieser Funktion noch nicht online."); return out; }
+        String n = o.get("name").getAsString();
+        if (o.get("on").getAsBoolean()) { out.add("§a● §f" + n + " §aist gerade online."); return out; }
+        long min = (System.currentTimeMillis() - o.get("t").getAsLong()) / 60000;
+        String ago = min < 1 ? "gerade eben" : min < 60 ? "vor " + min + " Min." : min < 1440 ? "vor " + (min / 60) + " Std." : "vor " + (min / 1440) + (min / 1440 == 1 ? " Tag" : " Tagen");
+        String when = java.time.Instant.ofEpochMilli(o.get("t").getAsLong()).atZone(VIENNA).format(java.time.format.DateTimeFormatter.ofPattern("dd.MM. 'um' HH:mm"));
+        out.add("§7● §f" + n + " §7war zuletzt §f" + ago + " §7online (" + when + ").");
+        return out;
+    }
+
+    static final String[] BANNERS = {"wald", "ozean", "nether", "end", "schnee", "wueste", "kirsch", "hoehle", "gold", "nacht"};
+
+    static synchronized List<String> banner(String arg, String uuid, String name) {
+        List<String> out = new ArrayList<>();
+        String a = arg == null ? "" : arg.trim().toLowerCase().replace("ü", "ue").replace("ö", "oe");
+        if (!java.util.Arrays.asList(BANNERS).contains(a) && !a.equals("standard")) {
+            out.add("§b§lProfil-Banner §r§7– so sieht dein Profil auf der Seite aus:");
+            out.add("§f/banner <Name> §7mit: §f" + String.join(", ", BANNERS) + ", standard");
+            return out;
+        }
+        JsonObject m = modData();
+        if (a.equals("standard")) sub(m, "banners").remove(uuid); else sub(m, "banners").addProperty(uuid, a);
+        sub(m, "names").addProperty(uuid, name);
+        saveModData(m);
+        requestRefresh();
+        out.add("§a✔ Dein Profil-Banner: §f" + a + " §7– auf der Seite in ein paar Minuten sichtbar.");
+        return out;
+    }
+
     static JsonObject activePoll() {
         JsonObject ov = siteOv;
         if (ov == null || !ov.has("polls") || !ov.get("polls").isJsonArray()) return null;
@@ -650,7 +757,8 @@ public class LiveStats implements ModInitializer {
             JsonObject body = new JsonObject();
             body.addProperty("ref", cfg.githubRef);
             JsonObject md = modData();
-            if (siteKey != null && (md.has("records") || md.has("votes"))) {
+            md.remove("seen"); // bleibt nur auf dem Server
+            if (siteKey != null && (md.has("records") || md.has("votes") || md.has("places") || md.has("banners"))) {
                 md.addProperty("server", siteKey);
                 JsonObject in = new JsonObject();
                 in.addProperty("moddata", md.toString());
@@ -791,12 +899,15 @@ final class Compat {
         return ((ServerGamePacketListenerImpl) handler).getPlayer().getName().getString();
     }
 
-    interface Cmd { List<String> run(String cmd, String arg, String uuid, String name, Object player); }
+    interface Cmd { List<String> run(String cmd, String arg, String uuid, String name, Object player, double[] pos, String dim); }
 
     static int exec(CommandContext<CommandSourceStack> ctx, Cmd handler, String name, String arg) {
         ServerPlayer p = ctx.getSource().getPlayer();
         if (p == null) return 0;
-        for (String l : handler.run(name, arg, p.getStringUUID(), p.getName().getString(), p)) ctx.getSource().sendSuccess(() -> line(l), false);
+        var v = ctx.getSource().getPosition();
+        double[] pos = {v.x, v.y, v.z};
+        String dim = ctx.getSource().getLevel().dimension().toString();
+        for (String l : handler.run(name, arg, p.getStringUUID(), p.getName().getString(), p, pos, dim)) ctx.getSource().sendSuccess(() -> line(l), false);
         return 1;
     }
 
@@ -984,12 +1095,15 @@ final class Compat {
         return ((ServerPlayNetworkHandler) handler).player.getName().getString();
     }
 
-    interface Cmd { List<String> run(String cmd, String arg, String uuid, String name, Object player); }
+    interface Cmd { List<String> run(String cmd, String arg, String uuid, String name, Object player, double[] pos, String dim); }
 
     static int exec(CommandContext<ServerCommandSource> ctx, Cmd handler, String name, String arg) {
         ServerPlayerEntity p = ctx.getSource().getPlayer();
         if (p == null) return 0;
-        for (String l : handler.run(name, arg, p.getUuidAsString(), p.getName().getString(), p)) ctx.getSource().sendFeedback(() -> line(l), false);
+        var v = ctx.getSource().getPosition();
+        double[] pos = {v.x, v.y, v.z};
+        String dim = ctx.getSource().getWorld().getRegistryKey().toString();
+        for (String l : handler.run(name, arg, p.getUuidAsString(), p.getName().getString(), p, pos, dim)) ctx.getSource().sendFeedback(() -> line(l), false);
         return 1;
     }
 

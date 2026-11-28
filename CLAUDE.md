@@ -65,6 +65,14 @@ Sprache: Antworte immer auf Deutsch. Der Besitzer ist kein Profi-Entwickler – 
 - Die Mod schickt Rekorde/Stimmen bei jedem Workflow-Start als Eingabe `moddata` mit → `fetch_stats.save_moddata` → `docs/data/<server>/moddata.json`. Beste Rekorde landen als `rec` in jedem Spieler (stats.json) → Erfolge mit Metrik `rec_<spiel>` (nur Spiele, bei denen mehr besser ist).
 - „Mein Dashboard“ (dashBox) erscheint oben für den markierten Spieler (`PREF.me`).
 
+## /ort, /seen, /banner, Turnier, Neuigkeiten
+- `/ort Name` speichert Position + Dimension (aus dem Befehl) in moddata `places`; Seite mischt sie in die Karte (GPLACES), Admin kann einzelne über `overrides.placesHidden` ausblenden. `/ort löschen Name`, max. 15 pro Spieler.
+- `/seen Name`: Mod merkt sich Join/Leave in moddata `seen` (wird NICHT an die Seite geschickt).
+- `/banner name` (wald, ozean, nether, end, schnee, wueste, kirsch, hoehle, gold, nacht, standard) → moddata `banners`; Admin-Steckbrief hat zusätzlich `banner` (Vorlage oder `g:<Galerie-ID>`). Spieler-Wahl hat Vorrang.
+- Turnier der Woche: Spiel aus TOUR_GAMES je Woche, gezählt werden /rekord-Einträge mit Tag in dieser Woche; Sieger der letzten 12 Wochen stehen im Profil.
+- „Was ist neu?“: `overrides.news` [{id (Datum-…), title, items}], sonst NEWS_DEFAULT in index.html. Gesehen-Merker: localStorage `lbnews`.
+- Galerie-Uploads speichern zusätzlich ein Vorschaubild (`thumb`, 480 px).
+
 ## Nur im Browser (index.html)
 - Spielerkarte: Knopf „📸 Als Bild teilen“ im Profil zeichnet ein 1080×1350-PNG per Canvas (Teilen über navigator.share oder Herunterladen).
 - Saison-Deko: `overrides.deco` = auto | winter | halloween | newyear | off; Besucher können sie in den Einstellungen abschalten; bei „weniger Bewegung“ im System automatisch aus.

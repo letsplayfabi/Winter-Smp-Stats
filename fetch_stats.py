@@ -116,6 +116,16 @@ def save_moddata():
         for pid, V in (m.get("votes") or {}).items():
             if re.fullmatch(r"[A-Za-z0-9_-]{1,40}", pid) and isinstance(V, dict):
                 out["votes"][pid] = {u: int(v) for u, v in V.items() if uu.match(u) and 1 <= int(v) <= 9}
+        out["places"] = []
+        for o in (m.get("places") or [])[:300]:
+            try:
+                ok = isinstance(o, dict) and uu.match(str(o.get("owner", ""))) and o.get("dim") in ("overworld", "nether", "end")
+                ok and out["places"].append({"id": re.sub(r"[^A-Za-z0-9]", "", str(o.get("id", "")))[:20], "name": str(o.get("name", ""))[:40],
+                                      "x": int(o["x"]), "y": int(o.get("y", 64)), "z": int(o["z"]), "dim": o["dim"], "owner": o["owner"]})
+            except (ValueError, TypeError, KeyError):
+                continue
+        BAN = {"wald", "ozean", "nether", "end", "schnee", "wueste", "kirsch", "hoehle", "gold", "nacht"}
+        out["banners"] = {u: b for u, b in (m.get("banners") or {}).items() if uu.match(u) and b in BAN}
         d = D / "data" / key
         d.mkdir(parents=True, exist_ok=True)
         (d / "moddata.json").write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")))
